@@ -122,7 +122,7 @@ namespace Fusion.XR.Host
             {
                 if (status == Status.BeamHit)
                 {
-                    if (onRelease != null) onRelease.Invoke(lastHitCollider, lastHit);
+                    if (onRelease != null) onRelease.Invoke(lastHitCollider, lastHit);  
                 }
                 status = Status.NoBeam;
                 lastHitCollider = null;
