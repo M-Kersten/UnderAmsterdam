@@ -49,7 +49,7 @@ public class CubeInteraction : NetworkBehaviour
 
         //Children = new GameObject[6];
         Children = new GameObject[6];
-        //FindChildren();
+        FindChildren();
 
     }
 
@@ -111,7 +111,7 @@ public class CubeInteraction : NetworkBehaviour
         isHover = false;
     }
 
-    private void FindChildren() 
+    private void FindChildrenWithoutRaycast() 
     {
         string[] splitArray = this.name.Split(" "); //Split the cube name
 
@@ -126,5 +126,41 @@ public class CubeInteraction : NetworkBehaviour
         Children[(int)Direction.Right] = Grid.GridA[currentX - 1, currentY, currentZ];
         Children[(int)Direction.Front] = Grid.GridA[currentX, currentY, currentZ + 1];
         Children[(int)Direction.Behind] = Grid.GridA[currentX, currentY, currentZ - 1];
+    }
+    
+    private void FindChildren() 
+    {
+        RaycastHit hit;
+
+        //Debug.DrawRay(transform.position, Vector3.up, Color.black, 30f); to draw the ray for 30 sec
+        if (Physics.Raycast(transform.position, Vector3.up, out hit))
+            Children[(int)Direction.Up] = hit.transform.gameObject;
+        else
+            Children[(int)Direction.Up] = null;
+
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+            Children[(int)Direction.Down] = hit.transform.gameObject;
+        else
+            Children[(int)Direction.Down] = null;
+
+        if (Physics.Raycast(transform.position, Vector3.left, out hit))
+            Children[(int)Direction.Left] = hit.transform.gameObject;
+        else
+            Children[(int)Direction.Left] = null;
+
+        if (Physics.Raycast(transform.position, Vector3.right, out hit))
+            Children[(int)Direction.Right] = hit.transform.gameObject;
+        else
+            Children[(int)Direction.Right] = null;
+
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit))
+            Children[(int)Direction.Front] = hit.transform.gameObject;
+        else
+            Children[(int)Direction.Front] = null;
+
+        if (Physics.Raycast(transform.position, Vector3.back, out hit))
+            Children[(int)Direction.Behind] = hit.transform.gameObject;
+        else
+            Children[(int)Direction.Behind] = null;
     }
 }
