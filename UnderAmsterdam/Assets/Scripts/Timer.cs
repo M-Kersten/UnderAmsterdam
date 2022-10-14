@@ -9,6 +9,7 @@ public class Timer : MonoBehaviour
     public float timerStart = 600;
     private bool onGoingGame;
 
+    [Tooltip("How much time is given, in seconds")]
     [SerializeField]
     private UnityEvent timerUp;
 
