@@ -9,8 +9,9 @@ public class CubeInteraction : NetworkBehaviour
 {
     private enum Direction {Up, Down, Left, Right, Front, Behind };
 
+    [Networked(OnChanged = nameof(OnPipeChanged))] public bool isPiped { get; set; }
+
     private bool isHover = false;
-    private bool isPiped = false;
     private bool pipeTrigger = false;
     private bool rotationTrigger = false;
     private bool stateDownGrabPinch = false;
@@ -24,7 +25,8 @@ public class CubeInteraction : NetworkBehaviour
     private MeshRenderer CubePreviewRenderer;
     private Renderer[] PipeChildsRenderer;
     private LineRenderer CubeLineRenderer;
-    private GameObject[] Children;
+    [SerializeField]
+    private NetworkObject[] neighbor;
 
     private void Awake()
     {
@@ -32,7 +34,7 @@ public class CubeInteraction : NetworkBehaviour
         input.EnableWithDefaultXRBindings(rightBindings: bindings);
     }
 
-    private void Start()
+    public override void Spawned()
     {
 
         Pipe = GetComponentsInChildren<Transform>()[1].gameObject; //Always place the Pipe prefab in the top of the children in the cube prefab (Avoid find function)
@@ -48,7 +50,7 @@ public class CubeInteraction : NetworkBehaviour
         Pipe.SetActive(false);
 
         //Children = new GameObject[6];
-        Children = new GameObject[6];
+        neighbor = new NetworkObject[6];
         FindChildren();
 
     }
@@ -87,7 +89,7 @@ public class CubeInteraction : NetworkBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (!isPiped)
+        if (!isPiped && other.CompareTag("RightHand"))
         {
             Pipe.SetActive(true);
             foreach (MeshRenderer material in PipeChildsRenderer)
@@ -111,7 +113,7 @@ public class CubeInteraction : NetworkBehaviour
         isHover = false;
     }
 
-    private void FindChildrenWithoutRaycast() 
+    private void FindChildrenName() 
     {
         string[] splitArray = this.name.Split(" "); //Split the cube name
 
@@ -120,47 +122,74 @@ public class CubeInteraction : NetworkBehaviour
         int.TryParse(splitArray[3], out int currentZ);
 
 
-        Children[(int)Direction.Up] = Grid.GridA[currentX, currentY + 1, currentZ];
-        Children[(int)Direction.Down] = Grid.GridA[currentX, currentY - 1, currentZ];
-        Children[(int)Direction.Left] = Grid.GridA[currentX + 1, currentY, currentZ];
-        Children[(int)Direction.Right] = Grid.GridA[currentX - 1, currentY, currentZ];
-        Children[(int)Direction.Front] = Grid.GridA[currentX, currentY, currentZ + 1];
-        Children[(int)Direction.Behind] = Grid.GridA[currentX, currentY, currentZ - 1];
+        neighbor[(int)Direction.Up] = Grid.GridA[currentX, currentY + 1, currentZ];
+        neighbor[(int)Direction.Down] = Grid.GridA[currentX, currentY - 1, currentZ];
+        neighbor[(int)Direction.Left] = Grid.GridA[currentX + 1, currentY, currentZ];
+        neighbor[(int)Direction.Right] = Grid.GridA[currentX - 1, currentY, currentZ];
+        neighbor[(int)Direction.Front] = Grid.GridA[currentX, currentY, currentZ + 1];
+        neighbor[(int)Direction.Behind] = Grid.GridA[currentX, currentY, currentZ - 1];
     }
     
     private void FindChildren() 
     {
         RaycastHit hit;
 
-        //Debug.DrawRay(transform.position, Vector3.up, Color.black, 30f); to draw the ray for 30 sec
-        if (Physics.Raycast(transform.position, Vector3.up, out hit))
-            Children[(int)Direction.Up] = hit.transform.gameObject;
+        Debug.DrawRay(transform.position, Vector3.up, Color.black, 30f); //to draw the ray during 30 sec
+        if (Physics.Raycast(transform.position, Vector3.up , out hit))
+            neighbor[(int)Direction.Up] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
-            Children[(int)Direction.Up] = null;
+            neighbor[(int)Direction.Up] = null;
 
         if (Physics.Raycast(transform.position, -Vector3.up, out hit))
-            Children[(int)Direction.Down] = hit.transform.gameObject;
+            neighbor[(int)Direction.Down] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
-            Children[(int)Direction.Down] = null;
+            neighbor[(int)Direction.Down] = null;
 
         if (Physics.Raycast(transform.position, Vector3.left, out hit))
-            Children[(int)Direction.Left] = hit.transform.gameObject;
+            neighbor[(int)Direction.Left] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
-            Children[(int)Direction.Left] = null;
+            neighbor[(int)Direction.Left] = null;
 
         if (Physics.Raycast(transform.position, Vector3.right, out hit))
-            Children[(int)Direction.Right] = hit.transform.gameObject;
+            neighbor[(int)Direction.Right] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
-            Children[(int)Direction.Right] = null;
+            neighbor[(int)Direction.Right] = null;
 
         if (Physics.Raycast(transform.position, Vector3.forward, out hit))
-            Children[(int)Direction.Front] = hit.transform.gameObject;
+            neighbor[(int)Direction.Front] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
-            Children[(int)Direction.Front] = null;
+            neighbor[(int)Direction.Front] = null;
 
         if (Physics.Raycast(transform.position, Vector3.back, out hit))
-            Children[(int)Direction.Behind] = hit.transform.gameObject;
+            neighbor[(int)Direction.Behind] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
-            Children[(int)Direction.Behind] = null;
+            neighbor[(int)Direction.Behind] = null;
+    }
+
+    static void OnPipeChanged(Changed<CubeInteraction> changed) // static because o
+    {
+        Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.isPiped}");
+        bool isPipedCurrent = changed.Behaviour.isPiped;
+
+        //Load the old value of isPiped
+        changed.LoadOld();
+
+        bool isPipedPrevious = changed.Behaviour.isPiped;
+
+        if (isPipedCurrent && !isPipedPrevious)
+            changed.Behaviour.OnPipeRender();
+    }
+
+    void OnPipeRender()
+    {
+        if (!Object.HasInputAuthority && isPiped)
+        {
+            Pipe.SetActive(true);
+            //foreach because recolorablePipe prefab have multiple child so mutiple renderer // Could be changed if new pipes have just one renderer
+            foreach (Renderer renderer in PipeChildsRenderer)
+                foreach (Material mat in renderer.materials)
+                    mat.color = new Color(0, 1, 0, 1f); // Change mat color transparency to 1 when pipe is placed
+        }
+
     }
 }

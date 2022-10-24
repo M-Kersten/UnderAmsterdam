@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4976049845006516314}
   - component: {fileID: 4976049845006516313}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Lines_edges
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 510049773714970556}
   - component: {fileID: 7274171837970384365}
   - component: {fileID: -3057582181327743265}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  _isPiped: 0
   input:
     m_UseReference: 0
     m_Action:
@@ -332,7 +333,7 @@ GameObject:
   - component: {fileID: 7425193639328691582}
   - component: {fileID: 8599119265245088159}
   - component: {fileID: 6459527714583286452}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sphere_Collider_view
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -480,6 +481,10 @@ PrefabInstance:
       value: Line_pipe
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8fd021506635685408b6cec88d325480, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8fd021506635685408b6cec88d325480, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -560,6 +565,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 427d82215ba66034bb6b3fe271be5007, type: 3}
       propertyPath: m_Name
       value: Plus_pipe
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 427d82215ba66034bb6b3fe271be5007, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 427d82215ba66034bb6b3fe271be5007, type: 3}
       propertyPath: m_IsActive
