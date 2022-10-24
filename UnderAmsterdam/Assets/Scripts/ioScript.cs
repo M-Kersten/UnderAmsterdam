@@ -24,22 +24,8 @@ public class ioScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         wallGridNS = new GameObject[2, height, depth];
         wallGridEW = new GameObject[2, height, width];
-
-        /*
-            for (int i = 0; i < height * width; i++)
-            {
-                wallGridN[i] = 0;
-                wallGridS[i] = 0;
-            }
-            for (int i = 0; i < height * depth; i++)
-            {
-                wallGridE[i] = 0;
-                wallGridW[i] = 0;
-            }
-        */
 
         //Adding the two first Input and Output
         addPipe();
@@ -57,10 +43,8 @@ public class ioScript : MonoBehaviour
 
     private void addPipe()
     {
-
         while (!placedPipe)
         {
-
             wallSelec = Random.Range(0, 4);
 
             switch (wallSelec)
