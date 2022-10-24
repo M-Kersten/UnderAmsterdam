@@ -16,7 +16,6 @@ public class CubeInteraction : NetworkBehaviour
     private bool rotationTrigger = false;
     private bool stateDownGrabPinch = false;
     private bool stateDownGrabGrip = false;
-    private bool isSpawned = false;
 
     public InputActionProperty input;
 
@@ -54,8 +53,6 @@ public class CubeInteraction : NetworkBehaviour
         neighbor = new NetworkObject[6];
         FindChildren();
 
-        isSpawned = true;
-
     }
 
     public override void FixedUpdateNetwork()
@@ -92,8 +89,6 @@ public class CubeInteraction : NetworkBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (!isSpawned)
-            return;
         if (!isPiped && other.CompareTag("RightHand"))
         {
             Pipe.SetActive(true);
@@ -109,8 +104,6 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!isSpawned)
-            return;
         CubePreviewRenderer.enabled = false;
         CubeLineRenderer.enabled = false;
 
