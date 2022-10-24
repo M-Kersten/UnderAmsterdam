@@ -239,11 +239,19 @@ MonoBehaviour:
     m_Action:
       m_Name: Input
       m_Type: 0
-      m_ExpectedControlType: 
+      m_ExpectedControlType: Vector2
       m_Id: 1e38710a-6fda-4500-840a-8d0b19489234
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 92240566-1c8a-44a3-8e05-cb28a1bb0915
+        m_Path: <XRController>{LeftHand}/joystick
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Input
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   text: {fileID: 4999331847465455130}
