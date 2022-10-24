@@ -8,14 +8,12 @@ public class ioScript : MonoBehaviour
     public GameObject ioPipe;
     public Transform parent;
 
-    public int width = 22;//x
+    public int width = 16;//x
     public int height = 3;//y
-    public int depth = 20;//z
+    public int depth = 23;//z
 
-    private int[] wallGridN;
-    private int[] wallGridS;
-    private int[] wallGridE;
-    private int[] wallGridW;
+    private GameObject[,,] wallGridNS;
+    private GameObject[,,] wallGridEW;
 
     private bool placedPipe;
 
@@ -27,22 +25,23 @@ public class ioScript : MonoBehaviour
     void Start()
     {
 
-        wallGridN = new int[height * width];
-        wallGridS = new int[height * width];
-        wallGridE = new int[height * depth];
-        wallGridW = new int[height * depth];
+        wallGridNS = new GameObject[2, height, depth];
+        wallGridEW = new GameObject[2, height, width];
 
-        for (int i = 0; i < height * width; i++)
-        {
-            wallGridN[i] = 0;
-            wallGridS[i] = 0;
-        }
-        for (int i = 0; i < height * depth; i++)
-        {
-            wallGridE[i] = 0;
-            wallGridW[i] = 0;
-        }
+        /*
+            for (int i = 0; i < height * width; i++)
+            {
+                wallGridN[i] = 0;
+                wallGridS[i] = 0;
+            }
+            for (int i = 0; i < height * depth; i++)
+            {
+                wallGridE[i] = 0;
+                wallGridW[i] = 0;
+            }
+        */
 
+        //Adding the two first Input and Output
         addPipe();
         addPipe();
     }
@@ -70,11 +69,10 @@ public class ioScript : MonoBehaviour
                     lineSelec = Random.Range(0, height);
                     columnSelec = Random.Range(0, depth);
 
-                    if (wallGridN[lineSelec * columnSelec] == 0)
+                    if (!wallGridNS[0, lineSelec, columnSelec])
                     {
                         placedPipe = true;
-                        wallGridN[lineSelec * columnSelec] = 1;
-                        Instantiate(ioPipe, new Vector3(width / 4f, 0.5f + lineSelec / 2f, columnSelec/2f - (depth + 1) / 4f), Quaternion.identity, parent);
+                        wallGridNS[0, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(width / 4f, lineSelec / 2f, columnSelec / 2f - (depth + 1) / 4f), Quaternion.identity, parent);
                     }
 
                     break;
@@ -82,11 +80,10 @@ public class ioScript : MonoBehaviour
                     lineSelec = Random.Range(0, height);
                     columnSelec = Random.Range(0, depth);
 
-                    if (wallGridS[lineSelec * columnSelec] == 0)
+                    if (!wallGridNS[1, lineSelec, columnSelec])
                     {
                         placedPipe = true;
-                        wallGridS[lineSelec * columnSelec] = 1;
-                        Instantiate(ioPipe, new Vector3(-0.5f-width / 4f, 0.5f + lineSelec / 2f, columnSelec/2f - (depth - 1) / 4f), Quaternion.Euler(0, 180, 0), parent);
+                        wallGridNS[1, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(-0.5f - width / 4f, lineSelec / 2f, columnSelec / 2f - (depth - 1) / 4f), Quaternion.Euler(0, 180, 0), parent);
                     }
 
                     break;
@@ -94,11 +91,10 @@ public class ioScript : MonoBehaviour
                     lineSelec = Random.Range(0, height);
                     columnSelec = Random.Range(0, width);
 
-                    if (wallGridE[lineSelec * columnSelec] == 0)
+                    if (!wallGridEW[0, lineSelec, columnSelec])
                     {
                         placedPipe = true;
-                        wallGridE[lineSelec * columnSelec] = 1;
-                        Instantiate(ioPipe, new Vector3(columnSelec / 2f - width / 4, 0.5f + lineSelec / 2f, -(depth + 1) / 4f), Quaternion.Euler(0, 90, 0), parent);
+                        wallGridEW[0, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(columnSelec / 2f - width / 4, lineSelec / 2f, -(depth + 1) / 4f), Quaternion.Euler(0, 90, 0), parent);
                     }
 
                     break;
@@ -106,16 +102,14 @@ public class ioScript : MonoBehaviour
                     lineSelec = Random.Range(0, height);
                     columnSelec = Random.Range(0, width);
 
-                    if (wallGridW[lineSelec * columnSelec] == 0)
+                    if (!wallGridEW[1, lineSelec, columnSelec])
                     {
                         placedPipe = true;
-                        wallGridW[lineSelec * columnSelec] = 1;
-                        Instantiate(ioPipe, new Vector3(-0.5f + columnSelec / 2f - width / 4, 0.5f + lineSelec/2f, (depth + 1) / 4), Quaternion.Euler(0, -90, 0), parent);
+                        wallGridEW[1, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(-0.5f + columnSelec / 2f - width / 4, lineSelec / 2f, (depth + 1) / 4), Quaternion.Euler(0, -90, 0), parent);
                     }
 
                     break;
             }
-            Debug.Log(lineSelec.ToString() + ":" + columnSelec.ToString());
         }
 
         placedPipe = false;
