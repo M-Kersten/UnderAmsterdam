@@ -92,32 +92,32 @@ public class CubeInteraction : NetworkBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+
         if (!isSpawned)
             return;
+
+        Pipe.SetActive(true);
         if (!isPiped && other.CompareTag("RightHand"))
         {
-            Pipe.SetActive(true);
+
             foreach (MeshRenderer material in PipeChildsRenderer)
                 foreach (Material PipeMat in material.materials)
                     PipeMat.color = new Color(0, 0.8f, 0, 0.2f); // Preview transparency if the pipe isn't placed
+            CubePreviewRenderer.enabled = true;
+            CubeLineRenderer.enabled = true;
+            isHover = true;
         }
-
-        CubePreviewRenderer.enabled = true;
-        CubeLineRenderer.enabled = true;
-        isHover = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!isSpawned)
-            return;
         CubePreviewRenderer.enabled = false;
         CubeLineRenderer.enabled = false;
-
+        isHover = false;
+        if (!isSpawned)
+            return;
         if (!isPiped)
             Pipe.SetActive(false);
-
-        isHover = false;
     }
 
     private void FindChildrenName() 
@@ -141,7 +141,7 @@ public class CubeInteraction : NetworkBehaviour
     {
         RaycastHit hit;
 
-        Debug.DrawRay(transform.position, Vector3.up, Color.black, 30f); //to draw the ray during 30 sec
+        //Debug.DrawRay(transform.position, Vector3.up, Color.black, 30f); //to draw the ray during 30 sec
         if (Physics.Raycast(transform.position, Vector3.up , out hit))
             neighbor[(int)Direction.Up] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
@@ -173,7 +173,7 @@ public class CubeInteraction : NetworkBehaviour
             neighbor[(int)Direction.Behind] = null;
     }
 
-    static void OnPipeChanged(Changed<CubeInteraction> changed) // static because o
+    static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
     {
         Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.isPiped}");
         bool isPipedCurrent = changed.Behaviour.isPiped;
@@ -184,13 +184,14 @@ public class CubeInteraction : NetworkBehaviour
         bool isPipedPrevious = changed.Behaviour.isPiped;
 
         if (isPipedCurrent && !isPipedPrevious)
-            changed.Behaviour.OnPipeRender();
+            changed.Behaviour.OnPipeRender(isPipedCurrent);
     }
 
-    void OnPipeRender()
+    void OnPipeRender(bool isPipedCurrent)
     {
-        if (!Object.HasInputAuthority && isPiped)
+        if (isPipedCurrent)
         {
+            isPiped = true;
             Pipe.SetActive(true);
             //foreach because recolorablePipe prefab have multiple child so mutiple renderer // Could be changed if new pipes have just one renderer
             foreach (Renderer renderer in PipeChildsRenderer)
