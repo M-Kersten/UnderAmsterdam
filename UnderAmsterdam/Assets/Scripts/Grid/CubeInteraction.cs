@@ -12,11 +12,17 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject PipePreview, PipeHolder;
     [SerializeField] private NetworkObject[] neighbors;
 
+    [SerializeField] private int company = 1;
     [SerializeField] private bool TileOccupied;
     [SerializeField] private bool isHover = false;
 
+    public GameObject[] hPipes;
+    public bool[] activatedPipes;
+
     public override void Spawned()
     {
+        activatedPipes = new bool[6];//Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
+
         neighbors = new NetworkObject[6]; //Cubes have 6 faces, thus we will always need 6 neigbors
         GetNeighbors();
     }
@@ -61,6 +67,7 @@ public class CubeInteraction : NetworkBehaviour
         if (!TileOccupied)
         {
             isHover = true;
+            NeighborCheck(true);
             OnRenderPipePreview(true);
         }
     }
@@ -69,24 +76,71 @@ public class CubeInteraction : NetworkBehaviour
     {
         if (!TileOccupied)
         {
-            OnRenderPipePreview(false);
             isHover = false;
+            NeighborCheck(false);
+            OnRenderPipePreview(false);
         }
+    }
+
+    private void NeighborCheck(bool enable)
+    {
+        int pipeCount = 0;
+        int i;
+
+        for (i = 0; i < 6; i++)
+        {
+            //Reset
+            activatedPipes[i] = false;
+
+            //Check all its nearby neighbors
+            if (company == neighbors[i].GetComponent<CubeInteraction>().company)
+            {
+                pipeCount++;
+                activatedPipes[i] = enable;
+                neighbors[i].GetComponent<CubeInteraction>().activatedPipes[i + 1 - 2 * (i % 2)] = enable;
+            }
+
+            //Specific cases
+            if (pipeCount < 2)
+            {
+                for (i = 0; pipeCount == 1 && activatedPipes[i] == false; i++);
+                activatedPipes[i] = true;
+                activatedPipes[i + 1 - 2 * (i % 2)] = true;
+            }
+
+        }
+
     }
 
     public void EnableTile()
     {
         OnRenderPipePreview(false);
+        NeighborCheck(true);
         OnRenderPipe(true);
         isHover = false;
     }
 
     private void OnRenderPipe(bool isActive)
     {
-        PipeHolder.SetActive(isActive);
+        for (int i = 0; i < 6; i++)
+        {
+            if (activatedPipes[i])
+            {
+                if (isActive) GetComponentsInChildren<Renderer>()[i].materials[0].color = new Color(0, 0.8f, 0, 1f);//Make the pipe opaque
+                hPipes[i].SetActive(isActive);
+            }
+        }
     }
+
     private void OnRenderPipePreview(bool isActive)
     {
-        PipePreview.SetActive(isActive);
+        for (int i = 0; i < 6; i++)
+        {
+            if (activatedPipes[i])
+            {
+                if (isActive) GetComponentsInChildren<Renderer>()[i].materials[0].color = new Color(0, 0.8f, 0, 0.2f);//Make the preview transparent
+                hPipes[i].SetActive(isActive);
+            }
+        }
     }
 }
