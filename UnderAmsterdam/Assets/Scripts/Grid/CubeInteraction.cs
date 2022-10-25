@@ -9,7 +9,7 @@ public class CubeInteraction : NetworkBehaviour
 {
     private enum Direction { Up, Down, Left, Right, Front, Behind };
 
-    [SerializeField] private GameObject PipeVisualsHolder;
+    [SerializeField] private GameObject PipePreview, PipeHolder;
     [SerializeField] private NetworkObject[] neighbors;
 
     [SerializeField] private bool TileOccupied;
@@ -83,10 +83,10 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnRenderPipe(bool isActive)
     {
-        PipeVisualsHolder.SetActive(isActive);
+        PipeHolder.SetActive(isActive);
     }
     private void OnRenderPipePreview(bool isActive)
     {
-        PipeVisualsHolder.SetActive(isActive);
+        PipePreview.SetActive(isActive);
     }
 }
