@@ -1,15 +1,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
-using TMPro;
 
 public class HostTimerScript : MonoBehaviour
 {
-    private float currentTime = 6;
-    private bool isGameOngoing;
-
     [Tooltip("How much time is given, in seconds")]
-    [SerializeField] private UnityEvent timerUp;
+    public UnityEvent timerUp;
+
+    private float currentTime = -1;
+    private bool isGameOngoing;
     
     private void Start()
     {
@@ -20,17 +19,11 @@ public class HostTimerScript : MonoBehaviour
         timerUp.AddListener(SwitchGameState);
     }
 
-    //[SerializeField] private TextMeshProUGUI countDownText;
-
     private void FixedUpdate()
     {
         currentTime = Mathf.Max(0, currentTime - Time.deltaTime);
-        TimeSpan timeSpan = TimeSpan.FromSeconds(currentTime);
         
-        //Move this to wrist watch stuff
-        //countDownText.text = timeSpan.Minutes.ToString("00") + ":" + timeSpan.Seconds.ToString("00");
-        
-        if (currentTime <= 0 && !isGameOngoing && timerUp != null)
+        if (currentTime == 0 && isGameOngoing)
         {
             timerUp.Invoke();
         }
