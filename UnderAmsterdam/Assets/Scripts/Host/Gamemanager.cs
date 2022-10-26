@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using UnityEngine.Events;
@@ -9,7 +7,6 @@ public class Gamemanager : MonoBehaviour
     public static Gamemanager Instance;
 
     public UnityEvent GameStart, RoundStart, RoundEnd;
-    private float gameTime;
 
     private void Awake()
     {
@@ -18,9 +15,9 @@ public class Gamemanager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-    private void FixedUpdate()
+    private void Start()
     {
-        gameTime += Time.deltaTime;
+        OnGameStart();
     }
 
     private void OnGameStart()
@@ -30,7 +27,6 @@ public class Gamemanager : MonoBehaviour
     private void OnRoundStart()
     {
         RoundStart.Invoke();
-
     }
     private void OnRoundEnd()
     {
