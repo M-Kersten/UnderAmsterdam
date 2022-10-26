@@ -9,6 +9,8 @@ public class CubeInteraction : NetworkBehaviour
 {
     private enum Direction { Up, Down, Left, Right, Front, Behind };
 
+    private bool showCenterPart = false;
+
     [SerializeField] private GameObject PipePreview, PipeHolder;
     [SerializeField] private NetworkObject[] neighbors;
 
@@ -87,6 +89,8 @@ public class CubeInteraction : NetworkBehaviour
         int pipeCount = 0;
         int i;
 
+        showCenterPart = false;
+
         for (i = 0; i < 6; i++)
         {
             //Reset
@@ -106,7 +110,15 @@ public class CubeInteraction : NetworkBehaviour
                 for (i = 0; pipeCount == 1 && activatedPipes[i] == false; i++);
                 activatedPipes[i] = true;
                 activatedPipes[i + 1 - 2 * (i % 2)] = true;
+
+                return;
             }
+            //Checking if the center part needs to be visible
+            if (activatedPipes[0] && activatedPipes[1] || activatedPipes[2] && activatedPipes[3] || activatedPipes[4] && activatedPipes[5])
+            {
+                showCenterPart = true;
+            }
+            
 
         }
 

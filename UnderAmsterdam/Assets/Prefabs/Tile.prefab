@@ -356,10 +356,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   PipePreview: {fileID: 0}
-  PipeHolder: {fileID: 0}
+  PipeHolder: {fileID: 4673096790985318175}
   neighbors: []
+  company: 1
   TileOccupied: 0
   isHover: 0
+  hPipes:
+  - {fileID: 6835517067670233855}
+  - {fileID: 4260298901083225541}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  activatedPipes: 
+  previewMat: {fileID: 0}
+  viewMat: {fileID: 0}
 --- !u!1 &5370217261044991784
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,6 +706,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 389079159928640659, guid: 0de99b002a439934d969936480d56548, type: 3}
   m_PrefabInstance: {fileID: 3833133400805405676}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4260298901083225541 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1021641756094860841, guid: 0de99b002a439934d969936480d56548, type: 3}
+  m_PrefabInstance: {fileID: 3833133400805405676}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3981861666509002155
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -899,5 +915,10 @@ PrefabInstance:
 --- !u!4 &6167523705198671941 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 389079159928640659, guid: 0de99b002a439934d969936480d56548, type: 3}
+  m_PrefabInstance: {fileID: 5832508195211783382}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6835517067670233855 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1021641756094860841, guid: 0de99b002a439934d969936480d56548, type: 3}
   m_PrefabInstance: {fileID: 5832508195211783382}
   m_PrefabAsset: {fileID: 0}
