@@ -17,11 +17,14 @@ public class CompanyManager : MonoBehaviour
     }
 
     void ResetCompanies() {
-        totalCompanies = new List<int>{};
+        totalCompanies = new List<int>{0,1,2,3,4,5};
     }
 
     void Update() {
         if(Input.GetKeyDown("space"))
             GetCompany();
+
+        if(Input.GetKeyDown("k"))
+            ResetCompanies();
     }
 }
