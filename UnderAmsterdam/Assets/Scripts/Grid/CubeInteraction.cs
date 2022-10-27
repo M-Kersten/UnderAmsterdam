@@ -10,20 +10,25 @@ public class CubeInteraction : NetworkBehaviour
     private enum Direction { Up, Down, Left, Right, Front, Behind };
 
     private bool showCenterPart = false;
+    private GameObject nPipes;
 
-    [SerializeField] private GameObject PipePreview, PipeHolder;
+    [SerializeField] private GameObject[] PipePreview, PipeHolder;
     [SerializeField] private NetworkObject[] neighbors;
 
     [SerializeField] private int company = 1;
-    [SerializeField] private bool TileOccupied;
+    [SerializeField] private bool TileOccupied = false;
     [SerializeField] private bool isHover = false;
 
-    public GameObject[] hPipes;
+    public GameObject hPipes;
+    public GameObject previewPipes;
     public bool[] activatedPipes;
 
     public override void Spawned()
     {
         activatedPipes = new bool[6];//Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
+
+        PipeHolder = hPipes.GetComponentsInChildren<GameObject>();
+        PipePreview = previewPipes.GetComponentsInChildren<GameObject>();
 
         neighbors = new NetworkObject[6]; //Cubes have 6 faces, thus we will always need 6 neigbors
         GetNeighbors();
@@ -113,15 +118,7 @@ public class CubeInteraction : NetworkBehaviour
 
                 return;
             }
-            //Checking if the center part needs to be visible
-            if (activatedPipes[0] && activatedPipes[1] || activatedPipes[2] && activatedPipes[3] || activatedPipes[4] && activatedPipes[5])
-            {
-                showCenterPart = true;
-            }
-            
-
         }
-
     }
 
     public void EnableTile()
@@ -129,6 +126,7 @@ public class CubeInteraction : NetworkBehaviour
         OnRenderPipePreview(false);
         NeighborCheck(true);
         OnRenderPipe(true);
+        TileOccupied = true;
         isHover = false;
     }
 
@@ -138,8 +136,11 @@ public class CubeInteraction : NetworkBehaviour
         {
             if (activatedPipes[i])
             {
-                if (isActive) GetComponentsInChildren<Renderer>()[i].materials[0].color = new Color(0, 0.8f, 0, 1f);//Make the pipe opaque
-                hPipes[i].SetActive(isActive);
+                //Display/undisplay every pipe which is activated
+                PipeHolder[i].SetActive(isActive);
+
+                if (neighbors[i].GetComponent<CubeInteraction>().activatedPipes[i + 1 - 2 * (i % 2)])
+                    neighbors[i].GetComponent<CubeInteraction>().PipeHolder[i + 1 - 2 * (i % 2)].SetActive(isActive);
             }
         }
     }
@@ -150,8 +151,11 @@ public class CubeInteraction : NetworkBehaviour
         {
             if (activatedPipes[i])
             {
-                if (isActive) GetComponentsInChildren<Renderer>()[i].materials[0].color = new Color(0, 0.8f, 0, 0.2f);//Make the preview transparent
-                hPipes[i].SetActive(isActive);
+                //Display/undisplay every pipe which is activated
+                PipePreview[i].SetActive(isActive);
+
+                if (neighbors[i].GetComponent<CubeInteraction>().activatedPipes[i + 1 - 2 * (i % 2)])
+                    neighbors[i].GetComponent<CubeInteraction>().PipePreview[i + 1 - 2 * (i % 2)].SetActive(isActive);
             }
         }
     }
