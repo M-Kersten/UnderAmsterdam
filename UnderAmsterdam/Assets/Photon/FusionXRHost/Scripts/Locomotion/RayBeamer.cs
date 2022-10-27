@@ -43,7 +43,7 @@ namespace Fusion.XR.Host
         public UnityEvent<Collider, Vector3> onRelease = new UnityEvent<Collider, Vector3>();
 
         // Define if the beamer ray is active this frame
-        public bool isRayEnabled = false;
+        public bool isRayEnabled = true;
 
         public enum Status
         {
