@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Fusion;
 using Fusion.XR.Host;
+using Fusion.XR.Host.Rig;
 
 public class CubeInteraction : NetworkBehaviour
 {
@@ -12,13 +13,22 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject PipePreview, PipeHolder;
     [SerializeField] private NetworkObject[] neighbors;
 
-    [SerializeField] private bool TileOccupied;
+
+    [Networked(OnChanged = nameof(OnPipeChanged))] public bool TileOccupied { get; set; }
     [SerializeField] private bool isHover = false;
+    private bool isSpawned = false;
+
 
     public override void Spawned()
     {
+        OnRenderPipePreview(false);
+        OnRenderPipe(false);
+
         neighbors = new NetworkObject[6]; //Cubes have 6 faces, thus we will always need 6 neigbors
         GetNeighbors();
+
+        isSpawned = true;
+        this.GetComponent<NetworkObject>().AssignInputAuthority(this.GetComponent<NetworkObject>().Runner.LocalPlayer);
     }
 
     private void GetNeighbors()
@@ -58,16 +68,21 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!TileOccupied)
+        if (isSpawned && !TileOccupied)
         {
             isHover = true;
             OnRenderPipePreview(true);
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+
+    }
+
     private void OnTriggerExit(Collider other)
     {
-        if (!TileOccupied)
+        if (isSpawned && !TileOccupied)
         {
             OnRenderPipePreview(false);
             isHover = false;
@@ -76,9 +91,12 @@ public class CubeInteraction : NetworkBehaviour
 
     public void EnableTile()
     {
+        if (TileOccupied)
+            return;
+
         OnRenderPipePreview(false);
         OnRenderPipe(true);
-        isHover = false;
+        TileOccupied = true;
     }
 
     private void OnRenderPipe(bool isActive)
@@ -88,5 +106,25 @@ public class CubeInteraction : NetworkBehaviour
     private void OnRenderPipePreview(bool isActive)
     {
         PipePreview.SetActive(isActive);
+    }
+
+    static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
+    {
+        Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.TileOccupied}");
+        bool isPipedCurrent = changed.Behaviour.TileOccupied;
+
+        //Load the old value of isPiped
+        changed.LoadOld();
+
+        bool isPipedPrevious = changed.Behaviour.TileOccupied;
+
+        if (isPipedCurrent && !isPipedPrevious)
+            changed.Behaviour.OnPipeRender(isPipedCurrent);
+    }
+
+    void OnPipeRender(bool isPipedCurrent)
+    {
+        if (isPipedCurrent)
+            EnableTile();
     }
 }

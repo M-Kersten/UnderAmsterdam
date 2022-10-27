@@ -194,6 +194,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 511119904, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 2549000074096746599}
+    - target: {fileID: 511119904, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+      propertyPath: networkTransform
+      value: 
+      objectReference: {fileID: 2549000074096746597}
+    - target: {fileID: 623695491, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 2549000074207914337}
+    - target: {fileID: 623695491, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+      propertyPath: networkTransform
+      value: 
+      objectReference: {fileID: 2549000074207914367}
     - target: {fileID: 805470276, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -232,12 +248,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 82848160101703958, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: SimulationBehaviours.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 82848160101703958, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: NetworkedBehaviours.Array.data[2]
       value: 
-      objectReference: {fileID: 8538870965581214140}
+      objectReference: {fileID: 4489179892628266730}
     - target: {fileID: 82848160101703958, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: NetworkedBehaviours.Array.data[3]
       value: 
@@ -271,37 +287,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2484170574958770853}
     - target: {fileID: 82848160101703958, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
-      propertyPath: NetworkedBehaviours.Array.data[11]
-      value: 
-      objectReference: {fileID: 2484170574958770853}
-    - target: {fileID: 82848160101703958, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: SimulationBehaviours.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7598551808448676962}
     - target: {fileID: 82848160101703958, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: NetworkGuid.RawGuidValue.Array.data[0]
-      value: -1966639389249870878
+      value: 8397752902051603765
       objectReference: {fileID: 0}
     - target: {fileID: 82848160101703958, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
-      value: -5221661155778224790
+      value: 4011161474079105336
       objectReference: {fileID: 0}
     - target: {fileID: 82848160101703959, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: m_Name
-      value: NetworkRigWithHandsandPhotonDummy Variant
+      value: NetworkRigDummy
       objectReference: {fileID: 0}
-    - target: {fileID: 82848160101704041, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
-      propertyPath: hardwareRig
-      value: 
-      objectReference: {fileID: 8439811097757408639, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-    - target: {fileID: 82848160101704041, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
-      propertyPath: leftGrabber
-      value: 
-      objectReference: {fileID: 2484170574570388998}
-    - target: {fileID: 82848160101704041, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
-      propertyPath: rightGrabber
-      value: 
-      objectReference: {fileID: 2484170574958770853}
     - target: {fileID: 82848160101704043, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -347,7 +347,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 0}
+    - {fileID: 2572982792974567797, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
 --- !u!4 &227346234831065323 stripped
 Transform:
@@ -386,7 +386,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 82848160101703959, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
   m_PrefabInstance: {fileID: 2484170574470442022}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8471434046642212491
+--- !u!114 &847680568548648596
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -404,7 +404,7 @@ MonoBehaviour:
       m_Name: Input
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: cc130065-80bb-4f9b-82a0-697b7cb3f6f7
+      m_Id: e61ade32-7a2f-4cfe-b823-3cf68c3bb228
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -416,7 +416,7 @@ MonoBehaviour:
   isRightTriggerPressed: 0
   isLeftTriggerPressed: 0
   isAnyGripPressed: 0
---- !u!114 &8538870965581214140
+--- !u!114 &4489179892628266730
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -429,6 +429,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+--- !u!114 &7598551808448676962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549000073306557745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31062c5fa74ee5d4681b305fb13dcd5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInputHandler: {fileID: 847680568548648596}
 --- !u!114 &2549000073306557775 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 82848160101704041, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
@@ -598,7 +611,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5460176, guid: e6ba3498ffa1e534b91a07264266e6b8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e6ba3498ffa1e534b91a07264266e6b8, type: 3}
 --- !u!1 &5186456720642956095 stripped
 GameObject:
