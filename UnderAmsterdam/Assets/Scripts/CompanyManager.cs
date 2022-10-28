@@ -7,17 +7,17 @@ using Fusion;
 public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
-    private List<int> totalCompanies = new List<int>{};
+    private List<int> availableCompanies = new List<int>{};
 
     int GetCompany() {
         int myCompany;
         myCompany = Random.Range(0, 6);
-        totalCompanies.Remove(myCompany);
+        availableCompanies.Remove(myCompany);
     return myCompany;
     }
 
     void ResetCompanies() {
-        totalCompanies = new List<int>{0,1,2,3,4,5};
+        availableCompanies = new List<int>{0,1,2,3,4,5};
     }
 
     void Update() {
