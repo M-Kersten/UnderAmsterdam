@@ -14,7 +14,7 @@ public class PlayerInputHandler : MonoBehaviour
     public InputActionProperty gripActionR;
 
     public NetworkRig networkRig;
-    public RigPart side;
+    private RigPart side;
 
     [SerializeField]
     private bool isAnyTriggerPressed;
@@ -33,7 +33,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Awake()
     {
-        networkRig = GetComponent<NetworkRig>();
+        //networkRig = GetComponent<NetworkRig>();
 
         side = RigPart.LeftController;
         triggerActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
@@ -47,10 +47,10 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Update()
     {
-        /********************* Trigger *********************/
+        if (networkRig.isActiveAndEnabled && !networkRig.IsLocalNetworkRig)
+            this.enabled = false;
 
-        if (!networkRig.IsLocalNetworkRig)
-            return;
+        /********************* Trigger *********************/
 
         if (triggerActionL.action.ReadValue<float>() >= 0.9f)
             isLeftTriggerPressed = true;
@@ -85,13 +85,17 @@ public class PlayerInputHandler : MonoBehaviour
             isAnyGripPressed = false;
     }
 
-    public PlayerInputData GetPlayerInput()
+    public PlayerInputData GetPlayerInput() //return a struct with all local inputs when called
     {
         PlayerInputData playerInputData = new PlayerInputData();
 
         playerInputData.anyTriggerPressed = (NetworkBool) isAnyTriggerPressed;
         playerInputData.rightTriggerPressed = (NetworkBool) isRightTriggerPressed;
         playerInputData.leftTriggerPressed = (NetworkBool) isLeftTriggerPressed;
+
+        playerInputData.anyGripPressed = (NetworkBool)isAnyGripPressed;
+        playerInputData.rightGripPressed = (NetworkBool)isRightGripPressed;
+        playerInputData.leftGripPressed = (NetworkBool)isLeftGripPressed;
 
         return playerInputData;
     }

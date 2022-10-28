@@ -15,9 +15,13 @@ public class CubeInteraction : NetworkBehaviour
 
 
     [Networked(OnChanged = nameof(OnPipeChanged))] public bool TileOccupied { get; set; }
+
+
     [SerializeField] private bool isHover = false;
     private bool isSpawned = false;
 
+    // TEST PART //
+    private NetworkRunner runner;
 
     public override void Spawned()
     {
@@ -28,7 +32,8 @@ public class CubeInteraction : NetworkBehaviour
         GetNeighbors();
 
         isSpawned = true;
-        this.GetComponent<NetworkObject>().AssignInputAuthority(this.GetComponent<NetworkObject>().Runner.LocalPlayer);
+        runner = this.GetComponent<NetworkObject>().Runner;
+        this.GetComponent<NetworkObject>().AssignInputAuthority(runner.LocalPlayer);
     }
 
     private void GetNeighbors()
@@ -118,7 +123,7 @@ public class CubeInteraction : NetworkBehaviour
 
         bool isPipedPrevious = changed.Behaviour.TileOccupied;
 
-        if (isPipedCurrent && !isPipedPrevious)
+        //if (isPipedCurrent && !isPipedPrevious)
             changed.Behaviour.OnPipeRender(isPipedCurrent);
     }
 

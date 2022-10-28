@@ -8,27 +8,40 @@ using Fusion.XR.Host.Rig;
 using Fusion.Sockets;
 using System;
 
-public class PlayerInput : SimulationBehaviour, INetworkRunnerCallbacks
+public class PlayerInput : MonoBehaviour, INetworkRunnerCallbacks
 {
     public PlayerInputHandler playerInputHandler;
+    public NetworkRig rig;
 
-    private void Awake()
+    private void Start()
     {
-        var myNetworkRunner = FindObjectOfType<NetworkRunner>();
-        myNetworkRunner.RemoveCallbacks(this);
+        NetworkRunner myNetworkRunner = FindObjectOfType<NetworkRunner>();
+        myNetworkRunner.AddCallbacks(this);
     }
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        if (!playerInputHandler && NetworkPlayer.LocalPlayer)
+        if (rig.isActiveAndEnabled && !rig.IsLocalNetworkRig)
+        {
+            this.enabled = false;
+            return;
+        }
+
+        if (playerInputHandler == null && NetworkPlayer.LocalPlayer != null)
             playerInputHandler = NetworkPlayer.LocalPlayer.GetComponent<PlayerInputHandler>();
+
         if (playerInputHandler != null)
             input.Set(playerInputHandler.GetPlayerInput());
-            //Debug.Log("Set" + playerInputHandler.GetPlayerInput().anyTriggerPressed);
+/*            {
+                Debug.Log("Set" + playerInputHandler.GetPlayerInput().anyTriggerPressed);
+            }
+            else
+                Debug.Log("Not set" + playerInputHandler.GetPlayerInput().anyTriggerPressed);*/
+
     }
 
     public void OnEnable()
     {
-        var myNetworkRunner = FindObjectOfType<NetworkRunner>();
+        NetworkRunner myNetworkRunner = FindObjectOfType<NetworkRunner>();
         myNetworkRunner.AddCallbacks(this);
     }
 

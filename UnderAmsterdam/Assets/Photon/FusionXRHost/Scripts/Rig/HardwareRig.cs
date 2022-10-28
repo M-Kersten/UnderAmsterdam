@@ -96,7 +96,7 @@ namespace Fusion.XR.Host.Rig
 
         // Prepare the input, that will be read by NetworkRig in the FixedUpdateNetwork
         public void OnInput(NetworkRunner runner, NetworkInput input) {
-            RigInput rigInput = new RigInput();
+/*            RigInput rigInput = new RigInput();
             rigInput.playAreaPosition = transform.position; 
             rigInput.playAreaRotation = transform.rotation;
             rigInput.leftHandPosition = leftHand.transform.position;
@@ -111,7 +111,7 @@ namespace Fusion.XR.Host.Rig
             rigInput.leftGrabInfo = leftHand.grabber.GrabInfo;
             rigInput.rightGrabInfo = rightHand.grabber.GrabInfo;
 
-            input.Set(rigInput);
+            input.Set(rigInput);*/
         }
 
         #endregion

@@ -10,6 +10,6 @@ public struct PlayerInputData : INetworkInput
     public NetworkBool rightTriggerPressed;
     public NetworkBool leftTriggerPressed;
     public NetworkBool anyGripPressed;
-    public NetworkBool rightgripPressed;
-    public NetworkBool leftgripPressed;
+    public NetworkBool rightGripPressed;
+    public NetworkBool leftGripPressed;
 }

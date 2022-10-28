@@ -7,18 +7,21 @@ using Fusion.XR.Host.Rig;
 public class HandTileInteraction : NetworkBehaviour
 {
     public RigPart side;
+    public NetworkRig rig;
 
     [SerializeField]
     private bool TriggerPressed = false;
 
     public override void Spawned()
     {
-        this.GetComponent<NetworkObject>().AssignInputAuthority(this.Runner.LocalPlayer);
-
     }
 
     public override void FixedUpdateNetwork()
     {
+        if (rig.isActiveAndEnabled && !rig.IsLocalNetworkRig)
+            this.enabled = false;
+
+        base.FixedUpdateNetwork();
         if (GetInput<PlayerInputData>(out PlayerInputData playerInputData))
         {
             //Debug.Log("Get");
@@ -39,4 +42,5 @@ public class HandTileInteraction : NetworkBehaviour
         }
 
     }
+
 }
