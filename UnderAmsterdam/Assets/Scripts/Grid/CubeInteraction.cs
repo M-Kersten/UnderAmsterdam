@@ -14,31 +14,33 @@ public class CubeInteraction : NetworkBehaviour
 
     [SerializeField] private int company = 1;
     [SerializeField] private bool TileOccupied = false;
-    [SerializeField] private bool isHover = false;
 
-    public GameObject lineEdges;
-    public GameObject connector;
-    public GameObject connectorPreview;
-    public GameObject[] hPipes;
-    public GameObject[] previewPipes;
-    public bool[] activatedPipes;
+    [SerializeField] private GameObject lineEdges;
+    [SerializeField] private GameObject connector;
+    [SerializeField] private GameObject connectorPreview;
+    
+    private GameObject[] pipeParts;
+    private GameObject[] previewPipeParts;
+    private bool[] activatedPipes;
+
+    private int amountFaces = 6;
 
     public override void Spawned()
     {
-        hPipes = new GameObject[neighbors.Length];
-        previewPipes = new GameObject[neighbors.Length];
+        neighbors = new NetworkObject[amountFaces]; //Cubes have 6 faces, thus we will always need 6 neigbors
+        GetNeighbors();
+
+        pipeParts = new GameObject[neighbors.Length];
+        previewPipeParts = new GameObject[neighbors.Length];
         
         int i = 0;
         foreach (Transform pipe in PipeHolder)
-            hPipes[i++] = pipe.GetComponent<GameObject>();
+            pipeParts[i++] = pipe.gameObject;
         i = 0;
-        foreach (Transform pipe in PipePreview)
-            previewPipes[i++] = pipe.GetComponent<GameObject>();
+        foreach (Transform pipePreview in PipePreview)
+            previewPipeParts[i++] = pipePreview.gameObject;
 
-        activatedPipes = new bool[neighbors.Length];//Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
-
-        neighbors = new NetworkObject[neighbors.Length]; //Cubes have 6 faces, thus we will always need 6 neigbors
-        GetNeighbors();
+        activatedPipes = new bool[neighbors.Length]; //Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
     }
 
     private void GetNeighbors()
@@ -80,7 +82,6 @@ public class CubeInteraction : NetworkBehaviour
     {
         if (!TileOccupied)
         {
-            isHover = true;
             NeighborCheck(true);
             OnRenderPipePreview(true);
         }
@@ -90,7 +91,6 @@ public class CubeInteraction : NetworkBehaviour
     {
         if (!TileOccupied)
         {
-            isHover = false;
             NeighborCheck(false);
             OnRenderPipePreview(false);
         }
@@ -106,14 +106,14 @@ public class CubeInteraction : NetworkBehaviour
             //Reset
             activatedPipes[i] = false;
 
-            CubeInteraction cube = neighbors[i].GetComponent<CubeInteraction>();
+            CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
 
             //Check all its nearby neighbors
-            if (company == cube.company)
+            if (company == neighborTile.company)
             {
                 pipeCount++;
                 activatedPipes[i] = enable;
-                cube.activatedPipes[i + 1 - 2 * (i % 2)] = enable;
+                neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
             }
 
             //Specific cases
@@ -121,7 +121,7 @@ public class CubeInteraction : NetworkBehaviour
             {
                 for (i = 0; pipeCount == 1 && activatedPipes[i] == false; i++);
                 activatedPipes[i] = true;
-                activatedPipes[i + 1 - 2 * (i % 2)] = true;
+                activatedPipes[GetOppositeFace(i)] = true;
 
                 return;
             }
@@ -132,24 +132,23 @@ public class CubeInteraction : NetworkBehaviour
     {
         OnRenderPipePreview(false);
         NeighborCheck(true);
-        OnRenderPipe(true);
+        OnRenderPipePart(true);
         TileOccupied = true;
-        isHover = false;
     }
 
-    private void OnRenderPipe(bool isActive)
+    private void OnRenderPipePart(bool isActive)
     {
         for (int i = 0; i < neighbors.Length; i++)
         {
             if (activatedPipes[i])
             {
                 //Display/undisplay every pipe which is activated
-                hPipes[i].SetActive(isActive);
+                pipeParts[i].SetActive(isActive);
 
-                CubeInteraction cube = neighbors[i].GetComponent<CubeInteraction>();
+                CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
 
-                if (cube.activatedPipes[i + 1 - 2 * (i % 2)])
-                    cube.hPipes[i + 1 - 2 * (i % 2)].SetActive(isActive);
+                if (neighborTile.activatedPipes[GetOppositeFace(i)])
+                    neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
             }
         }
         connector.SetActive(isActive);
@@ -162,15 +161,20 @@ public class CubeInteraction : NetworkBehaviour
             if (activatedPipes[i])
             {
                 //Display/undisplay every pipe which is activated
-                previewPipes[i].SetActive(isActive);
+                previewPipeParts[i].SetActive(isActive);
 
-                CubeInteraction cube = neighbors[i].GetComponent<CubeInteraction>();
+                CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
 
-                if (cube.activatedPipes[i + 1 - 2 * (i % 2)])
-                    cube.previewPipes[i + 1 - 2 * (i % 2)].SetActive(isActive);
+                if (neighborTile.activatedPipes[GetOppositeFace(i)])
+                    neighborTile.previewPipeParts[GetOppositeFace(i)].SetActive(isActive);
             }
         }
         connectorPreview.SetActive(isActive);
         lineEdges.SetActive(isActive);
+    }
+
+    private int GetOppositeFace(int i)
+    {
+        return i + 1 - 2 * (i % 2);
     }
 }
