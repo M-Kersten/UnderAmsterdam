@@ -14,10 +14,9 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private NetworkObject[] neighbors;
 
 
-    [Networked(OnChanged = nameof(OnPipeChanged))] public bool TileOccupied { get; set; }
+    [Networked(OnChanged = nameof(OnPipeChanged))] 
+    public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
 
-
-    [SerializeField] private bool isHover = false;
     private bool isSpawned = false;
 
     // TEST PART //
@@ -74,24 +73,13 @@ public class CubeInteraction : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (isSpawned && !TileOccupied)
-        {
-            isHover = true;
             OnRenderPipePreview(true);
-        }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (isSpawned && !TileOccupied)
-        {
             OnRenderPipePreview(false);
-            isHover = false;
-        }
     }
 
     public void EnableTile()

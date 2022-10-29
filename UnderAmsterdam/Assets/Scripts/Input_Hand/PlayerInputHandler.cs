@@ -6,6 +6,7 @@ using Fusion;
 using Fusion.XR.Host;
 using Fusion.XR.Host.Rig;
 
+
 public class PlayerInputHandler : MonoBehaviour
 {
     public InputActionProperty triggerActionL;
@@ -13,7 +14,6 @@ public class PlayerInputHandler : MonoBehaviour
     public InputActionProperty gripActionL;
     public InputActionProperty gripActionR;
 
-    public NetworkRig networkRig;
     private RigPart side;
 
     [SerializeField]
@@ -26,15 +26,13 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField]
     private bool isAnyGripPressed;
     [SerializeField]
-    private bool isRightGripPressed;    
+    private bool isRightGripPressed;
     [SerializeField]
     private bool isLeftGripPressed;
 
 
     private void Awake()
     {
-        //networkRig = GetComponent<NetworkRig>();
-
         side = RigPart.LeftController;
         triggerActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
         gripActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "grip" });
@@ -42,56 +40,31 @@ public class PlayerInputHandler : MonoBehaviour
         side = RigPart.RightController;
         triggerActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
         gripActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "grip" });
-
     }
 
     private void Update()
     {
-        if (networkRig.isActiveAndEnabled && !networkRig.IsLocalNetworkRig)
-            this.enabled = false;
-
         /********************* Trigger *********************/
 
-        if (triggerActionL.action.ReadValue<float>() >= 0.9f)
-            isLeftTriggerPressed = true;
-        else
-            isLeftTriggerPressed = false;
-        
-        if (triggerActionR.action.ReadValue<float>() >= 0.9f)
-            isRightTriggerPressed = true;
-        else
-            isRightTriggerPressed = false;
+        isLeftTriggerPressed = (triggerActionL.action.ReadValue<float>() >= 0.9f);
+        isRightTriggerPressed = (triggerActionR.action.ReadValue<float>() >= 0.9f);
 
-        if (isLeftTriggerPressed || isRightTriggerPressed)
-            isAnyTriggerPressed = true;
-        else
-            isAnyTriggerPressed = false;
+        isAnyTriggerPressed = (isLeftTriggerPressed || isRightTriggerPressed);
 
         /********************** Grip **********************/
 
-        if (gripActionL.action.ReadValue<float>() >= 0.9f)
-            isLeftGripPressed = true;
-        else
-            isLeftGripPressed = false;
-        
-        if (gripActionR.action.ReadValue<float>() >= 0.9f)
-            isRightGripPressed = true;
-        else
-            isRightGripPressed = false;
-        
-        if (isLeftGripPressed || isRightGripPressed)
-            isAnyGripPressed = true;
-        else
-            isAnyGripPressed = false;
+        isLeftGripPressed = (gripActionL.action.ReadValue<float>() >= 0.9f);
+        isRightGripPressed = (gripActionR.action.ReadValue<float>() >= 0.9f);
+
+        isAnyGripPressed = (isLeftGripPressed || isRightGripPressed);
+
     }
 
-    public PlayerInputData GetPlayerInput() //return a struct with all local inputs when called
+    public RigInput GetPlayerInput(RigInput playerInputData) //return a struct with all local inputs when called
     {
-        PlayerInputData playerInputData = new PlayerInputData();
-
-        playerInputData.anyTriggerPressed = (NetworkBool) isAnyTriggerPressed;
-        playerInputData.rightTriggerPressed = (NetworkBool) isRightTriggerPressed;
-        playerInputData.leftTriggerPressed = (NetworkBool) isLeftTriggerPressed;
+        playerInputData.anyTriggerPressed = (NetworkBool)isAnyTriggerPressed;
+        playerInputData.rightTriggerPressed = (NetworkBool)isRightTriggerPressed;
+        playerInputData.leftTriggerPressed = (NetworkBool)isLeftTriggerPressed;
 
         playerInputData.anyGripPressed = (NetworkBool)isAnyGripPressed;
         playerInputData.rightGripPressed = (NetworkBool)isRightGripPressed;

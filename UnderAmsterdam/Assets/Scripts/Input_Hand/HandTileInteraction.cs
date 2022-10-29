@@ -11,20 +11,12 @@ public class HandTileInteraction : NetworkBehaviour
 
     [SerializeField]
     private bool TriggerPressed = false;
-
-    public override void Spawned()
-    {
-    }
-
     public override void FixedUpdateNetwork()
     {
-        if (rig.isActiveAndEnabled && !rig.IsLocalNetworkRig)
-            this.enabled = false;
-
         base.FixedUpdateNetwork();
-        if (GetInput<PlayerInputData>(out PlayerInputData playerInputData))
+
+        if (GetInput<RigInput>(out var playerInputData)) //Get the input from the players 
         {
-            //Debug.Log("Get");
             if(side == RigPart.RightController)
                 TriggerPressed = playerInputData.rightTriggerPressed;
             
