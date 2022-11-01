@@ -18,16 +18,7 @@ public class PlayerData : NetworkBehaviour
         playerId = player.PlayerId;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown("space"))
-        {
-            GetComponent<TestRPC>().RPC_SendMessage("Server test");
-        }
-    }
-
-
-    [Rpc]
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     public void RPC_ReceiveCompany([RpcTarget] PlayerRef targetPlayer, string givenCompany, RpcInfo info = default)
     {
         Debug.Log("Received Company " + givenCompany + " From " + info.Source);
