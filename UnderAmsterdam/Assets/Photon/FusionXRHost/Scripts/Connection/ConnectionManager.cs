@@ -88,7 +88,7 @@ namespace Fusion.XR.Host
 
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
-                compManage.AssignCompany(networkPlayerObject);
+                compManage.RpcTest(player, networkPlayerObject);
 
             }
         }

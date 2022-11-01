@@ -26,10 +26,9 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
-     public void AssignCompany(NetworkObject player) {
-        // Get players PlayerData and assign them a company
-        player.gameObject.GetComponent<PlayerData>().RPC_SendMessage();
+    [Rpc] 
+    public void RpcTest([RpcTarget] PlayerRef targetPlayer, NetworkObject player) {
+        player.gameObject.GetComponent<PlayerData>().ReceiveCompany(GetCompany());
     }
 
     void ResetCompanies() {
