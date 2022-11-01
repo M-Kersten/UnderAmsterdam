@@ -7,14 +7,9 @@ using Fusion;
 public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
-    private List<string> availableCompanies { get; set; }
+    private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
     private List<PlayerRef> test1 = new List<PlayerRef>();
     private List<NetworkObject> test2 = new List<NetworkObject>();
-
-    void Awake()
-    {
-        availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
-    }
 
     string GetCompany() {
         if (availableCompanies.Count >= 0) {
@@ -50,7 +45,7 @@ public class CompanyManager : MonoBehaviour
 
     public void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
         string sentCompany = GetCompany();
-
+        // Grab the playerdata of the player we want to send the company to
         player.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(targetPlayer, sentCompany);
         Debug.Log("Company " + sentCompany + " Sent to " + targetPlayer.PlayerId);
     }
