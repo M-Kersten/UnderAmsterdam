@@ -26,14 +26,11 @@ public class PlayerData : NetworkBehaviour
         }
     }
 
-    public void ReceiveCompany(PlayerRef targetPlayer, string givenCompany)
-    {
-        RPC_SendMessage(targetPlayer, givenCompany);
-    }
 
     [Rpc]
-    private void RPC_SendMessage([RpcTarget] PlayerRef targetPlayer, string givenCompany, RpcInfo info = default)
+    public void RPC_ReceiveCompany([RpcTarget] PlayerRef targetPlayer, string givenCompany, RpcInfo info = default)
     {
+        Debug.Log("Received Company " + givenCompany + " From " + info.Source);
             company = givenCompany;
     }
 }
