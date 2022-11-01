@@ -16,7 +16,9 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview;
 
     [SerializeField] private int company = 1;
-    [SerializeField] private bool TileOccupied = false;
+
+    [Networked(OnChanged = nameof(OnPipeChanged))]
+    public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
 
     [SerializeField] private GameObject[] pipeParts;
     [SerializeField] private GameObject[] previewPipeParts;
@@ -104,11 +106,6 @@ public class CubeInteraction : NetworkBehaviour
 
     private void UpdateNeighborData(bool enable)
     {
-        //int pipeCount = 0;
-        
-        // if all neighbors are no active then no active here
-        // 2: if there is neigbor active turn previews on
-
         for (int i = 0; i < neighbors.Length; i++)
         {
             if (neighbors[i] != null) {
@@ -187,10 +184,7 @@ public class CubeInteraction : NetworkBehaviour
         //Load the old value of isPiped
         changed.LoadOld();
 
-        bool isPipedPrevious = changed.Behaviour.TileOccupied;
-
-        //if (isPipedCurrent && !isPipedPrevious)
-            changed.Behaviour.OnPipeRender(isPipedCurrent);
+        changed.Behaviour.OnPipeRender(isPipedCurrent);
     }
 
     void OnPipeRender(bool isPipedCurrent)
