@@ -321,7 +321,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b188f40bf7be24d8dd2cc8e570944a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  company: 
+  _interpolationDataSource: 0
+  _company: 
 --- !u!114 &82848160101704040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -390,6 +391,7 @@ MonoBehaviour:
     RawGuidValue: 477f02bca0b59924aa984e240cb28cc4
   NestedObjects: []
   NetworkedBehaviours:
+  - {fileID: 5178302573922089146}
   - {fileID: 82848160101704040}
   - {fileID: 82848160101704041}
   - {fileID: 82848159007237602}

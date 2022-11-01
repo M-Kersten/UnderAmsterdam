@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class PlayerData : MonoBehaviour
+public class PlayerData : NetworkBehaviour
 {
     PlayerRef player;
     int playerId;
 
-    [Networked] public string company { get; set; }
+    public string company { get; set; }
 
     string prevCompany;
     int points;
@@ -20,10 +20,11 @@ public class PlayerData : MonoBehaviour
 
     public void ReceivePlayerCompany(string givenCompany)
     {
-        RPC_SetCompany(givenCompany);
+        this.company = givenCompany;
+        //RPC_SetCompany(givenCompany);
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
     void RPC_SetCompany(string givenCompany)
     {
         this.company = givenCompany;
