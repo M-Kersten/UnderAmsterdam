@@ -28,12 +28,9 @@ public class TestRPC : NetworkBehaviour
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     public void RPC_SendMessage(string message, RpcInfo info = default)
     {
-        if (_messages == null)
-            _messages = FindObjectOfType<Text>();
         if (info.IsInvokeLocal)
-            message = $"You said: {message}\n";
+           Debug.Log($"You said: {message}\n");
         else
-            message = $"Some other player said: {message}\n";
-        _messages.text += message;
+            Debug.Log($"Some other player said: {message}\n");
     }
 }
