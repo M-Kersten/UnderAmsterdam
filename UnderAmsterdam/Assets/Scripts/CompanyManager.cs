@@ -28,7 +28,7 @@ public class CompanyManager : MonoBehaviour
 
     [Rpc] 
     public void RpcTest([RpcTarget] PlayerRef targetPlayer, NetworkObject player) {
-        player.gameObject.GetComponent<PlayerData>().ReceiveCompany(GetCompany());
+        player.gameObject.GetComponent<PlayerData>().RPC_SetCompany(GetCompany());
     }
 
     void ResetCompanies() {

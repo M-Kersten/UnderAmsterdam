@@ -25,7 +25,7 @@ public class PlayerData : NetworkBehaviour
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    void RPC_SetCompany(string givenCompany)
+    public void RPC_SetCompany(string givenCompany)
     {
         this.company = givenCompany;
     }
