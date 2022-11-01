@@ -97,6 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   networkTransform: {fileID: 0}
+  hand: {fileID: 0}
 --- !u!1 &82848159007237601
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
   networkTransform: {fileID: 0}
+  hand: {fileID: 0}
 --- !u!1 &82848160101703959
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,6 +279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 82848160101704043}
+  - component: {fileID: 5178302573922089146}
   - component: {fileID: 82848160101704040}
   - component: {fileID: 82848160101704041}
   - component: {fileID: 82848160101703958}
@@ -306,6 +309,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5178302573922089146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82848160101703959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35b188f40bf7be24d8dd2cc8e570944a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  company: 
 --- !u!114 &82848160101704040
 MonoBehaviour:
   m_ObjectHideFlags: 0

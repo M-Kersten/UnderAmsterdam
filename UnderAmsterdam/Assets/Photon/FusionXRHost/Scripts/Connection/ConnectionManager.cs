@@ -29,6 +29,8 @@ namespace Fusion.XR.Host
         public NetworkRunner runner;
         public INetworkSceneManager sceneManager;
 
+        private CompanyManager compManage;
+
         [Header("Local user spawner")]
         public NetworkObject userPrefab;
 
@@ -40,6 +42,7 @@ namespace Fusion.XR.Host
 
         private void Awake()
         {
+            compManage = GetComponent<CompanyManager>();
             // Check if a runner exist on the same game object
             if (runner == null) runner = GetComponent<NetworkRunner>();
 
@@ -85,7 +88,8 @@ namespace Fusion.XR.Host
 
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
-                Debug.Log(_spawnedUsers);
+                compManage.RPC_AssignCompany(networkPlayerObject);
+
             }
         }
 

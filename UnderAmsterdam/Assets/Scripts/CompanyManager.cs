@@ -18,22 +18,15 @@ public class CompanyManager : MonoBehaviour
             Debug.Log(randomCompany + " " + myCompany + " " + availableCompanies.Count);
             return myCompany;
         }
-        return null;
+        return "Empty";
     }
 
-    void AssignTeam(PlayerRef player) {
-       // player.GetComponent<PlayerData>().team = GetCompany();
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_AssignCompany(NetworkObject player) {
+        player.gameObject.GetComponent<PlayerData>().company = GetCompany();
     }
 
     void ResetCompanies() {
         availableCompanies = new List<string>{"water","gas","data","sewage","power"};
-    }
-
-    void Update() {
-        if(Input.GetKeyDown("space"))
-            GetCompany();
-
-        if(Input.GetKeyDown("k"))
-            ResetCompanies();
     }
 }
