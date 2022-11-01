@@ -255,22 +255,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: RightHand
       objectReference: {fileID: 0}
-    - target: {fileID: 5527149367302857182, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 5527149367302857182, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7029571672188088446, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    - target: {fileID: 7029571672188088446, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 8439811097757408637, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -365,27 +349,6 @@ MonoBehaviour:
   m_Script: {fileID: -1199893898, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &650798179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 650798173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93a11270fb767804a9d04cd4f50acb4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GameStart:
-    m_PersistentCalls:
-      m_Calls: []
-  RoundStart:
-    m_PersistentCalls:
-      m_Calls: []
-  RoundEnd:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &650798180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -858,7 +821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6451555088811095712, guid: 908624305019d3c47b4f0caaad3fa0c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.49
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8680109305133941378, guid: 908624305019d3c47b4f0caaad3fa0c4, type: 3}
       propertyPath: Flags
