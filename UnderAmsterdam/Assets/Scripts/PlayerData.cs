@@ -7,7 +7,9 @@ public class PlayerData : MonoBehaviour
 {
     PlayerRef player;
     int playerId;
-    public string company;
+
+    [Networked] public string company { get; set; }
+
     string prevCompany;
     int points;
 

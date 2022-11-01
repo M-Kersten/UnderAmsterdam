@@ -7,7 +7,12 @@ using Fusion;
 public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
-    private List<string> availableCompanies = new List<string>{"water","gas","data","sewage","power"};
+    private List<string> availableCompanies;
+
+    void Awake()
+    {
+        availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
+    }
 
     string GetCompany() {
         if (availableCompanies.Count >= 0) {
