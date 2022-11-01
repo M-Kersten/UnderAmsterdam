@@ -8,8 +8,8 @@ public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
     private List<string> availableCompanies { get; set; }
-    private List<PlayerRef> test1 { get; set; }
-    private List<NetworkObject> test2 { get; set; }
+    private List<PlayerRef> test1 = new List<PlayerRef>();
+    private List<NetworkObject> test2 = new List<NetworkObject>();
 
     void Awake()
     {
