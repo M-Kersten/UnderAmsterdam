@@ -6,31 +6,21 @@ using UnityEngine.UI;
 
 public class TestRPC : NetworkBehaviour
 {
-    [SerializeField]
-    string text;
+
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        if (Object.HasInputAuthority && Input.GetKeyDown(KeyCode.R))
-        {
-            RPC_SendMessage(text);
-        }
-    }
-
     private Text _messages;
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
-    public void RPC_SendMessage(string message, RpcInfo info = default)
+    [Rpc]
+    public void RpcTest([RpcTarget] PlayerRef targetPlayer, RpcInfo info = default)
     {
         if (info.IsInvokeLocal)
-           Debug.Log($"You said: {message}\n");
+           Debug.Log("Sent");
         else
-            Debug.Log($"Some other player said: {message}\n");
+            Debug.Log("Received: " + targetPlayer.PlayerId); ;
     }
 }
