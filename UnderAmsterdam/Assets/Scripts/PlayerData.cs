@@ -16,7 +16,13 @@ public class PlayerData : MonoBehaviour
         playerId = player.PlayerId;
     }
 
-    public void ReceiveCompany(string givenCompany)
+    public void ReceivePlayerCompany(string givenCompany)
+    {
+        RPC_SetCompany(givenCompany);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    void RPC_SetCompany(string givenCompany)
     {
         this.company = givenCompany;
     }
