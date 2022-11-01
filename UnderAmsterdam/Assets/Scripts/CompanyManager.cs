@@ -7,7 +7,7 @@ using Fusion;
 public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
-    [Networked] private List<string> availableCompanies { get; set; }
+    private List<string> availableCompanies { get; set; }
 
     void Awake()
     {
@@ -26,9 +26,8 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
-    [Rpc] 
-    public void RpcTest([RpcTarget] PlayerRef targetPlayer, NetworkObject player) {
-        player.gameObject.GetComponent<PlayerData>().ReceiveCompany(GetCompany());
+    public void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
+        player.gameObject.GetComponent<PlayerData>().ReceiveCompany(targetPlayer, GetCompany());
     }
 
     void ResetCompanies() {

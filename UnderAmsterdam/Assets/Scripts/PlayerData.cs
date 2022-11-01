@@ -18,15 +18,22 @@ public class PlayerData : NetworkBehaviour
         playerId = player.PlayerId;
     }
 
-    public void ReceiveCompany(string givenCompany)
+    void Update()
     {
-        this.company = givenCompany;
-        //RPC_SetCompany(givenCompany);
+        if (Input.GetKeyDown("space"))
+        {
+            GetComponent<TestRPC>().RPC_SendMessage("Server test");
+        }
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void RPC_SetCompany(string givenCompany)
+    public void ReceiveCompany(PlayerRef targetPlayer, string givenCompany)
     {
-        this.company = givenCompany;
+        RPC_SendMessage(targetPlayer, givenCompany);
+    }
+
+    [Rpc]
+    private void RPC_SendMessage([RpcTarget] PlayerRef targetPlayer, string givenCompany, RpcInfo info = default)
+    {
+            company = givenCompany;
     }
 }
