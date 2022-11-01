@@ -7,17 +7,25 @@ using Fusion;
 public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
-    private List<int> availableCompanies = new List<int>{};
+    private List<string> availableCompanies = new List<string>{"water","gas","data","sewage","power"};
 
-    int GetCompany() {
-        int myCompany;
-        myCompany = Random.Range(0, 6);
-        availableCompanies.Remove(myCompany);
+    string GetCompany() {
+        if (availableCompanies.Count => 0) {
+            int randomCompany = Random.Range(0, availableCompanies.Count);
+            string myCompany = availableCompanies[randomCompany];
+            // Remove random company from company list, so we don't have 2 players in same company
+            availableCompanies.RemoveAt(randomCompany);
+            Debug.Log(randomCompany + " " + myCompany + " " + availableCompanies.Count);
+        }
     return myCompany;
     }
 
+    void AssignTeam(PlayerRef player) {
+        player.GetComponent<PlayerData>().team = GetCompany();
+    }
+
     void ResetCompanies() {
-        availableCompanies = new List<int>{0,1,2,3,4,5};
+        availableCompanies = new List<string>{"water","gas","data","sewage","power"};
     }
 
     void Update() {
