@@ -8,6 +8,8 @@ public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
     private List<string> availableCompanies { get; set; }
+    private List<PlayerRef> test1 { get; set; }
+    private List<NetworkObject> test2 { get; set; }
 
     void Awake()
     {
@@ -26,8 +28,29 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
+    public void StorePlayers(PlayerRef targetPlayer, NetworkObject player)
+    {
+        test1.Add(targetPlayer);
+        test2.Add(player);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown("space"))
+        {
+            foreach (PlayerRef player in test1)
+            {
+                foreach(NetworkObject nObject in test2)
+                {
+                    nObject.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(player, GetCompany());
+                }
+            }
+        }
+    }
+
     public void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
         string sentCompany = GetCompany();
+
         player.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(targetPlayer, sentCompany);
         Debug.Log("Company " + sentCompany + " Sent to " + targetPlayer.PlayerId);
     }

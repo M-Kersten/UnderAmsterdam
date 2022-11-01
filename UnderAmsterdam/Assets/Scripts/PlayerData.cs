@@ -18,10 +18,10 @@ public class PlayerData : NetworkBehaviour
         playerId = player.PlayerId;
     }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_ReceiveCompany([RpcTarget] PlayerRef targetPlayer, string givenCompany, RpcInfo info = default)
     {
         Debug.Log("Received Company " + givenCompany + " From " + info.Source);
-            company = givenCompany;
+        company = givenCompany;
     }
 }
