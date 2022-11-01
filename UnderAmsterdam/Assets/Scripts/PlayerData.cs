@@ -15,4 +15,9 @@ public class PlayerData : MonoBehaviour
     {
         playerId = player.PlayerId;
     }
+
+    public void ReceiveCompany(string givenCompany)
+    {
+        this.company = givenCompany;
+    }
 }

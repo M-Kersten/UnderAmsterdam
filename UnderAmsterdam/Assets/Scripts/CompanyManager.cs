@@ -21,12 +21,19 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
+    public void AssignPlayerCompany(NetworkObject player)
+    {
+        RPC_AssignCompany(player);
+    }
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_AssignCompany(NetworkObject player) {
-        player.gameObject.GetComponent<PlayerData>().company = GetCompany();
+     void RPC_AssignCompany(NetworkObject player) {
+        // Get players PlayerData and assign them a company
+        player.gameObject.GetComponent<PlayerData>().ReceiveCompany(GetCompany());
     }
 
     void ResetCompanies() {
+        // Reset given companies
         availableCompanies = new List<string>{"water","gas","data","sewage","power"};
     }
 }
