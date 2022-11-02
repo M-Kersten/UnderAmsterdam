@@ -31,6 +31,14 @@ namespace Fusion.XR.Host.Rig
         public HandCommand rightHandCommand;
         public GrabInfo leftGrabInfo;
         public GrabInfo rightGrabInfo;
+
+        //Place down new iput here if needed
+        public NetworkBool anyTriggerPressed;
+        public NetworkBool rightTriggerPressed;
+        public NetworkBool leftTriggerPressed;
+        public NetworkBool anyGripPressed;
+        public NetworkBool rightGripPressed;
+        public NetworkBool leftGripPressed;
     }
 
     /**
@@ -47,7 +55,8 @@ namespace Fusion.XR.Host.Rig
         public HardwareHand rightHand;
         public HardwareHeadset headset;
         public NetworkRunner runner;
-
+        public PlayerInputHandler playerInputHandler;
+        
         private void Start()
         {
             if(runner == null)
@@ -110,6 +119,8 @@ namespace Fusion.XR.Host.Rig
 
             rigInput.leftGrabInfo = leftHand.grabber.GrabInfo;
             rigInput.rightGrabInfo = rightHand.grabber.GrabInfo;
+
+            rigInput = playerInputHandler.GetPlayerInput(rigInput);
 
             input.Set(rigInput);
         }
