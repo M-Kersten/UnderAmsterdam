@@ -86,7 +86,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4976049845006516314
 Transform:
   m_ObjectHideFlags: 0
@@ -226,7 +226,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4976049845605849307}
-  - component: {fileID: 510049773714970556}
   - component: {fileID: 7274171837970384365}
   - component: {fileID: -3057582181327743265}
   m_Layer: 7
@@ -253,19 +252,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &510049773714970556
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4976049845605849311}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.7, y: 0.7, z: 0.7}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7274171837970384365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,7 +295,7 @@ MonoBehaviour:
   connectorPart: {fileID: 8827063062579098424}
   connectorPartPreview: {fileID: 9054164455376291729}
   company: 0
-  TileOccupied: 0
+  _TileOccupied: 0
   pipeParts: []
   previewPipeParts: []
   activatedPipes: 
