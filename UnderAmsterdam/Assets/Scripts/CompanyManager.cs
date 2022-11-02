@@ -23,12 +23,15 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
+    // This should be moved to GameManager (same with the lists it adds to)
     public void StorePlayers(PlayerRef targetPlayer, NetworkObject player)
     {
         test1.Add(targetPlayer);
         test2.Add(player);
     }
 
+
+    // Update can be removed later when above is moved to gamemanager and attached to a gamestart (this is for testing purposes)
     void Update()
     {
         if (Input.GetKeyDown("space"))
@@ -43,6 +46,7 @@ public class CompanyManager : MonoBehaviour
         }
     }
 
+    // Function to send company to the correct player
     public void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
         string sentCompany = GetCompany();
         // Grab the playerdata of the player we want to send the company to
