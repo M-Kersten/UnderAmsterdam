@@ -28,6 +28,8 @@ public class CubeInteraction : NetworkBehaviour
 
     public bool isHover = false;
 
+    [SerializeField] private BoxCollider[] colliderr;
+
     public override void Spawned()
     {
         OnRenderPipePreview(false);
@@ -35,6 +37,8 @@ public class CubeInteraction : NetworkBehaviour
 
         neighbors = new NetworkObject[amountFaces]; //Cubes have 6 faces, thus we will always need 6 neigbors
         GetNeighbors();
+
+        StartCoroutine(ColliderDisable(1f));
 
         pipeParts = new GameObject[neighbors.Length];
         previewPipeParts = new GameObject[neighbors.Length];
@@ -53,32 +57,43 @@ public class CubeInteraction : NetworkBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, Vector3.up , out hit))
+        Ray ray = new Ray();
+        ray.origin = transform.position;
+        LayerMask layerMask = LayerMask.GetMask("Tile");
+
+        ray.direction = Vector3.up;
+        Debug.DrawRay(transform.position, Vector3.up, Color.green, 500f);
+        if (Physics.Raycast(ray, out hit, 4f, layerMask))
             neighbors[(int)Direction.Up] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
             neighbors[(int)Direction.Up] = null;
 
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        ray.direction = -Vector3.up;
+        if (Physics.Raycast(ray, out hit, 4f, layerMask))
             neighbors[(int)Direction.Down] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
             neighbors[(int)Direction.Down] = null;
 
-        if (Physics.Raycast(transform.position, Vector3.left, out hit))
+        ray.direction = Vector3.left;
+        if (Physics.Raycast(ray, out hit, 4f, layerMask))
             neighbors[(int)Direction.Left] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
             neighbors[(int)Direction.Left] = null;
 
-        if (Physics.Raycast(transform.position, Vector3.right, out hit))
+        ray.direction = Vector3.right;
+        if (Physics.Raycast(ray, out hit, 4f, layerMask))
             neighbors[(int)Direction.Right] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
             neighbors[(int)Direction.Right] = null;
 
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit))
+        ray.direction = Vector3.forward;
+        if (Physics.Raycast(ray, out hit, 4f, layerMask))
             neighbors[(int)Direction.Front] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
             neighbors[(int)Direction.Front] = null;
 
-        if (Physics.Raycast(transform.position, Vector3.back, out hit))
+        ray.direction = Vector3.back;
+        if (Physics.Raycast(ray, out hit, 4f, layerMask))
             neighbors[(int)Direction.Behind] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
             neighbors[(int)Direction.Behind] = null;
@@ -104,7 +119,7 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    private void UpdateNeighborData(bool enable)
+    public void UpdateNeighborData(bool enable)
     {
         for (int i = 0; i < neighbors.Length; i++)
         {
@@ -132,6 +147,10 @@ public class CubeInteraction : NetworkBehaviour
         UpdateNeighborData(true);
         OnRenderPipePart(true);
         OnRenderPipePreview(false);
+        for(int i = 0; i < 6; ++i)
+        {
+            if(colliderr[i])colliderr[i].enabled = true;
+        }
     }
 
     private void OnRenderPipePart(bool isActive)
@@ -155,7 +174,7 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    private void OnRenderPipePreview(bool isActive)
+    public void OnRenderPipePreview(bool isActive)
     {
         connectorPartPreview.SetActive(isActive);
         for (int i = 0; i < neighbors.Length; i++)
@@ -196,4 +215,21 @@ public class CubeInteraction : NetworkBehaviour
     {
         return i + 1 - 2 * (i % 2);            
     }
+
+    IEnumerator ColliderDisable(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        colliderr = new BoxCollider[6];
+        for (int j = 0; j < 6; ++j)
+        {
+            while (neighbors[j] && colliderr[j] == null)
+                colliderr[j] = neighbors[j].gameObject.GetComponent<BoxCollider>();
+            if (colliderr[j] && colliderr[j].name == "TileCorner")
+                colliderr[j].enabled = true;
+            else if (colliderr[j])
+                colliderr[j].enabled = false;
+        }
+    }
+
 }

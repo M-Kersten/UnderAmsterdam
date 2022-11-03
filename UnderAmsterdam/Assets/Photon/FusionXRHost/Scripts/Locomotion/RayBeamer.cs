@@ -23,7 +23,7 @@ namespace Fusion.XR.Host
 
     public class RayBeamer : MonoBehaviour
     {
-        public HardwareHand hand;
+        public RigPart side;
 
         public bool useRayActionInput = true;
         public InputActionProperty rayAction;
@@ -41,9 +41,11 @@ namespace Fusion.XR.Host
 
 
         public UnityEvent<Collider, Vector3> onRelease = new UnityEvent<Collider, Vector3>();
+        public UnityEvent<Collider, Vector3> onRayHit = new UnityEvent<Collider, Vector3>();
+        public UnityEvent<Collider, Vector3> onRayExit = new UnityEvent<Collider, Vector3>();
 
         // Define if the beamer ray is active this frame
-        public bool isRayEnabled = true;
+        public bool isRayEnabled = false;
 
         public enum Status
         {
@@ -68,15 +70,12 @@ namespace Fusion.XR.Host
             lineRenderer.startWidth = width;
             lineRenderer.endWidth = width;
             lineRenderer.useWorldSpace = true;
-            lineRenderer.enabled = false;
-
-            if (origin == null) origin = transform;
-            if (hand == null) hand = GetComponentInParent<HardwareHand>();
+            lineRenderer.enabled = true; //Changed to true
         }
 
         public virtual void Start()
         {
-            rayAction.EnableWithDefaultXRBindings(hand.side, new List<string> { "thumbstickClicked", "primaryButton", "secondaryButton" });
+            rayAction.EnableWithDefaultXRBindings(side, new List<string> { "thumbstickClicked", "primaryButton", "secondaryButton" });
         }
 
         public bool BeamCast(out RaycastHit hitInfo, Vector3 origin, Vector3 direction)
@@ -90,7 +89,8 @@ namespace Fusion.XR.Host
             return BeamCast(out hitInfo, ray.origin, origin.forward);
         }
 
-        public void Update() {
+        public void Update()
+        {
             // If useRayActionInput is true, we read the rayAction to determine isRayEnabled for this frame
             //  Usefull for the mouse teleporter of the desktop mode, which disables the action reading to have its own logic to enable the beamer
             if (useRayActionInput && rayAction != null && rayAction.action != null)
@@ -109,6 +109,7 @@ namespace Fusion.XR.Host
                     ray.color = hitColor;
                     lastHit = hit.point;
                     status = Status.BeamHit;
+                    if (onRayHit != null) onRayHit.Invoke(lastHitCollider, lastHit);
                 }
                 else
                 {
@@ -116,13 +117,14 @@ namespace Fusion.XR.Host
                     ray.target = ray.origin + origin.forward * maxDistance;
                     ray.color = noHitColor;
                     status = Status.BeamNoHit;
+                    if (onRayExit != null) onRayExit.Invoke(lastHitCollider, lastHit);
                 }
             }
             else
             {
                 if (status == Status.BeamHit)
                 {
-                    if (onRelease != null) onRelease.Invoke(lastHitCollider, lastHit);  
+                    if (onRelease != null) onRelease.Invoke(lastHitCollider, lastHit);
                 }
                 status = Status.NoBeam;
                 lastHitCollider = null;
@@ -136,7 +138,8 @@ namespace Fusion.XR.Host
             status = Status.NoBeam;
         }
 
-        void UpdateRay() { 
+        void UpdateRay()
+        {
             lineRenderer.enabled = ray.isRayEnabled;
             if (ray.isRayEnabled)
             {
