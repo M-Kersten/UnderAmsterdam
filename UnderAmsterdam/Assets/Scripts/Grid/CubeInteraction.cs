@@ -112,7 +112,7 @@ public class CubeInteraction : NetworkBehaviour
 
                 CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
 
-                if (neighborTile.company != 'Empty' && (neighborTile.company == company || isHover == enable))
+                if (neighborTile.company != "Empty" && (neighborTile.company == company || isHover == enable))
                 {
                     activatedPipes[i] = enable;
                     neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
@@ -120,15 +120,18 @@ public class CubeInteraction : NetworkBehaviour
             }
         }
     }
+    [Tooltip("Should be activated before EnableTile()")]
+    public void UpdateCompany(string newCompany) {
 
-    public void EnableTile(string pCompany)
+        company = newCompany;
+    }
+    public void EnableTile()
     {
         if (TileOccupied)
             return;
 
         isHover = false;
         TileOccupied = true;
-        company = pCompany;
         UpdateNeighborData(true);
         OnRenderPipePart(true);
         OnRenderPipePreview(false);
