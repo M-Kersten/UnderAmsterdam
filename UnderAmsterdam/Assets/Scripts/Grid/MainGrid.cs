@@ -24,7 +24,7 @@ public class MainGrid : MonoBehaviour
     void Start()
     {
         companies = new CompaniesTMP[NUMBER_OF_COMPANIES];
-        //companies[0] = GetComponent<CompaniesTMP>();
+        //companies[0] = GetComponent<CompaniesTMP>(); // GET COMPANIES DATA HERE
     }
 
     private void OnTimeUp() //This function is called when the time is up for each round
@@ -50,7 +50,7 @@ public class MainGrid : MonoBehaviour
             return 1;
 
         Vector3 tilePos = currentTile.transform.position;
-        isVisited[(int)(tilePos.x * 2f) + 1, (int)(tilePos.y * 2f) + 1, (int)(tilePos.z * 2f) + 1] = true; //TO VERIFY: ADJUST TO GRID POSITION
+        isVisited[(int)(tilePos.x * 2f) + 2, (int)(tilePos.y * 2f) + 2, (int)(tilePos.z * 2f) + 2] = true; //TO VERIFY: ADJUST TO GRID POSITION
 
         cubeInter = currentTile.GetComponent<CubeInteraction>();
 
@@ -60,7 +60,7 @@ public class MainGrid : MonoBehaviour
             neighborTile = cubeInter.neighbors[i];
 
             Vector3 neighborPos = neighborTile.transform.position;
-            if (neighborTile.GetComponent<CubeInteraction>().company == companyNumber && !isVisited[(int)(neighborPos.x*2f) + 1, (int)(neighborPos.y*2f) + 1, (int)(neighborPos.z*2f) + 1]) //Checks if it is the right company and if the pipe hasn't been visited yet
+            if (neighborTile.GetComponent<CubeInteraction>().company == companyNumber && !isVisited[(int)(neighborPos.x*2f) + 2, (int)(neighborPos.y*2f) + 2, (int)(neighborPos.z*2f) + 2]) //Checks if it is the right company and if the pipe hasn't been visited yet
             {
                 tileCount++;
                 currentTile = neighborTile; //Transfers to one of its neighbor
