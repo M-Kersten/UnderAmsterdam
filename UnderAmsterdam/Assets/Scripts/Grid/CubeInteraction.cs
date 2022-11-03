@@ -15,7 +15,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
 
-    [SerializeField] [Networked] private string company = "Empty";
+    [SerializeField] [Networked] private string company {get; set;}
 
     [Networked(OnChanged = nameof(OnPipeChanged))]
     public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
@@ -112,7 +112,7 @@ public class CubeInteraction : NetworkBehaviour
 
                 CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
 
-                if (neighborTile.company != "Empty" && (neighborTile.company == company || isHover == enable))
+                if (neighborTile.company != null || neighborTile.company != "Empty" && (neighborTile.company == company || isHover == enable))
                 {
                     activatedPipes[i] = enable;
                     neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
