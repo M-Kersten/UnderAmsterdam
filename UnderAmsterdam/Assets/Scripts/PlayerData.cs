@@ -8,7 +8,7 @@ public class PlayerData : NetworkBehaviour
     PlayerRef player;
     int playerId;
 
-    [Networked] public string company;
+    [Networked] public string company {get; set;}
 
     string prevCompany;
     int points;
