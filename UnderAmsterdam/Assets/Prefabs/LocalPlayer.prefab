@@ -4919,6 +4919,7 @@ GameObject:
   - component: {fileID: 8439811097757408639}
   - component: {fileID: 8439811097757408610}
   - component: {fileID: 8696038726370357476}
+  - component: {fileID: 1787789907254706849}
   m_Layer: 0
   m_Name: LocalPlayer
   m_TagString: Untagged
@@ -5033,6 +5034,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4f79fb0af50f2498dbb08405c8c1d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joystickActionL:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Joystick Action L
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 0b115049-6e70-4ec3-ad94-9890b2eb1a04
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  joystickActionR:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Joystick Action R
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4086033c-a888-4b26-9c1c-f78df9c87267
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
   triggerActionL:
     m_UseReference: 0
     m_Action:
@@ -5081,12 +5106,26 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
+  leftjoystickPosition: {x: 0, y: 0}
+  rightjoystickPosition: {x: 0, y: 0}
   isAnyTriggerPressed: 0
   isRightTriggerPressed: 0
   isLeftTriggerPressed: 0
   isAnyGripPressed: 0
   isRightGripPressed: 0
   isLeftGripPressed: 0
+--- !u!114 &1787789907254706849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8439811097757408638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd66091fbfe781443a0dbc6b95296966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8439811097839705983
 GameObject:
   m_ObjectHideFlags: 0
