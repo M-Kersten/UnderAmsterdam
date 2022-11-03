@@ -15,7 +15,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
 
-    [SerializeField] private string company;
+    [SerializeField] private string company = "Empty";
 
     [Networked(OnChanged = nameof(OnPipeChanged))]
     public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
@@ -122,7 +122,7 @@ public class CubeInteraction : NetworkBehaviour
     }
     [Tooltip("Should be activated before EnableTile()")]
     public void UpdateCompany(string newCompany) {
-
+        Debug.Log("REEEE");
         company = newCompany;
     }
     public void EnableTile()
