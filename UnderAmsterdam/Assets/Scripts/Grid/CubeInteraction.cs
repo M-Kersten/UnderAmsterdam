@@ -11,11 +11,11 @@ public class CubeInteraction : NetworkBehaviour
     private enum Direction {Right, Left, Behind, Front, Up, Down};
 
     [SerializeField] private Transform PipePreview, PipeHolder;
-    [SerializeField] private NetworkObject[] neighbors;
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
+    [SerializeField] public NetworkObject[] neighbors;
 
-    [SerializeField] private int company = 1;
+    [SerializeField] public int company = 1;
 
     [Networked(OnChanged = nameof(OnPipeChanged))]
     public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
