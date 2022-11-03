@@ -23,7 +23,6 @@ public class CompanyManager : MonoBehaviour
             string myCompany = availableCompanies[randomCompany];
             // Remove random company from company list, so we don't have 2 players in same company
             availableCompanies.RemoveAt(randomCompany);
-            Debug.Log(randomCompany + " " + myCompany + " " + availableCompanies.Count);
             return myCompany;
         }
         return "Empty";
