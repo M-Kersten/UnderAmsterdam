@@ -29,19 +29,16 @@ public class Gamemanager : MonoBehaviour
 
     private void OnGameStart()
     {
-        Debug.Log("OnGameStart");
         GameStart.Invoke();
         timer.SetTimer(roundTime + roundStartCountDown);
         OnRoundStart();
     }
     private void OnRoundStart()
     {
-        Debug.Log("OnRoundStart");
         RoundStart.Invoke();
     }
     private void OnRoundEnd()
     {
-        Debug.Log("OnRoundEnd");
         RoundEnd.Invoke();
         roundTime += roundTimeIncrease;
         timer.SetTimer(roundTime + roundStartCountDown);

@@ -12,6 +12,9 @@ public class CompanyManager : MonoBehaviour
     
     void Start(){
         cManager = GetComponent<ConnectionManager>();
+
+        Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
+        Gamemanager.Instance.RoundStart.AddListener(loadSend);
     }
 
     string GetCompany() {
@@ -33,13 +36,13 @@ public class CompanyManager : MonoBehaviour
     }
 
     // Function to send company to the correct player
-    public void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
+    private void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
         string sentCompany = GetCompany();
         // Grab the playerdata of the player we want to send the company to
         player.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(targetPlayer, sentCompany);
     }
 
-    void ResetCompanies() {
+    public void ResetCompanies() {
         // Reset given companies
         availableCompanies = new List<string>{"water","gas","data","sewage","power"};
     }
