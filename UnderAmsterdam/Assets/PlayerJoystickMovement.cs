@@ -7,13 +7,14 @@ using Fusion;
 public class PlayerJoystickMovement : MonoBehaviour
 {
     PlayerInputHandler localPlayerInput;
+
+    private float speed = 2;
     private void Start()
     {
         localPlayerInput = GetComponent<PlayerInputHandler>();
     }
     private void FixedUpdate()
     {
-        Debug.Log("Left hand: " + localPlayerInput.leftjoystickPosition);
-        Debug.Log("Right hand: " + localPlayerInput.rightjoystickPosition);
+        transform.position += new Vector3(transform.position.x + localPlayerInput.leftjoystickPosition.x, transform.position.y, transform.position.z + localPlayerInput.leftjoystickPosition.y) * speed;
     }
 }
