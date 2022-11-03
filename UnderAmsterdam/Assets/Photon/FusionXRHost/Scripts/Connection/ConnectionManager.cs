@@ -80,7 +80,7 @@ namespace Fusion.XR.Host
             {
                 Debug.Log($"OnPlayerJoined {player.PlayerId}/Local id: ({runner.LocalPlayer.PlayerId})");
                 // We make sure to give the input authority to the connecting player for their user's object
-                NetworkObject networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => { 
+                NetworkObject networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => {
                 });
 
                 // Keep track of the player avatars so we can remove it when they disconnect
@@ -104,10 +104,10 @@ namespace Fusion.XR.Host
 
         #region Unused INetworkRunnerCallbacks 
         public void OnConnectedToServer(NetworkRunner runner) { }
-        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) {}
+        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
         public void OnDisconnectedFromServer(NetworkRunner runner) { }
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
-        public void OnInput(NetworkRunner runner, NetworkInput input) {}
+        public void OnInput(NetworkRunner runner, NetworkInput input) { }
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
         public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
         public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
