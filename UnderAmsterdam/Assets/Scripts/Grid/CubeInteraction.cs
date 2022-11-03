@@ -106,6 +106,7 @@ public class CubeInteraction : NetworkBehaviour
     static void onCompanyChange(Changed<CubeInteraction> changed)
     {
         changed.Behaviour.UpdateCompany(changed.Behaviour.company);
+        changed.Behaviour.UpdateNeighborData(true);
     }
 
     private void UpdateNeighborData(bool enable)
