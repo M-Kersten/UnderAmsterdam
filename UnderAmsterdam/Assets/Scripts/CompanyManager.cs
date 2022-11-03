@@ -8,11 +8,14 @@ public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
     private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
-    private List<PlayerRef> test1 = new List<PlayerRef>();
-    private List<NetworkObject> test2 = new List<NetworkObject>();
+    private ConnectionManager cManager;
+    
+    void Start(){
+        cManager = GetComponent<ConnectionManager>();
+    }
 
     string GetCompany() {
-        if (availableCompanies.Count >= 0) {
+        if (availableCompanies.Count > 0) {
             int randomCompany = Random.Range(0, availableCompanies.Count);
             string myCompany = availableCompanies[randomCompany];
             // Remove random company from company list, so we don't have 2 players in same company
@@ -23,28 +26,24 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
-    // This should be moved to GameManager (same with the lists it adds to)
-    public void StorePlayers(PlayerRef targetPlayer, NetworkObject player)
-    {
-        test1.Add(targetPlayer);
-        test2.Add(player);
+    public void Update() {
+        if(Input.GetKeyDown("space"))
+        loadSend();
     }
 
-
-    // Update can be removed later when above is moved to gamemanager and attached to a gamestart (this is for testing purposes)
-    void Update()
-    {
-        if (Input.GetKeyDown("space"))
-        {
-            foreach (PlayerRef player in test1)
-            {
-                foreach(NetworkObject nObject in test2)
-                {
-                    nObject.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(player, GetCompany());
-                }
-            }
+    public void loadSend() {
+        foreach(var player in cManager._spawnedUsers) {
+            SendCompany(player.Key, player.Value);
         }
     }
+         //  foreach (PlayerRef player in test1)
+         //  {
+         //      foreach(NetworkObject nObject in test2)
+         //      {
+         //          nObject.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(player, GetCompany());
+         //          Debug.Log("Running lol");
+         //      }
+         //  }
 
     // Function to send company to the correct player
     public void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
