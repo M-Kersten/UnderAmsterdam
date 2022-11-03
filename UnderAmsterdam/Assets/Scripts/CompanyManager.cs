@@ -26,31 +26,17 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
-    public void Update() {
-        if(Input.GetKeyDown("space"))
-        loadSend();
-    }
-
     public void loadSend() {
         foreach(var player in cManager._spawnedUsers) {
             SendCompany(player.Key, player.Value);
         }
     }
-         //  foreach (PlayerRef player in test1)
-         //  {
-         //      foreach(NetworkObject nObject in test2)
-         //      {
-         //          nObject.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(player, GetCompany());
-         //          Debug.Log("Running lol");
-         //      }
-         //  }
 
     // Function to send company to the correct player
     public void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
         string sentCompany = GetCompany();
         // Grab the playerdata of the player we want to send the company to
         player.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(targetPlayer, sentCompany);
-        Debug.Log("Company " + sentCompany + " Sent to " + targetPlayer.PlayerId);
     }
 
     void ResetCompanies() {
