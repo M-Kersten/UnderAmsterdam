@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -251,10 +251,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1450127801097228436, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_TagString
-      value: RightHand
-      objectReference: {fileID: 0}
     - target: {fileID: 8439811097757408637, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -303,34 +299,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LocalPlayer
       objectReference: {fileID: 0}
-    - target: {fileID: 8439811097757408638, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8439811097757408639, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: runner
       value: 
       objectReference: {fileID: 650798174}
-    - target: {fileID: 8439811097908486506, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 8439811098612244500, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 8439811098612244507, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: status
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8439811098612244507, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: isRayEnabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8447807825537134211, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_TagString
-      value: LeftHand
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
 --- !u!1 &650798173 stripped
@@ -349,11 +321,6 @@ MonoBehaviour:
   m_Script: {fileID: -1199893898, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1082096640 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 410562738395480063, guid: 908624305019d3c47b4f0caaad3fa0c4, type: 3}
-  m_PrefabInstance: {fileID: 2055609365860431427}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1150931365
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -439,17 +406,9 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
-      propertyPath: mode
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: runner
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
-      propertyPath: userPrefab
-      value: 
-      objectReference: {fileID: 2549000073306557744, guid: e263782ae517b5e46a1d6228d8ee88b7, type: 3}
     - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: onWillConnect.m_PersistentCalls.m_Calls.Array.size
       value: 0
@@ -461,7 +420,7 @@ PrefabInstance:
     - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: onWillConnect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1082096640}
+      objectReference: {fileID: 0}
     - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: onWillConnect.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 0
