@@ -9,12 +9,19 @@ using Fusion.XR.Host.Rig;
 
 public class PlayerInputHandler : MonoBehaviour
 {
+    public InputActionProperty joystickActionL;
+    public InputActionProperty joystickActionR;
     public InputActionProperty triggerActionL;
     public InputActionProperty triggerActionR;
     public InputActionProperty gripActionL;
     public InputActionProperty gripActionR;
 
     private RigPart side;
+
+    [SerializeField]
+    private Vector2 leftjoystickPosition;
+    [SerializeField]
+    private Vector2 rightjoystickPosition;
 
     [SerializeField]
     private bool isAnyTriggerPressed;
@@ -36,10 +43,12 @@ public class PlayerInputHandler : MonoBehaviour
         side = RigPart.LeftController;
         triggerActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
         gripActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "grip" });
+        joystickActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
 
         side = RigPart.RightController;
         triggerActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
         gripActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "grip" });
+        joystickActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
     }
 
     private void Update()
@@ -48,6 +57,9 @@ public class PlayerInputHandler : MonoBehaviour
 
         isLeftTriggerPressed = (triggerActionL.action.ReadValue<float>() >= 0.9f);
         isRightTriggerPressed = (triggerActionR.action.ReadValue<float>() >= 0.9f);
+
+        leftjoystickPosition = joystickActionL.action.ReadValue<Vector2>();
+        rightjoystickPosition = joystickActionR.action.ReadValue<Vector2>();
 
         isAnyTriggerPressed = (isLeftTriggerPressed || isRightTriggerPressed);
 
@@ -69,6 +81,9 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputData.anyGripPressed = (NetworkBool)isAnyGripPressed;
         playerInputData.rightGripPressed = (NetworkBool)isRightGripPressed;
         playerInputData.leftGripPressed = (NetworkBool)isLeftGripPressed;
+
+        playerInputData.leftJoystickPositon = leftjoystickPosition;
+        playerInputData.rightJoystickPositon = rightJoystickPositon;
 
         return playerInputData;
     }
