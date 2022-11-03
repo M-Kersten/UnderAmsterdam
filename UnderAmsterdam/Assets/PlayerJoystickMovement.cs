@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class PlayerJoystickMovement : NetworkBehaviour
+public class PlayerJoystickMovement : MonoBehaviour
 {
+    PlayerInputHandler localPlayerInput;
+    private void Start()
+    {
+        localPlayerInput = GetComponent<PlayerInputHandler>();
+    }
     private void FixedUpdate()
     {
-        if (GetInput<RigInput>(out var playerInputData))
-        {
-            Debug.Log("Left hand: " + playerInputData.leftJoystickPositon);
-            Debug.Log("Right hand: " + playerInputData.rightJoystickPositon);
-        }
+        Debug.Log("Left hand: " + localPlayerInput.leftjoystickPosition);
+        Debug.Log("Right hand: " + localPlayerInput.rightjoystickPosition);
     }
 }

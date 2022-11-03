@@ -31,8 +31,6 @@ namespace Fusion.XR.Host.Rig
         public HandCommand rightHandCommand;
         public GrabInfo leftGrabInfo;
         public GrabInfo rightGrabInfo;
-        public Vector2 leftJoystickPositon;
-        public Vector2 rightJoystickPositon;
 
         //Place down new iput here if needed
         public NetworkBool anyTriggerPressed;

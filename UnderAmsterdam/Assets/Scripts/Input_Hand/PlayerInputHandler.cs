@@ -18,10 +18,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     private RigPart side;
 
-    [SerializeField]
-    private Vector2 leftjoystickPosition;
-    [SerializeField]
-    private Vector2 rightjoystickPosition;
+    public Vector2 leftjoystickPosition;
+    public Vector2 rightjoystickPosition;
 
     [SerializeField]
     private bool isAnyTriggerPressed;
@@ -81,9 +79,6 @@ public class PlayerInputHandler : MonoBehaviour
         playerInputData.anyGripPressed = (NetworkBool)isAnyGripPressed;
         playerInputData.rightGripPressed = (NetworkBool)isRightGripPressed;
         playerInputData.leftGripPressed = (NetworkBool)isLeftGripPressed;
-
-        playerInputData.leftJoystickPositon = leftjoystickPosition;
-        playerInputData.rightJoystickPositon = rightJoystickPositon;
 
         return playerInputData;
     }
