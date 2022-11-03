@@ -7,7 +7,7 @@ public class HostTimerScript : MonoBehaviour
     [Tooltip("How much time is given, in seconds")]
     public UnityEvent timerUp;
 
-    [SerializeField] private float currentTime = -1;
+    private float currentTime = -1;
     private bool isGameOngoing;
     
     private void Start()
