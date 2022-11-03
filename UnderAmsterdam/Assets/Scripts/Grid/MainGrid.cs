@@ -8,14 +8,14 @@ using Fusion.XR.Host.Rig;
 public class MainGrid : MonoBehaviour
 {
     //For the companies
-    private CompaniesTMP[] companies;
+    private CompaniesTMP[] companies; //TO REPLACE
 
     //For the pathFinding
     private bool[,,] isVisited;
-    private NetworkObject currentTile;
     private NetworkObject neighborTile;
-    private CubeInteraction cubeInter;
-    private int i, tileCount = 0, returnValue;
+    private int tileCount, returnValue;
+
+    public int width = 16, height = 2, depth = 23;
 
     private int NUMBER_OF_COMPANIES = 5;
     private int NUMBER_OF_FACES_CUBE = 6;
@@ -23,56 +23,74 @@ public class MainGrid : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isVisited = new bool[width, height, depth];
         companies = new CompaniesTMP[NUMBER_OF_COMPANIES];
-        //companies[0] = GetComponent<CompaniesTMP>(); // GET COMPANIES DATA HERE
+        //companies[0] = GetComponent<CompaniesTMP>(); //GET COMPANIES DATA HERE
     }
 
     private void OnTimeUp() //This function is called when the time is up for each round
     {
-        //HERE RESET isVisited ARRAY :
-        //isVisited[x, y, z] = false;
+        int i;
+
+        // Resets the visited tiles array
+        for (i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                for (int k = 0; k < depth; k++)
+                    isVisited[i, j, k] = false;
+            }
+        }
 
         for (i = 0; i < NUMBER_OF_COMPANIES; i++) // i is the selected company that is being checked
         {
             tileCount = 0;
-            currentTile = companies[i].input; //Cheking starts from the input pipe of each company
-            if (pathVerify(i) == 1)
+            //Cheking starts from the input pipe of each company
+            if (pathVerify(i, companies[i].input) == 1)
                 companies[i].nbPoints += 100;
         }
 
     }
 
-    private int pathVerify(int companyNumber) //Recursive function
+    private int pathVerify(int companyNumber, NetworkObject currentTile) //Recursive function
     {
-        if (tileCount >= companies[companyNumber].nbTiles) //Failure to connect output to input
-            return -1;
-        if (currentTile == companies[companyNumber].output) //Success, output pipe has been reached
-            return 1;
+        IOTileData ioTile = currentTile.GetComponent<IOTileData>();
+        if (ioTile != null && !ioTile.isInput && ioTile.company == companyNumber) //Verify if it is an output pipe from the same company
+        {
+            if (ioTile.isActive)
+                return 1; //Success, output pipe has been reached
+            return 0; //0 return value basically means to continue researches
+        }
 
+        if (tileCount >= companies[companyNumber].nbTiles) //Failure to connect output to input (All the tiles have been verified)
+            return -1;
+
+        //Mark tile as verified 
         Vector3 tilePos = currentTile.transform.position;
         isVisited[(int)(tilePos.x * 2f) + 2, (int)(tilePos.y * 2f) + 2, (int)(tilePos.z * 2f) + 2] = true; //TO VERIFY: ADJUST TO GRID POSITION
 
-        cubeInter = currentTile.GetComponent<CubeInteraction>();
+        CubeInteraction cubeInter = currentTile.GetComponent<CubeInteraction>();
 
-        for (i = 0; i < NUMBER_OF_FACES_CUBE; i++)
+        for (int i = 0; i < NUMBER_OF_FACES_CUBE; i++)
         {
 
             neighborTile = cubeInter.neighbors[i];
 
             Vector3 neighborPos = neighborTile.transform.position;
-            if (neighborTile.GetComponent<CubeInteraction>().company == companyNumber && !isVisited[(int)(neighborPos.x*2f) + 2, (int)(neighborPos.y*2f) + 2, (int)(neighborPos.z*2f) + 2]) //Checks if it is the right company and if the pipe hasn't been visited yet
-            {
-                tileCount++;
-                currentTile = neighborTile; //Transfers to one of its neighbor
-            }
 
-            returnValue = pathVerify(companyNumber);
+            //Checks if it is the right company and if the pipe hasn't been visited yet
+            if (neighborTile.GetComponent<CubeInteraction>().company != companyNumber || isVisited[(int)(neighborPos.x * 2f) + 2, (int)(neighborPos.y * 2f) + 2, (int)(neighborPos.z * 2f) + 2])
+                continue;
+            
+            tileCount++;
+
+            returnValue = pathVerify(companyNumber, neighborTile);
             if (returnValue != 0) //Verify this neighbor as well until it return a stop value (-1 for Failure, 1 for Success)
                 return returnValue;
 
         }
 
-        return 0; //0 value means it is not a stop condition
+        return 0;
 
     }
 

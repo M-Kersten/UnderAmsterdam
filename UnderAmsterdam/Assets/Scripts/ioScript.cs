@@ -28,8 +28,8 @@ public class ioScript : MonoBehaviour
         wallGridEW = new GameObject[2, height, width];
 
         //Adding the two first Input and Output
-        addPipe();
-        addPipe();
+        addPipe(0, true);
+        addPipe(0, false);
     }
 
     // Update is called once per frame
@@ -37,18 +37,24 @@ public class ioScript : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            addPipe();
+            addPipe(0, false);
         }
     }
 
-    private void addPipe()
+    private void addPipe(int company, bool isInput)
     {
+
+        GameObject addedPipe = null;
+        IOTileData pipeData;
+
         while (!placedPipe)
         {
+            //Randomly Choosing the wall among the 4 ones
             wallSelec = Random.Range(0, 4);
 
             switch (wallSelec)
             {
+                //For each wall is chosen a random column then checking
                 case 0:
                     lineSelec = Random.Range(0, height);
                     columnSelec = Random.Range(0, depth);
@@ -56,7 +62,9 @@ public class ioScript : MonoBehaviour
                     if (!wallGridNS[0, lineSelec, columnSelec])
                     {
                         placedPipe = true;
-                        wallGridNS[0, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(width / 4f, lineSelec / 2f, columnSelec / 2f - (depth + 1) / 4f), Quaternion.identity, parent);
+                        //Placing and orienting the pipe accordingly to its position
+                        addedPipe = Instantiate(ioPipe, transform.position + new Vector3(width / 4f, lineSelec / 2f, columnSelec / 2f - (depth + 1) / 4f), Quaternion.identity, parent);
+                        wallGridNS[0, lineSelec, columnSelec] = addedPipe; //SEE IF CAN BE REMOVED
                     }
 
                     break;
@@ -67,7 +75,8 @@ public class ioScript : MonoBehaviour
                     if (!wallGridNS[1, lineSelec, columnSelec])
                     {
                         placedPipe = true;
-                        wallGridNS[1, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(-0.5f - width / 4f, lineSelec / 2f, columnSelec / 2f - (depth - 1) / 4f), Quaternion.Euler(0, 180, 0), parent);
+                        addedPipe = Instantiate(ioPipe, transform.position + new Vector3(-0.5f - width / 4f, lineSelec / 2f, columnSelec / 2f - (depth - 1) / 4f), Quaternion.Euler(0, 180, 0), parent);
+                        wallGridNS[1, lineSelec, columnSelec] = addedPipe;
                     }
 
                     break;
@@ -78,7 +87,8 @@ public class ioScript : MonoBehaviour
                     if (!wallGridEW[0, lineSelec, columnSelec])
                     {
                         placedPipe = true;
-                        wallGridEW[0, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(columnSelec / 2f - width / 4, lineSelec / 2f, -(depth + 1) / 4f), Quaternion.Euler(0, 90, 0), parent);
+                        addedPipe = Instantiate(ioPipe, transform.position + new Vector3(columnSelec / 2f - width / 4, lineSelec / 2f, -(depth + 1) / 4f), Quaternion.Euler(0, 90, 0), parent);
+                        wallGridEW[0, lineSelec, columnSelec] = addedPipe;
                     }
 
                     break;
@@ -89,13 +99,17 @@ public class ioScript : MonoBehaviour
                     if (!wallGridEW[1, lineSelec, columnSelec])
                     {
                         placedPipe = true;
-                        wallGridEW[1, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(-0.5f + columnSelec / 2f - width / 4, lineSelec / 2f, (depth + 1) / 4), Quaternion.Euler(0, -90, 0), parent);
+                        addedPipe = Instantiate(ioPipe, transform.position + new Vector3(-0.5f + columnSelec / 2f - width / 4, lineSelec / 2f, (depth + 1) / 4), Quaternion.Euler(0, -90, 0), parent);
+                        wallGridEW[1, lineSelec, columnSelec] = addedPipe;
                     }
 
                     break;
             }
         }
 
+        pipeData = addedPipe.GetComponent<IOTileData>();
+        pipeData.isInput = isInput;
+        pipeData.company = company;
         placedPipe = false;
 
     }
