@@ -27,6 +27,6 @@ public class PlayerData : NetworkBehaviour
     //}
 
     public void ReceiveCompany(string givenCompany) {
-        company = givenCompany;
+            company = givenCompany;
     }
 }
