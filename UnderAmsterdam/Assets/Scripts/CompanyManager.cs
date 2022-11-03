@@ -38,7 +38,7 @@ public class CompanyManager : MonoBehaviour
     private void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
         string sentCompany = GetCompany();
         // Grab the playerdata of the player we want to send the company to
-        player.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(targetPlayer, sentCompany);
+        player.gameObject.GetComponent<PlayerData>().ReceiveCompany(sentCompany);
     }
 
     public void ResetCompanies() {

@@ -19,10 +19,14 @@ public class PlayerData : NetworkBehaviour
         playerId = player.PlayerId;
     }
 
-    // RPC, activated by Host, targeted at which player needs to be activated and to update at all clients
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_ReceiveCompany([RpcTarget] PlayerRef targetPlayer, string givenCompany, RpcInfo info = default)
-    {
+    //// RPC, activated by Host, targeted at which player needs to be activated and to update at all clients
+    //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    //public void RPC_ReceiveCompany([RpcTarget] PlayerRef targetPlayer, string givenCompany, RpcInfo info = default)
+    //{
+    //    company = givenCompany;
+    //}
+
+    public void ReceiveCompany(string givenCompany) {
         company = givenCompany;
     }
 }
