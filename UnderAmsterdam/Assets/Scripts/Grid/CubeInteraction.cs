@@ -15,7 +15,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview;
     [SerializeField] public NetworkObject[] neighbors;
 
-    [SerializeField] public int company = 1;
+    [SerializeField] public int company = 0;
 
     [Networked(OnChanged = nameof(OnPipeChanged))]
     public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
