@@ -14,7 +14,7 @@ public class PlayerTestMove : MonoBehaviour
 
     public CharacterController character;
 
-    float speed = 2;
+    public float speed = 2;
     void Start()
     {
         character = GetComponent<CharacterController>();
