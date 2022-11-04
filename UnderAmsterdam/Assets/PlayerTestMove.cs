@@ -19,10 +19,13 @@ public class PlayerTestMove : MonoBehaviour
     {
         character = GetComponent<CharacterController>();
 
-        if(side == RigPart.LeftController)
-            joystickLeft.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
-        else if(side == RigPart.RightController)
-            joystickRight.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
+        
+
+        side = RigPart.RightController;
+        joystickRight.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
+
+        side = RigPart.LeftController;
+        joystickLeft.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
     }
 
     public void SwitchMovementControles()
@@ -39,17 +42,13 @@ public class PlayerTestMove : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Vector3 direction;
+        Vector3 direction = new Vector3();
         if (side == RigPart.RightController) {
             direction = new Vector3(joystickLeft.action.ReadValue<Vector2>().x, 0, joystickLeft.action.ReadValue<Vector2>().y);
         }
         else if (side == RigPart.LeftController)
         {
             direction = new Vector3(joystickLeft.action.ReadValue<Vector2>().x, 0, joystickLeft.action.ReadValue<Vector2>().y);
-        }
-        else
-        {
-            direction = new Vector3(0,0,0);
         }
 
         character.Move(direction * Time.fixedDeltaTime * speed);
