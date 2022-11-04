@@ -202,8 +202,10 @@ public class CubeInteraction : NetworkBehaviour
 
     void OnPipeRender(bool isPipedCurrent)
     {
-       if (isPipedCurrent)
-            EnableTile();
+       if (isPipedCurrent) {
+        EnableTile();
+        pColouring.UpdateRenderer(company);
+       }
     }
     private int GetOppositeFace(int i)
     {
