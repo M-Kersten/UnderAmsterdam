@@ -342,7 +342,7 @@ PrefabInstance:
     - target: {fileID: 8439811097757408639, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: playerInputHandler
       value: 
-      objectReference: {fileID: 1772896282}
+      objectReference: {fileID: 0}
     - target: {fileID: 8439811097908486504, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: grabber
       value: 
@@ -392,11 +392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50dd38e6c0a83a046bdecea411398091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &340498712 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8439811097757408638, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-  m_PrefabInstance: {fileID: 237274402}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &650798173 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 878090387540590309, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
@@ -707,78 +702,12 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8439811097757408639, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
   m_PrefabInstance: {fileID: 237274402}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340498712}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16eb8d554c636c9479b4cfc59dbdf775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1772896282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340498712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d4f79fb0af50f2498dbb08405c8c1d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggerActionL:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Trigger Action L
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 8c4a6b45-3a82-4232-8b47-515ac02c5e76
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  triggerActionR:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Trigger Action R
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: a29e37ed-d282-4cfe-bdac-de63dc6f4e87
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  gripActionL:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Grip Action L
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: a7ea8ec7-a59a-48c0-8b3f-3f88b9958bee
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  gripActionR:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Grip Action R
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: ef7acb5d-9c4a-4fbd-9f3b-c33fba62be69
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  isAnyTriggerPressed: 0
-  isRightTriggerPressed: 0
-  isLeftTriggerPressed: 0
-  isAnyGripPressed: 0
-  isRightGripPressed: 0
-  isLeftGripPressed: 0
 --- !u!1 &1962436600
 GameObject:
   m_ObjectHideFlags: 0

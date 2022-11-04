@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 4976049845605849307}
   - component: {fileID: 510049773714970556}
   - component: {fileID: 7274171837970384365}
+  - component: {fileID: 2053807153919304833}
   - component: {fileID: -3057582181327743265}
   m_Layer: 7
   m_Name: Tile
@@ -290,6 +291,24 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: -3057582181327743265}
   SimulationBehaviours: []
+--- !u!114 &2053807153919304833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4976049845605849311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc31d468179e608428ffc0ac50166e50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pipeMaterials:
+  - {fileID: 2100000, guid: 57cf848f65d105e4d8c43a04f5d6d275, type: 2}
+  - {fileID: 2100000, guid: 61b04c6508745ae48b2b997c84eef0ca, type: 2}
+  - {fileID: 2100000, guid: 1e9372d4f2f16b8438cf766d17f02be0, type: 2}
+  - {fileID: 2100000, guid: aebf48dea5eddc041ad716005dc3fb8b, type: 2}
+  - {fileID: 2100000, guid: 32ed26da6161bee4da49f3f1df801da4, type: 2}
 --- !u!114 &-3057582181327743265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,8 +327,8 @@ MonoBehaviour:
   neighbors: []
   connectorPart: {fileID: 8827063062579098424}
   connectorPartPreview: {fileID: 9054164455376291729}
-  company: 0
-  TileOccupied: 0
+  _company: Empty
+  _TileOccupied: 0
   pipeParts: []
   previewPipeParts: []
   activatedPipes: 
