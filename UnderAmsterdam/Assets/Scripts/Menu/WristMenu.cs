@@ -23,17 +23,18 @@ public class WristMenu : MonoBehaviour
         // Grab the parent of this parent
         parentObject = transform.parent.transform.parent.gameObject;
         visualRadialObject = transform.GetChild(0).gameObject;
+        visualRadialObject.SetActive(true);
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {
-        // if the angle of the wrist is in between these numbers, show or don't show the menu
-        if (parentObject.transform.localEulerAngles.z < maxActiveAngle && parentObject.transform.localEulerAngles.z > minActiveAngle && parentObject.transform.localEulerAngles.x < maxActiveAnglex && parentObject.transform.localEulerAngles.x > minActiveAnglex)
-            visualRadialObject.SetActive(true);
-        else
-            visualRadialObject.SetActive(false);
-    }
+    //void FixedUpdate()
+    //{
+    //    // if the angle of the wrist is in between these numbers, show or don't show the menu
+    //    if (parentObject.transform.localEulerAngles.z < maxActiveAngle && parentObject.transform.localEulerAngles.z > minActiveAngle && parentObject.transform.localEulerAngles.x < maxActiveAnglex && parentObject.transform.localEulerAngles.x > minActiveAnglex)
+    //        visualRadialObject.SetActive(true);
+    //    else
+    //        visualRadialObject.SetActive(false);
+    //}
 
     void ChangeImage(int companyId) {
         // if we have an image for this company then show it

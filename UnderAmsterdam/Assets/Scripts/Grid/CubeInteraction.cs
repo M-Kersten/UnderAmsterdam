@@ -14,6 +14,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private NetworkObject[] neighbors;
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
+    private PipeColouring pColouring;
 
     [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] private string company {get; set;}
 
@@ -28,6 +29,9 @@ public class CubeInteraction : NetworkBehaviour
 
     public bool isHover = false;
 
+    void Start() {
+        pColouring = GetComponent<PipeColouring>();
+    }
     public override void Spawned()
     {
         OnRenderPipePreview(false);
@@ -116,7 +120,6 @@ public class CubeInteraction : NetworkBehaviour
             if (neighbors[i] != null) {
 
                 CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
-
                 if (neighborTile.company != "Empty" && (neighborTile.company == company || isHover == enable))
                 {
                     activatedPipes[i] = enable;
@@ -138,6 +141,7 @@ public class CubeInteraction : NetworkBehaviour
         TileOccupied = true;
         UpdateNeighborData(true);
         OnRenderPipePart(true);
+        pColouring.UpdateRenderer(company);
         OnRenderPipePreview(false);
     }
 
@@ -155,8 +159,10 @@ public class CubeInteraction : NetworkBehaviour
 
                     CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
 
-                    if (neighborTile.activatedPipes[GetOppositeFace(i)])
+                    if (neighborTile.activatedPipes[GetOppositeFace(i)]) {
                         neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
+                        neighborTile.pColouring.UpdateRenderer(company);
+                    }
                 }
             }
         }
