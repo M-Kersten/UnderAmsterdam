@@ -16,11 +16,13 @@ public class HandTileInteraction : NetworkBehaviour
     [Header("Ray Beamer")]
     public RayBeamer beamer;
 
+    private Collider last;
+
     private void Awake()
     {
            //beamer.onRelease.AddListener(OnBeamRelease);
-           beamer.onRelease.AddListener(onRayHit);
-           beamer.onRelease.AddListener(onRayExit);
+           beamer.onRayHit.AddListener(onRayHit);
+           beamer.onRayExit.AddListener(onRayExit);
     }
     public override void FixedUpdateNetwork()
     {
@@ -50,6 +52,9 @@ public class HandTileInteraction : NetworkBehaviour
     protected virtual void onRayHit(Collider lastHitCollider, Vector3 position)
     {
         Debug.Log("OnRayHit");
+        if (!lastHitCollider)
+            return;
+        last = lastHitCollider;
         if (lastHitCollider.gameObject.layer == 7)
         {
             lastHitCollider.gameObject.GetComponent<CubeInteraction>().OnRenderPipePreview(true);
@@ -66,8 +71,9 @@ public class HandTileInteraction : NetworkBehaviour
 
     protected virtual void onRayExit(Collider lastHitCollider, Vector3 lastHitPos)
     {
-        Debug.Log("onRayExit");
-        lastHitCollider.gameObject.GetComponent<CubeInteraction>().OnRenderPipePreview(false);
-        lastHitCollider.gameObject.GetComponent<CubeInteraction>().UpdateNeighborData(false);
+        if (!last)
+            return;
+        last.gameObject.GetComponent<CubeInteraction>().OnRenderPipePreview(false);
+        last.gameObject.GetComponent<CubeInteraction>().UpdateNeighborData(false);
     }
 }

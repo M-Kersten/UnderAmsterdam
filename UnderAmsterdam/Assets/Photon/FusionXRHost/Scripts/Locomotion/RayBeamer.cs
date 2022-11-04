@@ -113,7 +113,7 @@ namespace Fusion.XR.Host
                 }
                 else
                 {
-                    lastHitCollider = null;
+                    //lastHitCollider = null;
                     ray.target = ray.origin + origin.forward * maxDistance;
                     ray.color = noHitColor;
                     status = Status.BeamNoHit;
