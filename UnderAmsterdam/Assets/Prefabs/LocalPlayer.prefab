@@ -4555,7 +4555,7 @@ GameObject:
   - component: {fileID: 8397077673816484528}
   - component: {fileID: 8481349891358051823}
   - component: {fileID: 5285056550235599278}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: LocalPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4672,10 +4672,10 @@ MonoBehaviour:
   joystickActionL:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Joystick Action L
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 131d86c7-3f27-4564-a298-dba50d9e010d
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -4684,10 +4684,10 @@ MonoBehaviour:
   joystickActionR:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Joystick Action R
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 
+      m_Id: 39170df8-2321-41b4-8b86-b6401abb2190
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -4785,7 +4785,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
-  side: 0
+  side: 2
   character: {fileID: 0}
   speed: 1
 --- !u!143 &5285056550235599278
