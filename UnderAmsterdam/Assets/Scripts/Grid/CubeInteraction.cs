@@ -14,8 +14,9 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private NetworkObject[] neighbors;
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
+    private PipeColouring pColouring;
 
-    [SerializeField] private int company = 1;
+    [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] private string company {get; set;}
 
     [Networked(OnChanged = nameof(OnPipeChanged))]
     public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
@@ -28,7 +29,13 @@ public class CubeInteraction : NetworkBehaviour
 
     public bool isHover = false;
 
-    [SerializeField] private BoxCollider[] colliderr;
+    [SerializeField] private Collider[] neiborCollider;
+    [SerializeField] public bool modLaser;
+
+    void Start() 
+    {
+        pColouring = GetComponent<PipeColouring>();
+    }
 
     public override void Spawned()
     {
@@ -38,7 +45,8 @@ public class CubeInteraction : NetworkBehaviour
         neighbors = new NetworkObject[amountFaces]; //Cubes have 6 faces, thus we will always need 6 neigbors
         GetNeighbors();
 
-        StartCoroutine(ColliderDisable(1f));
+        if(modLaser)
+            StartCoroutine(ColliderDisable(1f));
 
         pipeParts = new GameObject[neighbors.Length];
         previewPipeParts = new GameObject[neighbors.Length];
@@ -118,6 +126,11 @@ public class CubeInteraction : NetworkBehaviour
             isHover = false;
         }
     }
+    static void onCompanyChange(Changed<CubeInteraction> changed)
+    {
+        changed.Behaviour.UpdateCompany(changed.Behaviour.company);
+        changed.Behaviour.UpdateNeighborData(true);
+    }
 
     public void UpdateNeighborData(bool enable)
     {
@@ -126,8 +139,7 @@ public class CubeInteraction : NetworkBehaviour
             if (neighbors[i] != null) {
 
                 CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
-
-                if (neighborTile.company != 0 && (neighborTile.company == company || isHover == enable))
+                if (neighborTile.company != "Empty" && (neighborTile.company == company))
                 {
                     activatedPipes[i] = enable;
                     neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
@@ -135,7 +147,10 @@ public class CubeInteraction : NetworkBehaviour
             }
         }
     }
-
+    [Tooltip("Should be activated before EnableTile()")]
+    public void UpdateCompany(string newCompany) {
+        company = newCompany;
+    }
     public void EnableTile()
     {
         if (TileOccupied)
@@ -143,13 +158,14 @@ public class CubeInteraction : NetworkBehaviour
 
         isHover = false;
         TileOccupied = true;
-        company = 1;
         UpdateNeighborData(true);
         OnRenderPipePart(true);
+        pColouring.UpdateRenderer("water");
         OnRenderPipePreview(false);
         for(int i = 0; i < 6; ++i)
         {
-            if(colliderr[i])colliderr[i].enabled = true;
+            if(neiborCollider[i])
+                neiborCollider[i].enabled = true;
         }
     }
 
@@ -167,8 +183,10 @@ public class CubeInteraction : NetworkBehaviour
 
                     CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
 
-                    if (neighborTile.activatedPipes[GetOppositeFace(i)])
+                    if (neighborTile.activatedPipes[GetOppositeFace(i)]) {
                         neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
+                        neighborTile.pColouring.UpdateRenderer("water");
+                    }
                 }
             }
         }
@@ -220,15 +238,22 @@ public class CubeInteraction : NetworkBehaviour
     {
         yield return new WaitForSeconds(time);
 
-        colliderr = new BoxCollider[6];
+        neiborCollider = new Collider[6];
         for (int j = 0; j < 6; ++j)
         {
-            while (neighbors[j] && colliderr[j] == null)
-                colliderr[j] = neighbors[j].gameObject.GetComponent<BoxCollider>();
-            if (colliderr[j] && colliderr[j].name == "TileCorner")
-                colliderr[j].enabled = true;
-            else if (colliderr[j])
-                colliderr[j].enabled = false;
+            while (neighbors[j] && neiborCollider[j] == null)
+                neiborCollider[j] = neighbors[j].gameObject.GetComponent<Collider>();
+
+            if (neiborCollider[j] && (neiborCollider[j].name == "Tile (855)" || neiborCollider[j].name == "Tile (162)"))
+            {
+                neiborCollider[j].enabled = true;
+                neiborCollider[j].gameObject.GetComponent<CubeInteraction>().UpdateCompany("water");
+                neiborCollider[j].gameObject.GetComponent<CubeInteraction>().EnableTile();
+            }
+
+
+            else if (neiborCollider[j])
+                neiborCollider[j].enabled = false;
         }
     }
 

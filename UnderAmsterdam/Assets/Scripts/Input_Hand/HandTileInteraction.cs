@@ -17,12 +17,16 @@ public class HandTileInteraction : NetworkBehaviour
     public RayBeamer beamer;
 
     private Collider last;
+    private float timeLeft;
 
     private void Awake()
     {
-           //beamer.onRelease.AddListener(OnBeamRelease);
            beamer.onRayHit.AddListener(onRayHit);
            beamer.onRayExit.AddListener(onRayExit);
+    }
+    private void Update()
+    {
+        timeLeft -= Time.deltaTime;
     }
     public override void FixedUpdateNetwork()
     {
@@ -36,36 +40,45 @@ public class HandTileInteraction : NetworkBehaviour
             if(side == RigPart.LeftController)
                 TriggerPressed = playerInputData.leftTriggerPressed;
         }
+
     }
 
-/*    private void OnTriggerStay(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
+        if (other.gameObject.layer == 7 && other.gameObject.GetComponent<CubeInteraction>().modLaser == false && TriggerPressed) // 7 is the layer for Tile
         {
-            other.gameObject.GetComponent<CubeInteraction>().EnableTile();
+            string company = transform.parent.transform.parent.gameObject.GetComponent<PlayerData>().company;
+            CubeInteraction cubeScript = other.gameObject.GetComponent<CubeInteraction>();
+            cubeScript.UpdateCompany(company);
+            cubeScript.GetComponent<CubeInteraction>().EnableTile();
             TriggerPressed = false;
             Debug.Log("Send trigger command to tile");
         }
 
-    }*/
+    }
 
     protected virtual void onRayHit(Collider lastHitCollider, Vector3 position)
     {
         Debug.Log("OnRayHit");
         if (!lastHitCollider)
             return;
-        last = lastHitCollider;
+
+
         if (lastHitCollider.gameObject.layer == 7)
         {
             lastHitCollider.gameObject.GetComponent<CubeInteraction>().OnRenderPipePreview(true);
             lastHitCollider.gameObject.GetComponent<CubeInteraction>().UpdateNeighborData(true);
+            last = lastHitCollider;
         }
 
-        if (lastHitCollider.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
+        if (lastHitCollider.gameObject.layer == 7 && TriggerPressed && timeLeft <= 0) // 7 is the layer for Tile
         {
-            lastHitCollider.gameObject.GetComponent<CubeInteraction>().EnableTile();
+            string company = transform.parent.transform.parent.gameObject.GetComponent<PlayerData>().company;
+            CubeInteraction cubeScript = lastHitCollider.gameObject.GetComponent<CubeInteraction>();
+            cubeScript.UpdateCompany(company);
+            cubeScript.GetComponent<CubeInteraction>().EnableTile();
             TriggerPressed = false;
-            Debug.Log("Send trigger command to tile");
+            timeLeft += 0.6f;
         }
     }
 

@@ -75,7 +75,7 @@ namespace Fusion.XR.Host
 
         public virtual void Start()
         {
-            rayAction.EnableWithDefaultXRBindings(side, new List<string> { "thumbstickClicked", "primaryButton", "secondaryButton" });
+            rayAction.EnableWithDefaultXRBindings(side, new List<string> {"grip", "primaryButton", "secondaryButton" });
         }
 
         public bool BeamCast(out RaycastHit hitInfo, Vector3 origin, Vector3 direction)
@@ -104,6 +104,8 @@ namespace Fusion.XR.Host
                 ray.origin = origin.position;
                 if (BeamCast(out RaycastHit hit))
                 {
+                    if(lastHitCollider != null && lastHitCollider != hit.collider)
+                        if (onRayExit != null) onRayExit.Invoke(lastHitCollider, lastHit);
                     lastHitCollider = hit.collider;
                     ray.target = hit.point;
                     ray.color = hitColor;
@@ -125,6 +127,7 @@ namespace Fusion.XR.Host
                 if (status == Status.BeamHit)
                 {
                     if (onRelease != null) onRelease.Invoke(lastHitCollider, lastHit);
+                    if (onRayExit != null) onRayExit.Invoke(lastHitCollider, lastHit);
                 }
                 status = Status.NoBeam;
                 lastHitCollider = null;
