@@ -44,11 +44,11 @@ public class PlayerTestMove : MonoBehaviour
     {
         Vector3 direction = new Vector3();
         if (side == RigPart.RightController) {
-            direction = new Vector3(joystickLeft.action.ReadValue<Vector2>().x, 0, joystickLeft.action.ReadValue<Vector2>().y);
+            direction = new Vector3(joystickLeft.action.ReadValue<Vector2>().x * Mathf.Cos(transform.rotation.y) + joystickLeft.action.ReadValue<Vector2>().y * Mathf.Sin(transform.rotation.y), 0, joystickLeft.action.ReadValue<Vector2>().y * Mathf.Cos(transform.rotation.y) + joystickLeft.action.ReadValue<Vector2>().x * Mathf.Sin(transform.rotation.y));
         }
         else if (side == RigPart.LeftController)
         {
-            direction = new Vector3(joystickLeft.action.ReadValue<Vector2>().x, 0, joystickLeft.action.ReadValue<Vector2>().y);
+            direction = new Vector3(joystickLeft.action.ReadValue<Vector2>().x * Mathf.Cos(transform.rotation.y) + joystickLeft.action.ReadValue<Vector2>().y * Mathf.Sin(transform.rotation.y), 0, joystickLeft.action.ReadValue<Vector2>().y * Mathf.Cos(transform.rotation.y) + joystickLeft.action.ReadValue<Vector2>().x * Mathf.Sin(transform.rotation.y));
         }
 
         character.Move(direction * Time.fixedDeltaTime * speed);
