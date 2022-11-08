@@ -16,7 +16,8 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview;
     private PipeColouring pColouring;
 
-    [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] private string company {get; set;}
+    [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] 
+    private string company {get; set;}
 
     [Networked(OnChanged = nameof(OnPipeChanged))]
     public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
@@ -110,7 +111,7 @@ public class CubeInteraction : NetworkBehaviour
     static void onCompanyChange(Changed<CubeInteraction> changed)
     {
         changed.Behaviour.UpdateCompany(changed.Behaviour.company);
-        changed.Behaviour.UpdateNeighborData(true);
+        //changed.Behaviour.UpdateNeighborData(true);
     }
 
     private void UpdateNeighborData(bool enable)
@@ -119,9 +120,11 @@ public class CubeInteraction : NetworkBehaviour
         {
             if (neighbors[i] != null) 
             {
+                Debug.Log(neighbors[i].name + " " + activatedPipes[i] + " " + company);
                 CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
                 if (neighborTile.company != "Empty" && (neighborTile.company == company))
                 {
+                    Debug.Log("neighor company: " + neighborTile.company + " my company: " + company);
                     activatedPipes[i] = enable;
                     neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
                 }            

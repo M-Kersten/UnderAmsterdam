@@ -4,54 +4,35 @@ using UnityEngine;
 
 public class PipeColouring : MonoBehaviour
 {
-    [SerializeField] Material[] pipeMaterials;
-    private GameObject childParent;
-    private GameObject activeChild;
+    [Tooltip("Circle between connecting pipes")]
+    [SerializeField] private GameObject connectorPiece;
+    [Tooltip("Parent of where all pipes are stored")]
+    [SerializeField] private GameObject pipeParent;
+
+    [Tooltip("All pipe materials, named same as company")]
+    [SerializeField] private Material[] pipeMaterials;
+    [Tooltip("All pipe options")]
+    [SerializeField] private GameObject[] pipeChildren;
 
     public void UpdateRenderer(string pipeCompany) {
 
-        childParent = transform.GetChild(0).transform.GetChild(0).gameObject;
-
-        for (int i = 0; i < childParent.transform.childCount; i++)
+        for (int i = 0; i < pipeChildren.Length; i++)
         {
-            if(childParent.transform.GetChild(i).gameObject.activeSelf == true)
+            if(pipeChildren[i].activeSelf == true)
             {
-                activeChild = childParent.transform.GetChild(i).transform.GetChild(0).gameObject;
-                TestColour(pipeCompany, activeChild);
+                ColourPipe(pipeCompany, pipeChildren[i].transform.GetChild(0).gameObject);
             }
         }
     }
 
-    void TestColour(string company, GameObject affectedChild) {
+    void ColourPipe(string company, GameObject affectedChild) {
         
         for (int i = 0; i < pipeMaterials.Length; i++)
         {
             if (pipeMaterials[i].name == company) {
                 affectedChild.GetComponent<Renderer>().material = pipeMaterials[i];
+                connectorPiece.GetComponent<Renderer>().material = pipeMaterials[i];
             }
         }
     }
-
-    //void SetColour(string company) {
-    //    switch (company) {
-    //        case "data":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "water":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "sewage":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "gas":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "power":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        default: 
-    //
-    //        break;
-    //    }
-    //}
 }
