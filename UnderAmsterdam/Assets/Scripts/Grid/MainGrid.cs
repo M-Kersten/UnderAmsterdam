@@ -8,14 +8,14 @@ using Fusion.XR.Host.Rig;
 public class MainGrid : MonoBehaviour
 {
     //For the companies
-    private CompaniesTMP[] companies; //TO REPLACE
+    private CompaniesTMP[] companies; //REPLACE EVERY INSTANCE WITH COMPANY CODE (In ioScript as well) THEN REMOVE "CompaniesTMP.cs"
 
     //For the pathFinding
     private bool[,,] isVisited;
     private NetworkObject neighborTile;
     private int tileCount, returnValue;
 
-    public int width = 16, height = 2, depth = 23;
+    public int width = 16, height = 3, depth = 23;
 
     private int NUMBER_OF_COMPANIES = 5;
     private int NUMBER_OF_FACES_CUBE = 6;

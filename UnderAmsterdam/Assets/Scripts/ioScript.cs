@@ -107,6 +107,7 @@ public class ioScript : MonoBehaviour
             }
         }
 
+        //CORRECT THIS PART WITH THE COMPANY CODE
         pipeData = addedPipe.GetComponent<IOTileData>();
         pipeData.isInput = isInput;
         pipeData.company = company;

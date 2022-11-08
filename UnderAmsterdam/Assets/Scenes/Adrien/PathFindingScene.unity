@@ -251,6 +251,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 308705444788378547, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1450127801097228436, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_TagString
       value: RightHand
@@ -265,7 +269,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8439811097757408637, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8439811097757408637, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_LocalPosition.z
@@ -805,7 +809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6451555088811095712, guid: 908624305019d3c47b4f0caaad3fa0c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.49
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8680109305133941378, guid: 908624305019d3c47b4f0caaad3fa0c4, type: 3}
       propertyPath: Flags
@@ -5264,3 +5268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97eadb0f2cb025f48bcb747e1b8042a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 16
+  height: 3
+  depth: 23
