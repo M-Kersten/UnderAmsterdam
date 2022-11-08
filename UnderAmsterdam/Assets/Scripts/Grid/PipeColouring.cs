@@ -14,25 +14,30 @@ public class PipeColouring : MonoBehaviour
     [Tooltip("All pipe options")]
     [SerializeField] private GameObject[] pipeChildren;
 
-    public void UpdateRenderer(string pipeCompany) {
+    public void UpdateRenderer(string pipeCompany, GameObject givenGO = null) {
 
-        for (int i = 0; i < pipeChildren.Length; i++)
-        {
-            if(pipeChildren[i].activeSelf == true)
+        if(!givenGO) {
+            for (int i = 0; i < pipeChildren.Length; i++)
             {
-                ColourPipe(pipeCompany, pipeChildren[i].transform.GetChild(0).gameObject);
+                if(pipeChildren[i].activeSelf == true)
+                {
+                    ColourPipe(pipeCompany, pipeChildren[i].transform.GetChild(0).gameObject);
+                }
             }
+        } else {
+            ColourPipe(pipeCompany, givenGO);
         }
     }
 
+    // Colour the connecting pipes when placed
     void ColourPipe(string company, GameObject affectedChild) {
         
         for (int i = 0; i < pipeMaterials.Length; i++)
         {
             if (pipeMaterials[i].name == company) {
                 affectedChild.GetComponent<Renderer>().material = pipeMaterials[i];
-                connectorPiece.GetComponent<Renderer>().material = pipeMaterials[i];
+                //connectorPiece.GetComponent<Renderer>().material = pipeMaterials[i];
+                }
             }
         }
-    }
 }

@@ -111,7 +111,6 @@ public class CubeInteraction : NetworkBehaviour
     static void onCompanyChange(Changed<CubeInteraction> changed)
     {
         changed.Behaviour.UpdateCompany(changed.Behaviour.company);
-        //changed.Behaviour.UpdateNeighborData(true);
     }
 
     private void UpdateNeighborData(bool enable)
@@ -151,6 +150,8 @@ public class CubeInteraction : NetworkBehaviour
     private void OnRenderPipePart(bool isActive)
     {
         connectorPart.SetActive(isActive);
+        pColouring.UpdateRenderer(company, connectorPart);
+
         for (int i = 0; i < neighbors.Length; i++)
         {
             if (previewPipeParts[i] != null)
