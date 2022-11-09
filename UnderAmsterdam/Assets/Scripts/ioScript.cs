@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ioScript : MonoBehaviour
 {
+    // To set the input pipe Game Object in the MainGrid script
+    public GameObject grid;
+    private MainGrid gridScript;
 
     public int width = 16;//x
     public int height = 3;//y
@@ -17,11 +20,15 @@ public class ioScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gridScript = grid.GetComponent<MainGrid>();
+
+        // Random seed is set
         Random.InitState((int)System.DateTime.Now.Ticks);
 
         eastGrid = new GameObject[height * width];
         westGrid = new GameObject[height * width];
 
+        // Filling the GameObject arrays with all the IOTiles
         int i = 0;
         foreach (Transform tile in eastWall)
         {
@@ -61,8 +68,8 @@ public class ioScript : MonoBehaviour
         {
             //Randomly Choosing the wall among the 4 ones and the coordinates
             wallSelec = Random.Range(2, 4);
-            lineSelec = Random.Range(0, height);
-            columnSelec = Random.Range(0, wallSelec < 2 ? depth : width);
+            lineSelec = (int)(Random.value * height);
+            columnSelec = (int)(Random.value * (wallSelec < 2 ? depth : width));
 
             //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
             switch (wallSelec)
@@ -106,10 +113,10 @@ public class ioScript : MonoBehaviour
             }
         }
         
-        //CORRECT THIS PART WITH THE COMPANY CODE
         pipeData = addedPipe.GetComponent<IOTileData>();
         pipeData.isInput = isInput;
         pipeData.company = company;
+        if (isInput) gridScript.companiesInput[company] = addedPipe;
 
     }
 }
