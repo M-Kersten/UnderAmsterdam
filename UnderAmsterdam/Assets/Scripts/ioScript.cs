@@ -5,29 +5,37 @@ using UnityEngine;
 public class ioScript : MonoBehaviour
 {
 
-    public GameObject ioPipe;
-    public Transform parent;
-
     public int width = 16;//x
     public int height = 3;//y
     public int depth = 23;//z
 
-    private GameObject[,,] wallGridNS;
-    private GameObject[,,] wallGridEW;
-
-    private bool placedPipe;
-
-    private int wallSelec;
-    private int lineSelec;
-    private int columnSelec;
+    private GameObject[] eastGrid;
+    private GameObject[] westGrid;
+    public Transform eastWall;
+    public Transform westWall;
 
     // Start is called before the first frame update
     void Start()
     {
-        wallGridNS = new GameObject[2, height, depth];
-        wallGridEW = new GameObject[2, height, width];
+        Random.InitState((int)System.DateTime.Now.Ticks);
 
-        //Adding the two first Input and Output
+        eastGrid = new GameObject[height * width];
+        westGrid = new GameObject[height * width];
+
+        int i = 0;
+        foreach (Transform tile in eastWall)
+        {
+            eastGrid[i++] = tile.gameObject;
+            tile.gameObject.SetActive(false);
+        }
+        i = 0;
+        foreach (Transform tile in westWall)
+        {
+            westGrid[i++] = tile.gameObject;
+            tile.gameObject.SetActive(false);
+        }
+
+        // Adding the two first Input and Output
         addPipe(0, true);
         addPipe(0, false);
     }
@@ -43,75 +51,65 @@ public class ioScript : MonoBehaviour
 
     private void addPipe(int company, bool isInput)
     {
-
         GameObject addedPipe = null;
         IOTileData pipeData;
 
+        bool placedPipe = false;
+        int wallSelec, lineSelec, columnSelec;
+
         while (!placedPipe)
         {
-            //Randomly Choosing the wall among the 4 ones
-            wallSelec = Random.Range(0, 4);
+            //Randomly Choosing the wall among the 4 ones and the coordinates
+            wallSelec = Random.Range(2, 4);
+            lineSelec = Random.Range(0, height);
+            columnSelec = Random.Range(0, wallSelec < 2 ? depth : width);
 
+            //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
             switch (wallSelec)
             {
-                //For each wall is chosen a random column then checking
+                //DECOMMENT THIS PART IF THERE IS NORTH AND SOUTH WALLS
+                /*
                 case 0:
-                    lineSelec = Random.Range(0, height);
-                    columnSelec = Random.Range(0, depth);
-
-                    if (!wallGridNS[0, lineSelec, columnSelec])
+                    if (!northGrid[height * lineSelec + columnSelec].activeSelf)
                     {
                         placedPipe = true;
-                        //Placing and orienting the pipe accordingly to its position
-                        addedPipe = Instantiate(ioPipe, transform.position + new Vector3(width / 4f, lineSelec / 2f, columnSelec / 2f - (depth + 1) / 4f), Quaternion.identity, parent);
-                        wallGridNS[0, lineSelec, columnSelec] = addedPipe; //SEE IF CAN BE REMOVED
+                        addedPipe = northGrid[height * lineSelec + columnSelec];
+                        northGrid[height * lineSelec + columnSelec].SetActive(true);
                     }
 
                     break;
                 case 1:
-                    lineSelec = Random.Range(0, height);
-                    columnSelec = Random.Range(0, depth);
-
-                    if (!wallGridNS[1, lineSelec, columnSelec])
+                    if (!southGrid[height * lineSelec + columnSelec].activeSelf)
                     {
                         placedPipe = true;
-                        addedPipe = Instantiate(ioPipe, transform.position + new Vector3(-0.5f - width / 4f, lineSelec / 2f, columnSelec / 2f - (depth - 1) / 4f), Quaternion.Euler(0, 180, 0), parent);
-                        wallGridNS[1, lineSelec, columnSelec] = addedPipe;
+                        addedPipe = southGrid[height * lineSelec + columnSelec];
+                        southGrid[height * lineSelec + columnSelec].SetActive(true);
                     }
 
-                    break;
+                    break;*/
                 case 2:
-                    lineSelec = Random.Range(0, height);
-                    columnSelec = Random.Range(0, width);
-
-                    if (!wallGridEW[0, lineSelec, columnSelec])
+                    if (!eastGrid[height * lineSelec + columnSelec].activeSelf)
                     {
                         placedPipe = true;
-                        addedPipe = Instantiate(ioPipe, transform.position + new Vector3(columnSelec / 2f - width / 4, lineSelec / 2f, -(depth + 1) / 4f), Quaternion.Euler(0, 90, 0), parent);
-                        wallGridEW[0, lineSelec, columnSelec] = addedPipe;
+                        addedPipe = eastGrid[height * lineSelec + columnSelec];
+                        eastGrid[height * lineSelec + columnSelec].SetActive(true);
                     }
-
                     break;
                 case 3:
-                    lineSelec = Random.Range(0, height);
-                    columnSelec = Random.Range(0, width);
-
-                    if (!wallGridEW[1, lineSelec, columnSelec])
+                    if (!westGrid[height * lineSelec + columnSelec].activeSelf)
                     {
                         placedPipe = true;
-                        addedPipe = Instantiate(ioPipe, transform.position + new Vector3(-0.5f + columnSelec / 2f - width / 4, lineSelec / 2f, (depth + 1) / 4), Quaternion.Euler(0, -90, 0), parent);
-                        wallGridEW[1, lineSelec, columnSelec] = addedPipe;
+                        addedPipe = westGrid[height * lineSelec + columnSelec];
+                        westGrid[height * lineSelec + columnSelec].SetActive(true);
                     }
-
                     break;
             }
         }
-
+        
         //CORRECT THIS PART WITH THE COMPANY CODE
         pipeData = addedPipe.GetComponent<IOTileData>();
         pipeData.isInput = isInput;
         pipeData.company = company;
-        placedPipe = false;
 
     }
 }
