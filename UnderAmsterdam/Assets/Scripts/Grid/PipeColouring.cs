@@ -19,12 +19,15 @@ public class PipeColouring : MonoBehaviour
         if(!givenGO) {
             for (int i = 0; i < pipeChildren.Length; i++)
             {
+                 // Go through the children and find the active one
                 if(pipeChildren[i].activeSelf == true)
                 {
+                    // Give the company and the gameobject where the materials are on
                     ColourPipe(pipeCompany, pipeChildren[i].transform.GetChild(0).gameObject);
                 }
             }
         } else {
+            // Is anything other than a pipe, like connector piece
             ColourPipe(pipeCompany, givenGO);
         }
     }
@@ -36,7 +39,6 @@ public class PipeColouring : MonoBehaviour
         {
             if (pipeMaterials[i].name == company) {
                 affectedChild.GetComponent<Renderer>().material = pipeMaterials[i];
-                //connectorPiece.GetComponent<Renderer>().material = pipeMaterials[i];
                 }
             }
         }

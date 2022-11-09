@@ -8,19 +8,21 @@ public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
     private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
-    [SerializeField] public Dictionary<string, int> _companies = new Dictionary<string, int> {
-	{"water", 0},
-	{"gas", 0},
-	{"data", 0},
-    {"sewage", 0},
-    {"power", 0}
-};
+    PlayerRef emptyPlayer = new();
+    [SerializeField] public Dictionary<string, PlayerRef> _companies;
     private ConnectionManager cManager;
     
     void Start(){
         cManager = GetComponent<ConnectionManager>();
         Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
         Gamemanager.Instance.RoundStart.AddListener(loadSend);
+        _companies = new Dictionary<string, PlayerRef> {
+    {"water", emptyPlayer},
+    {"gas", emptyPlayer},
+    {"data", emptyPlayer},
+    {"sewage", emptyPlayer},
+    {"power", emptyPlayer}
+        };
     }
 
     string GetCompany(PlayerRef player) {
@@ -28,7 +30,7 @@ public class CompanyManager : MonoBehaviour
             int randomCompany = Random.Range(0, availableCompanies.Count);
             string myCompany = availableCompanies[randomCompany];
             // Add player to company
-            _companies[myCompany] = player.PlayerId;
+            _companies[myCompany] = player;
             // Remove random company from available company list, so we don't have 2 players in same company
             availableCompanies.RemoveAt(randomCompany);
             return myCompany;
@@ -52,12 +54,11 @@ public class CompanyManager : MonoBehaviour
     public void ResetCompanies() {
         // Reset given companies
         availableCompanies = new List<string>{"water","gas","data","sewage","power"};
-        _companies = new Dictionary<string, int> {
-            {"water", 0},
-            {"gas", 0},
-            {"data", 0},
-            {"sewage", 0},
-            {"power", 0}
-        };
+        _companies = new Dictionary<string, PlayerRef> {
+    {"water", emptyPlayer},
+    {"gas", emptyPlayer},
+    {"data", emptyPlayer},
+    {"sewage", emptyPlayer},
+    {"power", emptyPlayer}};
     }
 }
