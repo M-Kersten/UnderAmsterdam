@@ -8,7 +8,7 @@ public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
     private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
-    [SerializeField] private Dictionary<string, int> _companies = new Dictionary<string, int> {
+    [SerializeField] public Dictionary<string, int> _companies = new Dictionary<string, int> {
 	{"water", 0},
 	{"gas", 0},
 	{"data", 0},
@@ -27,8 +27,9 @@ public class CompanyManager : MonoBehaviour
         if (availableCompanies.Count > 0) {
             int randomCompany = Random.Range(0, availableCompanies.Count);
             string myCompany = availableCompanies[randomCompany];
+            // Add player to company
             _companies[myCompany] = player.PlayerId;
-            // Remove random company from company list, so we don't have 2 players in same company
+            // Remove random company from available company list, so we don't have 2 players in same company
             availableCompanies.RemoveAt(randomCompany);
             return myCompany;
         }
@@ -51,5 +52,12 @@ public class CompanyManager : MonoBehaviour
     public void ResetCompanies() {
         // Reset given companies
         availableCompanies = new List<string>{"water","gas","data","sewage","power"};
+        _companies = new Dictionary<string, int> {
+            {"water", 0},
+            {"gas", 0},
+            {"data", 0},
+            {"sewage", 0},
+            {"power", 0}
+        };
     }
 }
