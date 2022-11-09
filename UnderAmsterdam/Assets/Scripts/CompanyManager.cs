@@ -8,19 +8,20 @@ public class CompanyManager : MonoBehaviour
 {
     [SerializeField]
     private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
-    [SerializeField] public Dictionary<string, int> _companies = new Dictionary<string, int> {
+    [SerializeField] public Dictionary<string, int> _companies;
+    private ConnectionManager cManager;
+    
+    void Start(){
+        cManager = GetComponent<ConnectionManager>();
+        Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
+        Gamemanager.Instance.RoundStart.AddListener(LoadSend);
+        _companies = new Dictionary<string, int> {
 	{"water", 0},
 	{"gas", 0},
 	{"data", 0},
     {"sewage", 0},
     {"power", 0}
 };
-    private ConnectionManager cManager;
-    
-    void Start(){
-        cManager = GetComponent<ConnectionManager>();
-        Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
-        Gamemanager.Instance.RoundStart.AddListener(loadSend);
     }
 
     string GetCompany(PlayerRef player) {
@@ -36,7 +37,7 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
-    public void loadSend() {
+    public void LoadSend() {
         foreach(var player in cManager._spawnedUsers) {
             SendCompany(player.Key, player.Value);
         }
