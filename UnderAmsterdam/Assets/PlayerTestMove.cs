@@ -7,21 +7,20 @@ using UnityEngine.InputSystem;
 
 public class PlayerTestMove : MonoBehaviour
 {
-    public InputActionProperty joystickLeft;
-    public InputActionProperty joystickRight;
+    [SerializeField] private InputActionProperty joystickLeft;
+    [SerializeField] private InputActionProperty joystickRight;
+    [SerializeField] private RigPart side;
+    [SerializeField] private Transform mainCam;
+    [SerializeField] private float speed = 2;
 
-    public RigPart side;
+    private CharacterController character;
+    private Vector3 direction;
+    private Quaternion headQ;
 
-    public CharacterController character;
-
-    public Transform headset;
-
-    public float speed = 2;
     void Start()
     {
         character = GetComponent<CharacterController>();
         
-
         side = RigPart.RightController;
         joystickRight.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
 
@@ -33,25 +32,21 @@ public class PlayerTestMove : MonoBehaviour
     {
         if (side == RigPart.LeftController) {
             side = RigPart.RightController;
-            joystickRight.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
         }
         else if (side == RigPart.RightController) {
             side = RigPart.LeftController;
-            joystickLeft.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
         }
-        
     }
     private void FixedUpdate()
     {
-        Vector3 direction = new Vector3();
+        headQ = Quaternion.Euler(0, mainCam.eulerAngles.y, 0);
 
         if (side == RigPart.RightController) {
-            Quaternion headQ = Quaternion.Euler(0, headset.eulerAngles.y, 0);
+            
             direction = headQ * new Vector3(joystickRight.action.ReadValue<Vector2>().x, 0, joystickRight.action.ReadValue<Vector2>().y);
         }
         else if (side == RigPart.LeftController)
         {
-            Quaternion headQ = Quaternion.Euler(0, headset.eulerAngles.y, 0);
             direction = headQ * new Vector3(joystickLeft.action.ReadValue<Vector2>().x, 0, joystickLeft.action.ReadValue<Vector2>().y);
         }
 
