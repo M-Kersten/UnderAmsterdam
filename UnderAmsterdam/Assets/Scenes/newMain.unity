@@ -1297,6 +1297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e89570be989dd7c46973e491a378fd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   width: 16
   height: 3
   depth: 23
@@ -3377,6 +3378,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5072343182199977248, guid: c05a51c34d64c494dbf1cd7f8f133fd4, type: 3}
   m_PrefabInstance: {fileID: 2044302194}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &704339753 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2055609366036474013, guid: 908624305019d3c47b4f0caaad3fa0c4, type: 3}
+  m_PrefabInstance: {fileID: 2055609365860431427}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &704339755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704339753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97eadb0f2cb025f48bcb747e1b8042a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  companiesInput: []
+  companiesTilesNb: 
+  width: 16
+  height: 3
+  depth: 23
 --- !u!4 &710095789 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5072343182199977248, guid: c05a51c34d64c494dbf1cd7f8f133fd4, type: 3}

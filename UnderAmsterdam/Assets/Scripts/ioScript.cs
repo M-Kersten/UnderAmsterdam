@@ -4,43 +4,36 @@ using UnityEngine;
 
 public class ioScript : MonoBehaviour
 {
-    // To set the input pipe Game Object in the MainGrid script
-    public GameObject grid;
-    private MainGrid gridScript;
+    public GameObject player;
+    private int company;
 
     public int width = 16;//x
     public int height = 3;//y
     public int depth = 23;//z
 
-    private GameObject[] eastGrid;
-    private GameObject[] westGrid;
+    private IOTileData[] eastGrid;
+    private IOTileData[] westGrid;
     public Transform eastWall;
     public Transform westWall;
 
     // Start is called before the first frame update
     void Start()
     {
-        gridScript = grid.GetComponent<MainGrid>();
+        //company = player.GetComponent<PlayerData>().company; // GET THE PLAYER COMPANY HERE
 
         // Random seed is set
         Random.InitState((int)System.DateTime.Now.Ticks);
 
-        eastGrid = new GameObject[height * width];
-        westGrid = new GameObject[height * width];
+        eastGrid = new IOTileData[height * width];
+        westGrid = new IOTileData[height * width];
 
         // Filling the GameObject arrays with all the IOTiles
         int i = 0;
         foreach (Transform tile in eastWall)
-        {
-            eastGrid[i++] = tile.gameObject;
-            tile.gameObject.SetActive(false);
-        }
+            eastGrid[i++] = tile.gameObject.GetComponent<IOTileData>();
         i = 0;
         foreach (Transform tile in westWall)
-        {
-            westGrid[i++] = tile.gameObject;
-            tile.gameObject.SetActive(false);
-        }
+            westGrid[i++] = tile.gameObject.GetComponent<IOTileData>();
 
         // Adding the two first Input and Output
         addPipe(0, true);
@@ -58,65 +51,22 @@ public class ioScript : MonoBehaviour
 
     private void addPipe(int company, bool isInput)
     {
-        GameObject addedPipe = null;
-        IOTileData pipeData;
-
         bool placedPipe = false;
         int wallSelec, lineSelec, columnSelec;
 
         while (!placedPipe)
         {
             //Randomly Choosing the wall among the 4 ones and the coordinates
-            wallSelec = Random.Range(2, 4);
+            wallSelec = Random.Range(0, 2);
             lineSelec = (int)(Random.value * height);
             columnSelec = (int)(Random.value * (wallSelec < 2 ? depth : width));
 
             //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
-            switch (wallSelec)
-            {
-                //DECOMMENT THIS PART IF THERE IS NORTH AND SOUTH WALLS
-                /*
-                case 0:
-                    if (!northGrid[height * lineSelec + columnSelec].activeSelf)
-                    {
-                        placedPipe = true;
-                        addedPipe = northGrid[height * lineSelec + columnSelec];
-                        northGrid[height * lineSelec + columnSelec].SetActive(true);
-                    }
-
-                    break;
-                case 1:
-                    if (!southGrid[height * lineSelec + columnSelec].activeSelf)
-                    {
-                        placedPipe = true;
-                        addedPipe = southGrid[height * lineSelec + columnSelec];
-                        southGrid[height * lineSelec + columnSelec].SetActive(true);
-                    }
-
-                    break;*/
-                case 2:
-                    if (!eastGrid[height * lineSelec + columnSelec].activeSelf)
-                    {
-                        placedPipe = true;
-                        addedPipe = eastGrid[height * lineSelec + columnSelec];
-                        eastGrid[height * lineSelec + columnSelec].SetActive(true);
-                    }
-                    break;
-                case 3:
-                    if (!westGrid[height * lineSelec + columnSelec].activeSelf)
-                    {
-                        placedPipe = true;
-                        addedPipe = westGrid[height * lineSelec + columnSelec];
-                        westGrid[height * lineSelec + columnSelec].SetActive(true);
-                    }
-                    break;
-            }
+            // ADD MORE WALLS IF NEEDED
+            if (wallSelec == 0)
+                placedPipe = eastGrid[height * lineSelec + columnSelec].OnEnableIO(company, isInput);
+            else
+                placedPipe = westGrid[height * lineSelec + columnSelec].OnEnableIO(company, isInput);
         }
-        
-        pipeData = addedPipe.GetComponent<IOTileData>();
-        pipeData.isInput = isInput;
-        pipeData.company = company;
-        if (isInput) gridScript.companiesInput[company] = addedPipe;
-
     }
 }
