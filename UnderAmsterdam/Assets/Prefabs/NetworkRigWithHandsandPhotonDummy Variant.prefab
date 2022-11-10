@@ -398,6 +398,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4f79fb0af50f2498dbb08405c8c1d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joystickActionL:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 4b6d673b-1b47-49d8-bd7c-e3cd2a49d983
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  joystickActionR:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 2625706c-3370-4e45-958c-e1fdb5ebc300
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
   triggerActionL:
     m_UseReference: 0
     m_Action:
@@ -446,6 +470,8 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
+  leftjoystickPosition: {x: 0, y: 0}
+  rightjoystickPosition: {x: 0, y: 0}
   isAnyTriggerPressed: 0
   isRightTriggerPressed: 0
   isLeftTriggerPressed: 0

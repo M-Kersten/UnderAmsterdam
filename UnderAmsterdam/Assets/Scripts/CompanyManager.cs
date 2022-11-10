@@ -23,7 +23,6 @@ public class CompanyManager : MonoBehaviour
             string myCompany = availableCompanies[randomCompany];
             // Remove random company from company list, so we don't have 2 players in same company
             availableCompanies.RemoveAt(randomCompany);
-            Debug.Log(randomCompany + " " + myCompany + " " + availableCompanies.Count);
             return myCompany;
         }
         return "Empty";
@@ -39,7 +38,7 @@ public class CompanyManager : MonoBehaviour
     private void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
         string sentCompany = GetCompany();
         // Grab the playerdata of the player we want to send the company to
-        player.gameObject.GetComponent<PlayerData>().RPC_ReceiveCompany(targetPlayer, sentCompany);
+        player.gameObject.GetComponent<PlayerData>().ReceiveCompany(sentCompany);
     }
 
     public void ResetCompanies() {
