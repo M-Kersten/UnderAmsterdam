@@ -16,7 +16,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview;
     private PipeColouring pColouring;
 
-    [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] 
+    [Networked(OnChanged = nameof(onCompanyChange))] 
     private string company {get; set;}
 
     [Networked(OnChanged = nameof(OnPipeChanged))]
@@ -52,6 +52,7 @@ public class CubeInteraction : NetworkBehaviour
             previewPipeParts[i++] = pipePreview.gameObject;
 
         activatedPipes = new bool[neighbors.Length]; //Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
+        company = "Empty";
     }
 
     private void GetNeighbors()
@@ -111,6 +112,7 @@ public class CubeInteraction : NetworkBehaviour
     static void onCompanyChange(Changed<CubeInteraction> changed)
     {
         changed.Behaviour.UpdateCompany(changed.Behaviour.company);
+        changed.Behaviour.UpdateNeighborData(true);
     }
 
     private void UpdateNeighborData(bool enable)
@@ -194,20 +196,15 @@ public class CubeInteraction : NetworkBehaviour
 
     static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
     {
-        Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.TileOccupied}");
         bool isPipedCurrent = changed.Behaviour.TileOccupied;
-
-        //Load the old value of isPiped
-        changed.LoadOld();
-
+    
         changed.Behaviour.OnPipeRender(isPipedCurrent);
     }
-
+    
     void OnPipeRender(bool isPipedCurrent)
     {
        if (isPipedCurrent) {
         EnableTile();
-        pColouring.UpdateRenderer(company);
        }
     }
     private int GetOppositeFace(int i)
