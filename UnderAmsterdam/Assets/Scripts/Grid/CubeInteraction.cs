@@ -16,7 +16,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview;
     private PipeColouring pColouring;
 
-    [Networked(OnChanged = nameof(onCompanyChange))] 
+    [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] 
     private string company {get; set;}
 
     [Networked(OnChanged = nameof(OnPipeChanged))]
@@ -134,6 +134,7 @@ public class CubeInteraction : NetworkBehaviour
     public void UpdateCompany(string newCompany) {
         company = newCompany;
         pColouring.UpdateRenderer(company);
+        EnableTile();
     }
     public void EnableTile()
     {
@@ -196,7 +197,11 @@ public class CubeInteraction : NetworkBehaviour
 
     static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
     {
+        Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.TileOccupied}");
         bool isPipedCurrent = changed.Behaviour.TileOccupied;
+
+        //Load the old value of isPiped
+        changed.LoadNew();
     
         changed.Behaviour.OnPipeRender(isPipedCurrent);
     }
@@ -205,6 +210,7 @@ public class CubeInteraction : NetworkBehaviour
     {
        if (isPipedCurrent) {
         EnableTile();
+        pColouring.UpdateRenderer(company);
        }
     }
     private int GetOppositeFace(int i)
