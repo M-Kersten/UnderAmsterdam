@@ -131,6 +131,7 @@ public class CubeInteraction : NetworkBehaviour
     [Tooltip("Should be activated before EnableTile()")]
     public void UpdateCompany(string newCompany) {
         company = newCompany;
+        pColouring.UpdateRenderer(company);
     }
     public void EnableTile()
     {
