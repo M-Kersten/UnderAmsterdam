@@ -49,7 +49,7 @@ public class ioScript : MonoBehaviour
         }
     }
 
-    private void addPipe(int company, bool isInput)
+    private void addPipe(int company, bool isOutput)
     {
         bool placedPipe = false;
         int wallSelec, lineSelec, columnSelec;
@@ -64,9 +64,9 @@ public class ioScript : MonoBehaviour
             //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
             // ADD MORE WALLS IF NEEDED
             if (wallSelec == 0)
-                placedPipe = eastGrid[height * lineSelec + columnSelec].OnEnableIO(company, isInput);
+                placedPipe = eastGrid[height * lineSelec + columnSelec].OnEnableIO(company, isOutput, false);
             else
-                placedPipe = westGrid[height * lineSelec + columnSelec].OnEnableIO(company, isInput);
+                placedPipe = westGrid[height * lineSelec + columnSelec].OnEnableIO(company, isOutput, true);
         }
     }
 }

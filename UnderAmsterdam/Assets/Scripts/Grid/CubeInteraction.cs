@@ -27,6 +27,7 @@ public class CubeInteraction : NetworkBehaviour
     private int amountFaces = 6;
 
     public bool isHover = false;
+    public bool isChecked = false;
 
     public override void Spawned()
     {
@@ -82,6 +83,27 @@ public class CubeInteraction : NetworkBehaviour
             neighbors[(int)Direction.Behind] = hit.transform.gameObject.GetComponent<NetworkObject>();
         else
             neighbors[(int)Direction.Behind] = null;
+    }
+
+    public void checkWin()
+    {
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
+            {
+                if (company == neighborTile.company && !neighborTile.isChecked)
+                {
+                    neighborTile.checkWin();
+                    isChecked = true;
+                }
+            }
+            if (neighbors[i].TryGetComponent(out IOTileData inOutPut))
+            {
+                if (company == inOutPut.company && inOutPut.isActive)
+                inOutPut.winGameEvent();
+                return;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
