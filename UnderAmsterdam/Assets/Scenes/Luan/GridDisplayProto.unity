@@ -342,7 +342,7 @@ PrefabInstance:
     - target: {fileID: 8439811097757408639, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: playerInputHandler
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1827681092}
     - target: {fileID: 8439811097908486504, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: grabber
       value: 
@@ -378,6 +378,26 @@ PrefabInstance:
     - target: {fileID: 8447807825537134211, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_TagString
       value: LeftHand
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481349891358051823, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: joystickLeft.m_Action.m_Id
+      value: 240cbdde-94a4-450b-ba96-807f404a8333
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481349891358051823, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: joystickRight.m_Action.m_Id
+      value: a8dfb5d9-dc65-46cb-96a0-00d472d6d4d5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481349891358051823, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: joystickLeft.m_Action.m_Name
+      value: Joystick Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481349891358051823, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: joystickRight.m_Action.m_Name
+      value: Joystick Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 8960797297532109853, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
@@ -706,6 +726,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16eb8d554c636c9479b4cfc59dbdf775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1827681092 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8397077673816484528, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+  m_PrefabInstance: {fileID: 237274402}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d4f79fb0af50f2498dbb08405c8c1d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1962436600

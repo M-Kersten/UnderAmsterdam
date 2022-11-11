@@ -18,8 +18,7 @@ public class CubeInteraction : NetworkBehaviour
 
     [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] private string company {get; set;}
 
-    [Networked(OnChanged = nameof(OnPipeChanged))]
-    public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
+    [SerializeField] [Networked(OnChanged = nameof(OnPipeChanged))] private bool TileOccupied { get; set; } // can be changed and send over the network only by the host
 
     [SerializeField] private GameObject[] pipeParts;
     [SerializeField] private GameObject[] previewPipeParts;
@@ -27,7 +26,8 @@ public class CubeInteraction : NetworkBehaviour
 
     private int amountFaces = 6;
 
-    public bool isHover = false;
+    private bool isHover = false;
+    private bool isSpawned = false;
 
     void Start() {
         pColouring = GetComponent<PipeColouring>();
@@ -51,6 +51,7 @@ public class CubeInteraction : NetworkBehaviour
             previewPipeParts[i++] = pipePreview.gameObject;
 
         activatedPipes = new bool[neighbors.Length]; //Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
+        isSpawned = true;
     }
 
     private void GetNeighbors()
@@ -90,7 +91,7 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!TileOccupied)
+        if (isSpawned && !TileOccupied)
         {
             UpdateNeighborData(true);
             OnRenderPipePreview(true);
@@ -100,7 +101,7 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!TileOccupied)
+        if (isSpawned && !TileOccupied)
         {
             UpdateNeighborData(false);
             OnRenderPipePreview(false);
@@ -191,12 +192,7 @@ public class CubeInteraction : NetworkBehaviour
 
     static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
     {
-        Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.TileOccupied}");
         bool isPipedCurrent = changed.Behaviour.TileOccupied;
-
-        //Load the old value of isPiped
-        changed.LoadOld();
-
         changed.Behaviour.OnPipeRender(isPipedCurrent);
     }
 
