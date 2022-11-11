@@ -16,11 +16,12 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview;
     private PipeColouring pColouring;
 
-    [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] 
-    private string company {get; set;}
-
     [Networked(OnChanged = nameof(OnPipeChanged))]
     public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
+
+    [SerializeField]
+    [Networked(OnChanged = nameof(onCompanyChange))]
+    private string company { get; set; }
 
     [SerializeField] private GameObject[] pipeParts;
     [SerializeField] private GameObject[] previewPipeParts;
@@ -110,6 +111,7 @@ public class CubeInteraction : NetworkBehaviour
     }
     static void onCompanyChange(Changed<CubeInteraction> changed)
     {
+        Debug.Log("Check 1: " + changed.Behaviour.company);
         changed.Behaviour.UpdateCompany(changed.Behaviour.company);
         changed.Behaviour.UpdateNeighborData(true);
     }
@@ -195,14 +197,12 @@ public class CubeInteraction : NetworkBehaviour
 
     static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
     {
-        Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.TileOccupied}");
         bool isPipedCurrent = changed.Behaviour.TileOccupied;
     
         //Load the old value of isPiped
         changed.LoadOld();
-    
+        Debug.Log("Check 2: " + changed.Behaviour.company);
         changed.Behaviour.OnPipeRender(isPipedCurrent);
-        changed.Behaviour.pColouring.UpdateRenderer(changed.Behaviour.company);
     }
     
     void OnPipeRender(bool isPipedCurrent)
