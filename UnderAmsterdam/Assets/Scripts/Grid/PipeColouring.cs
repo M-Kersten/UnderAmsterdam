@@ -4,54 +4,41 @@ using UnityEngine;
 
 public class PipeColouring : MonoBehaviour
 {
-    [SerializeField] Material[] pipeMaterials;
-    private GameObject childParent;
-    private GameObject activeChild;
+    [Tooltip("Circle between connecting pipes")]
+    [SerializeField] private GameObject connectorPiece;
+    [Tooltip("Parent of where all pipes are stored")]
+    [SerializeField] private GameObject pipeParent;
 
-    public void UpdateRenderer(string pipeCompany) {
+    [Tooltip("All pipe materials, named same as company")]
+    [SerializeField] private Material[] pipeMaterials;
+    [Tooltip("All pipe options")]
+    [SerializeField] private GameObject[] pipeChildren;
 
-        childParent = transform.GetChild(0).transform.GetChild(0).gameObject;
-
-        for (int i = 0; i < childParent.transform.childCount; i++)
-        {
-            if(childParent.transform.GetChild(i).gameObject.activeSelf == true)
+    public void UpdateRenderer(string pipeCompany, GameObject givenGO = null) {
+        if(!givenGO) {
+            for (int i = 0; i < pipeChildren.Length; i++)
             {
-                activeChild = childParent.transform.GetChild(i).transform.GetChild(0).gameObject;
-                TestColour(pipeCompany, activeChild);
+                 // Go through the children and find the active one
+                if(pipeChildren[i].activeSelf == true)
+                {
+                    // Give the company and the gameobject where the materials are on
+                    ColourPipe(pipeCompany, pipeChildren[i].transform.GetChild(0).gameObject);
+                }
             }
+        } else {
+            // Is anything other than a pipe, like connector piece
+            ColourPipe(pipeCompany, givenGO);
         }
     }
 
-    void TestColour(string company, GameObject affectedChild) {
+    // Colour the connecting pipes when placed
+    void ColourPipe(string company, GameObject affectedChild) {
         
         for (int i = 0; i < pipeMaterials.Length; i++)
         {
             if (pipeMaterials[i].name == company) {
                 affectedChild.GetComponent<Renderer>().material = pipeMaterials[i];
+                }
             }
         }
-    }
-
-    //void SetColour(string company) {
-    //    switch (company) {
-    //        case "data":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "water":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "sewage":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "gas":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "power":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        default: 
-    //
-    //        break;
-    //    }
-    //}
 }
