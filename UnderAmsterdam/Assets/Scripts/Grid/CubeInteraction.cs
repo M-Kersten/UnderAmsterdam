@@ -52,7 +52,6 @@ public class CubeInteraction : NetworkBehaviour
             previewPipeParts[i++] = pipePreview.gameObject;
 
         activatedPipes = new bool[neighbors.Length]; //Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
-        company = "Empty";
     }
 
     private void GetNeighbors()
@@ -134,7 +133,6 @@ public class CubeInteraction : NetworkBehaviour
     public void UpdateCompany(string newCompany) {
         company = newCompany;
         pColouring.UpdateRenderer(company);
-        EnableTile();
     }
     public void EnableTile()
     {
@@ -199,7 +197,7 @@ public class CubeInteraction : NetworkBehaviour
     {
         Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.TileOccupied}");
         bool isPipedCurrent = changed.Behaviour.TileOccupied;
-
+    
         //Load the old value of isPiped
         changed.LoadNew();
     
