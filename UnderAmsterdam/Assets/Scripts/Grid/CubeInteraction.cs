@@ -199,16 +199,16 @@ public class CubeInteraction : NetworkBehaviour
         bool isPipedCurrent = changed.Behaviour.TileOccupied;
     
         //Load the old value of isPiped
-        changed.LoadNew();
+        changed.LoadOld();
     
         changed.Behaviour.OnPipeRender(isPipedCurrent);
+        changed.Behaviour.pColouring.UpdateRenderer(changed.Behaviour.company);
     }
     
     void OnPipeRender(bool isPipedCurrent)
     {
        if (isPipedCurrent) {
-        EnableTile();
-        pColouring.UpdateRenderer(company);
+            EnableTile();
        }
     }
     private int GetOppositeFace(int i)
