@@ -11,18 +11,17 @@ public class CompanyManager : MonoBehaviour
     PlayerRef emptyPlayer = new();
     [SerializeField] public Dictionary<string, PlayerRef> _companies;
     private ConnectionManager cManager;
-
-
+    
     void Start(){
         cManager = GetComponent<ConnectionManager>();
         Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
-        Gamemanager.Instance.RoundStart.AddListener(LoadSend);
+        Gamemanager.Instance.RoundStart.AddListener(loadSend);
         _companies = new Dictionary<string, PlayerRef> {
-        {"water", emptyPlayer},
-        {"gas", emptyPlayer},
-        {"data", emptyPlayer},
-        {"sewage", emptyPlayer},
-        {"power", emptyPlayer}
+    {"water", emptyPlayer},
+    {"gas", emptyPlayer},
+    {"data", emptyPlayer},
+    {"sewage", emptyPlayer},
+    {"power", emptyPlayer}
         };
     }
 
@@ -39,7 +38,7 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
-    public void LoadSend() {
+    public void loadSend() {
         foreach(var player in cManager._spawnedUsers) {
             SendCompany(player.Key, player.Value);
         }
@@ -56,10 +55,10 @@ public class CompanyManager : MonoBehaviour
         // Reset given companies
         availableCompanies = new List<string>{"water","gas","data","sewage","power"};
         _companies = new Dictionary<string, PlayerRef> {
-        {"water", emptyPlayer},
-        {"gas", emptyPlayer},
-        {"data", emptyPlayer},
-        {"sewage", emptyPlayer},
-        {"power", emptyPlayer}};
+    {"water", emptyPlayer},
+    {"gas", emptyPlayer},
+    {"data", emptyPlayer},
+    {"sewage", emptyPlayer},
+    {"power", emptyPlayer}};
     }
 }

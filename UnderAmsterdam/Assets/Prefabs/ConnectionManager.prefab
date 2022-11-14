@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 5176870935982106718}
   - component: {fileID: 6687331123855280171}
   - component: {fileID: -3775747846731191431}
-  - component: {fileID: 7979311348193679251}
   m_Layer: 0
   m_Name: ConnectionManager
   m_TagString: Untagged
@@ -208,7 +207,7 @@ MonoBehaviour:
   RoundEnd:
     m_PersistentCalls:
       m_Calls: []
-  roundTime: 420
+  roundTime: 45
   roundTimeIncrease: 15
   roundStartCountDown: 3
 --- !u!114 &6687331123855280171
@@ -244,15 +243,3 @@ MonoBehaviour:
   - data
   - sewage
   - power
---- !u!114 &7979311348193679251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878090387540590309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26345322514f7f14e859f82fbf3f416b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
