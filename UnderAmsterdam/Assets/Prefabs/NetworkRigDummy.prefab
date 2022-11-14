@@ -720,6 +720,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   side: 2
   rig: {fileID: 2549000073306557775}
+  myPlayer: {fileID: 7324134168333653148}
   TriggerPressed: 0
 --- !u!114 &2484170574570388998 stripped
 MonoBehaviour:
@@ -743,31 +744,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3a511e1a014b64418459b0fa78cd207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2549000073306557745 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 82848160101703959, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
-  m_PrefabInstance: {fileID: 2484170574470442022}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &885358953956868632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549000073306557745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 442db769b4233634ea0efd48150f6244, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rig: {fileID: 2549000073306557775}
-  transformPlayer: {fileID: 227346234831065323}
 --- !u!114 &2549000073306557775 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 82848160101704041, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
   m_PrefabInstance: {fileID: 2484170574470442022}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549000073306557745}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d7937e665b188f44a1255b4c855cede, type: 3}
@@ -888,7 +870,19 @@ MonoBehaviour:
   _interpolationDataSource: 0
   side: 3
   rig: {fileID: 2549000073306557775}
+  myPlayer: {fileID: 7324134168333653148}
   TriggerPressed: 0
+--- !u!114 &7324134168333653148 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5178302573922089146, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+  m_PrefabInstance: {fileID: 2484170574470442022}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35b188f40bf7be24d8dd2cc8e570944a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &9009416326087563203 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6881055563711790053, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}

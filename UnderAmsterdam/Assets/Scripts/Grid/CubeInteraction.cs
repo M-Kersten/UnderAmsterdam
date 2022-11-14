@@ -16,18 +16,23 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview;
     private PipeColouring pColouring;
 
-    [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] private string company {get; set;}
+    // When TileOccupied changes value, run OnPipeChanged function
+    [Networked(OnChanged = nameof(OnPipeChanged))]
+    public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
 
-    [SerializeField] [Networked(OnChanged = nameof(OnPipeChanged))] private bool TileOccupied { get; set; } // can be changed and send over the network only by the host
+    // When company's values changes, run OnCompanyChange
+    [SerializeField]
+    [Networked(OnChanged = nameof(onCompanyChange))]
+    private string company { get; set; }
 
     [SerializeField] private GameObject[] pipeParts;
     [SerializeField] private GameObject[] previewPipeParts;
     [SerializeField] private bool[] activatedPipes;
 
     private int amountFaces = 6;
-
-    private bool isHover = false;
     private bool isSpawned = false;
+
+    public bool isHover = false;
 
     void Start() {
         pColouring = GetComponent<PipeColouring>();
@@ -51,7 +56,6 @@ public class CubeInteraction : NetworkBehaviour
             previewPipeParts[i++] = pipePreview.gameObject;
 
         activatedPipes = new bool[neighbors.Length]; //Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
-        isSpawned = true;
     }
 
     private void GetNeighbors()
@@ -110,6 +114,7 @@ public class CubeInteraction : NetworkBehaviour
     }
     static void onCompanyChange(Changed<CubeInteraction> changed)
     {
+        // When company changes give the new company (changed is the new values)
         changed.Behaviour.UpdateCompany(changed.Behaviour.company);
         changed.Behaviour.UpdateNeighborData(true);
     }
@@ -118,26 +123,24 @@ public class CubeInteraction : NetworkBehaviour
     {
         for (int i = 0; i < neighbors.Length; i++)
         {
-            if (neighbors[i] != null) {
-
+            if (neighbors[i] != null) 
+            {
                 CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
-                if (neighborTile.company != "Empty" && (neighborTile.company == company || isHover == enable))
+                if (neighborTile.company != "Empty" && (neighborTile.company == company))
                 {
                     activatedPipes[i] = enable;
                     neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
-                }
+                }            
             }
         }
     }
     [Tooltip("Should be activated before EnableTile()")]
     public void UpdateCompany(string newCompany) {
         company = newCompany;
+        pColouring.UpdateRenderer(company);
     }
     public void EnableTile()
     {
-        if (TileOccupied)
-            return;
-
         isHover = false;
         TileOccupied = true;
         UpdateNeighborData(true);
@@ -149,6 +152,8 @@ public class CubeInteraction : NetworkBehaviour
     private void OnRenderPipePart(bool isActive)
     {
         connectorPart.SetActive(isActive);
+        pColouring.UpdateRenderer(company, connectorPart);
+
         for (int i = 0; i < neighbors.Length; i++)
         {
             if (previewPipeParts[i] != null)
@@ -189,17 +194,21 @@ public class CubeInteraction : NetworkBehaviour
             }
         }
     }
-
+    
+    // This code gets ran ON OTHER PLAYERS when a pipe has been placed, changed is the new values of the placed pipe
     static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
     {
         bool isPipedCurrent = changed.Behaviour.TileOccupied;
+    
         changed.Behaviour.OnPipeRender(isPipedCurrent);
     }
-
+    
+    // Run this code locally for players where pipe hasn't changed yet
     void OnPipeRender(bool isPipedCurrent)
     {
-       if (isPipedCurrent)
+       if (isPipedCurrent) {
             EnableTile();
+       }
     }
     private int GetOppositeFace(int i)
     {
