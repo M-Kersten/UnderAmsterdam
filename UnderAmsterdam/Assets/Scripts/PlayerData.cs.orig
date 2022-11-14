@@ -7,7 +7,11 @@ public class PlayerData : NetworkBehaviour
 {
     [Networked] public string company {get; set;}
 
+<<<<<<< HEAD
+    public int points;
+=======
     [Networked] public int points { get; set; }
+>>>>>>> Pointsmanager
 
     public void ReceiveCompany(string givenCompany) {
             company = givenCompany;
