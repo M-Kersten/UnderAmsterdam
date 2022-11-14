@@ -15,7 +15,6 @@ public class PipeColouring : MonoBehaviour
     [SerializeField] private GameObject[] pipeChildren;
 
     public void UpdateRenderer(string pipeCompany, GameObject givenGO = null) {
-
         if(!givenGO) {
             for (int i = 0; i < pipeChildren.Length; i++)
             {

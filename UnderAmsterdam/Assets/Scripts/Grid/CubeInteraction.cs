@@ -16,11 +16,14 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview;
     private PipeColouring pColouring;
 
-    [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] 
-    private string company {get; set;}
-
+    // When TileOccupied changes value, run OnPipeChanged function
     [Networked(OnChanged = nameof(OnPipeChanged))]
     public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
+
+    // When company's values changes, run OnCompanyChange
+    [SerializeField]
+    [Networked(OnChanged = nameof(onCompanyChange))]
+    private string company { get; set; }
 
     [SerializeField] private GameObject[] pipeParts;
     [SerializeField] private GameObject[] previewPipeParts;
@@ -110,7 +113,9 @@ public class CubeInteraction : NetworkBehaviour
     }
     static void onCompanyChange(Changed<CubeInteraction> changed)
     {
+        // When company changes give the new company (changed is the new values)
         changed.Behaviour.UpdateCompany(changed.Behaviour.company);
+        changed.Behaviour.UpdateNeighborData(true);
     }
 
     private void UpdateNeighborData(bool enable)
@@ -131,12 +136,10 @@ public class CubeInteraction : NetworkBehaviour
     [Tooltip("Should be activated before EnableTile()")]
     public void UpdateCompany(string newCompany) {
         company = newCompany;
+        pColouring.UpdateRenderer(company);
     }
     public void EnableTile()
     {
-        if (TileOccupied)
-            return;
-
         isHover = false;
         TileOccupied = true;
         UpdateNeighborData(true);
@@ -190,23 +193,20 @@ public class CubeInteraction : NetworkBehaviour
             }
         }
     }
-
+    
+    // This code gets ran ON OTHER PLAYERS when a pipe has been placed, changed is the new values of the placed pipe
     static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
     {
-        Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.TileOccupied}");
         bool isPipedCurrent = changed.Behaviour.TileOccupied;
-
-        //Load the old value of isPiped
-        changed.LoadOld();
-
+    
         changed.Behaviour.OnPipeRender(isPipedCurrent);
     }
-
+    
+    // Run this code locally for players where pipe hasn't changed yet
     void OnPipeRender(bool isPipedCurrent)
     {
        if (isPipedCurrent) {
-        EnableTile();
-        pColouring.UpdateRenderer(company);
+            EnableTile();
        }
     }
     private int GetOppositeFace(int i)
