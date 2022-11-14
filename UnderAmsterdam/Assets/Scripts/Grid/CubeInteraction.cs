@@ -4,199 +4,215 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Fusion;
 using Fusion.XR.Host;
+using Fusion.XR.Host.Rig;
 
 public class CubeInteraction : NetworkBehaviour
 {
-    private enum Direction {Up, Down, Left, Right, Front, Behind };
+    private enum Direction {Right, Left, Behind, Front, Up, Down};
 
-    [Networked(OnChanged = nameof(OnPipeChanged))] public bool isPiped { get; set; }
+    [SerializeField] private Transform PipePreview, PipeHolder;
+    [SerializeField] private NetworkObject[] neighbors;
+    [SerializeField] private GameObject connectorPart;
+    [SerializeField] private GameObject connectorPartPreview;
+    private PipeColouring pColouring;
 
-    private bool isHover = false;
-    private bool pipeTrigger = false;
-    private bool rotationTrigger = false;
-    private bool stateDownGrabPinch = false;
-    private bool stateDownGrabGrip = false;
+    // When TileOccupied changes value, run OnPipeChanged function
+    [Networked(OnChanged = nameof(OnPipeChanged))]
+    public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
+
+    // When company's values changes, run OnCompanyChange
+    [SerializeField]
+    [Networked(OnChanged = nameof(onCompanyChange))]
+    private string company { get; set; }
+
+    [SerializeField] private GameObject[] pipeParts;
+    [SerializeField] private GameObject[] previewPipeParts;
+    [SerializeField] private bool[] activatedPipes;
+
+    private int amountFaces = 6;
     private bool isSpawned = false;
 
-    public InputActionProperty input;
+    public bool isHover = false;
 
-    private GameObject Pipe;
-    private GridDisplay Grid; //contain an array with all cubes GameObject
-
-    private MeshRenderer CubePreviewRenderer;
-    private Renderer[] PipeChildsRenderer;
-    private LineRenderer CubeLineRenderer;
-    [SerializeField]
-    private NetworkObject[] neighbor;
-
-    private void Awake()
-    {
-        var bindings = new List<string> { "triggerPressed" };
-        input.EnableWithDefaultXRBindings(rightBindings: bindings);
+    void Start() {
+        pColouring = GetComponent<PipeColouring>();
     }
-
     public override void Spawned()
     {
+        OnRenderPipePreview(false);
+        OnRenderPipePart(false);
 
-        Pipe = GetComponentsInChildren<Transform>()[1].gameObject; //Always place the Pipe prefab in the top of the children in the cube prefab (Avoid find function)
-        Grid = GetComponentInParent<GridDisplay>();
+        neighbors = new NetworkObject[amountFaces]; //Cubes have 6 faces, thus we will always need 6 neigbors
+        GetNeighbors();
 
-        CubePreviewRenderer = GetComponent<MeshRenderer>();
-        PipeChildsRenderer = Pipe.GetComponentsInChildren<Renderer>();
-        CubeLineRenderer = GetComponentInChildren<LineRenderer>();
+        pipeParts = new GameObject[neighbors.Length];
+        previewPipeParts = new GameObject[neighbors.Length];
+        
+        int i = 0;
+        foreach (Transform pipe in PipeHolder)
+            pipeParts[i++] = pipe.gameObject;
+        i = 0;
+        foreach (Transform pipePreview in PipePreview)
+            previewPipeParts[i++] = pipePreview.gameObject;
 
-        //Hide all the cubes and pipes
-        CubePreviewRenderer.enabled = false;
-        CubeLineRenderer.enabled = false;
-        Pipe.SetActive(false);
-
-        //Children = new GameObject[6];
-        neighbor = new NetworkObject[6];
-        FindChildren();
-
+        activatedPipes = new bool[neighbors.Length]; //Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
         isSpawned = true;
-
     }
 
-    public override void FixedUpdateNetwork()
+    private void GetNeighbors()
     {
-        stateDownGrabGrip = input.action.triggered;
+        RaycastHit hit;
 
-        //Double if with trigger avoid multiple clicks
-        if (isHover && !isPiped && (stateDownGrabGrip || Input.GetMouseButton(0))) /*Pipe placing*/
-            pipeTrigger = true;           
+        if (Physics.Raycast(transform.position, Vector3.up , out hit))
+            neighbors[(int)Direction.Up] = hit.transform.gameObject.GetComponent<NetworkObject>();
+        else
+            neighbors[(int)Direction.Up] = null;
 
-        if (pipeTrigger && !(stateDownGrabGrip || Input.GetMouseButton(0))) /*Pipe placing*/
-        {
-            Pipe.SetActive(true);
-            isPiped = true;
-            pipeTrigger = false;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+            neighbors[(int)Direction.Down] = hit.transform.gameObject.GetComponent<NetworkObject>();
+        else
+            neighbors[(int)Direction.Down] = null;
 
-            CubePreviewRenderer.enabled = false;
+        if (Physics.Raycast(transform.position, Vector3.left, out hit))
+            neighbors[(int)Direction.Left] = hit.transform.gameObject.GetComponent<NetworkObject>();
+        else
+            neighbors[(int)Direction.Left] = null;
 
-            //foreach because recolorablePipe prefab have multiple child so mutiple renderer // Could be changed if new pipes have just one renderer
-            foreach (Renderer renderer in PipeChildsRenderer)
-                foreach (Material mat in renderer.materials)
-                    mat.color = new Color(0, 1, 0, 1f); // Change mat color transparency to 1 when pipe is placed
-        }        
+        if (Physics.Raycast(transform.position, Vector3.right, out hit))
+            neighbors[(int)Direction.Right] = hit.transform.gameObject.GetComponent<NetworkObject>();
+        else
+            neighbors[(int)Direction.Right] = null;
 
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit))
+            neighbors[(int)Direction.Front] = hit.transform.gameObject.GetComponent<NetworkObject>();
+        else
+            neighbors[(int)Direction.Front] = null;
 
-        if (isHover && !isPiped && (stateDownGrabPinch || Input.GetMouseButton(1))) /*Pipe Rotate with rhight mouse button or grip controller button */
-            rotationTrigger = true;
-
-        if (rotationTrigger && !(stateDownGrabPinch || Input.GetMouseButton(1))) /*Pipe Rotate*/
-        {
-            Pipe.transform.Rotate(new Vector3(90, 0, 0));
-            rotationTrigger = false;
-        }
+        if (Physics.Raycast(transform.position, Vector3.back, out hit))
+            neighbors[(int)Direction.Behind] = hit.transform.gameObject.GetComponent<NetworkObject>();
+        else
+            neighbors[(int)Direction.Behind] = null;
     }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (!isSpawned)
-            return;
-        if (!isPiped && other.CompareTag("RightHand"))
+        if (isSpawned && !TileOccupied)
         {
-            Pipe.SetActive(true);
-            foreach (MeshRenderer material in PipeChildsRenderer)
-                foreach (Material PipeMat in material.materials)
-                    PipeMat.color = new Color(0, 0.8f, 0, 0.2f); // Preview transparency if the pipe isn't placed
+            UpdateNeighborData(true);
+            OnRenderPipePreview(true);
+            isHover = true;
         }
-
-        CubePreviewRenderer.enabled = true;
-        CubeLineRenderer.enabled = true;
-        isHover = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!isSpawned)
-            return;
-        CubePreviewRenderer.enabled = false;
-        CubeLineRenderer.enabled = false;
-
-        if (!isPiped)
-            Pipe.SetActive(false);
-
-        isHover = false;
+        if (isSpawned && !TileOccupied)
+        {
+            UpdateNeighborData(false);
+            OnRenderPipePreview(false);
+            isHover = false;
+        }
+    }
+    static void onCompanyChange(Changed<CubeInteraction> changed)
+    {
+        // When company changes give the new company (changed is the new values)
+        changed.Behaviour.UpdateCompany(changed.Behaviour.company);
+        changed.Behaviour.UpdateNeighborData(true);
     }
 
-    private void FindChildrenName() 
+    private void UpdateNeighborData(bool enable)
     {
-        string[] splitArray = this.name.Split(" "); //Split the cube name
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            if (neighbors[i] != null) 
+            {
+                CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
+                if (neighborTile.company != "Empty" && (neighborTile.company == company))
+                {
+                    activatedPipes[i] = enable;
+                    neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
+                }            
+            }
+        }
+    }
+    [Tooltip("Should be activated before EnableTile()")]
+    public void UpdateCompany(string newCompany) {
+        company = newCompany;
+        pColouring.UpdateRenderer(company);
+    }
+    public void EnableTile()
+    {
+        isHover = false;
+        TileOccupied = true;
+        UpdateNeighborData(true);
+        OnRenderPipePart(true);
+        pColouring.UpdateRenderer(company);
+        OnRenderPipePreview(false);
+    }
 
-        int.TryParse(splitArray[1], out int currentX);
-        int.TryParse(splitArray[2], out int currentY);
-        int.TryParse(splitArray[3], out int currentZ);
+    private void OnRenderPipePart(bool isActive)
+    {
+        connectorPart.SetActive(isActive);
+        pColouring.UpdateRenderer(company, connectorPart);
 
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            if (previewPipeParts[i] != null)
+            {
+                if (activatedPipes[i])
+                {
+                    //Display/undisplay every pipe which is activated
+                    pipeParts[i].SetActive(isActive);
 
-        neighbor[(int)Direction.Up] = Grid.GridA[currentX, currentY + 1, currentZ];
-        neighbor[(int)Direction.Down] = Grid.GridA[currentX, currentY - 1, currentZ];
-        neighbor[(int)Direction.Left] = Grid.GridA[currentX + 1, currentY, currentZ];
-        neighbor[(int)Direction.Right] = Grid.GridA[currentX - 1, currentY, currentZ];
-        neighbor[(int)Direction.Front] = Grid.GridA[currentX, currentY, currentZ + 1];
-        neighbor[(int)Direction.Behind] = Grid.GridA[currentX, currentY, currentZ - 1];
+                    CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
+
+                    if (neighborTile.activatedPipes[GetOppositeFace(i)]) {
+                        neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
+                        neighborTile.pColouring.UpdateRenderer(company);
+                    }
+                }
+            }
+        }
+    }
+
+    private void OnRenderPipePreview(bool isActive)
+    {
+        connectorPartPreview.SetActive(isActive);
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            if (previewPipeParts[i] != null)
+            {
+                if (activatedPipes[i])
+                {
+                    //Display/undisplay every pipe which is activated
+                    previewPipeParts[i].SetActive(isActive);
+
+                    CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
+
+                    if (neighborTile.activatedPipes[GetOppositeFace(i)])
+                        neighborTile.previewPipeParts[GetOppositeFace(i)].SetActive(isActive);
+                }
+            }
+        }
     }
     
-    private void FindChildren() 
+    // This code gets ran ON OTHER PLAYERS when a pipe has been placed, changed is the new values of the placed pipe
+    static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
     {
-        RaycastHit hit;
-
-        Debug.DrawRay(transform.position, Vector3.up, Color.black, 30f); //to draw the ray during 30 sec
-        if (Physics.Raycast(transform.position, Vector3.up , out hit))
-            neighbor[(int)Direction.Up] = hit.transform.gameObject.GetComponent<NetworkObject>();
-        else
-            neighbor[(int)Direction.Up] = null;
-
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
-            neighbor[(int)Direction.Down] = hit.transform.gameObject.GetComponent<NetworkObject>();
-        else
-            neighbor[(int)Direction.Down] = null;
-
-        if (Physics.Raycast(transform.position, Vector3.left, out hit))
-            neighbor[(int)Direction.Left] = hit.transform.gameObject.GetComponent<NetworkObject>();
-        else
-            neighbor[(int)Direction.Left] = null;
-
-        if (Physics.Raycast(transform.position, Vector3.right, out hit))
-            neighbor[(int)Direction.Right] = hit.transform.gameObject.GetComponent<NetworkObject>();
-        else
-            neighbor[(int)Direction.Right] = null;
-
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit))
-            neighbor[(int)Direction.Front] = hit.transform.gameObject.GetComponent<NetworkObject>();
-        else
-            neighbor[(int)Direction.Front] = null;
-
-        if (Physics.Raycast(transform.position, Vector3.back, out hit))
-            neighbor[(int)Direction.Behind] = hit.transform.gameObject.GetComponent<NetworkObject>();
-        else
-            neighbor[(int)Direction.Behind] = null;
+        bool isPipedCurrent = changed.Behaviour.TileOccupied;
+    
+        changed.Behaviour.OnPipeRender(isPipedCurrent);
     }
-
-    static void OnPipeChanged(Changed<CubeInteraction> changed) // static because o
+    
+    // Run this code locally for players where pipe hasn't changed yet
+    void OnPipeRender(bool isPipedCurrent)
     {
-        Debug.Log($"{Time.time} OnPipeChanged value {changed.Behaviour.isPiped}");
-        bool isPipedCurrent = changed.Behaviour.isPiped;
-
-        //Load the old value of isPiped
-        changed.LoadOld();
-
-        bool isPipedPrevious = changed.Behaviour.isPiped;
-
-        if (isPipedCurrent && !isPipedPrevious)
-            changed.Behaviour.OnPipeRender();
+       if (isPipedCurrent) {
+            EnableTile();
+       }
     }
-
-    void OnPipeRender()
+    private int GetOppositeFace(int i)
     {
-        if (!Object.HasInputAuthority && isPiped)
-        {
-            Pipe.SetActive(true);
-            //foreach because recolorablePipe prefab have multiple child so mutiple renderer // Could be changed if new pipes have just one renderer
-            foreach (Renderer renderer in PipeChildsRenderer)
-                foreach (Material mat in renderer.materials)
-                    mat.color = new Color(0, 1, 0, 1f); // Change mat color transparency to 1 when pipe is placed
-        }
-
+        return i + 1 - 2 * (i % 2);            
     }
 }

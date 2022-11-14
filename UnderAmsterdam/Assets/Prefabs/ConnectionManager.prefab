@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 878090387540590312}
   - component: {fileID: 878090387540590318}
   - component: {fileID: 878090387540590313}
+  - component: {fileID: 5176870935982106718}
+  - component: {fileID: 6687331123855280171}
+  - component: {fileID: -3775747846731191431}
   m_Layer: 0
   m_Name: ConnectionManager
   m_TagString: Untagged
@@ -51,7 +54,7 @@ MonoBehaviour:
   roomName: SampleFusionVR
   connectOnStart: 1
   runner: {fileID: 0}
-  userPrefab: {fileID: 2549000073306557744, guid: e263782ae517b5e46a1d6228d8ee88b7, type: 3}
+  userPrefab: {fileID: 2549000073306557744, guid: 2144eff5afa72854d9c63ebc7d89556a, type: 3}
   onWillConnect:
     m_PersistentCalls:
       m_Calls: []
@@ -183,3 +186,60 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5176870935982106718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878090387540590309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93a11270fb767804a9d04cd4f50acb4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameStart:
+    m_PersistentCalls:
+      m_Calls: []
+  RoundStart:
+    m_PersistentCalls:
+      m_Calls: []
+  RoundEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  roundTime: 45
+  roundTimeIncrease: 15
+  roundStartCountDown: 3
+--- !u!114 &6687331123855280171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878090387540590309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a14e1ffbb3f0d3a4c9421b46731ac486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerUp:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &-3775747846731191431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878090387540590309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5ff68aa40bc9f240a6e2d2e18bb03b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableCompanies:
+  - water
+  - gas
+  - data
+  - sewage
+  - power
