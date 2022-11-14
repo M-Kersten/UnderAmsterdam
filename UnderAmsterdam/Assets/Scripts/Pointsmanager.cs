@@ -24,47 +24,33 @@ public class Pointsmanager : MonoBehaviour
     {
         if (roundWinner) { 
             if (time < victorypoints)
-            time += time.deltatime;
+               // time += Time.deltaTime; // Need to find the right thing for Time, it does not have deltaTime :p
         }
     }
-
-    public void GetPlayerFromCompany(string company, int status) {
-
-        //Addpoints(cManager._spawnedUsers[comManager._companies[company]]);
-
-        foreach(var player in cManager._spawnedUsers) {
-
-            if (player.Key.PlayerId == comManager._companies[company]) {
-                if (status == 1) 
-                AddPoints(player.Value);
-                else if(status == 2)
-                RemovePoints(player.Value);
-                else if (status == 3)
-                CalculateRoundPoints(player.Value);
-            }
-        }
-    }
-
-    void AddPoints(NetworkObject nObject)
+    void AddPoints(string company)
     {
-        //nObject = cManager._spawnedUsers[comManager._companies[company]];
+        NetworkObject nObject = coach._spawnedUsers[comManager._companies[company]];
+
         nObject.GetComponent<PlayerData>().points += pipeplacepoint;
     }
-    void RemovePoints(NetworkObject nObject)
+    void RemovePoints(string company)
     {
-        nObject.GetComponent<PlayerData>().points -= piperemovepoint
+        NetworkObject nObject = coach._spawnedUsers[comManager._companies[company]];
+        nObject.GetComponent<PlayerData>().points -= piperemovepoint;
     }
 
-    void CalculateRoundPoints(NetworkObject nObject)
+    void CalculateRoundPoints(string company)
     {
+        NetworkObject nObject = coach._spawnedUsers[comManager._companies[company]];
         //doesnt have to be list, just smth that i checks if there is 1 winner already
-            
+
         if (!roundWinner) {
             nObject.GetComponent<PlayerData>().points += victorypoints;
             roundWinner = true;
         } 
         else {
-            nObject.GetComponent<PlayerData>().points -= victorypoints - time * 10;
+            // time float has to be an int (we are removing an float from an int..)
+           // nObject.GetComponent<PlayerData>().points -= victorypoints - time * 10;
         }
     }
 }
