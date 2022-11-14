@@ -30,6 +30,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private bool[] activatedPipes;
 
     private int amountFaces = 6;
+    private bool isSpawned = false;
 
     public bool isHover = false;
 
@@ -94,7 +95,7 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!TileOccupied)
+        if (isSpawned && !TileOccupied)
         {
             UpdateNeighborData(true);
             OnRenderPipePreview(true);
@@ -104,7 +105,7 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!TileOccupied)
+        if (isSpawned && !TileOccupied)
         {
             UpdateNeighborData(false);
             OnRenderPipePreview(false);
