@@ -36,7 +36,7 @@ namespace Fusion.XR.Host
         public UnityEvent onWillConnect = new UnityEvent();
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
-        private Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
+        public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
 
         private void Awake()
         {
@@ -85,6 +85,7 @@ namespace Fusion.XR.Host
 
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
+                //compManage.SendCompany(player, networkPlayerObject);
             }
         }
 

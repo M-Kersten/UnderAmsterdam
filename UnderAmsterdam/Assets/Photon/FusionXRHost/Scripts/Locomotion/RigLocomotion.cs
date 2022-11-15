@@ -77,15 +77,15 @@ namespace Fusion.XR.Host.Locomotion
                 return;
             }
 
-            var leftStickTurn = leftControllerTurnAction.action.ReadValue<Vector2>().x;
+            //var leftStickTurn = leftControllerTurnAction.action.ReadValue<Vector2>().x;
             var rightStickTurn = rightControllerTurnAction.action.ReadValue<Vector2>().x;
 
-            if (Mathf.Abs(leftStickTurn) > rotationInputThreshold)
+/*            if (Mathf.Abs(leftStickTurn) > rotationInputThreshold)
             {
                 timeStarted = Time.time;
                 StartCoroutine(Rotate(Mathf.Sign(leftStickTurn) * snapDegree));
-            }
-            else if (Mathf.Abs(rightStickTurn) > rotationInputThreshold)
+            }*/
+            if (Mathf.Abs(rightStickTurn) > rotationInputThreshold)
             {
                 timeStarted = Time.time;
                 StartCoroutine(Rotate(Mathf.Sign(rightStickTurn) * snapDegree));
