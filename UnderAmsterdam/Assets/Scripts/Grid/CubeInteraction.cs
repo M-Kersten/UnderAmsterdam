@@ -23,7 +23,7 @@ public class CubeInteraction : NetworkBehaviour
     // When company's values changes, run OnCompanyChange
     [SerializeField]
     [Networked(OnChanged = nameof(onCompanyChange))]
-    private string company { get; set; }
+    public string company { get; set; }
 
     [SerializeField] private GameObject[] pipeParts;
     [SerializeField] private GameObject[] previewPipeParts;
@@ -33,6 +33,7 @@ public class CubeInteraction : NetworkBehaviour
     private bool isSpawned = false;
 
     public bool isHover = false;
+    public bool isChecked = false;
 
     void Start() {
         pColouring = GetComponent<PipeColouring>();
@@ -211,8 +212,38 @@ public class CubeInteraction : NetworkBehaviour
             EnableTile();
        }
     }
+
     private int GetOppositeFace(int i)
     {
         return i + 1 - 2 * (i % 2);            
     }
+
+    public void CheckConnectionForWin()
+    {
+        // For each neighbor...
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            // if it's a normal tile...
+            if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
+            {
+                // from the same company and not checked yet...
+                if (company == neighborTile.company && !neighborTile.isChecked)
+                {
+                    // Verify its neighbor and mark it as checked.
+                    isChecked = true;
+                    neighborTile.CheckConnectionForWin();
+                }
+            }
+            // if it's an Output tile...
+            else if (neighbors[i].TryGetComponent(out IOTileScript IOPipe))
+            {
+                    // from the same company and active and if it isnt output (aka where it came from)
+                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput)
+                    {
+                        //TODO: Call increase in connected inputs here.
+                        return;
+                    }
+            }
+        }
+    } 
 }

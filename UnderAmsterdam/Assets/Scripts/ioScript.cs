@@ -1,43 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ioScript : MonoBehaviour
 {
-    public GameObject player;
-    private int company;
-
     public int width = 16;//x
     public int height = 3;//y
     public int depth = 23;//z
 
-    private IOTileData[] eastGrid;
-    private IOTileData[] westGrid;
+    private IOTileScript[] eastGrid;
+    private IOTileScript[] westGrid;
     public Transform eastWall;
     public Transform westWall;
 
     // Start is called before the first frame update
     void Start()
     {
-        //company = player.GetComponent<PlayerData>().company; // GET THE PLAYER COMPANY HERE
-
         // Random seed is set
         Random.InitState((int)System.DateTime.Now.Ticks);
 
-        eastGrid = new IOTileData[height * width];
-        westGrid = new IOTileData[height * width];
+        eastGrid = new IOTileScript[height * width];
+        westGrid = new IOTileScript[height * width];
 
         // Filling the GameObject arrays with all the IOTiles
         int i = 0;
         foreach (Transform tile in eastWall)
-            eastGrid[i++] = tile.gameObject.GetComponent<IOTileData>();
+            eastGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
         i = 0;
         foreach (Transform tile in westWall)
-            westGrid[i++] = tile.gameObject.GetComponent<IOTileData>();
+            westGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
 
-        // Adding the two first Input and Output
-        addPipe(0, true);
-        addPipe(0, false);
+        Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
+        Gamemanager.Instance.RoundStart.AddListener(AddPlayerInputs);
     }
 
     // Update is called once per frame
@@ -45,28 +37,75 @@ public class ioScript : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            addPipe(0, false);
+            AddPlayerInputs();
         }
     }
 
-    private void addPipe(int company, bool isOutput)
+    private void AddPlayerInputs()
     {
-        bool placedPipe = false;
-        int wallSelec, lineSelec, columnSelec;
+        foreach (var player in CompanyManager.Instance._companies)
+        {
+            if (player.Value != CompanyManager.Instance.emptyPlayer)
+            {
+                PlaceInputPipe(player.Key);
+            }
+        }
+    }
 
-        while (!placedPipe)
+    private void PlaceInputPipe(string company)
+    {
+        bool placedInput = false;
+        int wallSelect, lineSelect, columnSelect;
+
+        while (!placedInput)
         {
             //Randomly Choosing the wall among the 4 ones and the coordinates
-            wallSelec = Random.Range(0, 2);
-            lineSelec = (int)(Random.value * height);
-            columnSelec = (int)(Random.value * (wallSelec < 2 ? depth : width));
+            wallSelect = Random.Range(0, 2);
+            lineSelect = (int)(Random.value * height);
+            columnSelect = (int)(Random.value * (wallSelect < 2 ? depth : width));
 
             //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
             // ADD MORE WALLS IF NEEDED
-            if (wallSelec == 0)
-                placedPipe = eastGrid[height * lineSelec + columnSelec].OnEnableIO(company, isOutput, false);
+            if (wallSelect == 0)
+            {
+                placedInput = eastGrid[height * lineSelect + columnSelect].TryEnableIOPipe(company, false);
+            }
             else
-                placedPipe = westGrid[height * lineSelec + columnSelec].OnEnableIO(company, isOutput, true);
+            {
+                placedInput = eastGrid[height * lineSelect + columnSelect].TryEnableIOPipe(company, false);
+            }
+        }
+    }
+
+    //this is just to place output pipes randomly at start, its doubble code and it sucks
+    private void AddPlayerOutputs()
+    {
+        foreach (var player in CompanyManager.Instance._companies)
+        {
+            if (player.Value != CompanyManager.Instance.emptyPlayer)
+            {
+                bool placedInput = false;
+                int wallSelect, lineSelect, columnSelect;
+
+                while (!placedInput)
+                {
+                    //Randomly Choosing the wall among the 4 ones and the coordinates
+                    wallSelect = Random.Range(0, 2);
+                    lineSelect = (int)(Random.value * height);
+                    columnSelect = (int)(Random.value * (wallSelect < 2 ? depth : width));
+
+                    //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
+                    // ADD MORE WALLS IF NEEDED
+                    if (wallSelect == 0)
+                    {
+                        placedInput = eastGrid[height * lineSelect + columnSelect].TryEnableIOPipe(player.Key, true);
+                    }
+                    else
+                    {
+                        placedInput = eastGrid[height * lineSelect + columnSelect].TryEnableIOPipe(player.Key, true);
+                    }
+                }
+            }
         }
     }
 }
