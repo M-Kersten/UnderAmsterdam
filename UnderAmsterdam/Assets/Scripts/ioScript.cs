@@ -4,32 +4,50 @@ using UnityEngine;
 
 public class ioScript : MonoBehaviour
 {
-
-    public GameObject ioPipe;
-    public Transform parent;
+    public GameObject player;
+    private string company;
 
     public int width = 16;//x
     public int height = 3;//y
     public int depth = 23;//z
 
-    private GameObject[,,] wallGridNS;
-    private GameObject[,,] wallGridEW;
-
-    private bool placedPipe;
-
-    private int wallSelec;
-    private int lineSelec;
-    private int columnSelec;
+    private IOTileData[] northGrid;
+    private IOTileData[] southGrid;
+    private IOTileData[] eastGrid;
+    private IOTileData[] westGrid;
+    public Transform northWall, southWall, eastWall, westWall;
 
     // Start is called before the first frame update
     void Start()
     {
-        wallGridNS = new GameObject[2, height, depth];
-        wallGridEW = new GameObject[2, height, width];
+        //company = player.GetComponent<PlayerData>().company;
+        company = "water";
 
-        //Adding the two first Input and Output
-        addPipe();
-        addPipe();
+        // Random seed is set
+        Random.InitState((int)System.DateTime.Now.Ticks);
+
+        northGrid = new IOTileData[height * depth];
+        southGrid = new IOTileData[height * depth];
+        eastGrid = new IOTileData[height * width];
+        westGrid = new IOTileData[height * width];
+
+        // Filling the GameObject arrays with all the IOTiles
+        int i = 0;
+        foreach (Transform tile in northWall)
+            northGrid[i++] = tile.gameObject.GetComponent<IOTileData>();
+        i = 0;
+        foreach (Transform tile in southWall)
+            southGrid[i++] = tile.gameObject.GetComponent<IOTileData>();
+        i = 0;
+        foreach (Transform tile in eastWall)
+            eastGrid[i++] = tile.gameObject.GetComponent<IOTileData>();
+        i = 0;
+        foreach (Transform tile in westWall)
+            westGrid[i++] = tile.gameObject.GetComponent<IOTileData>();
+
+        // Adding the two first Input and Output
+        addPipe(company, true);
+        addPipe(company, false);
     }
 
     // Update is called once per frame
@@ -37,66 +55,32 @@ public class ioScript : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            addPipe();
+            addPipe(company, false);
         }
     }
 
-    private void addPipe()
+    private void addPipe(string company, bool isOutput)
     {
+        bool placedPipe = false;
+        int wallSelec, lineSelec, columnSelec;
+
         while (!placedPipe)
         {
+            //Randomly Choosing the wall among the 4 ones and the coordinates
             wallSelec = Random.Range(0, 4);
+            lineSelec = (int)(Random.value * height);
+            columnSelec = (int)(Random.value * (wallSelec < 2 ? depth : width));
 
-            switch (wallSelec)
-            {
-                case 0:
-                    lineSelec = Random.Range(0, height);
-                    columnSelec = Random.Range(0, depth);
-
-                    if (!wallGridNS[0, lineSelec, columnSelec])
-                    {
-                        placedPipe = true;
-                        wallGridNS[0, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(width / 4f, lineSelec / 2f, columnSelec / 2f - (depth + 1) / 4f), Quaternion.identity, parent);
-                    }
-
-                    break;
-                case 1:
-                    lineSelec = Random.Range(0, height);
-                    columnSelec = Random.Range(0, depth);
-
-                    if (!wallGridNS[1, lineSelec, columnSelec])
-                    {
-                        placedPipe = true;
-                        wallGridNS[1, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(-0.5f - width / 4f, lineSelec / 2f, columnSelec / 2f - (depth - 1) / 4f), Quaternion.Euler(0, 180, 0), parent);
-                    }
-
-                    break;
-                case 2:
-                    lineSelec = Random.Range(0, height);
-                    columnSelec = Random.Range(0, width);
-
-                    if (!wallGridEW[0, lineSelec, columnSelec])
-                    {
-                        placedPipe = true;
-                        wallGridEW[0, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(columnSelec / 2f - width / 4, lineSelec / 2f, -(depth + 1) / 4f), Quaternion.Euler(0, 90, 0), parent);
-                    }
-
-                    break;
-                case 3:
-                    lineSelec = Random.Range(0, height);
-                    columnSelec = Random.Range(0, width);
-
-                    if (!wallGridEW[1, lineSelec, columnSelec])
-                    {
-                        placedPipe = true;
-                        wallGridEW[1, lineSelec, columnSelec] = Instantiate(ioPipe, transform.position + new Vector3(-0.5f + columnSelec / 2f - width / 4, lineSelec / 2f, (depth + 1) / 4), Quaternion.Euler(0, -90, 0), parent);
-                    }
-
-                    break;
-            }
+            //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
+            // ADD MORE WALLS IF NEEDED
+            if (wallSelec == 0)
+                placedPipe = northGrid[height * lineSelec + columnSelec].OnEnableIO(company, isOutput, wallSelec);
+            else if (wallSelec == 1)
+                placedPipe = southGrid[height * lineSelec + columnSelec].OnEnableIO(company, isOutput, wallSelec);
+            else if (wallSelec == 2)
+                placedPipe = eastGrid[height * lineSelec + columnSelec].OnEnableIO(company, isOutput, wallSelec);
+            else
+                placedPipe = westGrid[height * lineSelec + columnSelec].OnEnableIO(company, isOutput, wallSelec);
         }
-
-        placedPipe = false;
-
     }
 }

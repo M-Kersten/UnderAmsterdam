@@ -35,7 +35,7 @@ public class HandTileInteraction : NetworkBehaviour
             if(!cubeScript.TileOccupied)
             {
                 cubeScript.UpdateCompany(myPlayer.company);
-                cubeScript.EnableTile();
+                cubeScript.EnableTile(true);
                 TriggerPressed = false;
             }
         }
