@@ -86,7 +86,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4976049845006516314
 Transform:
   m_ObjectHideFlags: 0
@@ -336,6 +336,7 @@ MonoBehaviour:
   neighbors: []
   connectorPart: {fileID: 8827063062579098424}
   connectorPartPreview: {fileID: 9054164455376291729}
+  linePreview: {fileID: 4976049845006516312}
   _TileOccupied: 0
   _company: Empty
   pipeParts: []

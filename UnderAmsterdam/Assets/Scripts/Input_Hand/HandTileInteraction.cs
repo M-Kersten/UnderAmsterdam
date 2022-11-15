@@ -26,6 +26,28 @@ public class HandTileInteraction : NetworkBehaviour
                 TriggerPressed = playerInputData.leftTriggerPressed;
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!rig.IsLocalNetworkRig)
+            return;
+
+        if (other.gameObject.layer == 7)
+        {
+            CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+            cubeScript.OnHandEnter(myPlayer.company);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (!rig.IsLocalNetworkRig)
+            return;
+
+        if (other.gameObject.layer == 7)
+        {
+            CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+            cubeScript.OnHandExit(myPlayer.company);
+        }
+    }
 
     private void OnTriggerStay(Collider other)
     {
