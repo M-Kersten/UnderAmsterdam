@@ -5,7 +5,7 @@ Shader "UnderAmsterdam/ParralaxSurfaceShader"
         _MainTex ("Diffuse", 2D) = "white" {}
         _NormalMap("Normal Map", 2D) = "white" {}
         _HeightTex("Height map", 2D) = "white" {}
-        _HeightPower("HeightPower", Range(-10,10)) = 0
+        _HeightPower("HeightPower", Range(-10,100)) = 0
     }
     SubShader
     {
@@ -27,10 +27,11 @@ Shader "UnderAmsterdam/ParralaxSurfaceShader"
         float _HeightPower;
 
         void surf(Input IN, inout SurfaceOutput o) {
-            float2 texOffset = ParallaxOffset(tex2D(_HeightMap, IN.uv_HeightMap).r, _HeightPower, IN.viewDir);
+            //float2 texOffset = ParallaxOffset(tex2D(_HeightMap, IN.uv_HeightMap).r, _HeightPower, IN.viewDir);
 
-            o.Albedo = tex2D(_MainTex, IN.uv_MainTex + texOffset).rgb;
-            o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap + texOffset));
+            o.Albedo = 1;
+            //o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb;
+            o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap))* _HeightPower;
         }
         ENDCG
     }
