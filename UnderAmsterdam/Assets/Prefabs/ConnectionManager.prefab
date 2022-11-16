@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6687331123855280171}
   - component: {fileID: -3775747846731191431}
   - component: {fileID: -2638207197799899728}
+  - component: {fileID: 650798183}
   m_Layer: 0
   m_Name: ConnectionManager
   m_TagString: Untagged
@@ -52,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 6
-  roomName: SampleFusionVR
+  roomName: SampleFusionVR2
   connectOnStart: 1
   runner: {fileID: 0}
   userPrefab: {fileID: 2549000073306557744, guid: 2144eff5afa72854d9c63ebc7d89556a, type: 3}
@@ -208,9 +209,10 @@ MonoBehaviour:
   RoundEnd:
     m_PersistentCalls:
       m_Calls: []
-  roundTime: 45
-  roundTimeIncrease: 15
+  roundTime: 5
+  roundTimeIncrease: 300
   roundStartCountDown: 3
+  pManager: {fileID: 0}
 --- !u!114 &6687331123855280171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,3 +265,15 @@ MonoBehaviour:
   - {fileID: 2100000, guid: aebf48dea5eddc041ad716005dc3fb8b, type: 2}
   - {fileID: 2100000, guid: 32ed26da6161bee4da49f3f1df801da4, type: 2}
   - {fileID: 2100000, guid: 24b4fac2fe11d2a41a01d41590e64452, type: 2}
+--- !u!114 &650798183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878090387540590309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfcfa8f3af971c449ed585b5e6e03c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
