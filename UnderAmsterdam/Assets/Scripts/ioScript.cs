@@ -44,26 +44,9 @@ public class ioScript : MonoBehaviour
         foreach (Transform tile in westWall)
             westGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
 
-        Gamemanager.Instance.RoundStart.AddListener(FlushPreviousRoundData);
         Gamemanager.Instance.RoundStart.AddListener(AddPlayerInputs);
         Gamemanager.Instance.RoundStart.AddListener(AddPlayerOutputs);
         Gamemanager.Instance.RoundEnd.AddListener(StartCheckingPipes);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown("space"))
-        {
-            //AddPlayerInputs();
-            StartCheckingPipes();
-            Debug.Log("starting checking process!!!!");
-        }
-    }
-
-    private void FlushPreviousRoundData()
-    {
-        inputPipes.Clear();
     }
 
     private void StartCheckingPipes()
@@ -118,34 +101,29 @@ public class ioScript : MonoBehaviour
                 case 0:
                     randomIndex = Random.Range(0, northGrid.Length);
                     placedInput = northGrid[randomIndex].TryEnableIOPipe(company, isOutput);
-                    Debug.Log(northGrid[randomIndex]);
                     if (placedInput)
                         chosenTile = northGrid[randomIndex];
                     break;
                 case 1:
                     randomIndex = Random.Range(0, southGrid.Length);
                     placedInput = southGrid[randomIndex].TryEnableIOPipe(company, isOutput);
-                    Debug.Log(southGrid[randomIndex]);
                     if (placedInput)
                         chosenTile = southGrid[randomIndex];
                     break;
                 case 2:
                     randomIndex = Random.Range(0, westGrid.Length);
                     placedInput = westGrid[randomIndex].TryEnableIOPipe(company, isOutput);
-                    Debug.Log(westGrid[randomIndex]);
                     if (placedInput)
                         chosenTile = westGrid[randomIndex]; 
                     break;
                 case 3:
                     randomIndex = Random.Range(0, eastGrid.Length);
                     placedInput = eastGrid[randomIndex].TryEnableIOPipe(company, isOutput);
-                    Debug.Log(eastGrid[randomIndex]);
                     if (placedInput)
                         chosenTile = eastGrid[randomIndex];
                     break;
             }
         }
-        Debug.Log(chosenTile);
         return chosenTile;
     }
 }

@@ -222,31 +222,38 @@ public class CubeInteraction : NetworkBehaviour
 
     public void CheckConnectionForWin()
     {
-        Debug.Log("Checking connection!");
-
         // For each neighbor...
         for (int i = 0; i < neighbors.Length; i++)
         {
+            Debug.Log(gameObject.name);
+            Debug.Log(neighbors[i]);
+            Debug.Log("trying to get tile");
+
             // if it's a normal tile...
-            if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
-            {
-                // from the same company and not checked yet...
-                if (company == neighborTile.company && !neighborTile.isChecked)
+            if (neighbors[i] != null) {
+                if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
                 {
-                    // Verify its neighbor and mark it as checked.
-                    isChecked = true;
-                    neighborTile.CheckConnectionForWin();
+                    Debug.Log("Got a tile");
+                    // from the same company and not checked yet...
+                    if (company == neighborTile.company && !neighborTile.isChecked)
+                    {
+                        // Verify its neighbor and mark it as checked.
+                        isChecked = true;
+                        neighborTile.CheckConnectionForWin();
+                    }
                 }
-            }
-            // if it's an Output tile...
-            else if (neighbors[i].TryGetComponent(out IOTileScript IOPipe))
-            {
-                // from the same company and active and if it isnt output (aka where it came from)
-                if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput)
+                // if it's an Output tile...
+                else if (neighbors[i].TryGetComponent(out IOTileScript IOPipe))
                 {
-                    //TODO: Call func in IOTileScript to either confirm connection or add points idc.
-                    //IOPipe.coolFunc();
-                    return;
+                    Debug.Log("Got a IOTile");
+                    // from the same company and active and if it isnt output (aka where it came from)
+                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput)
+                    {
+                        //TODO: Call func in IOTileScript to either confirm connection or add points idc.
+                        //IOPipe.coolFunc();
+                        Debug.Log("win!!");
+                        return;
+                    }
                 }
             }
         }

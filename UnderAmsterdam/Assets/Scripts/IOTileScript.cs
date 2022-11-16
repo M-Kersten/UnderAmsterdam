@@ -41,7 +41,8 @@ public class IOTileScript : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(transform.position, -transform.right, out hit))
             {
-                hit.transform.GetComponent<CubeInteraction>().CheckConnectionForWin();
+                CubeInteraction tile = hit.transform.GetComponent<CubeInteraction>();
+                tile.CheckConnectionForWin();
             }
         }
     }
