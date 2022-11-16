@@ -10,6 +10,7 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private float roundTime = 45;
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundStartCountDown = 3;
+    [SerializeField] private bool startGame;
     
     private HostTimerScript timer;
 
@@ -24,7 +25,15 @@ public class Gamemanager : MonoBehaviour
     {
         timer = GetComponent<HostTimerScript>();
         timer.timerUp.AddListener(OnRoundEnd);
-        OnGameStart();
+    }
+
+    private void FixedUpdate()
+    {
+        if (startGame)
+        {
+            OnGameStart();
+            startGame = false;
+        }
     }
 
     private void OnGameStart()

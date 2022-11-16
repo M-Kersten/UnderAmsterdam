@@ -1,15 +1,20 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class ioScript : MonoBehaviour
 {
-    public int width = 16;//x
-    public int height = 3;//y
-    public int depth = 23;//z
+    [SerializeField] private List<IOTileScript> inputPipes;
+    [SerializeField] private List<IOTileScript> outputPipes;
 
+    private IOTileScript[] northGrid;
+    private IOTileScript[] southGrid;
     private IOTileScript[] eastGrid;
     private IOTileScript[] westGrid;
-    public Transform eastWall;
-    public Transform westWall;
+
+    public Transform northWall, southWall, eastWall, westWall;
+
+    private bool hasPlacedOutputs;
 
     // Start is called before the first frame update
     void Start()
@@ -17,19 +22,32 @@ public class ioScript : MonoBehaviour
         // Random seed is set
         Random.InitState((int)System.DateTime.Now.Ticks);
 
-        eastGrid = new IOTileScript[height * width];
-        westGrid = new IOTileScript[height * width];
+        inputPipes = new List<IOTileScript>();
+        outputPipes = new List<IOTileScript>();
+
+        northGrid = new IOTileScript[northWall.childCount];
+        southGrid = new IOTileScript[southWall.childCount];
+        eastGrid = new IOTileScript[eastWall.childCount];
+        westGrid = new IOTileScript[westWall.childCount];
 
         // Filling the GameObject arrays with all the IOTiles
         int i = 0;
+        foreach (Transform tile in northWall)
+            northGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
+        i = 0;
+        foreach (Transform tile in southWall)
+            southGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
+        i = 0;
         foreach (Transform tile in eastWall)
             eastGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
         i = 0;
         foreach (Transform tile in westWall)
             westGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
 
-        Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
+        Gamemanager.Instance.RoundStart.AddListener(FlushPreviousRoundData);
         Gamemanager.Instance.RoundStart.AddListener(AddPlayerInputs);
+        Gamemanager.Instance.RoundStart.AddListener(AddPlayerOutputs);
+        Gamemanager.Instance.RoundEnd.AddListener(StartCheckingPipes);
     }
 
     // Update is called once per frame
@@ -37,7 +55,37 @@ public class ioScript : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            AddPlayerInputs();
+            //AddPlayerInputs();
+            StartCheckingPipes();
+            Debug.Log("starting checking process!!!!");
+        }
+    }
+
+    private void FlushPreviousRoundData()
+    {
+        inputPipes.Clear();
+    }
+
+    private void StartCheckingPipes()
+    {
+        for(int i = 0; i < outputPipes.Count; i++)
+        {
+            outputPipes[i].StartPipeCheck();
+        }
+    }
+
+    private void AddPlayerOutputs()
+    {
+        if (!hasPlacedOutputs)
+        {
+            foreach (var player in CompanyManager.Instance._companies)
+            {
+                if (player.Value != CompanyManager.Instance.emptyPlayer)
+                {
+                    hasPlacedOutputs = true;
+                    outputPipes.Add(PlaceIOPipe(player.Key, true));
+                }
+            }
         }
     }
 
@@ -47,65 +95,57 @@ public class ioScript : MonoBehaviour
         {
             if (player.Value != CompanyManager.Instance.emptyPlayer)
             {
-                PlaceInputPipe(player.Key);
+                inputPipes.Add(PlaceIOPipe(player.Key, false));
             }
         }
     }
 
-    private void PlaceInputPipe(string company)
+    private IOTileScript PlaceIOPipe(string company, bool isOutput)
     {
+        IOTileScript chosenTile;
         bool placedInput = false;
-        int wallSelect, lineSelect, columnSelect;
+        int wallSelect, randomIndex;
+
+        chosenTile = new IOTileScript();
 
         while (!placedInput)
         {
-            //Randomly Choosing the wall among the 4 ones and the coordinates
-            wallSelect = Random.Range(0, 2);
-            lineSelect = (int)(Random.value * height);
-            columnSelect = (int)(Random.value * (wallSelect < 2 ? depth : width));
-
+            //Randomly Choosing the wall among the 4 walls
+            wallSelect = Random.Range(0, 4);
+            
             //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
-            // ADD MORE WALLS IF NEEDED
-            if (wallSelect == 0)
-            {
-                placedInput = eastGrid[height * lineSelect + columnSelect].TryEnableIOPipe(company, false);
-            }
-            else
-            {
-                placedInput = eastGrid[height * lineSelect + columnSelect].TryEnableIOPipe(company, false);
-            }
-        }
-    }
-
-    //this is just to place output pipes randomly at start, its doubble code and it sucks
-    private void AddPlayerOutputs()
-    {
-        foreach (var player in CompanyManager.Instance._companies)
-        {
-            if (player.Value != CompanyManager.Instance.emptyPlayer)
-            {
-                bool placedInput = false;
-                int wallSelect, lineSelect, columnSelect;
-
-                while (!placedInput)
-                {
-                    //Randomly Choosing the wall among the 4 ones and the coordinates
-                    wallSelect = Random.Range(0, 2);
-                    lineSelect = (int)(Random.value * height);
-                    columnSelect = (int)(Random.value * (wallSelect < 2 ? depth : width));
-
-                    //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
-                    // ADD MORE WALLS IF NEEDED
-                    if (wallSelect == 0)
-                    {
-                        placedInput = eastGrid[height * lineSelect + columnSelect].TryEnableIOPipe(player.Key, true);
-                    }
-                    else
-                    {
-                        placedInput = eastGrid[height * lineSelect + columnSelect].TryEnableIOPipe(player.Key, true);
-                    }
-                }
+            switch (wallSelect) {
+                case 0:
+                    randomIndex = Random.Range(0, northGrid.Length);
+                    placedInput = northGrid[randomIndex].TryEnableIOPipe(company, isOutput);
+                    Debug.Log(northGrid[randomIndex]);
+                    if (placedInput)
+                        chosenTile = northGrid[randomIndex];
+                    break;
+                case 1:
+                    randomIndex = Random.Range(0, southGrid.Length);
+                    placedInput = southGrid[randomIndex].TryEnableIOPipe(company, isOutput);
+                    Debug.Log(southGrid[randomIndex]);
+                    if (placedInput)
+                        chosenTile = southGrid[randomIndex];
+                    break;
+                case 2:
+                    randomIndex = Random.Range(0, westGrid.Length);
+                    placedInput = westGrid[randomIndex].TryEnableIOPipe(company, isOutput);
+                    Debug.Log(westGrid[randomIndex]);
+                    if (placedInput)
+                        chosenTile = westGrid[randomIndex]; 
+                    break;
+                case 3:
+                    randomIndex = Random.Range(0, eastGrid.Length);
+                    placedInput = eastGrid[randomIndex].TryEnableIOPipe(company, isOutput);
+                    Debug.Log(eastGrid[randomIndex]);
+                    if (placedInput)
+                        chosenTile = eastGrid[randomIndex];
+                    break;
             }
         }
+        Debug.Log(chosenTile);
+        return chosenTile;
     }
 }

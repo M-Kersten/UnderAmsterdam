@@ -127,12 +127,14 @@ public class CubeInteraction : NetworkBehaviour
         {
             if (neighbors[i] != null) 
             {
-                CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
-                if (neighborTile.company != "Empty" && (neighborTile.company == company))
+                if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
                 {
-                    activatedPipes[i] = enable;
-                    neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
-                }            
+                    if (neighborTile.company != "Empty" && (neighborTile.company == company))
+                    {
+                        activatedPipes[i] = enable;
+                        neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
+                    }
+                }
             }
         }
     }
@@ -220,6 +222,8 @@ public class CubeInteraction : NetworkBehaviour
 
     public void CheckConnectionForWin()
     {
+        Debug.Log("Checking connection!");
+
         // For each neighbor...
         for (int i = 0; i < neighbors.Length; i++)
         {
@@ -237,12 +241,13 @@ public class CubeInteraction : NetworkBehaviour
             // if it's an Output tile...
             else if (neighbors[i].TryGetComponent(out IOTileScript IOPipe))
             {
-                    // from the same company and active and if it isnt output (aka where it came from)
-                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput)
-                    {
-                        //TODO: Call increase in connected inputs here.
-                        return;
-                    }
+                // from the same company and active and if it isnt output (aka where it came from)
+                if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput)
+                {
+                    //TODO: Call func in IOTileScript to either confirm connection or add points idc.
+                    //IOPipe.coolFunc();
+                    return;
+                }
             }
         }
     } 
