@@ -9,6 +9,7 @@ public class IOTileData : MonoBehaviour
     //TMP
     private List<string> _companies = new List<string> { "water", "gas", "data", "sewage", "power" };
     [SerializeField] private Material[] pipeMaterials;
+    [SerializeField] private Renderer myRenderer;
 
     // To set the input pipe Game Object in the MainGrid script.
     public GameObject grid;
@@ -23,6 +24,7 @@ public class IOTileData : MonoBehaviour
 
     void Start()
     {
+
         company = "Empty"; // No company
         companyPipes = new GameObject[NUMBER_OF_COMPANIES];
 
@@ -45,7 +47,7 @@ public class IOTileData : MonoBehaviour
         company = setCompany;
         isActive = true;
         companyPipes[0].SetActive(true);
-        //companyPipes[0].GetComponent<Renderer>().material = pipeMaterials[_companies.IndexOf(company)];//TMP
+        myRenderer.material = pipeMaterials[_companies.IndexOf(company)];//TMP
 
         if (isOutput)
         {
@@ -55,8 +57,8 @@ public class IOTileData : MonoBehaviour
             Physics.Raycast(transform.position, facedDirection[wallSelec], out hit);
             closeNeighbor = hit.transform.gameObject.GetComponent<CubeInteraction>();
         }
-        else
-            gridScript.replaceInput(gameObject.GetComponent<IOTileData>());
+        else { }
+            //gridScript.replaceInput(gameObject.GetComponent<IOTileData>());
 
         return true;
     }

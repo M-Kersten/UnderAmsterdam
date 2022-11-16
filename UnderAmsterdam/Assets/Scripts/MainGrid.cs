@@ -7,7 +7,8 @@ public class MainGrid : MonoBehaviour
 {
     // Keeps a track of the former inputs to deactivate them
     public IOTileData[] companiesInput;
-    private int NUMBER_OF_COMPANIES = 1;
+    private int NUMBER_OF_COMPANIES = 5;
+    private List<string> _companies = new List<string> { "water", "gas", "data", "sewage", "power" };
 
     void Start()
     {
@@ -16,8 +17,8 @@ public class MainGrid : MonoBehaviour
 
     public void replaceInput(IOTileData input)
     {
-        companiesInput[0].isActive = false;
-        companiesInput[0] = input;
+        companiesInput[_companies.IndexOf(input.company)].isActive = false;
+        companiesInput[_companies.IndexOf(input.company)] = input;
     }
 
 }

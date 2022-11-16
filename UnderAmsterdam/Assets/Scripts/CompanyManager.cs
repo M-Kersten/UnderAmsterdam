@@ -6,13 +6,20 @@ using Fusion;
 
 public class CompanyManager : MonoBehaviour
 {
+    public static CompanyManager Instance;
+
     [SerializeField]
     private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
-    PlayerRef emptyPlayer = new();
+    public PlayerRef emptyPlayer = new();
     [SerializeField] public Dictionary<string, PlayerRef> _companies;
     private ConnectionManager cManager;
-    
+
     void Start(){
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(this);
+
         cManager = GetComponent<ConnectionManager>();
         Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
         Gamemanager.Instance.RoundStart.AddListener(loadSend);

@@ -8,8 +8,7 @@ using Fusion.XR.Host.Rig;
 
 public class CubeInteraction : NetworkBehaviour
 {
-    public GameObject player;
-    private PlayerData playerData;
+    [SerializeField] private PlayerData playerData;
 
     private enum Direction { Right, Left, Behind, Front, Up, Down };
 
@@ -44,8 +43,6 @@ public class CubeInteraction : NetworkBehaviour
     }
     public override void Spawned()
     {
-        playerData = player.GetComponent<PlayerData>();
-
         // Hides the tiles
         OnRenderPipePreview(false);
         OnRenderPipePart(false);
@@ -136,30 +133,27 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Destruction by hammer
-        if (/* && other.attachedRigidbody.velocity.magnitude > 3f*/other.CompareTag("HammerHead"))
-        { // MAGNITUDE TO SETTLE
-            Debug.Log("sijsjis");
-            EnableTile(false);
-            return;
-        }
+        if (isSpawned && TileOccupied && other.CompareTag("HammerHead"))
+            DisableTile();
+    }
+
+    public void OnHandEnter(string playerCompany)
+    {
         if (isSpawned && !TileOccupied)
         {
             isHover = true;
-            UpdateNeighborData(true);
+            UpdateNeighborData(true, playerCompany);
             OnRenderPipePreview(true);
         }
-
     }
 
-    private void OnTriggerExit(Collider other)
+    public void OnHandExit(string playerCompany)
     {
         if (isSpawned && !TileOccupied)
         {
             isHover = false;
             OnRenderPipePreview(false);
-            UpdateNeighborData(false);
-            return;
+            UpdateNeighborData(false, playerCompany);
         }
     }
     static void onCompanyChange(Changed<CubeInteraction> changed)
@@ -170,7 +164,7 @@ public class CubeInteraction : NetworkBehaviour
     }
 
     // Check all of its neighbors and activate the corresponding pipes if it's from the same company
-    private void UpdateNeighborData(bool enable)
+    private void UpdateNeighborData(bool enable, string playerCompany = ".")
     {
         for (int i = 0; i < neighbors.Length; i++)
         {
@@ -180,7 +174,7 @@ public class CubeInteraction : NetworkBehaviour
                 if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
                 {
                     // If the neighbor is in the same company...
-                    if (neighborTile.company != "Empty" && neighborTile.company == company)
+                    if (neighborTile.company != "Empty" && (neighborTile.company == company || neighborTile.company == playerCompany))
                     {
                         // activates the pipe facing the neighbor as well as the neighbor's pipe facing the current tile.
                         activatedPipes[i] = enable;
@@ -190,7 +184,7 @@ public class CubeInteraction : NetworkBehaviour
                 // Or the IO tile
                 else if (neighbors[i].TryGetComponent(out IOTileData IOTile))
                 {
-                    if (IOTile.company != "Empty" && (IOTile.company == company))
+                    if (IOTile.company != "Empty" && (IOTile.company == company || IOTile.company == playerCompany))
                         activatedPipes[i] = enable;
                 }
             }
@@ -204,16 +198,32 @@ public class CubeInteraction : NetworkBehaviour
     }
 
     // Enable/Disable Tile
-    public void EnableTile(bool enable)
+    public void EnableTile()
     {
-        playerData.points += enable ? -20 : 10;
+        playerData.points -= 20;
 
         isHover = false;
         TileOccupied = true;
-        UpdateNeighborData(true);
         OnRenderPipePart(true);
-        pColouring.UpdateRenderer(enable ? company : "Empty");
+        UpdateNeighborData(true);
+        pColouring.UpdateRenderer(company);
         OnRenderPipePreview(false);
+    }
+    private void DisableTile()
+    {
+        playerData.points += 20;
+
+        company = "Empty";
+        TileOccupied = false;
+        // Deactivate all pipes
+        OnRenderPipePart(false);
+        OnRenderPipePreview(false);
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            activatedPipes[i] = false;
+            if (neighbors[i] != null && neighbors[i].TryGetComponent(out CubeInteraction neighborTile)) neighborTile.activatedPipes[GetOppositeFace(i)] = false;
+        }
+
     }
 
     private void OnRenderPipePart(bool isActive)
@@ -271,7 +281,7 @@ public class CubeInteraction : NetworkBehaviour
     void OnPipeRender(bool isPipedCurrent)
     {
         if (isPipedCurrent)
-            EnableTile(true);
+            EnableTile();
     }
     private int GetOppositeFace(int i)
     {

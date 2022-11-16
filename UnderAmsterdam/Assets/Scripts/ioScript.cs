@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion.XR.Host;
+using Fusion;
 
 public class ioScript : MonoBehaviour
 {
-    public GameObject player;
-    private string company;
-
     public int width = 16;//x
     public int height = 3;//y
     public int depth = 23;//z
@@ -20,8 +19,6 @@ public class ioScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //company = player.GetComponent<PlayerData>().company;
-        company = "water";
 
         // Random seed is set
         Random.InitState((int)System.DateTime.Now.Ticks);
@@ -46,8 +43,14 @@ public class ioScript : MonoBehaviour
             westGrid[i++] = tile.gameObject.GetComponent<IOTileData>();
 
         // Adding the two first Input and Output
-        addPipe(company, true);
-        addPipe(company, false);
+        foreach (var player in CompanyManager.Instance._companies)
+        {
+            if (player.Value != CompanyManager.Instance.emptyPlayer)
+            {
+                addPipe(player.Key, true);
+                addPipe(player.Key, false);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -55,7 +58,12 @@ public class ioScript : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            addPipe(company, false);
+            foreach (var player in CompanyManager.Instance._companies)
+            {
+                if (player.Value != CompanyManager.Instance.emptyPlayer)
+                    addPipe(player.Key, false);
+            }
+            addPipe("water", false);
         }
     }
 
