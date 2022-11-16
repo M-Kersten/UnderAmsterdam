@@ -7,9 +7,10 @@ public class Gamemanager : MonoBehaviour
     public static Gamemanager Instance;
     public UnityEvent GameStart, RoundStart, RoundEnd;
 
-    [SerializeField] private float roundTime = 45;
+    [SerializeField] public float roundTime = 45;
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundStartCountDown = 3;
+    public Pointsmanager pManager;
     
     private HostTimerScript timer;
 
@@ -22,6 +23,7 @@ public class Gamemanager : MonoBehaviour
     }
     private void Start()
     {
+        pManager = GetComponent<Pointsmanager>();
         timer = GetComponent<HostTimerScript>();
         timer.timerUp.AddListener(OnRoundEnd);
         OnGameStart();
