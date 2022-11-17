@@ -6,27 +6,20 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public float timerStart = 0;
-    private bool onGoingGame = false;
-
-    [Tooltip("How much time is given, in seconds")]
-    [SerializeField]
-    private UnityEvent timerUp;
+    private float timerStart = 0;
+    private bool onGoingGame;
 
     private void Start()
     {
-        if (timerUp == null)
-        {
-            timerUp = new UnityEvent();
-        }
-        timerUp.AddListener(GameState);
+        Gamemanager.Instance.RoundStart.AddListener(GameState);
+        Gamemanager.Instance.RoundEnd.AddListener(GameState);
     }
 
     [SerializeField] private TextMeshProUGUI countDownText;
 
     private void FixedUpdate()
     {
-        if (timerStart > 0)
+        if (onGoingGame)
         {
             timerStart = Mathf.Max(0, timerStart - Time.deltaTime);
             TimeSpan timeSpan = TimeSpan.FromSeconds(timerStart);
