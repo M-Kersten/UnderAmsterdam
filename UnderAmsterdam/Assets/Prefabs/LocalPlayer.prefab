@@ -4761,6 +4761,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cc396873c069324ba97635808779d93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  joystickLeft:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 01766ff8-3854-4b21-b098-c40dcb95b438
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  joystickRight:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 3afac9f3-58cf-4f0f-ad8d-f2d705eeb58e
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
   side: 2
   mainCam: {fileID: 8439811098364466054}
   speed: 1

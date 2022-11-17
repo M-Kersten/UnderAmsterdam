@@ -34,8 +34,11 @@ public class CubeInteraction : NetworkBehaviour
     private bool isSpawned = false;
 
     public bool isHover = false;
+<<<<<<< HEAD
     private uint handHoverNumber = 0; // avoid enter/exit problem whith two hands
+=======
     public bool isChecked = false;
+>>>>>>> Feature/pathFinding
 
     void Start() {
         pColouring = GetComponent<PipeColouring>();
@@ -115,9 +118,14 @@ public class CubeInteraction : NetworkBehaviour
         {
             if (neighbors[i] != null) 
             {
-                if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
-                {
+<<<<<<< HEAD
+                CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
                 if ((neighborTile.company != "Empty") && ((neighborTile.company == company) || (neighborTile.company == playerCompany )))
+=======
+                if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
+>>>>>>> Feature/pathFinding
+                {
+                    if (neighborTile.company != "Empty" && (neighborTile.company == company))
                     {
                         activatedPipes[i] = enable;
                         neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
@@ -126,6 +134,7 @@ public class CubeInteraction : NetworkBehaviour
             }
         }
     }
+
     [Tooltip("Should be activated before EnableTile()")]
     public void UpdateCompany(string newCompany) {
         company = newCompany;

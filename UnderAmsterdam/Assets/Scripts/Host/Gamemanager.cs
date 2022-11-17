@@ -5,11 +5,13 @@ using UnityEngine.Events;
 public class Gamemanager : MonoBehaviour
 {
     public static Gamemanager Instance;
-    public UnityEvent GameStart, RoundStart, RoundEnd;
+    public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd;
+    public int round;
 
     [SerializeField] private float roundTime = 45;
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundStartCountDown = 3;
+    [SerializeField] private bool startGame;
     
     private HostTimerScript timer;
 
@@ -24,7 +26,15 @@ public class Gamemanager : MonoBehaviour
     {
         timer = GetComponent<HostTimerScript>();
         timer.timerUp.AddListener(OnRoundEnd);
-        OnGameStart();
+    }
+
+    private void FixedUpdate()
+    {
+        if (startGame)
+        {
+            OnGameStart();
+            startGame = false;
+        }
     }
 
     private void OnGameStart()
@@ -36,12 +46,18 @@ public class Gamemanager : MonoBehaviour
     private void OnRoundStart()
     {
         RoundStart.Invoke();
+        round++;
     }
     private void OnRoundEnd()
     {
         RoundEnd.Invoke();
         roundTime += roundTimeIncrease;
         timer.SetTimer(roundTime + roundStartCountDown);
+        OnRoundLateEnd();
+    }
+    private void OnRoundLateEnd()
+    {
+        RoundLateEnd.Invoke();
         OnRoundStart();
     }
 }
