@@ -172,7 +172,7 @@ public class CubeInteraction : NetworkBehaviour
         if (!isSpawned)
             return;
 
-        connectorPart.SetActive(isActive);
+        connectorPart.gameObject.SetActive(isActive);
         pColouring.UpdateRenderer(company, connectorPart);
 
         for (int i = 0; i < neighbors.Length; i++)

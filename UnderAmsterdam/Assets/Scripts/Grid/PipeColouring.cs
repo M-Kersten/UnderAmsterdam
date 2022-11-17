@@ -33,12 +33,13 @@ public class PipeColouring : MonoBehaviour
 
     // Colour the connecting pipes when placed
     void ColourPipe(string company, GameObject affectedChild) {
-        
+
         for (int i = 0; i < pipeMaterials.Length; i++)
         {
             if (pipeMaterials[i].name == company) {
+
                 affectedChild.GetComponent<Renderer>().material = pipeMaterials[i];
-                }
             }
         }
+    }
 }
