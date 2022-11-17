@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1122064594, guid: face5e383eb29854cb7512ffffbdc98d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3941215504342030600, guid: face5e383eb29854cb7512ffffbdc98d, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -193,6 +197,10 @@ PrefabInstance:
     - target: {fileID: 4211828065364229566, guid: face5e383eb29854cb7512ffffbdc98d, type: 3}
       propertyPath: m_Name
       value: Eviroment
+      objectReference: {fileID: 0}
+    - target: {fileID: 4211828065364229566, guid: face5e383eb29854cb7512ffffbdc98d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: face5e383eb29854cb7512ffffbdc98d, type: 3}
