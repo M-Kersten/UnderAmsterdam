@@ -7,9 +7,10 @@ public class PlayerData : NetworkBehaviour
 {
     [Networked] public string company {get; set;}
 
-    public int points;
+    [Networked] public int points {get; set;}
 
     public void ReceiveCompany(string givenCompany) {
             company = givenCompany;
+            
     }
 }
