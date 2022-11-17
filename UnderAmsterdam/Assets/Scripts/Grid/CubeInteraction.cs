@@ -117,7 +117,7 @@ public class CubeInteraction : NetworkBehaviour
             {
                 if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
                 {
-                if ((neighborTile.company != "Empty") && ((neighborTile.company == company) || (neighborTile.company == playerCompany )))
+                    if ((neighborTile.company != "Empty") && ((neighborTile.company == company) || (neighborTile.company == playerCompany )))
                     {
                         activatedPipes[i] = enable;
                         neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
