@@ -11,8 +11,11 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] public float roundTime = 45;
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundStartCountDown = 3;
+<<<<<<< HEAD
     [SerializeField] private bool startGame;
+=======
     public Pointsmanager pManager;
+>>>>>>> Feature/pipecolour
     
     private HostTimerScript timer;
 

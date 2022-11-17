@@ -6,8 +6,8 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public float timerStart = 600;
-    private bool onGoingGame;
+    public float timerStart = 0;
+    private bool onGoingGame = false;
 
     [Tooltip("How much time is given, in seconds")]
     [SerializeField]
@@ -26,11 +26,14 @@ public class Timer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        timerStart = Mathf.Max(0, timerStart - Time.deltaTime);
-        TimeSpan timeSpan = TimeSpan.FromSeconds(timerStart);
-        countDownText.text = timeSpan.Minutes.ToString("00") + ":" + timeSpan.Seconds.ToString("00");
-        if (timerStart == 0 && !onGoingGame && timerUp != null) {
-            timerUp.Invoke();
+        if (timerStart > 0)
+        {
+            timerStart = Mathf.Max(0, timerStart - Time.deltaTime);
+            TimeSpan timeSpan = TimeSpan.FromSeconds(timerStart);
+            countDownText.text = timeSpan.Minutes.ToString("00") + ":" + timeSpan.Seconds.ToString("00");
+        } else if (timerStart != Gamemanager.Instance.roundTime) 
+        {
+            timerStart = Gamemanager.Instance.roundTime;
         }
     }
 

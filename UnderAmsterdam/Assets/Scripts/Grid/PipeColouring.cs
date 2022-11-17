@@ -9,8 +9,6 @@ public class PipeColouring : MonoBehaviour
     [Tooltip("Parent of where all pipes are stored")]
     [SerializeField] private GameObject pipeParent;
 
-    [Tooltip("All pipe materials, named same as company")]
-    [SerializeField] private Material[] pipeMaterials;
     [Tooltip("All pipe options")]
     [SerializeField] private GameObject[] pipeChildren;
 
@@ -22,23 +20,13 @@ public class PipeColouring : MonoBehaviour
                 if(pipeChildren[i].activeSelf == true)
                 {
                     // Give the company and the gameobject where the materials are on
-                    ColourPipe(pipeCompany, pipeChildren[i].transform.GetChild(0).gameObject);
+                    GameObject selectedChild = pipeChildren[i].transform.GetChild(0).gameObject;
+                    ColourSystem.Instance.SetColour(selectedChild, pipeCompany);
                 }
             }
         } else {
             // Is anything other than a pipe, like connector piece
-            ColourPipe(pipeCompany, givenGO);
+            ColourSystem.Instance.SetColour(givenGO, pipeCompany);
         }
     }
-
-    // Colour the connecting pipes when placed
-    void ColourPipe(string company, GameObject affectedChild) {
-        
-        for (int i = 0; i < pipeMaterials.Length; i++)
-        {
-            if (pipeMaterials[i].name == company) {
-                affectedChild.GetComponent<Renderer>().material = pipeMaterials[i];
-                }
-            }
-        }
 }
