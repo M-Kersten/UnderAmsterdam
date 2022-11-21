@@ -7,13 +7,19 @@ public class PlayerData : NetworkBehaviour
 {
     [SerializeField] private GameObject playerCap;
     [SerializeField] private int startingPoints = 1000;
-    [Networked] public string company {get; set;}
+
+    [Networked(OnChanged = nameof(UpdatePlayer))]
+    public string company { get; set; }
 
     [Networked] public int points {get; set;}
 
     public void ReceiveCompany(string givenCompany) {
         company = givenCompany;
-        ColourSystem.Instance.SetColour(playerCap, company);
+    }
+
+    static void UpdatePlayer(Changed<PlayerData> changed)
+    {
+        ColourSystem.Instance.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
     }
     private void Start()
     {
