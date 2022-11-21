@@ -47,6 +47,7 @@ public class CubeInteraction : NetworkBehaviour
 
         neighbors = new NetworkObject[amountFaces]; //Cubes have 6 faces, thus we will always need 6 neigbors
         GetNeighbors();
+        ResetActivatedPipes();
 
         pipeParts = new GameObject[neighbors.Length];
         previewPipeParts = new GameObject[neighbors.Length];
@@ -115,13 +116,20 @@ public class CubeInteraction : NetworkBehaviour
         {
             if (neighbors[i] != null) 
             {
+                // Check all of its neighbors and activate the corresponding pipes if it's from the same company
                 if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
                 {
-                    if ((neighborTile.company != "Empty") && ((neighborTile.company == company) || (neighborTile.company == playerCompany )))
+                    if ((neighborTile.company != "Empty") && (neighborTile.company == company || neighborTile.company == playerCompany))
                     {
                         activatedPipes[i] = enable;
                         neighborTile.activatedPipes[GetOppositeFace(i)] = enable;
                     }
+                }
+                // Or the IO tile
+                else if (neighbors[i].TryGetComponent(out IOTileScript IOTile))
+                {
+                    if (IOTile.company != "Empty" && (IOTile.company == company || IOTile.company == playerCompany))
+                        activatedPipes[i] = enable;
                 }
             }
         }
@@ -150,6 +158,7 @@ public class CubeInteraction : NetworkBehaviour
             isHover = true;
             handHoverNumber++;
 
+            ResetActivatedPipes();
             UpdateNeighborData(true , playerCompany);
             OnRenderPipePreview(true);
         }
@@ -186,12 +195,13 @@ public class CubeInteraction : NetworkBehaviour
                     //Display/undisplay every pipe which is activated
                     pipeParts[i].SetActive(isActive);
 
-                    CubeInteraction neighborTile = neighbors[i].GetComponent<CubeInteraction>();
-
-                    if (neighborTile.activatedPipes[GetOppositeFace(i)])
+                    if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
                     {
-                        neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
-                        neighborTile.pColouring.UpdateRenderer(company);
+                        if (neighborTile.activatedPipes[GetOppositeFace(i)])
+                        {
+                            neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
+                            neighborTile.pColouring.UpdateRenderer(company);
+                        }
                     }
                 }
             }
@@ -238,6 +248,12 @@ public class CubeInteraction : NetworkBehaviour
     private int GetOppositeFace(int i)
     {
         return i + 1 - 2 * (i % 2);            
+    }
+
+    private void ResetActivatedPipes()
+    {
+        for (int i = 0; i < activatedPipes.Length; i++)
+            activatedPipes[i] = false;
     }
 
     public void CheckConnectionForWin()
