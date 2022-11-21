@@ -18,6 +18,8 @@ public class airGrabScript : MonoBehaviour
     [SerializeField] private bool triggerPressed = false;
     [SerializeField] private bool triggerIsActive = false;
 
+    [SerializeField] private GameObject worldObject;
+
     private void Start()
     {
         handSide = RigPart.LeftController;
@@ -46,13 +48,15 @@ public class airGrabScript : MonoBehaviour
 
         if (triggerPressed)
         {
-            //Do code that moves player
+            Vector3 transformation = anchorPoint - transform.position;
+            worldObject.transform.position += transformation;
+            anchorPoint = transform.position;
         }
     }
 
     private void TriggerDownOnce()
     {
-        anchorPoint = gameObject.transform.position;
+        anchorPoint = transform.position;
     }
     private void TriggerUpOnce()
     {
