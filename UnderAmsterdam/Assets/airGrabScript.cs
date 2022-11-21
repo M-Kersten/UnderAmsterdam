@@ -22,11 +22,14 @@ public class airGrabScript : MonoBehaviour
 
     private void Start()
     {
-        handSide = RigPart.LeftController;
-        button.EnableWithDefaultXRBindings(side: handSide, new List<string> { "primary" });
+        onTriggerDown = new UnityEvent();
+        onTriggerUp = new UnityEvent();
+
+        //handSide = RigPart.LeftController;
+        //button.EnableWithDefaultXRBindings(side: handSide, new List<string> { "thumbstickClicked", "primaryButton", "secondaryButton" });
 
         handSide = RigPart.RightController;
-        button.EnableWithDefaultXRBindings(side: handSide, new List<string> { "primary" });
+        button.EnableWithDefaultXRBindings(side: handSide, new List<string> { "thumbstickClicked", "primaryButton", "secondaryButton" });
 
         onTriggerDown.AddListener(TriggerDownOnce);
         onTriggerUp.AddListener(TriggerUpOnce);
@@ -34,7 +37,7 @@ public class airGrabScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        triggerPressed = button.action.triggered;
+        triggerPressed = button.action.ReadValue<float>() >= 0.5f;
 
         if (triggerPressed && !triggerIsActive)
         {

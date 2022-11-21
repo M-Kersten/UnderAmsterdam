@@ -450,7 +450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a63cb9fb61ed5044bb1dffb6e10dc10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handSide: 0
+  handSide: 3
   button:
     m_UseReference: 0
     m_Action:
@@ -460,20 +460,17 @@ MonoBehaviour:
       m_Id: ba4e30ba-2c25-42ed-bf71-7d09a086ec24
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: a4833b13-b90d-472a-8a67-7945f802b055
-        m_Path: <XRController>{RightHand}/primary
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Button
-        m_Flags: 0
+      m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
   triggerPressed: 0
   triggerIsActive: 0
   worldObject: {fileID: 1772516937}
+--- !u!4 &1135382968 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8439811098364466054, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+  m_PrefabInstance: {fileID: 237274402}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1150931365
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -862,8 +859,47 @@ MonoBehaviour:
   isAnyGripPressed: 0
   isRightGripPressed: 0
   isLeftGripPressed: 0
---- !u!135 &1772896283
-SphereCollider:
+--- !u!114 &1772896287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340498712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc396873c069324ba97635808779d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  joystickLeft:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Joystick Left
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: c23c1a95-3ba4-4229-92b9-2a7d9d946c84
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  joystickRight:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Joystick Right
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 000b0e63-71c7-4194-9192-d733de191ab1
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  side: 0
+  mainCam: {fileID: 1135382968}
+  speed: 2
+--- !u!143 &1772896288
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -873,8 +909,13 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Height: 1.8
+  m_Radius: 0.3
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1962436600
 GameObject:
   m_ObjectHideFlags: 0

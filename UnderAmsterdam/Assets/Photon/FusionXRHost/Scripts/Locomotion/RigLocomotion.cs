@@ -22,7 +22,7 @@ namespace Fusion.XR.Host.Locomotion
     public class RigLocomotion : MonoBehaviour
     {
         [Header("Snap turn")]
-        public InputActionProperty leftControllerTurnAction;
+        //public InputActionProperty leftControllerTurnAction;
         public InputActionProperty rightControllerTurnAction;
 
         public float debounceTime = 0.5f;
@@ -50,7 +50,7 @@ namespace Fusion.XR.Host.Locomotion
             }
 
             var bindings = new List<string> { "joystick" };
-            leftControllerTurnAction.EnableWithDefaultXRBindings(leftBindings: bindings);
+            //leftControllerTurnAction.EnableWithDefaultXRBindings(leftBindings: bindings);
             rightControllerTurnAction.EnableWithDefaultXRBindings(rightBindings: bindings);
         }
 
@@ -77,15 +77,15 @@ namespace Fusion.XR.Host.Locomotion
                 return;
             }
 
-            var leftStickTurn = leftControllerTurnAction.action.ReadValue<Vector2>().x;
+            //var leftStickTurn = leftControllerTurnAction.action.ReadValue<Vector2>().x;
             var rightStickTurn = rightControllerTurnAction.action.ReadValue<Vector2>().x;
 
-            if (Mathf.Abs(leftStickTurn) > rotationInputThreshold)
+            /*if (Mathf.Abs(leftStickTurn) > rotationInputThreshold)
             {
                 timeStarted = Time.time;
                 StartCoroutine(Rotate(Mathf.Sign(leftStickTurn) * snapDegree));
-            }
-            else if (Mathf.Abs(rightStickTurn) > rotationInputThreshold)
+            }*/
+            if (Mathf.Abs(rightStickTurn) > rotationInputThreshold)
             {
                 timeStarted = Time.time;
                 StartCoroutine(Rotate(Mathf.Sign(rightStickTurn) * snapDegree));
