@@ -131,12 +131,6 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (isSpawned && TileOccupied && other.CompareTag("HammerHead"))
-            DisableTile();
-    }
-
     public void OnHandEnter(string playerCompany)
     {
         if (isSpawned && !TileOccupied)
@@ -200,8 +194,6 @@ public class CubeInteraction : NetworkBehaviour
     // Enable/Disable Tile
     public void EnableTile()
     {
-        playerData.points -= 20;
-
         isHover = false;
         TileOccupied = true;
         OnRenderPipePart(true);
@@ -209,10 +201,8 @@ public class CubeInteraction : NetworkBehaviour
         pColouring.UpdateRenderer(company);
         OnRenderPipePreview(false);
     }
-    private void DisableTile()
+    public void DisableTile()
     {
-        playerData.points += 20;
-
         company = "Empty";
         TileOccupied = false;
         // Deactivate all pipes
