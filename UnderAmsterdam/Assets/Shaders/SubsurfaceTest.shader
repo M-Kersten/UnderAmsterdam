@@ -1,4 +1,4 @@
-Shader "UnderAmsterdam/ParralaxSurfaceShader"
+Shader "UnderAmsterdam/SubsurfaceTest"
 {
     Properties
     {
@@ -27,10 +27,10 @@ Shader "UnderAmsterdam/ParralaxSurfaceShader"
         float _HeightPower;
 
         void surf(Input IN, inout SurfaceOutput o) {
-            //float2 texOffset = ParallaxOffset(tex2D(_HeightMap, IN.uv_HeightMap).r, _HeightPower, IN.viewDir);
+            float2 texOffset = ParallaxOffset(tex2D(_HeightMap, IN.uv_HeightMap).r, _HeightPower, IN.viewDir);
 
             o.Albedo = 1;
-            //o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb;
+            //o.Albedo = tex2D(_MainTex, IN.uv_MainTex + texOffset).rgb;
             o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap))* _HeightPower;
         }
         ENDCG
