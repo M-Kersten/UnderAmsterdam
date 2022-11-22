@@ -207,7 +207,7 @@ public class CubeInteraction : NetworkBehaviour
         company = "Empty";
         TileOccupied = false;
 
-        // Deactivate all pipes
+        // Deactivate all Half-pipes of the tile
         OnRenderPipePart(false);
         OnRenderPipePreview(false);
         for (int i = 0; i < neighbors.Length; i++)

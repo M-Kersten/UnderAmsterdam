@@ -21,6 +21,8 @@ public class HammerScript : MonoBehaviour
     {
         if (other.gameObject.layer == 7 && velocity.magnitude > 1.25f) {
             CubeInteraction touchedCube = other.GetComponent<CubeInteraction>();
+
+            // Checks the company and the tile state
             if (touchedCube.TileOccupied && touchedCube.company == myData.company)
                 touchedCube.DisableTile();
         }
@@ -30,6 +32,7 @@ public class HammerScript : MonoBehaviour
     {
         if (isActive)
         {
+            // Compute velocity of the Hammer whenever it is active
             velocity = (prevPosition - transform.position) / 0.1f;
             prevPosition = transform.position;
         }
