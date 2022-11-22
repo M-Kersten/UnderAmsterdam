@@ -203,8 +203,10 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void DisableTile()
     {
+        // Clear company and occupation state
         company = "Empty";
         TileOccupied = false;
+
         // Deactivate all pipes
         OnRenderPipePart(false);
         OnRenderPipePreview(false);
