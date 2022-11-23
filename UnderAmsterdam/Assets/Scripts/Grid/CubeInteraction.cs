@@ -194,8 +194,10 @@ public class CubeInteraction : NetworkBehaviour
     // Enable/Disable Tile
     public void EnableTile()
     {
+
         isHover = false;
         TileOccupied = true;
+        //Gamemanager.Instance.pManager.RemovePoints(company)
         OnRenderPipePart(true);
         UpdateNeighborData(true);
         pColouring.UpdateRenderer(company);
@@ -203,6 +205,7 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void DisableTile()
     {
+        //Gamemanager.Instance.pManager.AddPoints(company);
         // Clear company and occupation state
         company = "Empty";
         TileOccupied = false;
