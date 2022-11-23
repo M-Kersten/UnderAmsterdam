@@ -51,7 +51,7 @@ public class WristMenu : MonoBehaviour
             pointsText.text = myData.points.ToString();
     }
 
-    void ChangeImage(string company) {
+    public void ChangeImage(string company) {
 
         for (int i = 0; i < companyIcons.Length; i++)
         {

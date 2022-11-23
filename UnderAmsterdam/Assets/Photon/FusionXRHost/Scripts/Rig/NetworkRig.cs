@@ -26,6 +26,7 @@ namespace Fusion.XR.Host.Rig
         public NetworkGrabber leftGrabber;
         public NetworkGrabber rightGrabber;
         private PlayerData pData;
+        public WristMenu myMenu;
 
         [HideInInspector]
         public NetworkTransform networkTransform;
@@ -49,7 +50,10 @@ namespace Fusion.XR.Host.Rig
                 hardwareRig = FindObjectOfType<HardwareRig>();
                 if (hardwareRig == null) Debug.LogError("Missing HardwareRig in the scene");
                 else
-                    hardwareRig.GetComponent<WristMenu>().SetData(pData);
+                {
+                    myMenu = hardwareRig.GetComponent<WristMenu>();
+                    myMenu.SetData(pData);
+                }
             }
         }
 
