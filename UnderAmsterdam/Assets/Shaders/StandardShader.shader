@@ -4,8 +4,10 @@ Shader "UnderAmsterdam/StandardShader"
     {
         [MainTexture] _MainTex ("Diffuse", 2D) = "white" {}
         _HeightMap("Height map", 2D) = "white" {}
+        _HeightPower("Height Power", Range(-10,10)) = 0
         _NormalMap("Normal map", 2D) = "white" {}
-        _HeightPower("HeightPower", Range(-10,10)) = 0
+        _NormalPower("Normal Power", Range(0,1)) = 0
+        
     }
     SubShader
     {
@@ -39,9 +41,11 @@ Shader "UnderAmsterdam/StandardShader"
 
             sampler2D _NormalMap;
             float4 _NormalMap_ST;
+            float _NormalPower;
 
             sampler2D _HeightMap;
             float4 _HeightMap_ST;
+            float4 _HeightMap_TexelSize;
             float _HeightPower;
 
             v2f vert (appdata v)
@@ -60,7 +64,7 @@ Shader "UnderAmsterdam/StandardShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
+                i.normal = UnpackNormal(tex2Dlod(_NormalMap, float4(i.uv, 0, 0))) * _NormalPower;
                 fixed4 col = tex2D(_MainTex, i.uv);
                 return col;
             }

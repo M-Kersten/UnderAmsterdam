@@ -4,8 +4,7 @@ Shader "UnderAmsterdam/SubsurfaceTest"
     {
         _MainTex ("Diffuse", 2D) = "white" {}
         _NormalMap("Normal Map", 2D) = "white" {}
-        _HeightTex("Height map", 2D) = "white" {}
-        _HeightPower("HeightPower", Range(-10,100)) = 0
+        _NormalPower("Normal Power", Range(-10,10)) = 0
     }
     SubShader
     {
@@ -17,21 +16,16 @@ Shader "UnderAmsterdam/SubsurfaceTest"
         struct Input {
             float2 uv_MainTex;
             float2 uv_NormalMap;
-            float2 uv_HeightMap;
             float3 viewDir;
         };
 
         sampler2D _MainTex;
         sampler2D _NormalMap;
-        sampler2D _HeightMap;
-        float _HeightPower;
+        float _NormalPower;
 
         void surf(Input IN, inout SurfaceOutput o) {
-            float2 texOffset = ParallaxOffset(tex2D(_HeightMap, IN.uv_HeightMap).r, _HeightPower, IN.viewDir);
-
-            o.Albedo = 1;
-            //o.Albedo = tex2D(_MainTex, IN.uv_MainTex + texOffset).rgb;
-            o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap))* _HeightPower;
+            o.Albedo = tex2D(_MainTex, IN.uv_MainTex).rgb;
+            o.Normal = UnpackNormal(tex2D(_NormalMap, IN.uv_NormalMap)) * _NormalPower;
         }
         ENDCG
     }
