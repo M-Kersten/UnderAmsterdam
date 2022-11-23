@@ -141,10 +141,9 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void EnableTile()
     {
-        //isHover = false;
-
-        UpdateNeighborData(true);
         OnRenderPipePreview(false);
+        ResetActivatedPipes();
+        UpdateNeighborData(true);
         OnRenderPipePart(true);
         pColouring.UpdateRenderer(company);
 
@@ -158,7 +157,6 @@ public class CubeInteraction : NetworkBehaviour
             isHover = true;
             handHoverNumber++;
 
-            ResetActivatedPipes();
             UpdateNeighborData(true , playerCompany);
             OnRenderPipePreview(true);
         }
