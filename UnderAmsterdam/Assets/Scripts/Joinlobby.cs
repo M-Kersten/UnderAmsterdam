@@ -22,7 +22,7 @@ public class Joinlobby : MonoBehaviour
     public async void Onhostlobby()
     {
         connection.roomName = textinput.text;
-        connection.mode = Fusion.GameMode.Client;
+        connection.mode = Fusion.GameMode.Host;
         await connection.Connect();
 
     }
