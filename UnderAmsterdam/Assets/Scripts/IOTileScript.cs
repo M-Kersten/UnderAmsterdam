@@ -13,7 +13,7 @@ public class IOTileScript : NetworkBehaviour
     [Networked(OnChanged = nameof(OnIOTileChanged))]
     public string company { get; set; }
 
-    public bool isOutput;
+    [Networked] public bool isOutput {get; set; }
 
     public override void Spawned()
     {

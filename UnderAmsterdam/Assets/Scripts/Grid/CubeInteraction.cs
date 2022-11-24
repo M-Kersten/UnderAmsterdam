@@ -283,7 +283,6 @@ public class CubeInteraction : NetworkBehaviour
                     // from the same company and not checked yet...
                     if (company == neighborTile.company && !neighborTile.isChecked)
                     {
-                        Debug.Log("Found normal same company tile and activated search in that tile " + neighbors[i]);
                         // Verify its neighbor and mark it as checked.
                         isChecked = true;
                         neighborTile.CheckConnectionForWin();
@@ -295,7 +294,6 @@ public class CubeInteraction : NetworkBehaviour
                     // from the same company and active and if it isnt output (aka where it came from)
                     if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput)
                     {
-                        Debug.Log("Found IO tile with same company and added it to the list " + neighbors[i]);
                         WinLoseManager.Instance.AddInputTracker(company);
                         return;
                     }

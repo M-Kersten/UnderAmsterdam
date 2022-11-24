@@ -32,9 +32,6 @@ public class PlayerData : NetworkBehaviour
         {
             myMenu.ChangeImage(company);
             ColourSystem.Instance.SetColour(myMenu.topWatch, company);
-        } else
-        {
-            Debug.Log("Bruh stop touching my player");
         }
     }
     private void Start()
