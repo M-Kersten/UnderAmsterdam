@@ -32,7 +32,7 @@ public class WristMenu : MonoBehaviour
 
     public void SetData(PlayerData me)
     {
-        myData = me;
+        //myData = me;
     }
     // Update is called once per frame
     //void FixedUpdate()
