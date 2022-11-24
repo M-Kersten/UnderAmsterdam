@@ -220,7 +220,8 @@ public class CubeInteraction : NetworkBehaviour
                         {
                             neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
                             neighborTile.pColouring.UpdateRenderer(company);
-                            neighborTile.TryShowConnector();                        }
+                            neighborTile.TryShowConnector();
+                        }
                     }
                 }
             }
