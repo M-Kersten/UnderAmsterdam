@@ -28,6 +28,7 @@ public class PlayerData : NetworkBehaviour
     private void UpdateCompanyImage(string company)
     {
         myMenu.ChangeImage(company);
+        ColourSystem.Instance.SetColour(myMenu.topWatch, company);
     }
     private void Start()
     {

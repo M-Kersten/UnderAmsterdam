@@ -19,6 +19,7 @@ public class WristMenu : MonoBehaviour
     private GameObject iconImage;
     [SerializeField]
     TextMeshProUGUI pointsText;
+    [SerializeField] public GameObject topWatch;
 
     private PlayerData myData;
 
