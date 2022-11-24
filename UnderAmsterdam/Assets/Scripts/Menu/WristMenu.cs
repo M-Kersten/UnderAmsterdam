@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,21 +10,26 @@ public class WristMenu : MonoBehaviour
     [SerializeField]
     private Sprite[] companyIcons;
     [SerializeField]
-    private GameObject parentObject;
+    GameObject parentObject;
     [SerializeField]
-    private GameObject visualRadialObject;
+    GameObject visualRadialObject;
     [SerializeField]
     private float maxActiveAngle, minActiveAngle, maxActiveAnglex, minActiveAnglex;
     [SerializeField]
     private GameObject iconImage;
+    [SerializeField]
+    TextMeshProUGUI pointsText;
+    [SerializeField] public GameObject topWatch;
+
+    private PlayerData myData;
 
     // Start is called before the first frame update
     void Start()
     {
         // Grab the parent of this parent
-        parentObject = transform.parent.transform.parent.gameObject;
         visualRadialObject = transform.GetChild(0).gameObject;
         visualRadialObject.SetActive(true);
+        myData = Gamemanager.Instance.localPlayerData;
     }
 
     // Update is called once per frame
@@ -36,12 +42,20 @@ public class WristMenu : MonoBehaviour
     //        visualRadialObject.SetActive(false);
     //}
 
-    void ChangeImage(int companyId) {
-        // if we have an image for this company then show it
-        if (companyIcons[companyId] != null)
+    void Update()
+    {
+        // Need a way to grab PlayerData from NetworkRig
+        if (myData != null)
+            pointsText.text = myData.points.ToString();
+    }
+
+    public void ChangeImage(string company) {
+
+        for (int i = 0; i < companyIcons.Length; i++)
+        {
             // change image at the top of the wrist watch to the icon in the list
-            iconImage.GetComponent<Image>().sprite = companyIcons[companyId];
-        else 
-            Debug.Log("No image for this company in the list");
+            if (companyIcons[i].name == company)
+                iconImage.GetComponent<Image>().sprite = companyIcons[i];
+        }
     }
 }

@@ -4,54 +4,43 @@ using UnityEngine;
 
 public class PipeColouring : MonoBehaviour
 {
-    [SerializeField] Material[] pipeMaterials;
-    private GameObject childParent;
-    private GameObject activeChild;
+    [Tooltip("Circle between connecting pipes")]
+    [SerializeField] private GameObject connectorPiece;
+    [Tooltip("Parent of where all pipes are stored")]
+    [SerializeField] private GameObject pipeParent;
 
-    public void UpdateRenderer(string pipeCompany) {
+    [Tooltip("All pipe options")]
+    [SerializeField] private GameObject[] pipeChildren;
 
-        childParent = transform.GetChild(0).transform.GetChild(0).gameObject;
+    private int LODlevels = 4;
 
-        for (int i = 0; i < childParent.transform.childCount; i++)
+    public void UpdateRenderer(string pipeCompany, GameObject givenGO = null)
+    {
+        if (!givenGO)
         {
-            if(childParent.transform.GetChild(i).gameObject.activeSelf == true)
+            for (int i = 0; i < pipeChildren.Length; i++)
             {
-                activeChild = childParent.transform.GetChild(i).transform.GetChild(0).gameObject;
-                TestColour(pipeCompany, activeChild);
+                // Go through the children and find the active one
+                if (pipeChildren[i].activeSelf == true)
+                {
+                    GameObject selectedChild = pipeChildren[i];
+
+                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(0).transform.GetChild(1).gameObject, pipeCompany);
+                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(0).transform.GetChild(2).gameObject, pipeCompany);
+
+                    // Give the company and the gameobject where the materials are on
+                    for (int j = 1; j < LODlevels; j++) 
+                        ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(j).gameObject, pipeCompany);
+                    
+                }
             }
         }
-    }
-
-    void TestColour(string company, GameObject affectedChild) {
-        
-        for (int i = 0; i < pipeMaterials.Length; i++)
+        else
         {
-            if (pipeMaterials[i].name == company) {
-                affectedChild.GetComponent<Renderer>().material = pipeMaterials[i];
-            }
+            // Is anything other than a pipe, like connector piece
+            for (int j = 0; j < LODlevels; j++)
+                ColourSystem.Instance.SetColour(givenGO.transform.GetChild(j).gameObject, pipeCompany);
+            
         }
     }
-
-    //void SetColour(string company) {
-    //    switch (company) {
-    //        case "data":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "water":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "sewage":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "gas":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        case "power":
-    //             activeChild.GetComponent<Renderer>().material = newMaterialRef;
-    //        break;
-    //        default: 
-    //
-    //        break;
-    //    }
-    //}
 }

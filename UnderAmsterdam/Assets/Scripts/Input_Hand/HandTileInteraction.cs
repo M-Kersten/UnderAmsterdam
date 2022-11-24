@@ -10,6 +10,8 @@ public class HandTileInteraction : NetworkBehaviour
     public RigPart side;
     public NetworkRig rig;
 
+    [SerializeField] private PlayerData myPlayer;
+
     [SerializeField]
     private bool TriggerPressed = false;
 
@@ -42,17 +44,40 @@ public class HandTileInteraction : NetworkBehaviour
         }
 
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!rig.IsLocalNetworkRig)
+            return;
+
+        if (other.gameObject.layer == 7)
+        {
+            CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+            cubeScript.OnHandEnter(myPlayer.company);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (!rig.IsLocalNetworkRig)
+            return;
+
+        if (other.gameObject.layer == 7)
+        {
+            CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+            cubeScript.OnHandExit(myPlayer.company);
+        }
+    }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.layer == 7 && other.gameObject.GetComponent<CubeInteraction>().modLaser == false && TriggerPressed) // 7 is the layer for Tile
         {
-            string company = transform.parent.transform.parent.gameObject.GetComponent<PlayerData>().company;
-            CubeInteraction cubeScript = other.gameObject.GetComponent<CubeInteraction>();
-            cubeScript.UpdateCompany(company);
-            cubeScript.GetComponent<CubeInteraction>().EnableTile();
-            TriggerPressed = false;
-            Debug.Log("Send trigger command to tile");
+            CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+            if(!cubeScript.TileOccupied)
+            {
+                cubeScript.UpdateCompany(myPlayer.company);
+                cubeScript.EnableTile();
+                TriggerPressed = false;
+            }
         }
 
     }

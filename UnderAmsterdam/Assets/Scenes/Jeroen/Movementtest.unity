@@ -303,6 +303,14 @@ PrefabInstance:
       propertyPath: runner
       value: 
       objectReference: {fileID: 650798174}
+    - target: {fileID: 8481349891358051823, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: headset
+      value: 
+      objectReference: {fileID: 1778345134}
+    - target: {fileID: 8481349891358051823, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: character
+      value: 
+      objectReference: {fileID: 1772896282}
     - target: {fileID: 8696038726370357476, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: joystickActionL.m_Action.m_Id
       value: 6cde4d62-087a-4ab3-bb42-316a1574b450
@@ -429,6 +437,10 @@ PrefabInstance:
     - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: runner
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
+      propertyPath: roomName
+      value: SampleFusion
       objectReference: {fileID: 0}
     - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: onWillConnect.m_PersistentCalls.m_Calls.Array.size
@@ -627,7 +639,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16eb8d554c636c9479b4cfc59dbdf775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1772896279
+--- !u!143 &1772896282 stripped
+CharacterController:
+  m_CorrespondingSourceObject: {fileID: 5285056550235599278, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+  m_PrefabInstance: {fileID: 237274402}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1772896286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -636,9 +653,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 237274403}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd66091fbfe781443a0dbc6b95296966, type: 3}
+  m_Script: {fileID: 11500000, guid: 86be11b7964f253489bf7fae603d6de7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  istrackingVelocity: 1
+  useRigidbodyVelocityDirection: 1
+--- !u!4 &1778345134 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8439811098364466054, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+  m_PrefabInstance: {fileID: 237274402}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1962436600
 GameObject:
   m_ObjectHideFlags: 0
@@ -798,7 +822,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6451555088811095712, guid: 908624305019d3c47b4f0caaad3fa0c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.49
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8680109305133941378, guid: 908624305019d3c47b4f0caaad3fa0c4, type: 3}
       propertyPath: Flags
