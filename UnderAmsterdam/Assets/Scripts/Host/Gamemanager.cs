@@ -5,15 +5,17 @@ using UnityEngine.Events;
 public class Gamemanager : MonoBehaviour
 {
     public static Gamemanager Instance;
+    public Pointsmanager pManager;
     public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd;
-    public int round;
+    public PlayerData localPlayerData;
 
-    [SerializeField] public float roundTime = 45;
+    public int round;
+    public float roundTime = 45;
+
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundStartCountDown = 3;
     [SerializeField] private bool startGame;
-    public Pointsmanager pManager;
-    
+   
     private HostTimerScript timer;
 
     private void Awake()

@@ -59,15 +59,13 @@ public class ioScript : MonoBehaviour
 
     private void AddPlayerOutputs()
     {
+        //Replace this to check if player OUTPUT already exist
         if (!hasPlacedOutputs)
         {
             foreach (var player in CompanyManager.Instance._companies)
             {
-                if (player.Value != CompanyManager.Instance.emptyPlayer)
-                {
-                    hasPlacedOutputs = true;
-                    outputPipes.Add(PlaceIOPipe(player.Key, true));
-                }
+                hasPlacedOutputs = true;
+                outputPipes.Add(PlaceIOPipe(player.Key, true));
             }
         }
     }

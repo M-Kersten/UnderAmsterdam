@@ -9,6 +9,7 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] private GameObject playerCap;
     [SerializeField] private int startingPoints = 1000;
     [SerializeField] private WristMenu myMenu;
+    private NetworkRig nRig;
 
     [Networked(OnChanged = nameof(UpdatePlayer))]
     public string company { get; set; }
@@ -27,11 +28,15 @@ public class PlayerData : NetworkBehaviour
 
     private void UpdateCompanyImage(string company)
     {
-        myMenu.ChangeImage(company);
-        ColourSystem.Instance.SetColour(myMenu.topWatch, company);
+        if (nRig.IsLocalNetworkRig)
+        {
+            myMenu.ChangeImage(company);
+            ColourSystem.Instance.SetColour(myMenu.topWatch, company);
+        }
     }
     private void Start()
     {
+        nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
     }

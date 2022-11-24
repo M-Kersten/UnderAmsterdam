@@ -48,7 +48,7 @@ public class WinLoseManager : MonoBehaviour
             if(company.Value >= Gamemanager.Instance.round)
             {
                 //Add points to this company
-                // Gamemanager.Instance.pManager.AddPoints(company.Key);
+                Gamemanager.Instance.pManager.AddPoints(company.Key);
             }
         }
     }

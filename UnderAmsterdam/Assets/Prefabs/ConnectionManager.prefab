@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: -3775747846731191431}
   - component: {fileID: -2638207197799899728}
   - component: {fileID: 650798183}
+  - component: {fileID: 9102273499796938766}
   m_Layer: 0
   m_Name: ConnectionManager
   m_TagString: Untagged
@@ -200,6 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a11270fb767804a9d04cd4f50acb4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pManager: {fileID: 0}
   GameStart:
     m_PersistentCalls:
       m_Calls: []
@@ -209,10 +211,15 @@ MonoBehaviour:
   RoundEnd:
     m_PersistentCalls:
       m_Calls: []
-  roundTime: 5
+  RoundLateEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  localPlayerData: {fileID: 0}
+  round: 0
+  roundTime: 240
   roundTimeIncrease: 300
   roundStartCountDown: 3
-  pManager: {fileID: 0}
+  startGame: 0
 --- !u!114 &6687331123855280171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,5 +282,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dfcfa8f3af971c449ed585b5e6e03c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9102273499796938766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878090387540590309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce12af813b778e64ca7e3f2aaee727c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
