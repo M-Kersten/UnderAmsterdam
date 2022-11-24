@@ -28,12 +28,9 @@ public class WristMenu : MonoBehaviour
         // Grab the parent of this parent
         visualRadialObject = transform.GetChild(0).gameObject;
         visualRadialObject.SetActive(true);
+        myData = Gamemanager.Instance.localPlayerData;
     }
 
-    public void SetData(PlayerData me)
-    {
-        myData = me;
-    }
     // Update is called once per frame
     //void FixedUpdate()
     //{

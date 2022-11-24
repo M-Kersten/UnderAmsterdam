@@ -7,6 +7,7 @@ public class IOTileScript : MonoBehaviour
     [SerializeField] private Material[] pipeMaterials;
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
+    [SerializeField] private GameObject IndicatorPrefab;
 
     public bool isOutput;
     public string company;
@@ -29,6 +30,10 @@ public class IOTileScript : MonoBehaviour
                 }
             }
             VisualObject.SetActive(true);
+            if (company == Gamemanager.Instance.localPlayerData.company) {
+                InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
+                indicatorScript.InitializeIndicator(shouldBeOutput);
+            }
             return true;
         }
         else return false;
@@ -42,7 +47,8 @@ public class IOTileScript : MonoBehaviour
             if (Physics.Raycast(transform.position, -transform.right, out hit))
             {
                 CubeInteraction tile = hit.transform.GetComponent<CubeInteraction>();
-                tile.CheckConnectionForWin();
+                if(tile.company != "Empty")
+                    tile.CheckConnectionForWin();
             }
         }
     }

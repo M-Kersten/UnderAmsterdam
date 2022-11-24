@@ -49,7 +49,7 @@ namespace Fusion.XR.Host.Rig
                 hardwareRig = FindObjectOfType<HardwareRig>();
                 if (hardwareRig == null) Debug.LogError("Missing HardwareRig in the scene");
                 else
-                    hardwareRig.GetComponent<WristMenu>().SetData(pData);
+                    Gamemanager.Instance.localPlayerData = pData;
             }
         }
 
