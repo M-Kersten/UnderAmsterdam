@@ -39,7 +39,7 @@ public class Gamemanager : MonoBehaviour
         }
     }
 
-    private void OnGameStart()
+    public void OnGameStart()
     {
         GameStart.Invoke();
         timer.SetTimer(roundTime + roundStartCountDown);
