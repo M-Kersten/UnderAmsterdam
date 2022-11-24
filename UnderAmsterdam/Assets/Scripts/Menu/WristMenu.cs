@@ -10,25 +10,31 @@ public class WristMenu : MonoBehaviour
     [SerializeField]
     private Sprite[] companyIcons;
     [SerializeField]
-    private GameObject parentObject;
+    GameObject parentObject;
     [SerializeField]
-    private GameObject visualRadialObject;
+    GameObject visualRadialObject;
     [SerializeField]
     private float maxActiveAngle, minActiveAngle, maxActiveAnglex, minActiveAnglex;
     [SerializeField]
     private GameObject iconImage;
     [SerializeField]
-    private TextMeshPro pointsText;
+    TextMeshProUGUI pointsText;
+    [SerializeField] public GameObject topWatch;
+
+    private PlayerData myData;
 
     // Start is called before the first frame update
     void Start()
     {
         // Grab the parent of this parent
-        parentObject = transform.parent.transform.parent.gameObject;
         visualRadialObject = transform.GetChild(0).gameObject;
         visualRadialObject.SetActive(true);
     }
 
+    public void SetData(PlayerData me)
+    {
+        myData = me;
+    }
     // Update is called once per frame
     //void FixedUpdate()
     //{
@@ -42,10 +48,11 @@ public class WristMenu : MonoBehaviour
     void Update()
     {
         // Need a way to grab PlayerData from NetworkRig
-        //pointsText.text = GetComponent<PlayerData>().points.ToString();
+        if (myData != null)
+            pointsText.text = myData.points.ToString();
     }
 
-    void ChangeImage(string company) {
+    public void ChangeImage(string company) {
 
         for (int i = 0; i < companyIcons.Length; i++)
         {
