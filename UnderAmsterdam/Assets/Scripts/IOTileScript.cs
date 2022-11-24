@@ -13,7 +13,7 @@ public class IOTileScript : NetworkBehaviour
     [Networked(OnChanged = nameof(OnIOTileChanged))]
     public string company { get; set; }
 
-    public bool isOutput;
+    [Networked] public bool isOutput { get; set; }
 
     public override void Spawned()
     {
@@ -39,10 +39,11 @@ public class IOTileScript : NetworkBehaviour
             }
         }
         VisualObject.SetActive(true);
-            if (company == Gamemanager.Instance.localPlayerData.company) {
-                InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
-                indicatorScript.InitializeIndicator(shouldBeOutput);
-            }
+
+        if (isOutput)
+            Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
+
+        SpawnIndicator(shouldBeOutput);
         return true;
     }
 
@@ -64,6 +65,15 @@ public class IOTileScript : NetworkBehaviour
                 if(tile.company != "Empty")
                     tile.CheckConnectionForWin();
             }
+        }
+    }
+
+    public void SpawnIndicator(bool shouldBeOutput)
+    {
+        if (company == Gamemanager.Instance.localPlayerData.company)
+        {
+            InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
+            indicatorScript.InitializeIndicator(shouldBeOutput);
         }
     }
 }
