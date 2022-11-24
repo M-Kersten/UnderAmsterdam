@@ -100,34 +100,7 @@ public class CubeInteraction : NetworkBehaviour
             neighbors[(int)Direction.Behind] = null;
     }
 
-    public void checkWin()
-    {
-        // For each neighbor...
-        for (int i = 0; i < neighbors.Length; i++)
-        {
-            // if it's a normal tile...
-            if (neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
-            {
-                // from the same company and not checked yet...
-                if (company == neighborTile.company && !neighborTile.isChecked)
-                {
-                    // Verify its neighbor and mark it as checked.
-                    isChecked = true;
-                    neighborTile.checkWin();
-                }
-            }
-            // if it's an Output tile...
-            else if (neighbors[i].TryGetComponent(out IOTileData inOutPut))
-            {
-                // from the same company and active...
-                if (company == inOutPut.company && inOutPut.isActive)
-                {
-                    inOutPut.winGameEvent(); // Success !
-                    return;
-                }
-            }
-        }
-    }
+
 
 
     static void onCompanyChange(Changed<CubeInteraction> changed)
@@ -175,16 +148,6 @@ public class CubeInteraction : NetworkBehaviour
         pColouring.UpdateRenderer(company);
 
         TileOccupied = true;
-    }
-    public void DisableTile()
-    {
-        OnRenderPipePreview(false);
-        ResetActivatedPipes();
-        UpdateNeighborData(false);
-        OnRenderPipePart(false);
-        pColouring.UpdateRenderer(company);
-
-        TileOccupied = false;
     }
 
     public void OnHandEnter(string playerCompany)
