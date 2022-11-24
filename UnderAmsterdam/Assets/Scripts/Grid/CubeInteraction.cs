@@ -149,7 +149,27 @@ public class CubeInteraction : NetworkBehaviour
 
         TileOccupied = true;
     }
+    public void DisableTile()
+    {
+        //Gamemanager.Instance.pManager.AddPoints(company);
+        // Clear company and occupation state
+        company = "Empty";
+        TileOccupied = false;
 
+        // Deactivate all Half-pipes of the tile
+        OnRenderPipePart(false);
+        OnRenderPipePreview(false);
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            activatedPipes[i] = false;
+            if (neighbors[i] != null && neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
+            {
+                neighborTile.activatedPipes[GetOppositeFace(i)] = false;
+                neighborTile.TryShowConnector();
+            }
+        }
+
+    }
     public void OnHandEnter(string playerCompany)
     {
         if (isSpawned && !TileOccupied)
@@ -259,7 +279,7 @@ public class CubeInteraction : NetworkBehaviour
         // Checks if it is at least a line pipe
         for (int i = 0; i < amountFaces; i += 2)
         {
-            if (activatedPipes[i] && activatedPipes[GetOppositeFace(i)])
+            if (!TileOccupied || activatedPipes[i] && activatedPipes[GetOppositeFace(i)])
             {
                 // Connector is not visible
                 connectorPart.SetActive(false);
