@@ -19,7 +19,6 @@ public class HammerScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OUCH");
         if (other.gameObject.layer == 7 && velocity.magnitude > 1.25f)
         {
             CubeInteraction touchedCube = other.GetComponent<CubeInteraction>();

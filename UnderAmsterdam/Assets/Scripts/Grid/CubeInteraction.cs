@@ -141,13 +141,14 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void EnableTile()
     {
+        //Gamemanager.Instance.pManager.RemovePoints(company);
+        TileOccupied = true;
+
         OnRenderPipePreview(false);
         ResetActivatedPipes();
         UpdateNeighborData(true);
         OnRenderPipePart(true);
         pColouring.UpdateRenderer(company);
-
-        TileOccupied = true;
     }
     public void DisableTile()
     {
@@ -258,9 +259,8 @@ public class CubeInteraction : NetworkBehaviour
     // Run this code locally for players where pipe hasn't changed yet
     void OnPipeRender(bool isPipedCurrent)
     {
-       if (isPipedCurrent) {
-            EnableTile();
-       }
+        if (isPipedCurrent) EnableTile();
+        else DisableTile();
     }
 
     private int GetOppositeFace(int i)
