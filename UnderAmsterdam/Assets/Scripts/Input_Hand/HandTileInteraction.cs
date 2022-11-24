@@ -78,7 +78,7 @@ public class HandTileInteraction : NetworkBehaviour
             cubeScript.UpdateCompany(company);
             cubeScript.GetComponent<CubeInteraction>().EnableTile();
             TriggerPressed = false;
-            timeLeft += 0.6f;
+            timeLeft = 0.6f;
         }
     }
 

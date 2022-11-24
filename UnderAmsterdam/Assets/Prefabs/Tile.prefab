@@ -86,7 +86,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4976049845006516314
 Transform:
   m_ObjectHideFlags: 0
@@ -328,6 +328,7 @@ MonoBehaviour:
   neighbors: []
   connectorPart: {fileID: 8827063062579098424}
   connectorPartPreview: {fileID: 9054164455376291729}
+  linesEdges: {fileID: 4976049845006516312}
   _company: Empty
   _TileOccupied: 0
   pipeParts: []
@@ -335,7 +336,8 @@ MonoBehaviour:
   activatedPipes: 
   isHover: 0
   neiborCollider: []
-  modLaser: 0
+  modLaser: 1
+  enabeledTile: 0
 --- !u!135 &5193361856673246991
 SphereCollider:
   m_ObjectHideFlags: 0

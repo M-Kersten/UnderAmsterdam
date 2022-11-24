@@ -14,6 +14,8 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private NetworkObject[] neighbors;
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
+    [SerializeField] private GameObject linesEdges;
+
     private PipeColouring pColouring;
 
     [SerializeField] [Networked(OnChanged = nameof(onCompanyChange))] private string company {get; set;}
@@ -29,14 +31,24 @@ public class CubeInteraction : NetworkBehaviour
 
     public bool isHover = false;
 
+    private bool isSpawned = false;
+
     [SerializeField] private Collider[] neiborCollider;
     [SerializeField] public bool modLaser;
+    [SerializeField] public int enabeledTile;
+
+    private string tileName0;
+    private string tileName1;
 
     void Start() 
     {
         pColouring = GetComponent<PipeColouring>();
     }
 
+    private void Awake()
+    {
+        neiborCollider = new Collider[6];
+    }
     public override void Spawned()
     {
         OnRenderPipePreview(false);
@@ -45,8 +57,7 @@ public class CubeInteraction : NetworkBehaviour
         neighbors = new NetworkObject[amountFaces]; //Cubes have 6 faces, thus we will always need 6 neigbors
         GetNeighbors();
 
-        if(modLaser)
-            StartCoroutine(ColliderDisable(1f));
+        StartCoroutine(ColliderDisable(1f));
 
         pipeParts = new GameObject[neighbors.Length];
         previewPipeParts = new GameObject[neighbors.Length];
@@ -59,6 +70,7 @@ public class CubeInteraction : NetworkBehaviour
             previewPipeParts[i++] = pipePreview.gameObject;
 
         activatedPipes = new bool[neighbors.Length]; //Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
+        isSpawned = true;
     }
 
     private void GetNeighbors()
@@ -109,7 +121,7 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!TileOccupied)
+        if (isSpawned && !TileOccupied)
         {
             UpdateNeighborData(true);
             OnRenderPipePreview(true);
@@ -119,7 +131,7 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!TileOccupied)
+        if (isSpawned && !TileOccupied)
         {
             UpdateNeighborData(false);
             OnRenderPipePreview(false);
@@ -195,6 +207,7 @@ public class CubeInteraction : NetworkBehaviour
     public void OnRenderPipePreview(bool isActive)
     {
         connectorPartPreview.SetActive(isActive);
+        linesEdges.SetActive(isActive);
         for (int i = 0; i < neighbors.Length; i++)
         {
             if (previewPipeParts[i] != null)
@@ -238,13 +251,25 @@ public class CubeInteraction : NetworkBehaviour
     {
         yield return new WaitForSeconds(time);
 
-        neiborCollider = new Collider[6];
+
         for (int j = 0; j < 6; ++j)
         {
             while (neighbors[j] && neiborCollider[j] == null)
                 neiborCollider[j] = neighbors[j].gameObject.GetComponent<Collider>();
 
-            if (neiborCollider[j] && (neiborCollider[j].name == "Tile (855)" || neiborCollider[j].name == "Tile (162)"))
+            switch (enabeledTile)
+            {
+                case 0:
+                    tileName0 = "Tile (719)";
+                    tileName1 = "Tile (162)";
+                    break;
+                case 1:
+                    tileName0 = "Tile (1062)";
+                    tileName1 = "Tile (895)";
+                    break;
+            }
+
+            if (neiborCollider[j] && (neiborCollider[j].name == tileName0 || neiborCollider[j].name == tileName1))
             {
                 neiborCollider[j].enabled = true;
                 neiborCollider[j].gameObject.GetComponent<CubeInteraction>().UpdateCompany("water");
@@ -252,7 +277,7 @@ public class CubeInteraction : NetworkBehaviour
             }
 
 
-            else if (neiborCollider[j])
+            else if (neiborCollider[j] && modLaser)
                 neiborCollider[j].enabled = false;
         }
     }
