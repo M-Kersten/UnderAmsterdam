@@ -141,10 +141,9 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void EnableTile()
     {
-        //isHover = false;
-
-        UpdateNeighborData(true);
         OnRenderPipePreview(false);
+        ResetActivatedPipes();
+        UpdateNeighborData(true);
         OnRenderPipePart(true);
         pColouring.UpdateRenderer(company);
 
@@ -158,7 +157,6 @@ public class CubeInteraction : NetworkBehaviour
             isHover = true;
             handHoverNumber++;
 
-            ResetActivatedPipes();
             UpdateNeighborData(true , playerCompany);
             OnRenderPipePreview(true);
         }
@@ -183,8 +181,8 @@ public class CubeInteraction : NetworkBehaviour
         if (!isSpawned)
             return;
 
-        connectorPart.gameObject.SetActive(isActive);
-        pColouring.UpdateRenderer(company, connectorPart);
+        if (!isActive) connectorPart.gameObject.SetActive(false);
+        else TryShowConnector();
 
         for (int i = 0; i < neighbors.Length; i++)
         {
@@ -201,7 +199,7 @@ public class CubeInteraction : NetworkBehaviour
                         {
                             neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
                             neighborTile.pColouring.UpdateRenderer(company);
-                        }
+                            neighborTile.TryShowConnector();                        }
                     }
                 }
             }
@@ -254,6 +252,23 @@ public class CubeInteraction : NetworkBehaviour
     {
         for (int i = 0; i < activatedPipes.Length; i++)
             activatedPipes[i] = false;
+    }
+
+    public void TryShowConnector()
+    {
+        // Checks if it is at least a line pipe
+        for (int i = 0; i < amountFaces; i += 2)
+        {
+            if (activatedPipes[i] && activatedPipes[GetOppositeFace(i)])
+            {
+                // Connector is not visible
+                connectorPart.SetActive(false);
+                return;
+            }
+        }
+        // Connector is visible, it must be activated
+        connectorPart.SetActive(true);
+        pColouring.UpdateRenderer(company, connectorPart);
     }
 
     public void CheckConnectionForWin()
