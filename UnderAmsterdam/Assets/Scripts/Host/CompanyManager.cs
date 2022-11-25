@@ -43,12 +43,15 @@ public class CompanyManager : MonoBehaviour
             string myCompany;
             int randomCompany;
             
+            // Keep randomizing company, until we find one that player hasn't had yet
             do { 
-                randomCompany = Random.Range(0, availableCompanies.Count);
-                myCompany = availableCompanies[randomCompany];
+                // if there aren't any more companies left, quit the do-while loop to stop infinite looping
                 if (playerHistory[player].Count == _companies.Count)
                     break;
+                randomCompany = Random.Range(0, availableCompanies.Count);
+                myCompany = availableCompanies[randomCompany];
             } while(playerHistory[player].Contains(myCompany));
+
             // Check if player has had this company already
             if (playerHistory[player].Count < _companies.Count)
             {
