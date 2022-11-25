@@ -25,13 +25,16 @@ public class PipeColouring : MonoBehaviour
                 {
                     GameObject selectedChild = pipeChildren[i];
 
+                    // Give the company and the gameobject where the materials are on
                     ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(0).transform.GetChild(1).gameObject, pipeCompany);
                     ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(0).transform.GetChild(2).gameObject, pipeCompany);
 
-                    // Give the company and the gameobject where the materials are on
-                    for (int j = 1; j < LODlevels; j++) 
-                        ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(j).gameObject, pipeCompany);
-                    
+                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(2).transform.GetChild(0).gameObject, pipeCompany);
+                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(2).transform.GetChild(1).gameObject, pipeCompany);
+
+                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(3).transform.GetChild(0).gameObject, pipeCompany);
+                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(3).transform.GetChild(1).gameObject, pipeCompany);
+
                 }
             }
         }
