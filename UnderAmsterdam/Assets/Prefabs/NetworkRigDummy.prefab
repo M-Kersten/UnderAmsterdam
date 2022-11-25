@@ -31,6 +31,37 @@ Transform:
   m_Father: {fileID: 5188114563417836513}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 55.85, y: 0, z: 0}
+--- !u!1 &7906067293967638907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2344055475008650705}
+  m_Layer: 0
+  m_Name: BeamOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2344055475008650705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7906067293967638907}
+  m_LocalRotation: {x: 0.4683154, y: -0, z: -0, w: 0.8835614}
+  m_LocalPosition: {x: 0.05, y: -0.05, z: 0.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1116579905324495982}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 55.85, y: 0, z: 0}
 --- !u!1001 &127514275786976451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -455,6 +486,11 @@ MonoBehaviour:
   pointAnimationLayer: Point Layer
   thumbAnimationLayer: Thumb Layer
   maxGripToPinch: 0.05
+--- !u!4 &1116579905324495982 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 422740, guid: ba1fa4a8c66106b4988c88fe4b8e8502, type: 3}
+  m_PrefabInstance: {fileID: 1116579905324369722}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1256383593382833133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1063,7 +1099,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
-  origin: {fileID: 2236247183634402949}
+  origin: {fileID: 2344055475008650705}
   targetLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
