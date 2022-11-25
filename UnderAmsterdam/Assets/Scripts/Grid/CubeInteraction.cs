@@ -154,8 +154,8 @@ public class CubeInteraction : NetworkBehaviour
     {
         //Gamemanager.Instance.pManager.AddPoints(company);
         // Clear company and occupation state
-        company = "Empty";
         TileOccupied = false;
+        company = "Empty";
 
         // Deactivate all Half-pipes of the tile
         OnRenderPipePart(false);
@@ -166,7 +166,7 @@ public class CubeInteraction : NetworkBehaviour
             if (neighbors[i] != null && neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
             {
                 neighborTile.activatedPipes[GetOppositeFace(i)] = false;
-                neighborTile.TryShowConnector();
+                //neighborTile.TryShowConnector();
             }
         }
 
@@ -202,8 +202,11 @@ public class CubeInteraction : NetworkBehaviour
         if (!isSpawned)
             return;
 
-        if (!isActive) connectorPart.gameObject.SetActive(false);
-        else TryShowConnector();
+        connectorPart.SetActive(isActive);
+        pColouring.UpdateRenderer(company, connectorPart);
+
+        /*if (!isActive) connectorPart.gameObject.SetActive(false);
+        else TryShowConnector();*/
 
         for (int i = 0; i < neighbors.Length; i++)
         {
@@ -220,7 +223,7 @@ public class CubeInteraction : NetworkBehaviour
                         {
                             neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
                             neighborTile.pColouring.UpdateRenderer(company);
-                            neighborTile.TryShowConnector();
+                            //neighborTile.TryShowConnector();
                         }
                     }
                 }
