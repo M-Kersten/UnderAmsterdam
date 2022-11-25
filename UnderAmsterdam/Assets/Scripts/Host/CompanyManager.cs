@@ -46,8 +46,9 @@ public class CompanyManager : MonoBehaviour
             do { 
                 randomCompany = Random.Range(0, availableCompanies.Count);
                 myCompany = availableCompanies[randomCompany];
+                if (playerHistory[player].Count == _companies.Count)
+                    break;
             } while(playerHistory[player].Contains(myCompany));
-            
             // Check if player has had this company already
             if (playerHistory[player].Count < _companies.Count)
             {
