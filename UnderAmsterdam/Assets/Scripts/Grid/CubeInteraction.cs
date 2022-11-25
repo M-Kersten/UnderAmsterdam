@@ -158,13 +158,17 @@ public class CubeInteraction : NetworkBehaviour
         company = "Empty";
 
         // Deactivate all Half-pipes of the tile
-        OnRenderPipePart(false);
-        OnRenderPipePreview(false);
+        connectorPart.SetActive(false);
+        connectorPartPreview.SetActive(false);
         for (int i = 0; i < neighbors.Length; i++)
         {
+            pipeParts[i].SetActive(false);
+            previewPipeParts[i].SetActive(false);
             activatedPipes[i] = false;
             if (neighbors[i] != null && neighbors[i].TryGetComponent(out CubeInteraction neighborTile))
             {
+                neighborTile.pipeParts[GetOppositeFace(i)].SetActive(false);
+                neighborTile.previewPipeParts[GetOppositeFace(i)].SetActive(false);
                 neighborTile.activatedPipes[GetOppositeFace(i)] = false;
                 //neighborTile.TryShowConnector();
             }
