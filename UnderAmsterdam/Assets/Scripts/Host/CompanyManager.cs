@@ -40,10 +40,16 @@ public class CompanyManager : MonoBehaviour
 
     string GetCompany(PlayerRef player) {
         if (availableCompanies.Count > 0) {
-            int randomCompany = Random.Range(0, availableCompanies.Count);
-            string myCompany = availableCompanies[randomCompany];
+            string myCompany;
+            int randomCompany;
+            
+            do { 
+                randomCompany = Random.Range(0, availableCompanies.Count);
+                myCompany = availableCompanies[randomCompany];
+            } while(playerHistory[player].Contains(myCompany));
+            
             // Check if player has had this company already
-            if (!playerHistory[player].Contains(myCompany))
+            if (playerHistory[player].Count < _companies.Count)
             {
                 // Add this company to player's history, so we don't see it again
                 playerHistory[player].Add(myCompany);
@@ -53,12 +59,7 @@ public class CompanyManager : MonoBehaviour
                 availableCompanies.RemoveAt(randomCompany);
                 return myCompany;
                 // If there are still companies left we haven't had yet, do this function again until we return a company that wasn't given yet
-            } else if (playerHistory[player].Count < _companies.Count){
-                return GetCompany(player);
             }
-            // Replace Debug.LogError and return "Empty" with commented below, if you want the game to go infinite
-            // playerHistory[player].Clear();
-            // return GetCompany(player);
             Debug.LogError("Player has been through all companies, game should have ended");
             return "Empty";
         }
