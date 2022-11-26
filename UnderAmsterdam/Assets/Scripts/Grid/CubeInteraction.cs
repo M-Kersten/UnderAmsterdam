@@ -300,16 +300,12 @@ public class CubeInteraction : NetworkBehaviour
         bool enable = isLinePipe == -1 ? true : false;
         if (enable)
         {
-            for (int i = 0; i < amountFaces; i += 2)
-            {
+            for (int i = 0; i < amountFaces; i++)
+            {            
                 pipeParts[i].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                 pipeParts[i].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
                 pipeParts[i].transform.GetChild(2).transform.GetChild(0).gameObject.SetActive(true);
                 pipeParts[i].transform.GetChild(3).transform.GetChild(1).gameObject.SetActive(true);
-                pipeParts[GetOppositeFace(i)].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-                pipeParts[GetOppositeFace(i)].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
-                pipeParts[GetOppositeFace(i)].transform.GetChild(2).transform.GetChild(0).gameObject.SetActive(true);
-                pipeParts[GetOppositeFace(i)].transform.GetChild(3).transform.GetChild(1).gameObject.SetActive(true);
             }
         }else
         {
