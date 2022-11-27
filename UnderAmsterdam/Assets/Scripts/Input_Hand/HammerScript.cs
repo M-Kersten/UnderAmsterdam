@@ -7,19 +7,19 @@ public class HammerScript : MonoBehaviour
     [SerializeField] PlayerData myData;
 
     private Vector3 prevPosition;
-    private Vector3 velocity = Vector3.zero;
+    private Vector3 deltaPos = Vector3.zero;
 
     public bool isActive = false;
 
     private void Start()
     {
         prevPosition = transform.position;
-        InvokeRepeating("ComputeVelocity", 0f, 0.1f);
+        InvokeRepeating("SavePosition", 0f, 0.08f);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 7 && velocity.magnitude > 1.25f)
+        if (other.gameObject.layer == 7 && deltaPos.magnitude > 0.2f)
         {
             CubeInteraction touchedCube = other.GetComponent<CubeInteraction>();
 
@@ -29,12 +29,12 @@ public class HammerScript : MonoBehaviour
         }
     }
 
-    private void ComputeVelocity()
+    private void SavePosition()
     {
         if (isActive)
         {
             // Compute velocity of the Hammer whenever it is active
-            velocity = (prevPosition - transform.position) / 0.1f;
+            deltaPos = (prevPosition - transform.position);
             prevPosition = transform.position;
         }
     }
