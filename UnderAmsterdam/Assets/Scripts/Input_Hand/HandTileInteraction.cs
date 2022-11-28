@@ -16,6 +16,8 @@ public class HandTileInteraction : NetworkBehaviour
     [SerializeField]
     private bool TriggerPressed = false;
 
+    bool hammerActive = false;
+
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
@@ -31,7 +33,16 @@ public class HandTileInteraction : NetworkBehaviour
 
                 // Switch to the Hammer/Hand if the Grip is pressed
                 myHammer.SetActive(playerInputData.leftGripPressed);
-                myHammerScript.isActive = playerInputData.leftGripPressed;
+                if (playerInputData.leftTriggerPressed && !hammerActive)
+                {
+                    myHammerScript.InvokeRepeating("SavePosition", 0f, 0.08f);
+                    hammerActive = true;
+                }
+                if (!playerInputData.leftTriggerPressed)
+                {
+                    myHammerScript.CancelInvoke();
+                    hammerActive = false;
+                }
             }
         }
     }

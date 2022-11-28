@@ -9,12 +9,9 @@ public class HammerScript : MonoBehaviour
     private Vector3 prevPosition;
     private Vector3 deltaPos = Vector3.zero;
 
-    public bool isActive = false;
-
     private void Start()
     {
         prevPosition = transform.position;
-        InvokeRepeating("SavePosition", 0f, 0.08f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,12 +28,9 @@ public class HammerScript : MonoBehaviour
 
     private void SavePosition()
     {
-        if (isActive)
-        {
-            // Compute velocity of the Hammer whenever it is active
-            deltaPos = (prevPosition - transform.position);
-            prevPosition = transform.position;
-        }
+        // Compute velocity of the Hammer whenever it is active
+        deltaPos = (prevPosition - transform.position);
+        prevPosition = transform.position;
     }
 
 }
