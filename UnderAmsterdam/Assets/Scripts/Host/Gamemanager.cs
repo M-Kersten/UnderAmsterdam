@@ -6,7 +6,7 @@ public class Gamemanager : MonoBehaviour
 {
     public static Gamemanager Instance;
     public Pointsmanager pManager;
-    public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd;
+    public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd;
     public PlayerData localPlayerData;
 
     public int round;
@@ -14,6 +14,7 @@ public class Gamemanager : MonoBehaviour
 
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundStartCountDown = 3;
+    [SerializeField] private float amountOfRounds = 6;
     [SerializeField] private bool startGame;
    
     private HostTimerScript timer;
@@ -62,6 +63,14 @@ public class Gamemanager : MonoBehaviour
     private void OnRoundLateEnd()
     {
         RoundLateEnd.Invoke();
-        OnRoundStart();
+
+        if (round <= amountOfRounds)
+            OnRoundStart();
+        else
+            OnGameEnd();
+    }
+    private void OnGameEnd()
+    {
+        GameEnd.Invoke();
     }
 }
