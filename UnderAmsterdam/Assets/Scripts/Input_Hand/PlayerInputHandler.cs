@@ -29,11 +29,11 @@ public class PlayerInputHandler : MonoBehaviour
     private bool isLeftTriggerPressed;
 
     [SerializeField]
-    private bool isAnyGripPressed;
-    [SerializeField]
-    private bool isRightGripPressed;
-    [SerializeField]
-    private bool isLeftGripPressed;
+    public bool isAnyGripPressed;
+
+    public bool isRightGripPressed;
+
+    public bool isLeftGripPressed;
 
 
     private void Awake()
