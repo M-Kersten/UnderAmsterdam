@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using UnityEngine.SceneManagement;
 
 public class ExitValve : MonoBehaviour
 {
@@ -56,8 +57,7 @@ public class ExitValve : MonoBehaviour
             }
         }
         valve.transform.localRotation = Quaternion.Slerp(valve.transform.localRotation, Quaternion.Euler(angle, 90, -90), 20f * Time.deltaTime);
-        //valve.transform.Rotate(0, angle, 0);
-        //valve.transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(direction), 50 * Time.deltaTime);
+
         Debug.DrawRay(ray.origin, ray.direction);
 
 
@@ -66,6 +66,7 @@ public class ExitValve : MonoBehaviour
     }
     private void left()
     {
+        SceneManager.LoadScene(name);
         Debug.Log("exit");
     }
 }
