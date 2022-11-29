@@ -10,6 +10,7 @@ public class Gamemanager : MonoBehaviour
     public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
     public PlayerData localPlayerData;
     public CharacterController lPlayerCC;
+    [SerializeField] private Animator lPlayerAnimator;
 
     public int round;
     public float roundTime = 45;
@@ -40,7 +41,7 @@ public class Gamemanager : MonoBehaviour
     {
         if (startGame)
         {
-            OnGameStart();
+            OnGameEnd();
             startGame = false;
         }
     }
@@ -85,6 +86,7 @@ public class Gamemanager : MonoBehaviour
     private void OnGameEnd()
     {
         GameEnd.Invoke();
+        lPlayerAnimator.Play("VisionFadeLocal", 0);
     }
     private IEnumerator PreRoundCountDown()
     {
