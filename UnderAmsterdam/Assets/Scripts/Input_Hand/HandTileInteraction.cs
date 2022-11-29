@@ -12,7 +12,7 @@ public class HandTileInteraction : NetworkBehaviour
     [SerializeField] private PlayerData myPlayer;
     [SerializeField] private bool TriggerPressed = false;
 
-    private bool handsDisabled;
+    private bool handEnabled = true;
     private void Start()
     {
         //Disable hands while the count down is happening
@@ -34,7 +34,7 @@ public class HandTileInteraction : NetworkBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (handsDisabled) {
+        if (handEnabled) {
         if (!rig.IsLocalNetworkRig)
             return;
 
@@ -47,7 +47,7 @@ public class HandTileInteraction : NetworkBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (handsDisabled)
+        if (handEnabled)
         {
             if (!rig.IsLocalNetworkRig)
                 return;
@@ -62,7 +62,7 @@ public class HandTileInteraction : NetworkBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (handsDisabled)
+        if (handEnabled)
         {
             if (other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
             {
@@ -78,6 +78,6 @@ public class HandTileInteraction : NetworkBehaviour
     }
     private void ToggleHands()
     {
-        handsDisabled = !handsDisabled;
+        handEnabled = !handEnabled;
     }
 }
