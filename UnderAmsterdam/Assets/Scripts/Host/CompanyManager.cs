@@ -4,15 +4,21 @@ using UnityEngine;
 using Fusion.XR.Host;
 using Fusion;
 
+
 public class CompanyManager : MonoBehaviour
 {
     public static CompanyManager Instance;
-
-    [SerializeField]
-    private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
-    public PlayerRef emptyPlayer = new();
-    [SerializeField] public Dictionary<string, PlayerRef> _companies;
     private ConnectionManager cManager;
+
+    // All companies that are left, after players have been given a company
+    private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
+    // History of all the companies a player has had
+    private Dictionary<PlayerRef, List<string>> playerHistory = new Dictionary<PlayerRef, List<string>>();
+    // Empty PlayerRef for the above dictionary
+    public PlayerRef emptyPlayer = new();
+    // Dictionary that keeps track what player has what company at the moment
+    public Dictionary<string, PlayerRef> _companies;
+
     
     void Start(){
         if (Instance == null)
@@ -34,19 +40,42 @@ public class CompanyManager : MonoBehaviour
 
     string GetCompany(PlayerRef player) {
         if (availableCompanies.Count > 0) {
-            int randomCompany = Random.Range(0, availableCompanies.Count);
-            string myCompany = availableCompanies[randomCompany];
-            // Add player to company
-            _companies[myCompany] = player;
-            // Remove random company from available company list, so we don't have 2 players in same company
-            availableCompanies.RemoveAt(randomCompany);
-            return myCompany;
+            string myCompany = "Empty";
+            int randomCompany = 0;
+            
+            
+            if (playerHistory[player].Count < _companies.Count)
+            {
+            // Keep randomizing company, until we find one that player hasn't had yet
+                do { 
+                    // if there aren't any more companies left, quit the do-while loop to stop infinite looping
+                    if (playerHistory[player].Count == _companies.Count)
+                        break;
+                    randomCompany = Random.Range(0, availableCompanies.Count);
+                    myCompany = availableCompanies[randomCompany];
+                } while(playerHistory[player].Contains(myCompany));
+
+                // Add this company to player's history, so we don't see it again
+                playerHistory[player].Add(myCompany);
+                // Add player to company
+                _companies[myCompany] = player;
+                // Remove random company from available company list, so we don't have 2 players in same company
+                availableCompanies.RemoveAt(randomCompany);
+                return myCompany;
+                // If there are still companies left we haven't had yet, do this function again until we return a company that wasn't given yet
+            }
+            Debug.LogError("Player has been through all companies, game should have ended");
+            return "Empty";
         }
+        Debug.LogError("No companies available");
         return "Empty";
     }
 
     public void loadSend() {
         foreach(var player in cManager._spawnedUsers) {
+            if (!playerHistory.ContainsKey(player.Key)) {
+                playerHistory.Add(player.Key, new List<string>());
+            }
             SendCompany(player.Key, player.Value);
         }
     }
