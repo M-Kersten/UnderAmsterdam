@@ -15,12 +15,12 @@ public class Gamemanager : MonoBehaviour
     public float roundTime = 45;
 
     [SerializeField] private float roundTimeIncrease = 15;
-    [SerializeField] private float roundCountDownTime = 3;
     [SerializeField] private float amountOfRounds = 6;
     [SerializeField] private bool startGame;
 
     [HideInInspector] public Pointsmanager pManager;
     private HostTimerScript timer;
+    private float roundCountDownTime = 3;
 
     private void Awake()
     {
