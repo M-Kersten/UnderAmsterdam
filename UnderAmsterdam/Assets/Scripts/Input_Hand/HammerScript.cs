@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Fusion;
 
-public class HammerScript : NetworkBehaviour
+public class HammerScript : MonoBehaviour
 {
     [SerializeField] PlayerData myData;
 
@@ -20,7 +19,7 @@ public class HammerScript : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 7 && deltaPos.magnitude > 0.175f)
+        if (other.gameObject.layer == 7 && deltaPos.magnitude > 0.15f)
         {
             CubeInteraction touchedCube = other.GetComponent<CubeInteraction>();
 

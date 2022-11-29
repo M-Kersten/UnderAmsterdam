@@ -290,7 +290,7 @@ public class CubeInteraction : NetworkBehaviour
         // Checks if it is at least a line pipe
         for (int i = 0; i < amountFaces; i += 2)
         {
-            if (!TileOccupied || activatedPipes[i] && activatedPipes[GetOppositeFace(i)])
+            if (!TileOccupied || pipeParts[i].activeSelf && pipeParts[GetOppositeFace(i)].activeSelf)
             {
                 // Connector is not visible
                 connectorPart.SetActive(false);
