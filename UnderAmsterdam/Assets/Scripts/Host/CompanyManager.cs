@@ -40,8 +40,8 @@ public class CompanyManager : MonoBehaviour
 
     string GetCompany(PlayerRef player) {
         if (availableCompanies.Count > 0) {
-            string myCompany;
-            int randomCompany;
+            string myCompany = "Empty";
+            int randomCompany = 0;
             
             
             if (playerHistory[player].Count < _companies.Count)
