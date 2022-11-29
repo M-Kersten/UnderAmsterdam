@@ -77,7 +77,7 @@ public class Gamemanager : MonoBehaviour
     {
         RoundLateEnd.Invoke();
 
-        if (round <= amountOfRounds)
+        if (round < amountOfRounds)
             OnCountDownStart();
         else
             OnGameEnd();
