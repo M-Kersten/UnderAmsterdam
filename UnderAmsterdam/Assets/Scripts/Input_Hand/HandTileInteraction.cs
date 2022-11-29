@@ -10,9 +10,15 @@ public class HandTileInteraction : NetworkBehaviour
     public NetworkRig rig;
 
     [SerializeField] private PlayerData myPlayer;
+    [SerializeField] private bool TriggerPressed = false;
 
-    [SerializeField]
-    private bool TriggerPressed = false;
+    private bool handsDisabled;
+    private void Start()
+    {
+        //Disable hands while the count down is happening
+        Gamemanager.Instance.CountDownStart.AddListener(ToggleHands);
+        Gamemanager.Instance.CountDownEnd.AddListener(ToggleHands);
+    }
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
@@ -28,38 +34,50 @@ public class HandTileInteraction : NetworkBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (handsDisabled) {
         if (!rig.IsLocalNetworkRig)
             return;
 
-        if (other.gameObject.layer == 7)
-        {
-            CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
-            cubeScript.OnHandEnter(myPlayer.company);
+            if (other.gameObject.layer == 7)
+            {
+                CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+                cubeScript.OnHandEnter(myPlayer.company);
+            }
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (!rig.IsLocalNetworkRig)
-            return;
-
-        if (other.gameObject.layer == 7)
+        if (handsDisabled)
         {
-            CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
-            cubeScript.OnHandExit(myPlayer.company);
+            if (!rig.IsLocalNetworkRig)
+                return;
+
+            if (other.gameObject.layer == 7)
+            {
+                CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+                cubeScript.OnHandExit(myPlayer.company);
+            }
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
+        if (handsDisabled)
         {
-            CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
-            if(!cubeScript.TileOccupied)
+            if (other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
             {
-                cubeScript.UpdateCompany(myPlayer.company);
-                cubeScript.EnableTile();
-                TriggerPressed = false;
+                CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+                if (!cubeScript.TileOccupied)
+                {
+                    cubeScript.UpdateCompany(myPlayer.company);
+                    cubeScript.EnableTile();
+                    TriggerPressed = false;
+                }
             }
         }
+    }
+    private void ToggleHands()
+    {
+        handsDisabled = !handsDisabled;
     }
 }
