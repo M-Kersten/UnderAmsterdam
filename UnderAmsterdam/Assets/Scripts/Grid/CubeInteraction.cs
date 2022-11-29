@@ -158,7 +158,6 @@ public class CubeInteraction : NetworkBehaviour
         //Gamemanager.Instance.pManager.AddPoints(company);
         // Clear company and occupation state
         TileOccupied = false;
-        company = "Empty";
 
         // Deactivate all Half-pipes of the tile
         connectorPart.SetActive(false);
@@ -175,8 +174,10 @@ public class CubeInteraction : NetworkBehaviour
                 neighborTile.previewPipeParts[GetOppositeFace(i)].SetActive(false);
                 neighborTile.activatedPipes[GetOppositeFace(i)] = false;
                 neighborTile.TryShowConnector();
+                if (true) neighborTile.TryExtendPipe();
             }
         }
+        company = "Empty";
 
     }
     public void OnHandEnter(string playerCompany)
@@ -206,6 +207,8 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnRenderPipePart(bool isActive)
     {
+        bool canBeExpanded = false;
+
         if (!isSpawned)
             return;
 
@@ -231,11 +234,16 @@ public class CubeInteraction : NetworkBehaviour
                             neighborTile.pipeParts[GetOppositeFace(i)].SetActive(isActive);
                             neighborTile.pColouring.UpdateRenderer(company);
                             neighborTile.TryShowConnector();
+                            canBeExpanded = neighborTile.TryExtendPipe();
                         }
                     }
+                    pipeParts[i].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(canBeExpanded);
+                    pipeParts[i].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(canBeExpanded);
+
                 }
             }
         }
+        TryExtendPipe();
     }
 
     private void OnRenderPipePreview(bool isActive)
@@ -300,6 +308,48 @@ public class CubeInteraction : NetworkBehaviour
         // Connector is visible, it must be activated
         connectorPart.SetActive(true);
         pColouring.UpdateRenderer(company, connectorPart);
+    }
+
+    private int IsLinePipe()
+    {
+        int lineFound = -1;
+        for (int i = 0; i < amountFaces; i += 2)
+        {
+            if (pipeParts[i].activeSelf)
+            {
+                if (lineFound == -1 && pipeParts[GetOppositeFace(i)].activeSelf) lineFound = i;
+                else return -1;
+            }
+            else if (pipeParts[GetOppositeFace(i)].activeSelf) return -1;
+        }
+        return lineFound;
+    }
+
+    public bool TryExtendPipe()
+    {
+        int isLinePipe = IsLinePipe();
+        bool enable = isLinePipe == -1 ? true : false;
+        if (enable)
+        {
+            for (int i = 0; i < amountFaces; i++)
+            {            
+                pipeParts[i].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
+                pipeParts[i].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
+                pipeParts[i].transform.GetChild(2).transform.GetChild(0).gameObject.SetActive(true);
+                pipeParts[i].transform.GetChild(3).transform.GetChild(1).gameObject.SetActive(true);
+            }
+        }else
+        {
+            pipeParts[isLinePipe].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+            pipeParts[isLinePipe].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
+            pipeParts[isLinePipe].transform.GetChild(2).transform.GetChild(0).gameObject.SetActive(false);
+            pipeParts[isLinePipe].transform.GetChild(3).transform.GetChild(1).gameObject.SetActive(false);
+            pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
+            pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
+            pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(2).transform.GetChild(0).gameObject.SetActive(false);
+            pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(3).transform.GetChild(1).gameObject.SetActive(false);
+        }
+        return enable;
     }
 
     public void CheckConnectionForWin()
