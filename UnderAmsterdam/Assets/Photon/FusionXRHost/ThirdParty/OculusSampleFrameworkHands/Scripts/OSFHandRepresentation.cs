@@ -70,31 +70,31 @@ namespace Fusion.XR.Host.SimpleHands
             return command;
         }
 
-/*        int pointAnimationLayerIndex = -1;
+        int pointAnimationLayerIndex = -1;
         int thumbAnimationLayerIndex = -1;
-        bool layerIndexFound = false;*/
+        bool layerIndexFound = false;
         public virtual void ApplyCommand(HandCommand command) {
             command = AnalyseCommand(command);
 
-/*            if (!layerIndexFound)
+            if (!layerIndexFound)
             {
                 layerIndexFound = true;
                 pointAnimationLayerIndex = handAnimator.GetLayerIndex(pointAnimationLayer);
                 thumbAnimationLayerIndex = handAnimator.GetLayerIndex(thumbAnimationLayer);
-            }*/
+            }
             // Apply layers
-/*            float pointRaisedLayerWeight = 1f - command.triggerCommand;
+            float pointRaisedLayerWeight = 1f - command.triggerCommand;
             handAnimator.SetLayerWeight(pointAnimationLayerIndex, pointRaisedLayerWeight);
             float thumbRaisedLayerWeight = 1f - command.thumbTouchedCommand;
-            handAnimator.SetLayerWeight(thumbAnimationLayerIndex, thumbRaisedLayerWeight);*/
+            handAnimator.SetLayerWeight(thumbAnimationLayerIndex, thumbRaisedLayerWeight);
 
             // Apply parameters
             float flexParameterValue = command.gripCommand;
             handAnimator.SetFloat(flexAnimationParameter, flexParameterValue); 
-/*            float pinchParameterValue = 1f - command.pinchCommand;
+            float pinchParameterValue = 1f - command.pinchCommand;
             handAnimator.SetFloat(pinchAnimationParameter, pinchParameterValue);
             int poseParameterValue = command.poseCommand;
-            handAnimator.SetInteger(poseAnimationParameter, poseParameterValue);*/
+            handAnimator.SetInteger(poseAnimationParameter, poseParameterValue);
         }
 
         private void Update()
