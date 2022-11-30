@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class HammerScript : MonoBehaviour
+public class HammerScript : NetworkBehaviour
 {
     [SerializeField] PlayerData myData;
 
     private Vector3 prevPosition;
     private Vector3 deltaPos = Vector3.zero;
 
-    public bool isActive = false;
+    [Networked(OnChanged = nameof(OnHammerChange))]
+    public bool isActive { get; set; }
 
     private void Start()
     {
@@ -27,6 +29,11 @@ public class HammerScript : MonoBehaviour
             if (touchedCube.TileOccupied && touchedCube.company == myData.company)
                 touchedCube.DisableTile();
         }
+    }
+
+    static void OnHammerChange(Changed<HammerScript> changed)
+    {
+        changed.Behaviour.gameObject.SetActive(changed.Behaviour.isActive);
     }
 
     void SavePosition()
