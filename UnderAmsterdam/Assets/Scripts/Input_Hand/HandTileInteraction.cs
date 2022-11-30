@@ -10,7 +10,6 @@ public class HandTileInteraction : NetworkBehaviour
     public NetworkRig rig;
 
     [SerializeField] private PlayerData myPlayer;
-    [SerializeField] private GameObject myHammer;
     [SerializeField] private HammerScript myHammerScript;
 
     [SerializeField]
@@ -30,8 +29,7 @@ public class HandTileInteraction : NetworkBehaviour
                 TriggerPressed = playerInputData.leftTriggerPressed;
 
                 // Switch to the Hammer/Hand if the Grip is pressed
-                myHammer.SetActive(playerInputData.leftGripPressed);
-                myHammerScript.isActive = true;
+                myHammerScript.ActivateHammer(playerInputData.leftGripPressed);
             }
         }
     }

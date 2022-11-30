@@ -6,6 +6,7 @@ using Fusion;
 public class HammerScript : NetworkBehaviour
 {
     [SerializeField] PlayerData myData;
+    [SerializeField] private GameObject myHammer;
 
     private Vector3 prevPosition;
     private Vector3 deltaPos = Vector3.zero;
@@ -33,7 +34,13 @@ public class HammerScript : NetworkBehaviour
 
     static void OnHammerChange(Changed<HammerScript> changed)
     {
-        changed.Behaviour.gameObject.SetActive(changed.Behaviour.isActive);
+        changed.Behaviour.ActivateHammer(changed.Behaviour.isActive);
+    }
+
+    public void ActivateHammer(bool enable)
+    {
+        isActive = enable;
+        myHammer.SetActive(enable);
     }
 
     void SavePosition()

@@ -832,7 +832,6 @@ MonoBehaviour:
   side: 2
   rig: {fileID: 2549000073306557775}
   myPlayer: {fileID: 7324134168333653148}
-  myHammer: {fileID: 3214433244630880169}
   myHammerScript: {fileID: 8014688643079432976}
   TriggerPressed: 0
 --- !u!114 &2484170574570388998 stripped
@@ -989,7 +988,6 @@ MonoBehaviour:
   side: 3
   rig: {fileID: 2549000073306557775}
   myPlayer: {fileID: 7324134168333653148}
-  myHammer: {fileID: 0}
   myHammerScript: {fileID: 0}
   TriggerPressed: 0
 --- !u!114 &7324134168333653148 stripped
@@ -1083,6 +1081,14 @@ PrefabInstance:
       propertyPath: myData
       value: 
       objectReference: {fileID: 7324134168333653148}
+    - target: {fileID: 4657392825877820709, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
+      propertyPath: myHammer
+      value: 
+      objectReference: {fileID: 3214433244630880169}
+    - target: {fileID: 4657392825877820709, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
+      propertyPath: _isActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4712796392926981447, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
       propertyPath: m_Layer
       value: 8
