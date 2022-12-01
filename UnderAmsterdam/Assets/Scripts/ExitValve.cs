@@ -21,7 +21,6 @@ public class ExitValve : MonoBehaviour
 
     [SerializeField] private float angle;
 
-
     public NetworkRunner runner;
 
     private void Start()
@@ -39,7 +38,7 @@ public class ExitValve : MonoBehaviour
 
             ray.direction = direction.normalized;
 
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, 0.5f, layerMask, QueryTriggerInteraction.Collide))
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, 0.5f, layerMask))
             {
                 angle = -Mathf.Atan2(ray.direction.y - valveCenter.position.y, ray.direction.x - valveCenter.position.x) * Mathf.Rad2Deg;
             }
