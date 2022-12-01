@@ -1,4 +1,5 @@
 using UnityEngine;
+using Fusion.XR.Host;
 using Fusion;
 using UnityEngine.Events;
 using System.Collections;
@@ -10,10 +11,12 @@ public class Gamemanager : MonoBehaviour
     public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
     public PlayerData localPlayerData;
     public CharacterController lPlayerCC;
-    [SerializeField] private Animator lPlayerAnimator;
-
+    
     public int round;
     public float roundTime = 45;
+
+    [SerializeField] private Animator lPlayerAnimator;
+    [SerializeField] private NetworkRunner runner;
 
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundCountDownTime = 3;
@@ -41,7 +44,7 @@ public class Gamemanager : MonoBehaviour
     {
         if (startGame)
         {
-            OnGameEnd();
+            StartCoroutine(OnGameEnd());
             startGame = false;
         }
     }
@@ -81,12 +84,14 @@ public class Gamemanager : MonoBehaviour
         if (round <= amountOfRounds)
             OnCountDownStart();
         else
-            OnGameEnd();
+            StartCoroutine(OnGameEnd());
     }
-    private void OnGameEnd()
+    private IEnumerator OnGameEnd()
     {
         GameEnd.Invoke();
         lPlayerAnimator.Play("VisionFadeLocal", 0);
+        yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
+        runner.SetActiveScene(1);
     }
     private IEnumerator PreRoundCountDown()
     {
