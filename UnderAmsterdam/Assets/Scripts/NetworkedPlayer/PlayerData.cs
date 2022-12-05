@@ -36,6 +36,7 @@ public class PlayerData : NetworkBehaviour
     }
     private void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
