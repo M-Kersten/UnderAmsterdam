@@ -8,11 +8,6 @@ using Fusion.XR.Host.Rig;
 
 public class CubeInteraction : NetworkBehaviour
 {
-    // In game sounds
-    private AudioSource audioSource;
-    [SerializeField] private AudioClip placingPipe1, placingPipe2, placingPipe3;
-    [SerializeField] private AudioClip destroyingPipe1, destroyingPipe2, destroyingPipe3;
-
     private enum Direction {Right, Left, Behind, Front, Up, Down};
 
     [SerializeField] private Transform PipePreview, PipeHolder;
@@ -44,7 +39,6 @@ public class CubeInteraction : NetworkBehaviour
     public bool isChecked = false;
 
     void Start() {
-        audioSource = GetComponent<AudioSource>();
         pColouring = GetComponent<PipeColouring>();
     }
     public override void Spawned()
@@ -156,21 +150,6 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void EnableTile()
     {
-        // Plays random block placing sound
-        int randomSound = Random.Range(0, 3);
-        switch (randomSound)
-        {
-            case 0:
-                audioSource.PlayOneShot(placingPipe1);
-                break;
-            case 1:
-                audioSource.PlayOneShot(placingPipe2);
-                break;
-            case 2:
-                audioSource.PlayOneShot(placingPipe3);
-                break;
-        }
-
         //Gamemanager.Instance.pManager.RemovePoints(company);
         TileOccupied = true;
 
@@ -181,21 +160,6 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void DisableTile()
     {
-        // Plays random block destroying sound
-        int randomSound = Random.Range(0, 3);
-        switch (randomSound)
-        {
-            case 0:
-                audioSource.PlayOneShot(destroyingPipe1);
-                break;
-            case 1:
-                audioSource.PlayOneShot(destroyingPipe2);
-                break;
-            case 2:
-                audioSource.PlayOneShot(destroyingPipe3);
-                break;
-        }
-
         //Gamemanager.Instance.pManager.AddPoints(company);
         // Clear company and occupation state
         TileOccupied = false;

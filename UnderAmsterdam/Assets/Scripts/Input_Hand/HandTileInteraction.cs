@@ -9,6 +9,9 @@ public class HandTileInteraction : NetworkBehaviour
     public RigPart side;
     public NetworkRig rig;
 
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip placingPipe1, placingPipe2, placingPipe3;
+
     [SerializeField] private PlayerData myPlayer;
     [SerializeField] private bool TriggerPressed = false;
     [SerializeField] private HammerScript myHammerScript;
@@ -16,6 +19,8 @@ public class HandTileInteraction : NetworkBehaviour
     private bool handEnabled = true;
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+
         //Disable hands while the count down is happening
         Gamemanager.Instance.CountDownStart.AddListener(ToggleHands);
         Gamemanager.Instance.CountDownEnd.AddListener(ToggleHands);
@@ -74,6 +79,21 @@ public class HandTileInteraction : NetworkBehaviour
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
             if(!cubeScript.TileOccupied)
             {
+                // Plays random block placing sound
+                int randomSound = Random.Range(0, 3);
+                switch (randomSound)
+                {
+                    case 0:
+                        audioSource.PlayOneShot(placingPipe1);
+                        break;
+                    case 1:
+                        audioSource.PlayOneShot(placingPipe2);
+                        break;
+                    case 2:
+                        audioSource.PlayOneShot(placingPipe3);
+                        break;
+                }
+
                 cubeScript.UpdateCompany(myPlayer.company);
                 cubeScript.EnableTile();
                 TriggerPressed = false;
