@@ -1,4 +1,5 @@
 using UnityEngine;
+using Fusion.XR.Host;
 using Fusion;
 using UnityEngine.Events;
 using System.Collections;
@@ -10,19 +11,20 @@ public class Gamemanager : MonoBehaviour
     public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
     public PlayerData localPlayerData;
     public CharacterController lPlayerCC;
-
-    [SerializeField] private NetworkRunner runner;
-
+    
     public int round;
     public float roundTime = 45;
 
+    [SerializeField] private Animator lPlayerAnimator;
+    [SerializeField] private NetworkRunner runner;
+
     [SerializeField] private float roundTimeIncrease = 15;
+    [SerializeField] private float roundCountDownTime = 3;
     [SerializeField] private float amountOfRounds = 6;
     [SerializeField] private bool startGame;
 
     [HideInInspector] public Pointsmanager pManager;
     private HostTimerScript timer;
-    private float roundCountDownTime = 3;
 
     private void Awake()
     {
@@ -42,8 +44,7 @@ public class Gamemanager : MonoBehaviour
     {
         if (startGame)
         {
-            OnGameStart();
-            runner.SessionInfo.IsOpen = false;
+            StartCoroutine(OnGameEnd());
             startGame = false;
         }
     }
@@ -58,7 +59,7 @@ public class Gamemanager : MonoBehaviour
         lPlayerCC.enabled = false;
         StartCoroutine(PreRoundCountDown());
     }
-    private void OnCountDownEnd()
+    private void OnCountDownEnd() 
     {
         CountDownEnd.Invoke();
         lPlayerCC.enabled = true;
@@ -80,14 +81,17 @@ public class Gamemanager : MonoBehaviour
     {
         RoundLateEnd.Invoke();
 
-        if (round < amountOfRounds)
+        if (round <= amountOfRounds)
             OnCountDownStart();
         else
-            OnGameEnd();
+            StartCoroutine(OnGameEnd());
     }
-    private void OnGameEnd()
+    private IEnumerator OnGameEnd()
     {
         GameEnd.Invoke();
+        lPlayerAnimator.Play("VisionFadeLocal", 0);
+        yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
+        runner.SetActiveScene(1);
     }
     private IEnumerator PreRoundCountDown()
     {
