@@ -24,6 +24,7 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private bool startGame;
 
     [HideInInspector] public Pointsmanager pManager;
+    [HideInInspector] public ConnectionManager cManager;
     private HostTimerScript timer;
 
     private void Awake()
@@ -38,6 +39,10 @@ public class Gamemanager : MonoBehaviour
         pManager = GetComponent<Pointsmanager>();
         timer = GetComponent<HostTimerScript>();
         timer.timerUp.AddListener(OnRoundEnd);
+    }
+
+    public void SceneSwitch(int index) {
+        runner.SetActiveScene(index);
     }
 
     private void FixedUpdate()
