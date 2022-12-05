@@ -26,6 +26,8 @@ public class ExitValve : MonoBehaviour
     private void Start()
     {
         ray.origin = valveCenter.position;
+        if (!playerInputHandler)
+            playerInputHandler = GetComponentInParent<PlayerInputHandler>();
     }
 
     private void FixedUpdate()
@@ -37,11 +39,6 @@ public class ExitValve : MonoBehaviour
             direction.y = rHandTransform.position.y - valveCenter.position.y;
 
             ray.direction = direction.normalized;
-
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, 0.5f, layerMask))
-            {
-                angle = -Mathf.Atan2(ray.direction.y - valveCenter.position.y, ray.direction.x - valveCenter.position.x) * Mathf.Rad2Deg;
-            }
         }
         else if (playerInputHandler.isLeftGripPressed)
         {
@@ -49,19 +46,13 @@ public class ExitValve : MonoBehaviour
             direction.y = lHandTransform.position.y - valveCenter.position.y;
 
             ray.direction = direction.normalized;
-
-            if (Physics.Raycast(ray, out RaycastHit hitInfo, 10f, layerMask))
-            {
-                angle = -Mathf.Atan2(ray.direction.y - valveCenter.position.y, ray.direction.x - valveCenter.position.x) * Mathf.Rad2Deg;
-            }
+        }
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, 10f, layerMask))
+        {
+            angle = -Mathf.Atan2(ray.direction.y - valveCenter.position.y, ray.direction.x - valveCenter.position.x) * Mathf.Rad2Deg;
         }
         valve.transform.localRotation = Quaternion.Slerp(valve.transform.localRotation, Quaternion.Euler(angle, 90, -90), 20f * Time.deltaTime);
-
         Debug.DrawRay(ray.origin, ray.direction);
-
-
-
-
     }
     private void left()
     {

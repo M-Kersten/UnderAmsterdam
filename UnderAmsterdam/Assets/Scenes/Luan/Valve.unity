@@ -743,6 +743,30 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 8397077673816484528, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: ExitButton.m_Action.m_Id
+      value: cdcbebe2-e2d2-49ab-ba6c-114bd861b404
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397077673816484528, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: ExitButton.m_Action.m_Name
+      value: Exit Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397077673816484528, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: joystickActionL.m_Action.m_SingletonActionBindings.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397077673816484528, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: joystickActionL.m_Action.m_SingletonActionBindings.Array.data[0].m_Id
+      value: 2ab722d0-a10b-480c-b240-4232ba1def9c
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397077673816484528, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: joystickActionL.m_Action.m_SingletonActionBindings.Array.data[0].m_Path
+      value: '*/{MenuButton}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8397077673816484528, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: joystickActionL.m_Action.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Joystick Action L
+      objectReference: {fileID: 0}
     - target: {fileID: 8439811097757408610, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -2440,6 +2464,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d4f79fb0af50f2498dbb08405c8c1d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1872248576 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3769635877266248458, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+  m_PrefabInstance: {fileID: 5819810963037059731}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99e094183384a87419a99123f3fb0227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1962436600
@@ -7054,15 +7089,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2322481816848015232, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.289
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2322481816848015232, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.432
+      value: 0.227
       objectReference: {fileID: 0}
     - target: {fileID: 2322481816848015232, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.137
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2322481816848015232, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7096,10 +7131,26 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2997276575970244291, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+      propertyPath: Child
+      value: 
+      objectReference: {fileID: 5819810963037059732}
+    - target: {fileID: 2997276575970244291, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+      propertyPath: playerInputHandler
+      value: 
+      objectReference: {fileID: 1772896279}
+    - target: {fileID: 2997276575970244291, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+      propertyPath: InteractionValveScript
+      value: 
+      objectReference: {fileID: 1872248576}
     - target: {fileID: 3769635877266248458, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
       propertyPath: runner
       value: 
       objectReference: {fileID: 650798174}
+    - target: {fileID: 3769635877266248458, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3769635877266248458, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
       propertyPath: lHandTransform
       value: 
@@ -7116,5 +7167,14 @@ PrefabInstance:
       propertyPath: playerInputHandler
       value: 
       objectReference: {fileID: 1772896279}
+    - target: {fileID: 7003347959449447718, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+--- !u!1 &5819810963037059732 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3798781461560774096, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+  m_PrefabInstance: {fileID: 5819810963037059731}
+  m_PrefabAsset: {fileID: 0}
