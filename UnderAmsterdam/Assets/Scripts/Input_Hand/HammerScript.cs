@@ -10,6 +10,7 @@ public class HammerScript : NetworkBehaviour
 
     [SerializeField] PlayerData myData;
     [SerializeField] private GameObject myHammer;
+    [SerializeField] private float hitSpeedThreshhold = 0.1f;
 
     private Vector3 prevPosition;
     private Vector3 deltaPos = Vector3.zero;
@@ -26,7 +27,7 @@ public class HammerScript : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 7 && deltaPos.magnitude > 0.15f)
+        if (other.gameObject.layer == 7 && deltaPos.magnitude > hitSpeedThreshhold)
         {
             CubeInteraction touchedCube = other.GetComponent<CubeInteraction>();
 
