@@ -86,16 +86,16 @@ public class Gamemanager : MonoBehaviour
         else
             StartCoroutine(OnGameEnd());
     }
+    private IEnumerator PreRoundCountDown()
+    {
+        yield return new WaitForSeconds(roundCountDownTime);
+        OnCountDownEnd();
+    }
     private IEnumerator OnGameEnd()
     {
         GameEnd.Invoke();
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
         runner.SetActiveScene(1);
-    }
-    private IEnumerator PreRoundCountDown()
-    {
-        yield return new WaitForSeconds(roundCountDownTime);
-        OnCountDownEnd();
     }
 }
