@@ -441,12 +441,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
-  placingPipe1: {fileID: 8300000, guid: 81907e1e578f98f44884336ecc2c6ba7, type: 3}
-  placingPipe2: {fileID: 8300000, guid: 81907e1e578f98f44884336ecc2c6ba7, type: 3}
-  placingPipe3: {fileID: 8300000, guid: 5e7e82e863ba9e84485a4d978e886bd3, type: 3}
-  destroyingPipe1: {fileID: 8300000, guid: 81907e1e578f98f44884336ecc2c6ba7, type: 3}
-  destroyingPipe2: {fileID: 8300000, guid: 81907e1e578f98f44884336ecc2c6ba7, type: 3}
-  destroyingPipe3: {fileID: 8300000, guid: 5e7e82e863ba9e84485a4d978e886bd3, type: 3}
+  placingPipe1: {fileID: 8300000, guid: 1bb4a37ae82988b4fab940655d56a66d, type: 3}
+  placingPipe2: {fileID: 8300000, guid: f5e16c462eb111f4aa6eb8b96eaddda7, type: 3}
+  placingPipe3: {fileID: 8300000, guid: 70f12ef556c6d9043ae444cadea66f97, type: 3}
+  destroyingPipe1: {fileID: 8300000, guid: 0467cab50c7317b49988a0ed0be15ec8, type: 3}
+  destroyingPipe2: {fileID: 8300000, guid: 55e2f877bb175264cbbf4195df1b21f6, type: 3}
+  destroyingPipe3: {fileID: 8300000, guid: 071a6b28e3cecb045bb1f8788df7a986, type: 3}
   PipePreview: {fileID: 4021521744409527741}
   PipeHolder: {fileID: 9066663096074062952}
   connectorPart: {fileID: 4727706361188819431}
@@ -477,7 +477,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

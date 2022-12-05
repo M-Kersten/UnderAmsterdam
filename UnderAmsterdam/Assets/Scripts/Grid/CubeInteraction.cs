@@ -171,7 +171,7 @@ public class CubeInteraction : NetworkBehaviour
                 break;
         }
 
-        Gamemanager.Instance.pManager.RemovePoints(company);
+        //Gamemanager.Instance.pManager.RemovePoints(company);
         TileOccupied = true;
 
         OnRenderPipePreview(false);
@@ -196,7 +196,7 @@ public class CubeInteraction : NetworkBehaviour
                 break;
         }
 
-        Gamemanager.Instance.pManager.AddPoints(company);
+        //Gamemanager.Instance.pManager.AddPoints(company);
         // Clear company and occupation state
         TileOccupied = false;
 
