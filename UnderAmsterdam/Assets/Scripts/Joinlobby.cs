@@ -8,16 +8,11 @@ public class Joinlobby : MonoBehaviour
 {
     [SerializeField] ConnectionManager connection;
     [SerializeField] TextMeshProUGUI textinput;
-    public async void Onjoinlobby()
+    public async void OnJoinHostLobby()
     {
         connection.roomName = textinput.text;
-        connection.mode = Fusion.GameMode.Client;
-        await connection.Connect();
-    }
-    public async void Onhostlobby()
-    {
-        connection.roomName = textinput.text;
-        connection.mode = Fusion.GameMode.Host;
+        connection.mode = Fusion.GameMode.AutoHostOrClient;
+        connection.runner.SetActiveScene(1);
         await connection.Connect();
     }
 }
