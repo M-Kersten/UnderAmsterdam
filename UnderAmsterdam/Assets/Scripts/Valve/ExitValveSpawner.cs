@@ -11,7 +11,8 @@ public class ExitValveSpawner : MonoBehaviour
     [SerializeField] private ExitValve InteractionValveScript;
 
     private bool isSpawned = false;
-    private bool isCoroutineStarted = false;
+
+    private float timeRemaining = 2.75f;
 
     private void Start()
     {
@@ -21,44 +22,31 @@ public class ExitValveSpawner : MonoBehaviour
             Child = this.transform.GetChild(0).gameObject;
     }
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate() 
+    { 
         if (isSpawned)
             return;
-
+        
         //The user should keep the button pressed to spawn the exit valve
-        if (!isCoroutineStarted && playerInputHandler.isMenuPressed)
+        if (playerInputHandler.isMenuPressed && timeRemaining > 0)
         {
-            StartCoroutine(PressingTimer());
+            timeRemaining -= Time.deltaTime;
         }
-        else if(!playerInputHandler.isMenuPressed && isCoroutineStarted)
+        else if(playerInputHandler.isMenuPressed && timeRemaining < 0)
         {
-            StopCoroutine(PressingTimer());
-            isCoroutineStarted = false;
-        }
-    }
-
-    private IEnumerator PressingTimer()
-    {
-        isCoroutineStarted = true;
-        while (playerInputHandler.isMenuPressed)
-        {
-            yield return new WaitForSecondsRealtime(2.75f);
             Spawner();
         }
-        yield return new WaitForFixedUpdate();
-        isCoroutineStarted = false;
     }
-
+    
     private void Spawner() 
     {
-        StopCoroutine(PressingTimer());
-        isCoroutineStarted = false;
-
         isSpawned = true;
         Child.SetActive(true);
         InteractionValveScript.enabled = true;
-        //transform.position = transform.position.Lerp(transform.position, new Vector3(transform.position.x, 2f, transform.position.z), Time.deltaTime);
-
+        
+        Vector3 position = transform.position;
+        
+        position = Vector3.Slerp(position, new Vector3(position.x, 2f, position.z), Time.deltaTime);
+        transform.position = position;
     }
 }
