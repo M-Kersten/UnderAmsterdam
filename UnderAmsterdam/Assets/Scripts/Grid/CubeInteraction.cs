@@ -34,6 +34,7 @@ public class CubeInteraction : NetworkBehaviour
     private int amountFaces = 6;
     private bool isSpawned = false;
 
+    public bool playerInside = false;
     public bool isHover = false;
     private uint handHoverNumber = 0; // avoid enter/exit problem whith two hands
     public bool isChecked = false;
@@ -148,6 +149,18 @@ public class CubeInteraction : NetworkBehaviour
         company = newCompany;
         pColouring.UpdateRenderer(company);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            playerInside = true;
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            playerInside = false;
+    }
+
     public void EnableTile()
     {
         //Gamemanager.Instance.pManager.RemovePoints(company);
@@ -187,7 +200,8 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void OnHandEnter(string playerCompany)
     {
-        if (isSpawned && !TileOccupied)
+        Debug.Log(playerInside);
+        if (isSpawned && !playerInside && !TileOccupied)
         {
             isHover = true;
             handHoverNumber++;
