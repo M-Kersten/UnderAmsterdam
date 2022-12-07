@@ -200,7 +200,6 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void OnHandEnter(string playerCompany)
     {
-        Debug.Log(playerInside);
         if (isSpawned && !playerInside && !TileOccupied)
         {
             isHover = true;
