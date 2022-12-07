@@ -6,6 +6,9 @@ using Fusion.XR.Host.Rig;
 
 public class HandTileInteraction : NetworkBehaviour
 {
+    //Boolean to switch hand preferences
+    public bool isRightHanded = true;
+
     public RigPart side;
     public NetworkRig rig;
 
@@ -27,14 +30,19 @@ public class HandTileInteraction : NetworkBehaviour
         if (GetInput<RigInput>(out var playerInputData)) //Get the input from the players 
         {
             if (side == RigPart.RightController)
-                TriggerPressed = playerInputData.rightTriggerPressed;
+            {
+                TriggerPressed = playerInputData.rightTriggerPressed && isRightHanded;
+
+                // Switch to the Hammer/Hand if the Grip is pressed
+                myHammerScript.ActivateHammer(playerInputData.rightGripPressed && !isRightHanded);
+            }
 
             if (side == RigPart.LeftController)
             {
-                TriggerPressed = playerInputData.leftTriggerPressed;
+                TriggerPressed = playerInputData.leftTriggerPressed && !isRightHanded;
 
                 // Switch to the Hammer/Hand if the Grip is pressed
-                myHammerScript.ActivateHammer(playerInputData.leftGripPressed);
+                myHammerScript.ActivateHammer(playerInputData.leftGripPressed && isRightHanded);
             }
         }
     }
@@ -45,7 +53,7 @@ public class HandTileInteraction : NetworkBehaviour
         if (!rig.IsLocalNetworkRig)
             return;
 
-            if (other.gameObject.layer == 7)
+            if (other.gameObject.layer == 7 && (side == RigPart.RightController && isRightHanded || side == RigPart.LeftController && !isRightHanded))
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 cubeScript.OnHandEnter(myPlayer.company);
