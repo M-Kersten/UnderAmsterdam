@@ -442,7 +442,6 @@ MonoBehaviour:
   _interpolationDataSource: 0
   PipePreview: {fileID: 4021521744409527741}
   PipeHolder: {fileID: 9066663096074062952}
-  neighbors: []
   connectorPart: {fileID: 4727706361188819431}
   connectorPartPreview: {fileID: 9054164455376291729}
   linePreview: {fileID: 4976049845006516312}
@@ -451,6 +450,7 @@ MonoBehaviour:
   pipeParts: []
   previewPipeParts: []
   activatedPipes: 
+  playerInside: 0
   isHover: 0
   isChecked: 0
 --- !u!1 &5370217261044991784
