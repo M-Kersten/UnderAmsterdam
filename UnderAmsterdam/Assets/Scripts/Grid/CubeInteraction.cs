@@ -33,6 +33,7 @@ public class CubeInteraction : NetworkBehaviour
 
     private int amountFaces = 6;
     private bool isSpawned = false;
+    private bool isInCamera = false;
 
     public bool playerInside = false;
     public bool isHover = false;
@@ -121,6 +122,7 @@ public class CubeInteraction : NetworkBehaviour
         for (int i = 0; i < neighbors.Length; i++)
         {
             activatedPipes[i] = false;
+            if (!enable) continue;
 
             if (neighbors[i] != null) 
             {
@@ -154,11 +156,23 @@ public class CubeInteraction : NetworkBehaviour
     {
         if (other.CompareTag("Player"))
             playerInside = true;
+        if (TileOccupied && other.CompareTag("MainCamera"))
+        {
+            isInCamera = true;
+            OnRenderPipePart(false);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
             playerInside = false;
+        if (TileOccupied && other.CompareTag("MainCamera"))
+        {
+            isInCamera = false;
+            OnRenderPipePreview(false);
+            UpdateNeighborData(true);
+            OnRenderPipePart(true);
+        }
     }
 
     public void EnableTile()
@@ -233,7 +247,7 @@ public class CubeInteraction : NetworkBehaviour
         //pColouring.UpdateRenderer(company, connectorPart);
 
         if (!isActive) connectorPart.gameObject.SetActive(false);
-        else TryShowConnector();
+        else if (!isInCamera) TryShowConnector();
 
         for (int i = 0; i < neighbors.Length; i++)
         {

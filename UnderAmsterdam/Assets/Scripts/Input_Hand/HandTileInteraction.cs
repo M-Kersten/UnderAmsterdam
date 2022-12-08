@@ -39,7 +39,7 @@ public class HandTileInteraction : NetworkBehaviour
 
             if (side == RigPart.LeftController)
             {
-                TriggerPressed = playerInputData.leftTriggerPressed && !isRightHanded;
+                TriggerPressed = playerInputData.leftTriggerPressed/* && !isRightHanded*/;
 
                 // Switch to the Hammer/Hand if the Grip is pressed
                 myHammerScript.ActivateHammer(playerInputData.leftGripPressed && isRightHanded);
@@ -53,7 +53,7 @@ public class HandTileInteraction : NetworkBehaviour
         if (!rig.IsLocalNetworkRig)
             return;
 
-            if (other.gameObject.layer == 7 && (side == RigPart.RightController && isRightHanded || side == RigPart.LeftController && !isRightHanded))
+            if (other.gameObject.layer == 7 /*&& (side == RigPart.RightController && isRightHanded || side == RigPart.LeftController && !isRightHanded)*/)
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 cubeScript.OnHandEnter(myPlayer.company);
