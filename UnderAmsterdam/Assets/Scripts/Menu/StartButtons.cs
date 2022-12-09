@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion.XR.Host;
 
 public class StartButtons : MonoBehaviour
 {
@@ -13,8 +14,9 @@ public class StartButtons : MonoBehaviour
         else 
             totalPressed--;
 
-        if (totalPressed == Gamemanager.Instance.cManager._spawnedUsers.Count)
+        if (totalPressed == ConnectionManager.Instance._spawnedUsers.Count) {
             Gamemanager.Instance.SceneSwitch(sceneIndex);
+        }
 
         Debug.Log("TotalPressed: " + totalPressed);
     }

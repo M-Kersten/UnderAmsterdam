@@ -19,6 +19,9 @@ namespace Fusion.XR.Host
 
     public class ConnectionManager : MonoBehaviour, INetworkRunnerCallbacks
     {
+
+        public static ConnectionManager Instance;
+
         [Header("Room configuration")]
         public GameMode mode = GameMode.AutoHostOrClient;
         public string roomName = "SampleFusionVR";
@@ -46,6 +49,11 @@ namespace Fusion.XR.Host
             // Create the Fusion runner and let it know that we will be providing user input
             if (runner == null) runner = gameObject.AddComponent<NetworkRunner>();
             runner.ProvideInput = true;
+
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
         }
 
         private async void Start()
@@ -53,6 +61,12 @@ namespace Fusion.XR.Host
             // Launch the connection at start
             if (connectOnStart) await Connect();
         }
+
+            void Update() {
+        if(Input.GetKeyDown("m")) {
+            Gamemanager.Instance.SceneSwitch(1);
+        }
+    }
 
         public async Task Connect()
         {

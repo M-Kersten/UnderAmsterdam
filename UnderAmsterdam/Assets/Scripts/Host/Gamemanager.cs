@@ -24,7 +24,7 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private bool startGame;
 
     [HideInInspector] public Pointsmanager pManager;
-    [HideInInspector] public ConnectionManager cManager;
+
     private HostTimerScript timer;
 
     private void Awake()
