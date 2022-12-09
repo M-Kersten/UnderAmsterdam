@@ -29,15 +29,14 @@ public class HandTileInteraction : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
-        if(!isSpawned)
-            return;
         if (GetInput<RigInput>(out var playerInputData)) //Get the input from the players 
         {
             if (side == RigPart.RightController)
-                triggerPressed = playerInputData.rightTriggerPressed;
+                TriggerPressed = playerInputData.rightTriggerPressed;
 
             if (side == RigPart.LeftController)
-                triggerPressed = playerInputData.leftTriggerPressed;
+            {
+                TriggerPressed = playerInputData.leftTriggerPressed;
 
                 // Switch to the Hammer/Hand if the Grip is pressed
                 myHammerScript.ActivateHammer(playerInputData.leftGripPressed);
@@ -45,11 +44,13 @@ public class HandTileInteraction : NetworkBehaviour
         }
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
-        if (handEnabled) {
-        if (!rig.IsLocalNetworkRig)
-            return;
+        if (handEnabled)
+        {
+            if (!rig.IsLocalNetworkRig)
+                return;
 
             if (other.gameObject.layer == 7)
             {
@@ -75,10 +76,10 @@ public class HandTileInteraction : NetworkBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == 7 && triggerPressed) // 7 is the layer for Tile
+        if (other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
         {
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
-            if(!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied)
+            if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied)
             {
                 // Plays random block placing sound
                 int randomSound = Random.Range(0, 3);
@@ -97,10 +98,11 @@ public class HandTileInteraction : NetworkBehaviour
 
                 cubeScript.UpdateCompany(myPlayer.company);
                 cubeScript.EnableTile();
-                triggerPressed = false;
+                TriggerPressed = false;
             }
         }
     }
+
     private void ToggleHands()
     {
         handEnabled = !handEnabled;

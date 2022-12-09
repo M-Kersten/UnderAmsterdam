@@ -132,15 +132,12 @@ MonoBehaviour:
   _interpolationDataSource: 0
   side: 2
   rig: {fileID: 82848160101704041}
+  placingPipe1: {fileID: 8300000, guid: 1bb4a37ae82988b4fab940655d56a66d, type: 3}
+  placingPipe2: {fileID: 8300000, guid: f5e16c462eb111f4aa6eb8b96eaddda7, type: 3}
+  placingPipe3: {fileID: 8300000, guid: 70f12ef556c6d9043ae444cadea66f97, type: 3}
   myPlayer: {fileID: 5178302573922089146}
-  handRenderer: {fileID: 6797400871987849868}
-  handMaterial:
-  - {fileID: 2100000, guid: 8f33d25334d7a3f47a87558be9bb2474, type: 2}
-  - {fileID: 2100000, guid: 2e4075461b13b524d944e93791041537, type: 2}
-  - {fileID: 2100000, guid: c88774ea89e43e84b86ad41cf6e0ebfc, type: 2}
-  - {fileID: 2100000, guid: ee53215c86ca9ce408378eabdc922713, type: 2}
-  - {fileID: 2100000, guid: 5304943412e79c847b1a1103e11463ef, type: 2}
-  triggerPressed: 0
+  TriggerPressed: 0
+  myHammerScript: {fileID: 0}
 --- !u!1 &82848159007237601
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,15 +328,12 @@ MonoBehaviour:
   _interpolationDataSource: 0
   side: 3
   rig: {fileID: 82848160101704041}
+  placingPipe1: {fileID: 8300000, guid: 1bb4a37ae82988b4fab940655d56a66d, type: 3}
+  placingPipe2: {fileID: 8300000, guid: f5e16c462eb111f4aa6eb8b96eaddda7, type: 3}
+  placingPipe3: {fileID: 8300000, guid: 70f12ef556c6d9043ae444cadea66f97, type: 3}
   myPlayer: {fileID: 5178302573922089146}
-  handRenderer: {fileID: 3717912923310327874}
-  handMaterial:
-  - {fileID: 2100000, guid: 8f33d25334d7a3f47a87558be9bb2474, type: 2}
-  - {fileID: 2100000, guid: 2e4075461b13b524d944e93791041537, type: 2}
-  - {fileID: 2100000, guid: c88774ea89e43e84b86ad41cf6e0ebfc, type: 2}
-  - {fileID: 2100000, guid: ee53215c86ca9ce408378eabdc922713, type: 2}
-  - {fileID: 2100000, guid: 5304943412e79c847b1a1103e11463ef, type: 2}
-  triggerPressed: 0
+  TriggerPressed: 0
+  myHammerScript: {fileID: 0}
 --- !u!54 &1494913258657655763
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -409,6 +403,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolationDataSource: 0
+  playerCap: {fileID: 0}
+  playerLeftHand: {fileID: 5497885959081905223}
+  playerRightHand: {fileID: 2414488125583945353}
+  startingPoints: 1000
+  myMenu: {fileID: 0}
   _company: 
   _points: 0
 --- !u!114 &82848160101704040
@@ -456,6 +455,7 @@ MonoBehaviour:
   headset: {fileID: 82848159007237600}
   leftGrabber: {fileID: 0}
   rightGrabber: {fileID: 0}
+  myMenu: {fileID: 0}
   networkTransform: {fileID: 0}
 --- !u!114 &82848160101703958
 MonoBehaviour:

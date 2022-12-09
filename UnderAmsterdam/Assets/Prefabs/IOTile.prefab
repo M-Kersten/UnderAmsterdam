@@ -69,7 +69,8 @@ MonoBehaviour:
   NetworkGuid:
     RawGuidValue: c05a51c34d64c494dbf1cd7f8f133fd4
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 1829755326491183965}
   SimulationBehaviours: []
 --- !u!114 &1829755326491183965
 MonoBehaviour:
@@ -83,6 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2a6bb8d8361a4140a4f120cece46ba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   pipeMaterials:
   - {fileID: 2100000, guid: 32ed26da6161bee4da49f3f1df801da4, type: 2}
   - {fileID: 2100000, guid: aebf48dea5eddc041ad716005dc3fb8b, type: 2}
@@ -91,8 +93,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 57cf848f65d105e4d8c43a04f5d6d275, type: 2}
   VisualObject: {fileID: 8311990801685875723}
   myRenderer: {fileID: 6644976781859735164}
-  isOutput: 0
-  company: 
+  IndicatorPrefab: {fileID: 4677439228391939840, guid: e60e640658ba33f43b931dbda17e0101, type: 3}
+  _company: 
+  _isOutput: 0
 --- !u!1001 &9195073122305323354
 PrefabInstance:
   m_ObjectHideFlags: 0
