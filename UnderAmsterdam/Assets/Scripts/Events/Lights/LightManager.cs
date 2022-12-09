@@ -2,28 +2,19 @@ using UnityEngine;
 using System.Collections.Generic;
 public class LightManager : MonoBehaviour
 {
-
-    [Tooltip("External light to flicker; you can leave this null if you attach script to a light")]
     [SerializeField] private Light lamp;
-    //[SerializeField] private new Light light;
-    [Tooltip("Minimum random light intensity")]
     public float minIntensity = 0f;
-    [Tooltip("Maximum random light intensity")]
     public float maxIntensity = 1f;
-    [Tooltip("How much to smooth out the randomness; lower values = sparks, higher = lantern")]
     [Range(1, 50)]
     [SerializeField] private int smoothing = 5;
+
     private float timer = 0.75f;
-    
+
     private Queue<float> smoothQueue;
     private float lastSum = 0;
     [SerializeField] private AudioSource sound;
+    [SerializeField] private AudioClip clipSound;
 
-    /// <summary>
-    /// Reset the randomness and start again. You usually don't need to call
-    /// this, deactivating/reactivating is usually fine but if you want a strict
-    /// restart you can do.
-    /// </summary>
     public void Reset()
     {
         smoothQueue.Clear();
@@ -39,7 +30,6 @@ public class LightManager : MonoBehaviour
             lamp = GetComponent<Light>();
         }
 
-
     }
 
     private void Update()
@@ -48,7 +38,6 @@ public class LightManager : MonoBehaviour
 
         if (timer <= 0)
         {
-            // pop off an item if too big
             while (smoothQueue.Count >= smoothing)
             {
                 lastSum -= smoothQueue.Dequeue();
@@ -61,7 +50,7 @@ public class LightManager : MonoBehaviour
 
             // Calculate new smoothed average
             lamp.intensity = lastSum / (float)smoothQueue.Count;
-            sound.Play();
+            sound.PlayOneShot(clipSound);
         }
     }
 

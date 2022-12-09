@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WinLoseManager : MonoBehaviour
-{
+{ 
     public static WinLoseManager Instance;
 
     public Dictionary<string, int> _inputPipeTracker;
@@ -24,6 +24,8 @@ public class WinLoseManager : MonoBehaviour
 
         Gamemanager.Instance.RoundStart.AddListener(FlushList);
         Gamemanager.Instance.RoundLateEnd.AddListener(CheckWhoWin);
+
+        
     }
     public void AddInputTracker(string company)
     {
@@ -48,7 +50,7 @@ public class WinLoseManager : MonoBehaviour
             if(company.Value >= Gamemanager.Instance.round)
             {
                 //Add points to this company
-                // Gamemanager.Instance.pManager.AddPoints(company.Key);
+                //Gamemanager.Instance.pManager.AddPoints(company.Key);
             }
         }
     }

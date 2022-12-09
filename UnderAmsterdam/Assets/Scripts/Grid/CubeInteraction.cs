@@ -370,7 +370,8 @@ public class CubeInteraction : NetworkBehaviour
         for (int i = 0; i < neighbors.Length; i++)
         {
             // if it's a normal tile...
-            if (neighbors[i] != null) {
+            if (neighbors[i] != null) 
+            {
                 if (neighborsScript[i] != null)
                 {
                     // from the same company and not checked yet...
