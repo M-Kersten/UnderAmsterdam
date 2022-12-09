@@ -2,12 +2,16 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Fusion;
 
-public class ScoreBoard : MonoBehaviour
+public class ScoreBoard : NetworkBehaviour
 {
 
     [SerializeField] private TextMeshProUGUI[] PlayerTMP;
     [SerializeField] private TextMeshProUGUI roundTMP;
+
+    [Networked(OnChanged = nameof(onSharedData))]
+    private PlayerData sharedPlayer { get; set; }
 
     private Dictionary<string, int> rankDict;
 
@@ -17,13 +21,19 @@ public class ScoreBoard : MonoBehaviour
     void Start()
     {
         rankDict = new Dictionary<string, int>();
-        Gamemanager.Instance.RoundStart.AddListener(DisplayLeaderBoard);
+        //Gamemanager.Instance.RoundStart.AddListener(DisplayLeaderBoard);
     }
 
-    public void SendPLayerData(PlayerData player)
+    static void onSharedData(Changed<ScoreBoard> changed)
+    {
+        changed.Behaviour.SendPlayerData(changed.Behaviour.sharedPlayer);
+    }
+
+    public void SendPlayerData(PlayerData player)
     {
         //Get points from all players (in playerData)
         rankDict.Add("NickName"+rankDict.Count.ToString(), player.points + (int)Random.Range(-50f, 50f));
+        if (rankDict.Count == 2) DisplayLeaderBoard();
     }
 
     private void DisplayLeaderBoard()

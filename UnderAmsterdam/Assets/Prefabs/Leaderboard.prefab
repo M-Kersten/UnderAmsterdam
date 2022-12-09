@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3045670492274202172}
   - component: {fileID: 7204667784912193126}
+  - component: {fileID: 3593561623357436314}
   m_Layer: 0
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46171c11588a298439a574ca306fd1a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
   PlayerTMP:
   - {fileID: 9148080570180787685}
   - {fileID: 7979218391669451578}
@@ -53,6 +55,30 @@ MonoBehaviour:
   - {fileID: 4946360097254619171}
   - {fileID: 6611446477636083641}
   roundTMP: {fileID: 3122964721448419818}
+--- !u!114 &3593561623357436314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613611301952292870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 0
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2305
+  NetworkGuid:
+    RawGuidValue: 291dbd1e311e4ee429fc29ce9e8b925d
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 7204667784912193126}
+  SimulationBehaviours: []
 --- !u!1 &2369857649620270935
 GameObject:
   m_ObjectHideFlags: 0

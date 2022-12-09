@@ -9,7 +9,7 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] private GameObject playerCap;
     [SerializeField] private int startingPoints = 1000;
     [SerializeField] private WristMenu myMenu;
-    [SerializeField] private GameObject scoreBoard;
+    [SerializeField] private NetworkObject scoreBoard;
     private ScoreBoard scoreBoardScript;
     private NetworkRig nRig;
 
@@ -43,13 +43,12 @@ public class PlayerData : NetworkBehaviour
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
 
-        scoreBoard = Instantiate(scoreBoard, gameObject.transform.parent);
+        scoreBoard = FindObjectOfType<NetworkRunner>().Spawn(scoreBoard, new Vector3(0, -10f, 0));
         scoreBoardScript = scoreBoard.GetComponent<ScoreBoard>();
-        scoreBoard.transform.position = new Vector3(0,-10f,0);
     }
 
     private void SendPlayerData()
     {
-        scoreBoardScript.SendPLayerData(this);
+        scoreBoardScript.SendPlayerData(this);
     }
 }
