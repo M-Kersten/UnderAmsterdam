@@ -62,12 +62,6 @@ namespace Fusion.XR.Host
             if (connectOnStart) await Connect();
         }
 
-            void Update() {
-        if(Input.GetKeyDown("m")) {
-            Gamemanager.Instance.SceneSwitch(1);
-        }
-    }
-
         public async Task Connect()
         {
             // Create the scene manager if it does not exist

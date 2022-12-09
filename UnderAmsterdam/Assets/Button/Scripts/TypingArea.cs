@@ -12,7 +12,7 @@ public class TypingArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameObject hand = other.GetComponentInParent<Grabber>().gameObject;
+        GameObject hand = other.transform.parent.gameObject;
         if (hand == null) return;
         if (hand == leftHand)
         {
@@ -25,7 +25,7 @@ public class TypingArea : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        GameObject hand = other.GetComponentInParent<Grabber>().gameObject;
+        GameObject hand = other.transform.parent.gameObject;
         if (hand == null) return;
         if (hand == leftHand)
         {
