@@ -91,39 +91,41 @@ namespace Fusion.XR.Host
         public void OnSceneLoadDone(NetworkRunner runner) { 
             Vector3 tPosition;
             Quaternion tRotation;
-            GameObject lPlayer = _spawnedUsers[runner.LocalPlayer].gameObject.GetComponent<Fusion.XR.Host.Rig.NetworkRig>().hardwareRig.gameObject;
+            if (_spawnedUsers.ContainsKey(runner.LocalPlayer)) {
+                GameObject lPlayer = _spawnedUsers[runner.LocalPlayer].gameObject.GetComponent<Fusion.XR.Host.Rig.NetworkRig>().hardwareRig.gameObject;
             
-            // Turn off CharacterController, so we can teleport the player
-            lPlayer.GetComponent<CharacterController>().enabled = false;
+                // Turn off CharacterController, so we can teleport the player
+                lPlayer.GetComponent<CharacterController>().enabled = false;
 
-            switch (SceneManager.GetActiveScene().name) {
-                case "A2Lobby":
-                    tPosition = new Vector3(0, 1.417f, 0.323f);
-                    tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                switch (SceneManager.GetActiveScene().name) {
+                    case "A2Lobby":
+                        tPosition = new Vector3(0, 1.417f, 0.323f);
+                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     
-                    lPlayer.transform.position = tPosition;
-                    lPlayer.transform.rotation = tRotation;
-                break;
-                case "A3Game": 
-                    tPosition = new Vector3(0, 1.417f, 0.323f);
-                    tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                        lPlayer.transform.position = tPosition;
+                        lPlayer.transform.rotation = tRotation;
+                    break;
+                    case "A3Game": 
+                        tPosition = new Vector3(0, 1.417f, 0.323f);
+                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     
-                    lPlayer.transform.position = tPosition;
-                    lPlayer.transform.rotation = tRotation;
-                break;
-                case "A4End":
-                    tPosition = new Vector3(0, 1.417f, 0);
-                    tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                        lPlayer.transform.position = tPosition;
+                        lPlayer.transform.rotation = tRotation;
+                    break;
+                    case "A4End":
+                        tPosition = new Vector3(0, 1.417f, 0);
+                        tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     
-                    lPlayer.transform.position = tPosition;
-                    lPlayer.transform.rotation = tRotation;
-                break;
-                default:
-                // Do nothing
-                break;
-            }
+                        lPlayer.transform.position = tPosition;
+                        lPlayer.transform.rotation = tRotation;
+                    break;
+                    default:
+                    // Do nothing
+                    break;
+                }
             // Turn CharacterController back on, so player can move
             lPlayer.GetComponent<CharacterController>().enabled = true;
+            }
          }
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
