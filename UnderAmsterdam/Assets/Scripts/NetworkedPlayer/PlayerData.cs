@@ -9,6 +9,8 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] private GameObject playerCap;
     [SerializeField] private int startingPoints = 1000;
     [SerializeField] private WristMenu myMenu;
+    [SerializeField] private GameObject scoreBoard;
+    private ScoreBoard scoreBoardScript;
     private NetworkRig nRig;
 
     [Networked(OnChanged = nameof(UpdatePlayer))]
@@ -34,10 +36,20 @@ public class PlayerData : NetworkBehaviour
             ColourSystem.Instance.SetColour(myMenu.topWatch, company);
         }
     }
-    private void Start()
+    void Start()
     {
+        Gamemanager.Instance.RoundStart.AddListener(SendPlayerData);
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
+
+        scoreBoard = Instantiate(scoreBoard, gameObject.transform.parent);
+        scoreBoardScript = scoreBoard.GetComponent<ScoreBoard>();
+        scoreBoard.transform.position = new Vector3(0,-10f,0);
+    }
+
+    private void SendPlayerData()
+    {
+        scoreBoardScript.SendPLayerData(this);
     }
 }
