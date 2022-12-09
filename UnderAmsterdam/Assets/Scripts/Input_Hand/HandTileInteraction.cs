@@ -16,7 +16,6 @@ public class HandTileInteraction : NetworkBehaviour
 
     [SerializeField] private bool triggerPressed = false;
 
-    private string companyOld;
     private Dictionary<string, Material> handDic;
     private bool isSpawned = false;
     public override void Spawned() 
@@ -45,12 +44,6 @@ public class HandTileInteraction : NetworkBehaviour
             
             if(side == RigPart.LeftController)
                 triggerPressed = playerInputData.leftTriggerPressed;
-        }
-        
-        if (myPlayer.company != companyOld && handDic.ContainsKey(myPlayer.company)) 
-        {
-            handRenderer.material = handDic[myPlayer.company];
-            companyOld = myPlayer.company;
         }
     }
     private void OnTriggerEnter(Collider other)
