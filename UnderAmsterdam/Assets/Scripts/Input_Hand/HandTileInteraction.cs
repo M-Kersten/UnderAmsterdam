@@ -55,6 +55,7 @@ public class HandTileInteraction : NetworkBehaviour
             if (other.gameObject.layer == 7)
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+                if (cubeScript)
                 cubeScript.OnHandEnter(myPlayer.company);
             }
         }
@@ -69,6 +70,7 @@ public class HandTileInteraction : NetworkBehaviour
             if (other.gameObject.layer == 7)
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+                if (cubeScript)
                 cubeScript.OnHandExit(myPlayer.company);
             }
         }
@@ -80,7 +82,7 @@ public class HandTileInteraction : NetworkBehaviour
         {
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
             if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied)
-            {
+                {
                 // Plays random block placing sound
                 int randomSound = Random.Range(0, 3);
                 switch (randomSound)
@@ -96,9 +98,10 @@ public class HandTileInteraction : NetworkBehaviour
                         break;
                 }
 
-                cubeScript.UpdateCompany(myPlayer.company);
-                cubeScript.EnableTile();
-                TriggerPressed = false;
+                    cubeScript.UpdateCompany(myPlayer.company);
+                    cubeScript.EnableTile();
+                    TriggerPressed = false;
+                }
             }
         }
     }

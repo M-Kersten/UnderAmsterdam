@@ -10,29 +10,6 @@ public class HandTileInteraction : NetworkBehaviour
     public RigPart side;
     public NetworkRig rig;
 
-<<<<<<< HEAD
-    [SerializeField] private PlayerData myPlayer;
-    [SerializeField] private SkinnedMeshRenderer handRenderer;
-    [SerializeField] private Material[] handMaterial;
-
-    [SerializeField] private bool triggerPressed = false;
-
-    private Dictionary<string, Material> handDic;
-    private bool isSpawned = false;
-    public override void Spawned() 
-    {
-        handDic = new Dictionary<string, Material>()
-        {
-            {"", handMaterial[0]},
-            {"none", handMaterial[0]},
-            {"sewage", handMaterial[0]},
-            {"data", handMaterial[1]},
-            {"gas", handMaterial[2]},
-            {"power", handMaterial[3]},
-            {"water", handMaterial[4]}
-        };
-        isSpawned = true;
-=======
     private AudioSource audioSource;
     [SerializeField] private AudioClip placingPipe1, placingPipe2, placingPipe3;
 
@@ -48,22 +25,12 @@ public class HandTileInteraction : NetworkBehaviour
         //Disable hands while the count down is happening
         Gamemanager.Instance.CountDownStart.AddListener(ToggleHands);
         Gamemanager.Instance.CountDownEnd.AddListener(ToggleHands);
->>>>>>> development
     }
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
-        if(!isSpawned)
-            return;
         if (GetInput<RigInput>(out var playerInputData)) //Get the input from the players 
         {
-<<<<<<< HEAD
-            if(side == RigPart.RightController)
-                triggerPressed = playerInputData.rightTriggerPressed;
-            
-            if(side == RigPart.LeftController)
-                triggerPressed = playerInputData.leftTriggerPressed;
-=======
             if (side == RigPart.RightController)
                 TriggerPressed = playerInputData.rightTriggerPressed;
 
@@ -74,19 +41,21 @@ public class HandTileInteraction : NetworkBehaviour
                 // Switch to the Hammer/Hand if the Grip is pressed
                 myHammerScript.ActivateHammer(playerInputData.leftGripPressed);
             }
->>>>>>> development
         }
     }
 
+
     private void OnTriggerEnter(Collider other)
     {
-        if (handEnabled) {
-        if (!rig.IsLocalNetworkRig)
-            return;
+        if (handEnabled)
+        {
+            if (!rig.IsLocalNetworkRig)
+                return;
 
             if (other.gameObject.layer == 7)
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+                if (cubeScript)
                 cubeScript.OnHandEnter(myPlayer.company);
             }
         }
@@ -101,6 +70,7 @@ public class HandTileInteraction : NetworkBehaviour
             if (other.gameObject.layer == 7)
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+                if (cubeScript)
                 cubeScript.OnHandExit(myPlayer.company);
             }
         }
@@ -108,10 +78,11 @@ public class HandTileInteraction : NetworkBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == 7 && triggerPressed) // 7 is the layer for Tile
+        if (other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
         {
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
-            if(!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied)
+<<<<<<< HEAD
+            if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied)
             {
                 // Plays random block placing sound
                 int randomSound = Random.Range(0, 3);
@@ -130,10 +101,20 @@ public class HandTileInteraction : NetworkBehaviour
 
                 cubeScript.UpdateCompany(myPlayer.company);
                 cubeScript.EnableTile();
-                triggerPressed = false;
+                TriggerPressed = false;
+=======
+            if (cubeScript) {
+                if(!cubeScript.TileOccupied)
+                {
+                    cubeScript.UpdateCompany(myPlayer.company);
+                    cubeScript.EnableTile();
+                    TriggerPressed = false;
+                }
+>>>>>>> Feature/SceneSwitch
             }
         }
     }
+
     private void ToggleHands()
     {
         handEnabled = !handEnabled;
