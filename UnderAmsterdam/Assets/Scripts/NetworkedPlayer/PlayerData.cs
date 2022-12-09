@@ -7,6 +7,12 @@ using Fusion.XR.Host.Rig;
 public class PlayerData : NetworkBehaviour
 {
     [SerializeField] private GameObject playerCap;
+    [SerializeField] private int startingPoints = 1000;
+    [SerializeField] private WristMenu myMenu;
+    private NetworkRig nRig;
+
+    [Networked(OnChanged = nameof(UpdatePlayer))]
+    public string company { get; set; }
     [SerializeField] private GameObject playerHands;
     [SerializeField] private int startingPoints = 1000;
     [SerializeField] private WristMenu myMenu;
@@ -25,6 +31,22 @@ public class PlayerData : NetworkBehaviour
     static void UpdatePlayer(Changed<PlayerData> changed)
     {
         ColourSystem.Instance.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
+        changed.Behaviour.UpdateCompanyImage(changed.Behaviour.company);
         ColourSystem.Instance.SetColour(changed.Behaviour.playerHands, changed.Behaviour.company);
+    }
+
+    private void UpdateCompanyImage(string company)
+    {
+        if (nRig.IsLocalNetworkRig)
+        {
+            myMenu.ChangeImage(company);
+            ColourSystem.Instance.SetColour(myMenu.topWatch, company);
+        }
+    }
+    private void Start()
+    {
+        nRig = GetComponent<NetworkRig>();
+        myMenu = GetComponent<NetworkRig>().myMenu;
+        points = startingPoints; //Starting amount of points for each player
     }
 }

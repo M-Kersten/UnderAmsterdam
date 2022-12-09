@@ -8,7 +8,7 @@ public class HostTimerScript : MonoBehaviour
     public UnityEvent timerUp;
 
     private float currentTime = -1;
-    private bool isGameOngoing;
+    public bool isATimerOngoing;
     
     private void Start()
     {
@@ -23,18 +23,19 @@ public class HostTimerScript : MonoBehaviour
     {
         currentTime = Mathf.Max(0, currentTime - Time.deltaTime);
         
-        if (currentTime == 0 && isGameOngoing)
+        if (currentTime == 0 && isATimerOngoing)
         {
             timerUp.Invoke();
         }
     }
     private void SwitchGameState()
     {
-        isGameOngoing = !isGameOngoing;
+        isATimerOngoing = !isATimerOngoing;
     }
+    //When set timer is called the gamestate is set to on going untill time up is invoked.
     public void SetTimer(float time)
     {
-        if (!isGameOngoing)
+        if (!isATimerOngoing)
         {
             currentTime += time;
             SwitchGameState();

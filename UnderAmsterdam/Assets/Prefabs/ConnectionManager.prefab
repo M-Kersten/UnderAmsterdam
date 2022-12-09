@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: -3775747846731191431}
   - component: {fileID: -2638207197799899728}
   - component: {fileID: 650798183}
+  - component: {fileID: 9102273499796938766}
   m_Layer: 0
   m_Name: ConnectionManager
   m_TagString: Untagged
@@ -102,11 +103,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: deb9f539a0abada478477bfc104a92e6, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -209,9 +210,25 @@ MonoBehaviour:
   RoundEnd:
     m_PersistentCalls:
       m_Calls: []
-  roundTime: 5
+  RoundLateEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  GameEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  CountDownStart:
+    m_PersistentCalls:
+      m_Calls: []
+  CountDownEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  localPlayerData: {fileID: 0}
+  lPlayerCC: {fileID: 0}
+  round: 0
+  roundTime: 240
   roundTimeIncrease: 300
-  roundStartCountDown: 3
+  amountOfRounds: 6
+  startGame: 0
   pManager: {fileID: 0}
 --- !u!114 &6687331123855280171
 MonoBehaviour:
@@ -228,6 +245,7 @@ MonoBehaviour:
   timerUp:
     m_PersistentCalls:
       m_Calls: []
+  isATimerOngoing: 0
 --- !u!114 &-3775747846731191431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,12 +258,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ff68aa40bc9f240a6e2d2e18bb03b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  availableCompanies:
-  - water
-  - gas
-  - data
-  - sewage
-  - power
 --- !u!114 &-2638207197799899728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,5 +287,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7dfcfa8f3af971c449ed585b5e6e03c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9102273499796938766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878090387540590309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce12af813b778e64ca7e3f2aaee727c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

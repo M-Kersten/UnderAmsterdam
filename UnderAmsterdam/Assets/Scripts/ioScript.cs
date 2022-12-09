@@ -59,15 +59,13 @@ public class ioScript : MonoBehaviour
 
     private void AddPlayerOutputs()
     {
+        //Replace this to check if player OUTPUT already exist
         if (!hasPlacedOutputs)
         {
             foreach (var player in CompanyManager.Instance._companies)
             {
-                if (player.Value != CompanyManager.Instance.emptyPlayer)
-                {
-                    hasPlacedOutputs = true;
-                    outputPipes.Add(PlaceIOPipe(player.Key, true));
-                }
+                hasPlacedOutputs = true;
+                outputPipes.Add(PlaceIOPipe(player.Key, true));
             }
         }
     }
@@ -100,25 +98,25 @@ public class ioScript : MonoBehaviour
             switch (wallSelect) {
                 case 0:
                     randomIndex = Random.Range(0, northGrid.Length);
-                    placedInput = northGrid[randomIndex].TryEnableIOPipe(company, isOutput);
+                    placedInput = northGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
                     if (placedInput)
                         chosenTile = northGrid[randomIndex];
                     break;
                 case 1:
                     randomIndex = Random.Range(0, southGrid.Length);
-                    placedInput = southGrid[randomIndex].TryEnableIOPipe(company, isOutput);
+                    placedInput = southGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
                     if (placedInput)
                         chosenTile = southGrid[randomIndex];
                     break;
                 case 2:
                     randomIndex = Random.Range(0, westGrid.Length);
-                    placedInput = westGrid[randomIndex].TryEnableIOPipe(company, isOutput);
+                    placedInput = westGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
                     if (placedInput)
                         chosenTile = westGrid[randomIndex]; 
                     break;
                 case 3:
                     randomIndex = Random.Range(0, eastGrid.Length);
-                    placedInput = eastGrid[randomIndex].TryEnableIOPipe(company, isOutput);
+                    placedInput = eastGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
                     if (placedInput)
                         chosenTile = eastGrid[randomIndex];
                     break;

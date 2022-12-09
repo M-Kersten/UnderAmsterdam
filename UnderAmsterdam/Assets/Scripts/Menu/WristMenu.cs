@@ -19,6 +19,7 @@ public class WristMenu : MonoBehaviour
     private GameObject iconImage;
     [SerializeField]
     TextMeshProUGUI pointsText;
+    [SerializeField] public GameObject topWatch;
 
     private PlayerData myData;
 
@@ -28,12 +29,9 @@ public class WristMenu : MonoBehaviour
         // Grab the parent of this parent
         visualRadialObject = transform.GetChild(0).gameObject;
         visualRadialObject.SetActive(true);
+        myData = Gamemanager.Instance.localPlayerData;
     }
 
-    public void SetData(PlayerData me)
-    {
-        //myData = me;
-    }
     // Update is called once per frame
     //void FixedUpdate()
     //{
@@ -51,7 +49,7 @@ public class WristMenu : MonoBehaviour
             pointsText.text = myData.points.ToString();
     }
 
-    void ChangeImage(string company) {
+    public void ChangeImage(string company) {
 
         for (int i = 0; i < companyIcons.Length; i++)
         {
