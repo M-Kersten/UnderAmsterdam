@@ -12,28 +12,31 @@ public class ScoreBoard : NetworkBehaviour
     [SerializeField] private ConnectionManager cManager;
 
     [Networked(OnChanged = nameof(onSharedData))]
-    private PlayerData sharedPlayer { get; set; }
+    private bool share { get; set; }
 
     private List<string> companies = new List<string> { "water", "gas", "data", "sewage", "power" };
     private Dictionary<string, int> rankDict;
-    private int round = 0;
+    private int round = -1;
 
     // Start is called before the first frame update
     void Start()
     {
-        //DontDestroyOnLoad(this.gameObject);
+        Gamemanager.Instance.RoundEnd.AddListener(DisplayLeaderBoard);
         rankDict = new Dictionary<string, int>();
-        Gamemanager.Instance.RoundStart.AddListener(DisplayLeaderBoard);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown("space")) DisplayLeaderBoard();
     }
 
     static void onSharedData(Changed<ScoreBoard> changed)
     {
-        changed.Behaviour.SendPlayerData(changed.Behaviour.sharedPlayer);
+        changed.Behaviour.DisplayLeaderBoard();
     }
 
     public void SendPlayerData(PlayerData player)
     {
-        sharedPlayer = player;
         //Gets points from all players (in playerData)
         rankDict.Add("NickName" + rankDict.Count.ToString(), player.points + (int)Random.Range(-50f, 50f));
     }
@@ -42,9 +45,10 @@ public class ScoreBoard : NetworkBehaviour
     {
         round++;
         //Updates the dictionnary;
-        foreach (string company in companies)
+        foreach (var company in CompanyManager.Instance._companies)
         {
-            PlayerData player = cManager._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+            if (company.Value == PlayerRef.None) continue;
+            PlayerData player = cManager._spawnedUsers[CompanyManager.Instance._companies[company.Key]].GetComponent<PlayerData>();
             SendPlayerData(player);
         }
         //Sorts ScoreBoard
@@ -53,6 +57,8 @@ public class ScoreBoard : NetworkBehaviour
 
     private void DisplayLeaderBoard()
     {
+        share = true;
+
         UpdateLeaderBoard();
 
         int i = 0;
@@ -60,7 +66,6 @@ public class ScoreBoard : NetworkBehaviour
         //Displays points for each player in the dictionnary
         foreach (var player in rankDict)
         {
-            Debug.Log(player.Key + player.Value.ToString());
             PlayerTMP[i++].text = player.Key + " : " + player.Value.ToString();
         }
 
@@ -71,5 +76,6 @@ public class ScoreBoard : NetworkBehaviour
             roundTMP.text = "GAMEOVER";
 
         rankDict.Clear();
+        CompanyManager.Instance.ResetCompanies();
     }
 }
