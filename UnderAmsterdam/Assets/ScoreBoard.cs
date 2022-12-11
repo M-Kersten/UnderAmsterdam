@@ -12,33 +12,47 @@ public class ScoreBoard : NetworkBehaviour
     [SerializeField] private ConnectionManager cManager;
 
     [Networked(OnChanged = nameof(onSharedData))]
-    private bool share { get; set; }
+    private PlayerData sharedPlayer { get; set; }
+
+    [Networked(OnChanged = nameof(onDisplayData))]
+    private bool display { get; set; }
 
     private List<string> companies = new List<string> { "water", "gas", "data", "sewage", "power" };
     private Dictionary<string, int> rankDict;
-    private int round = -1;
+    private int round = 0;
+
+    public override void Spawned()
+    {
+        if (HasStateAuthority) Gamemanager.Instance.RoundEnd.AddListener(UpdateLeaderBoard);
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        Gamemanager.Instance.RoundEnd.AddListener(DisplayLeaderBoard);
         rankDict = new Dictionary<string, int>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown("space")) DisplayLeaderBoard();
+        if (Input.GetKeyDown("space")) UpdateLeaderBoard();
     }
 
     static void onSharedData(Changed<ScoreBoard> changed)
+    {
+        changed.Behaviour.SendPlayerData(changed.Behaviour.sharedPlayer);
+    }
+
+    static void onDisplayData(Changed<ScoreBoard> changed)
     {
         changed.Behaviour.DisplayLeaderBoard();
     }
 
     public void SendPlayerData(PlayerData player)
     {
+        //sharedPlayer = player;
         //Gets points from all players (in playerData)
-        rankDict.Add("NickName" + rankDict.Count.ToString(), player.points + (int)Random.Range(-50f, 50f));
+        Debug.Log(player.company + rankDict.Count.ToString() + HasStateAuthority.ToString());
+        rankDict.Add(player.company + rankDict.Count.ToString(), player.points + (int)Random.Range(-50f, 50f));
     }
 
     private void UpdateLeaderBoard()
@@ -53,13 +67,13 @@ public class ScoreBoard : NetworkBehaviour
         }
         //Sorts ScoreBoard
         rankDict = rankDict.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
+        DisplayLeaderBoard();
     }
 
     private void DisplayLeaderBoard()
     {
-        share = true;
-
-        UpdateLeaderBoard();
+        //display = true;
 
         int i = 0;
 
