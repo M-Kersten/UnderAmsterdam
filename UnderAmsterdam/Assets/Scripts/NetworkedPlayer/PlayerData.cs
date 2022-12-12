@@ -7,6 +7,7 @@ using Fusion.XR.Host.Rig;
 public class PlayerData : NetworkBehaviour
 {
     [SerializeField] private GameObject playerCap;
+    [SerializeField] private GameObject playerLeftHand, playerRightHand;
     [SerializeField] private int startingPoints = 1000;
     [SerializeField] private WristMenu myMenu;
     private NetworkRig nRig;
@@ -14,15 +15,22 @@ public class PlayerData : NetworkBehaviour
     [Networked(OnChanged = nameof(UpdatePlayer))]
     public string company { get; set; }
 
-    [Networked] public int points {get; set;}
+    [Networked] public int points { get; set; }
 
-    public void ReceiveCompany(string givenCompany) {
+    public void ReceiveCompany(string givenCompany)
+    {
         company = givenCompany;
     }
 
     static void UpdatePlayer(Changed<PlayerData> changed)
     {
-        ColourSystem.Instance.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
+        ColourSystem color = ColourSystem.Instance;
+        Debug.Log("Setting player cap");
+        color.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
+        Debug.Log("Setting left hand");
+        color.SetColour(changed.Behaviour.playerLeftHand, changed.Behaviour.company);
+        Debug.Log("Setting right hand");
+        color.SetColour(changed.Behaviour.playerRightHand, changed.Behaviour.company);
         changed.Behaviour.UpdateCompanyImage(changed.Behaviour.company);
     }
 
@@ -31,11 +39,13 @@ public class PlayerData : NetworkBehaviour
         if (nRig.IsLocalNetworkRig)
         {
             myMenu.ChangeImage(company);
+            Debug.Log("Setting watch");
             ColourSystem.Instance.SetColour(myMenu.topWatch, company);
         }
     }
     private void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player

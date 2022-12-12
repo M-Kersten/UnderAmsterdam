@@ -6,6 +6,7 @@ public class ColourSystem : MonoBehaviour
 {
     [Tooltip("All pipe materials, named same as company")]
     [SerializeField] private Material[] pipeMaterials;
+    [SerializeField] private Material[] handMaterials;
     public static ColourSystem Instance;
 
     void Start()
@@ -31,14 +32,19 @@ public class ColourSystem : MonoBehaviour
     }
 
     [Tooltip("GameObject has to have renderer on it")]
-    public void SetColour(GameObject givenGO, string company)
+    public void SetColour(GameObject givenGO, string companyName)
     {
-        for (int i = 0; i < pipeMaterials.Length; i++)
+        if (givenGO.layer == 8)//hand layer
         {
-            if (pipeMaterials[i].name == company)
-            {
-                givenGO.GetComponent<Renderer>().material = pipeMaterials[i];
-            }
+            for (int i = 0; i < handMaterials.Length; i++)
+                if (companyName + "Hand" == handMaterials[i].name)
+                    givenGO.GetComponent<Renderer>().material = handMaterials[i];
+        }
+        else
+        {
+            for (int i = 0; i < pipeMaterials.Length; i++)
+                if (companyName == pipeMaterials[i].name)
+                    givenGO.GetComponent<Renderer>().material = pipeMaterials[i];
         }
     }
 }

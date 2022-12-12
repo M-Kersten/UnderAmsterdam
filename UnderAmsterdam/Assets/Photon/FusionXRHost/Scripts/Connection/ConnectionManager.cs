@@ -19,6 +19,9 @@ namespace Fusion.XR.Host
 
     public class ConnectionManager : MonoBehaviour, INetworkRunnerCallbacks
     {
+
+        public static ConnectionManager Instance;
+
         [Header("Room configuration")]
         public GameMode mode = GameMode.AutoHostOrClient;
         public string roomName = "SampleFusionVR";
@@ -46,6 +49,11 @@ namespace Fusion.XR.Host
             // Create the Fusion runner and let it know that we will be providing user input
             if (runner == null) runner = gameObject.AddComponent<NetworkRunner>();
             runner.ProvideInput = true;
+
+            if (Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
         }
 
         private async void Start()
@@ -73,6 +81,47 @@ namespace Fusion.XR.Host
 
 
         #region INetworkRunnerCallbacks
+
+        public void OnSceneLoadDone(NetworkRunner runner) { 
+            Vector3 tPosition;
+            Quaternion tRotation;
+            if (_spawnedUsers.ContainsKey(runner.LocalPlayer)) {
+                GameObject lPlayer = _spawnedUsers[runner.LocalPlayer].gameObject.GetComponent<Fusion.XR.Host.Rig.NetworkRig>().hardwareRig.gameObject;
+            
+                // Turn off CharacterController, so we can teleport the player
+                lPlayer.GetComponent<CharacterController>().enabled = false;
+
+                switch (SceneManager.GetActiveScene().name) {
+                    case "A2Lobby":
+                        tPosition = new Vector3(0, 1.417f, 0.323f);
+                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                    
+                        lPlayer.transform.position = tPosition;
+                        lPlayer.transform.rotation = tRotation;
+                    break;
+                    case "A3Game": 
+                        tPosition = new Vector3(0, 1.417f, 0.323f);
+                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                    
+                        lPlayer.transform.position = tPosition;
+                        lPlayer.transform.rotation = tRotation;
+                    break;
+                    case "A4End":
+                        tPosition = new Vector3(0, 1.417f, 0);
+                        tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    
+                        lPlayer.transform.position = tPosition;
+                        lPlayer.transform.rotation = tRotation;
+                    break;
+                    default:
+                    // Do nothing
+                    break;
+                }
+            // Turn CharacterController back on, so player can move
+            lPlayer.GetComponent<CharacterController>().enabled = true;
+            }
+         }
+
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             // The user's prefab has to be spawned by the host
@@ -115,7 +164,6 @@ namespace Fusion.XR.Host
         public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
         public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
-        public void OnSceneLoadDone(NetworkRunner runner) { }
         public void OnSceneLoadStart(NetworkRunner runner) { }
         #endregion
     }

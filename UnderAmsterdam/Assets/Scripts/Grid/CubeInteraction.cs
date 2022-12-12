@@ -35,6 +35,7 @@ public class CubeInteraction : NetworkBehaviour
     private bool isSpawned = false;
 
     public bool playerInside = false;
+    public bool obstructed = false;
     public bool isHover = false;
     private uint handHoverNumber = 0; // avoid enter/exit problem whith two hands
     public bool isChecked = false;
@@ -144,21 +145,26 @@ public class CubeInteraction : NetworkBehaviour
             }
         }
     }
-    [Tooltip("Should be activated before EnableTile()")]
-    public void UpdateCompany(string newCompany) {
-        company = newCompany;
-        pColouring.UpdateRenderer(company);
-    }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Rock"))
+            obstructed = true;
         if (other.CompareTag("Player"))
             playerInside = true;
     }
     private void OnTriggerExit(Collider other)
     {
+        if (other.CompareTag("Rock"))
+            obstructed = false;
         if (other.CompareTag("Player"))
             playerInside = false;
+    }
+
+    [Tooltip("Should be activated before EnableTile()")]
+    public void UpdateCompany(string newCompany) {
+        company = newCompany;
+        pColouring.UpdateRenderer(company);
     }
 
     public void EnableTile()
@@ -200,7 +206,7 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void OnHandEnter(string playerCompany)
     {
-        if (isSpawned && !playerInside && !TileOccupied)
+        if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
             isHover = true;
             handHoverNumber++;
@@ -211,7 +217,7 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void OnHandExit(string playerCompany)
     {
-        if (isSpawned && !TileOccupied)
+        if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
             //Stop the preview only when both hands are no more inside a tile
             if(true)

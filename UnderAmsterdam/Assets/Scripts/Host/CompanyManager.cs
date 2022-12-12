@@ -8,7 +8,6 @@ using Fusion;
 public class CompanyManager : MonoBehaviour
 {
     public static CompanyManager Instance;
-    private ConnectionManager cManager;
 
     // All companies that are left, after players have been given a company
     private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
@@ -25,8 +24,7 @@ public class CompanyManager : MonoBehaviour
             Instance = this;
         else
             Destroy(this);
-
-        cManager = GetComponent<ConnectionManager>();
+            
         Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
         Gamemanager.Instance.RoundStart.AddListener(loadSend);
         _companies = new Dictionary<string, PlayerRef> {
@@ -72,7 +70,7 @@ public class CompanyManager : MonoBehaviour
     }
 
     public void loadSend() {
-        foreach(var player in cManager._spawnedUsers) {
+        foreach(var player in ConnectionManager.Instance._spawnedUsers) {
             if (!playerHistory.ContainsKey(player.Key)) {
                 playerHistory.Add(player.Key, new List<string>());
             }
