@@ -56,7 +56,7 @@ public class HandTileInteraction : NetworkBehaviour
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 if (cubeScript)
-                cubeScript.OnHandEnter(myPlayer.company);
+                    cubeScript.OnHandEnter(myPlayer.company);
             }
         }
     }
@@ -71,7 +71,7 @@ public class HandTileInteraction : NetworkBehaviour
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 if (cubeScript)
-                cubeScript.OnHandExit(myPlayer.company);
+                    cubeScript.OnHandExit(myPlayer.company);
             }
         }
     }
