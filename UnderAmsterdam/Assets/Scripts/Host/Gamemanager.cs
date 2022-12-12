@@ -49,7 +49,7 @@ public class Gamemanager : MonoBehaviour
     {
         if (startGame)
         {
-            StartCoroutine(OnGameEnd());
+            OnGameStart();
             startGame = false;
         }
     }
