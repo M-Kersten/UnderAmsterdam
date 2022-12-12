@@ -13,12 +13,11 @@ public class ScoreBoard : NetworkBehaviour
 
     [Networked(OnChanged = nameof(onSharedData))]
     private PlayerData sharedPlayer { get; set; }
-
     [Networked(OnChanged = nameof(onDisplayData))]
     private bool display { get; set; }
 
-    private List<string> companies = new List<string> { "water", "gas", "data", "sewage", "power" };
     private Dictionary<string, int> rankDict;
+    private List<string> companies = new List<string> { "water", "gas", "data", "sewage", "power" };
     private int round = 0;
 
     public override void Spawned()
@@ -49,9 +48,7 @@ public class ScoreBoard : NetworkBehaviour
 
     public void SendPlayerData(PlayerData player)
     {
-        //sharedPlayer = player;
-        //Gets points from all players (in playerData)
-        Debug.Log(player.company + rankDict.Count.ToString() + HasStateAuthority.ToString());
+        sharedPlayer = player;
         rankDict.Add(player.company + rankDict.Count.ToString(), player.points + (int)Random.Range(-50f, 50f));
     }
 
@@ -73,7 +70,7 @@ public class ScoreBoard : NetworkBehaviour
 
     private void DisplayLeaderBoard()
     {
-        //display = true;
+        display = true;
 
         int i = 0;
 
