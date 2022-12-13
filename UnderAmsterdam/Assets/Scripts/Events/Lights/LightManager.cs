@@ -1,57 +1,62 @@
-using UnityEngine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using Random = UnityEngine.Random;
 public class LightManager : MonoBehaviour
 {
     [SerializeField] private Light lamp;
-    public float minIntensity = 0f;
-    public float maxIntensity = 1f;
-    [Range(1, 50)]
-    [SerializeField] private int smoothing = 5;
+    public float minIntensity = -2f;
+    public float maxIntensity = 2f;
 
-    private float timer = 0.75f;
-
-    private Queue<float> smoothQueue;
-    private float lastSum = 0;
     [SerializeField] private AudioSource sound;
     [SerializeField] private AudioClip clipSound;
-
-    public void Reset()
-    {
-        smoothQueue.Clear();
-        lastSum = 0;
-    }
-
+    
     private void Start()
     {
-        smoothQueue = new Queue<float>(smoothing);
         // External or internal light?
         if (lamp == null)
         {
             lamp = GetComponent<Light>();
         }
 
+        RandManager.Instance.FlickeringLightsOn.AddListener(FlickeringOn);
+        RandManager.Instance.FlickeringLightsOff.AddListener(FlickeringOff);
     }
 
-    private void Update()
+    private IEnumerator Blinker()
     {
-        timer = -Time.deltaTime;
+        //Time between intensity change
+        float timing = Random.Range(0.065f, 0.5f);
+        float randIntensity = Random.Range(minIntensity, maxIntensity);
+        float current = lamp.intensity;
+        float currentTime = 0f;
+        float t = 0f;
 
-        if (timer <= 0)
+        int i = 0;
+        
+        while (currentTime < timing)
         {
-            while (smoothQueue.Count >= smoothing)
-            {
-                lastSum -= smoothQueue.Dequeue();
-            }
+            t = i == 2 ? Mathf.Cos(Mathf.Pow((t % 4), 2)) * 0.3f : t / timing;
+            lamp.intensity = Mathf.Lerp(current, randIntensity, t);
 
-            // Generate random new item, calculate new average
-            float newVal = Random.Range(minIntensity, maxIntensity);
-            smoothQueue.Enqueue(newVal);
-            lastSum += newVal;
-
-            // Calculate new smoothed average
-            lamp.intensity = lastSum / (float)smoothQueue.Count;
-            sound.PlayOneShot(clipSound);
+            currentTime += Time.deltaTime;
+            i = (i + 1) % 3;
+            yield return null;
         }
+        StartCoroutine(Blinker());
+    }
+
+    private void FlickeringOn()
+    {
+        //isStarted = true;
+        StartCoroutine(Blinker());
+    }
+
+    private void FlickeringOff()
+    {
+        //isStarted = false;
+        StopAllCoroutines();
     }
 
 }

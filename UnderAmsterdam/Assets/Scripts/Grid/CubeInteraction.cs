@@ -385,7 +385,7 @@ public class CubeInteraction : NetworkBehaviour
                     {
                         // Verify its neighbor and mark it as checked.
                         isChecked = true;
-                        neighborsScript[i].CheckConnectionForWin();
+                        neighborsScript[i]. CheckConnectionForWin();
                     }
                 }
                 // if it's an Output tile...

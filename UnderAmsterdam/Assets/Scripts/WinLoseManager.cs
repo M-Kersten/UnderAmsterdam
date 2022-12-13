@@ -22,10 +22,8 @@ public class WinLoseManager : MonoBehaviour
             {"power", 0}
         };
 
-        Gamemanager.Instance.RoundStart.AddListener(FlushList);
+        //Gamemanager.Instance.RoundStart.AddListener(FlushList);
         Gamemanager.Instance.RoundLateEnd.AddListener(CheckWhoWin);
-
-        
     }
     public void AddInputTracker(string company)
     {
