@@ -9,6 +9,7 @@ public class IOTileScript : NetworkBehaviour
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
+    [SerializeField] private GameObject particlesObject;
     [SerializeField] private ParticleSystem particles;
     [SerializeField] private float particlesBreathingTime;
 
@@ -19,7 +20,7 @@ public class IOTileScript : NetworkBehaviour
 
     public override void Spawned()
     {
-        particles.Stop();
+        particlesObject.SetActive(false);
         company = "Empty"; //Set company to default
     }
 
@@ -48,7 +49,8 @@ public class IOTileScript : NetworkBehaviour
 
         if (company == Gamemanager.Instance.localPlayerData.company)
         {
-            //StartCoroutine(BreatheParticles(particlesBreathingTime));
+            particlesObject.SetActive(true);
+            particles.Play();
             SpawnIndicator(shouldBeOutput);
         }
         return true;
@@ -73,14 +75,6 @@ public class IOTileScript : NetworkBehaviour
                     tile.CheckConnectionForWin();
             }
         }
-    }
-
-    private IEnumerator BreatheParticles(float time)
-    {
-        particles.Play();
-        yield return new WaitForSeconds(time);
-        particles.Stop();
-        yield return null;
     }
 
     public void SpawnIndicator(bool shouldBeOutput)
