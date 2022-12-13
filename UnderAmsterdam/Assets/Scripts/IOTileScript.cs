@@ -9,6 +9,8 @@ public class IOTileScript : NetworkBehaviour
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
+    [SerializeField] private ParticleSystem particles;
+    [SerializeField] private float particlesBreathingTime;
 
     [Networked(OnChanged = nameof(OnIOTileChanged))]
     public string company { get; set; }
@@ -17,6 +19,7 @@ public class IOTileScript : NetworkBehaviour
 
     public override void Spawned()
     {
+        particles.Stop();
         company = "Empty"; //Set company to default
     }
 
@@ -43,7 +46,11 @@ public class IOTileScript : NetworkBehaviour
         if (isOutput)
             Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
 
-        SpawnIndicator(shouldBeOutput);
+        if (company == Gamemanager.Instance.localPlayerData.company)
+        {
+            //StartCoroutine(BreatheParticles(particlesBreathingTime));
+            SpawnIndicator(shouldBeOutput);
+        }
         return true;
     }
 
@@ -68,12 +75,17 @@ public class IOTileScript : NetworkBehaviour
         }
     }
 
+    private IEnumerator BreatheParticles(float time)
+    {
+        particles.Play();
+        yield return new WaitForSeconds(time);
+        particles.Stop();
+        yield return null;
+    }
+
     public void SpawnIndicator(bool shouldBeOutput)
     {
-        if (company == Gamemanager.Instance.localPlayerData.company)
-        {
-            InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
-            indicatorScript.InitializeIndicator(shouldBeOutput);
-        }
+        InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
+        indicatorScript.InitializeIndicator(shouldBeOutput);
     }
 }
