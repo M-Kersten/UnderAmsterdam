@@ -995,19 +995,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6186706562109094507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549000073306557745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6376dd7fc23b3764483a7349b58502e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
 --- !u!114 &-8413562617043650208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1021,11 +1008,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playDelayConfig:
-    Low: 200
-    High: 400
-    Max: 1000
+    Low: 50
+    High: 100
+    Max: 250
     SpeedUpPerc: 5
   restartOnDeviceChange: 1
+--- !u!114 &6186706562109094507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549000073306557745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6376dd7fc23b3764483a7349b58502e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
 --- !u!114 &2549000073306557775 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 82848160101704041, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
