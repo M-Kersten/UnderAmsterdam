@@ -9,6 +9,7 @@ public class IOTileScript : NetworkBehaviour
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
+    public int roundInputPipe;
 
     [Networked(OnChanged = nameof(OnIOTileChanged))]
     public string company { get; set; }
@@ -42,6 +43,8 @@ public class IOTileScript : NetworkBehaviour
 
         if (isOutput)
             Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
+        else
+            roundInputPipe = Gamemanager.Instance.round;
 
         SpawnIndicator(shouldBeOutput);
         return true;
