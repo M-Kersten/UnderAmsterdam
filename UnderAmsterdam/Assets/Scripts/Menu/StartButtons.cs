@@ -19,7 +19,7 @@ public class StartButtons : MonoBehaviour
 
         if (totalPressed == ConnectionManager.Instance._spawnedUsers.Count) {
             moveStreet = true;
-            Gamemanager.Instance.SceneSwitch(sceneIndex);
+            
         }
 
         Debug.Log("TotalPressed: " + totalPressed);
@@ -33,6 +33,10 @@ public class StartButtons : MonoBehaviour
         if (stad.transform.position.y < 1.51f && moveStreet)
         {
             stad.transform.Translate(Vector3.up * speed * Time.deltaTime);
+        }
+        if (stad.transform.position.y == 1.51f && moveStreet)
+        {
+            Gamemanager.Instance.SceneSwitch(sceneIndex);
         }
         //  if else transform.Translate(0);
     }

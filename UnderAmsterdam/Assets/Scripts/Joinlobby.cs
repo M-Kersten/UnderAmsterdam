@@ -16,7 +16,9 @@ public class Joinlobby : MonoBehaviour
         runner.Disconnect(runner.LocalPlayer);
         connection.roomName = textinput.text;
         connection.mode = Fusion.GameMode.AutoHostOrClient;
-        connection.runner.SetActiveScene(1);
         await connection.Connect();
+        
+        connection.runner.SetActiveScene(1);
+
     }
 }
