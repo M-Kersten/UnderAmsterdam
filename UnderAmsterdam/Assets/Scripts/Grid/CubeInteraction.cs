@@ -16,6 +16,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject linePreview;
     [SerializeField] private GameObject particlesObject;
     [SerializeField] private ParticleSystem particles;
+    [SerializeField] private ParticleSystem particlesWin;
     private PipeColouring pColouring;
     private NetworkObject[] neighbors;
     private CubeInteraction[] neighborsScript;
@@ -375,7 +376,7 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    public void CheckConnectionForWin()
+    public bool CheckConnectionForWin()
     {
         // For each neighbor...
         for (int i = 0; i < neighbors.Length; i++)
@@ -389,7 +390,12 @@ public class CubeInteraction : NetworkBehaviour
                     {
                         // Verify this neighbor and mark it as checked.
                         isChecked = true;
-                        neighborsScript[i].CheckConnectionForWin();
+                        if (neighborsScript[i].CheckConnectionForWin())
+                        {
+                            particlesWin.Play();
+                            return true;
+                        }
+                        else return false;
                     }
                 }
                 // if it's an Output tile...
@@ -399,10 +405,11 @@ public class CubeInteraction : NetworkBehaviour
                     if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput)
                     {
                         WinLoseManager.Instance.AddInputTracker(company);
-                        return;
+                        return true;
                     }
                 }
             }
         }
+        return false;
     } 
 }
