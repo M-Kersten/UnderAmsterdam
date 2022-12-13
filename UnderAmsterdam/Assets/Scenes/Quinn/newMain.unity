@@ -1547,7 +1547,48 @@ MonoBehaviour:
   m_GameObject: {fileID: 650798173}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 697c1cda529a1419782f2a2e3afe37a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 91175dcc15224463780e01a8a98b1b60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceDetection: 0
+  voiceDetectionThreshold: 0.01
+  voiceDetectionDelayMs: 500
+  interestGroup: 0
+  debugEchoMode: 0
+  reliableMode: 0
+  encrypt: 0
+  transmitEnabled: 1
+  samplingRate: 48000
+  frameDuration: 20000
+  bitrate: 30000
+  sourceType: 0
+  microphoneType: 0
+  audioClip: {fileID: 0}
+  loopAudioClip: 1
+  recordingEnabled: 1
+  audioSessionParameters:
+    Category: 4
+    Mode: 0
+    CategoryOptions: 0800000004000000
+  editorAudioSessionPreset: 0
+  androidNativeMicrophoneSettings:
+    AcousticEchoCancellation: 1
+    AutomaticGainControl: 1
+    NoiseSuppression: 1
+  stopRecordingWhenPaused: 0
+  useOnAudioFilterRead: 0
+  useMicrophoneTypeFallback: 1
+  recordWhenJoined: 1
+--- !u!114 &650798186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 650798173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33a38d73a8571ce438052dd31e09df5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DisconnectAfterKeepAlive: 0
@@ -1556,7 +1597,7 @@ MonoBehaviour:
   runInBackground: 1
   statsResetInterval: 1000
   speakerPrefab: {fileID: 0}
-  primaryRecorder: {fileID: 0}
+  primaryRecorder: {fileID: 650798185}
   usePrimaryRecorder: 0
   Settings:
     AppIdRealtime: 
@@ -1575,7 +1616,8 @@ MonoBehaviour:
     EnableLobbyStatistics: 0
     NetworkLogging: 1
   ShowSettings: 1
-  UseVoiceAppSettings: 0
+  UseFusionAppSettings: 1
+  UseFusionAuthValues: 1
 --- !u!1001 &1150931365
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6663,6 +6705,10 @@ PrefabInstance:
     - target: {fileID: 7068603196235813700, guid: a5da09b7972efa0459ded2ec36bf8a40, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7068603196235813701, guid: a5da09b7972efa0459ded2ec36bf8a40, type: 3}
+      propertyPath: LogLevel
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7068603196235813702, guid: a5da09b7972efa0459ded2ec36bf8a40, type: 3}
       propertyPath: m_Name
