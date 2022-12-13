@@ -380,14 +380,14 @@ public class CubeInteraction : NetworkBehaviour
         // For each neighbor...
         for (int i = 0; i < neighbors.Length; i++)
         {
-            // if it's a normal tile...
             if (neighbors[i] != null) {
+                // if it's a normal tile...
                 if (neighborsScript[i] != null)
                 {
                     // from the same company and not checked yet...
                     if (company == neighborsScript[i].company && !neighborsScript[i].isChecked)
                     {
-                        // Verify its neighbor and mark it as checked.
+                        // Verify this neighbor and mark it as checked.
                         isChecked = true;
                         neighborsScript[i].CheckConnectionForWin();
                     }
