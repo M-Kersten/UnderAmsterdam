@@ -10,68 +10,68 @@ public class ScoreBoard : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI[] PlayerTMP;
     [SerializeField] private TextMeshProUGUI roundTMP;
     [SerializeField] private ConnectionManager cManager;
-
-    [Networked(OnChanged = nameof(onSharedData))]
-    private PlayerData sharedPlayer { get; set; }
-    [Networked(OnChanged = nameof(onDisplayData))]
-    private bool display { get; set; }
+    [SerializeField] private bool perRound;
 
     private Dictionary<string, int> rankDict;
-    private List<string> companies = new List<string> { "water", "gas", "data", "sewage", "power" };
+    private int[] startPoints;
     private int round = 0;
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_SendData(PlayerData player, int startPoint)
+    {
+        rankDict.Add(player.company, player.points - startPoint);
+    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_DisplayData()
+    {
+        round++;
+        DisplayLeaderBoard();
+    }
 
     public override void Spawned()
     {
-        if (HasStateAuthority) Gamemanager.Instance.RoundEnd.AddListener(UpdateLeaderBoard);
+        if (HasStateAuthority)
+        {
+            if (perRound) Gamemanager.Instance.RoundStart.AddListener(GetStartPoints);
+            Gamemanager.Instance.RoundEnd.AddListener(UpdateLeaderBoard);
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
         rankDict = new Dictionary<string, int>();
+        startPoints = new int[] { 0, 0, 0, 0, 0 };
     }
 
-    private void Update()
+    private void GetStartPoints()
     {
-        if (Input.GetKeyDown("space")) UpdateLeaderBoard();
-    }
-
-    static void onSharedData(Changed<ScoreBoard> changed)
-    {
-        changed.Behaviour.SendPlayerData(changed.Behaviour.sharedPlayer);
-    }
-
-    static void onDisplayData(Changed<ScoreBoard> changed)
-    {
-        changed.Behaviour.DisplayLeaderBoard();
-    }
-
-    public void SendPlayerData(PlayerData player)
-    {
-        sharedPlayer = player;
-        rankDict.Add(player.company + rankDict.Count.ToString(), player.points + (int)Random.Range(-50f, 50f));
+        int i = 0;
+        foreach (var company in CompanyManager.Instance._companies)
+        {
+            if (company.Value != PlayerRef.None) startPoints[i++] = cManager._spawnedUsers[CompanyManager.Instance._companies[company.Key]].GetComponent<PlayerData>().points;
+        }
     }
 
     private void UpdateLeaderBoard()
     {
-        round++;
+        int i = 0;
         //Updates the dictionnary;
         foreach (var company in CompanyManager.Instance._companies)
         {
             if (company.Value == PlayerRef.None) continue;
             PlayerData player = cManager._spawnedUsers[CompanyManager.Instance._companies[company.Key]].GetComponent<PlayerData>();
-            SendPlayerData(player);
+            RPC_SendData(player, startPoints[i++]);
         }
+
         //Sorts ScoreBoard
         rankDict = rankDict.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
-        DisplayLeaderBoard();
+        RPC_DisplayData();
     }
 
     private void DisplayLeaderBoard()
     {
-        display = true;
-
         int i = 0;
 
         //Displays points for each player in the dictionnary
