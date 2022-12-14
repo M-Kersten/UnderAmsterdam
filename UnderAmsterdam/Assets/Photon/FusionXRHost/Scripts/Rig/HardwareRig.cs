@@ -62,7 +62,7 @@ namespace Fusion.XR.Host.Rig
             if(runner == null)
             {
                 Debug.LogError("Runner has to be set in the inspector to forward the input");
-            }
+            } else 
             runner.AddCallbacks(this);
 
         }

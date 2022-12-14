@@ -70,7 +70,7 @@ public class CompanyManager : MonoBehaviour
     }
 
     public void loadSend() {
-        foreach(var player in Gamemanager.Instance.cManager._spawnedUsers) {
+        foreach(var player in ConnectionManager.Instance._spawnedUsers) {
             if (!playerHistory.ContainsKey(player.Key)) {
                 playerHistory.Add(player.Key, new List<string>());
             }

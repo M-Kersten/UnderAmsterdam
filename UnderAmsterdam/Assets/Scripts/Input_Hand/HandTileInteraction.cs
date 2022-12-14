@@ -48,6 +48,7 @@ public class HandTileInteraction : NetworkBehaviour
             if (other.gameObject.layer == 7)
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+                if (cubeScript)
                 cubeScript.OnHandEnter(myPlayer.company);
             }
         }
@@ -62,6 +63,7 @@ public class HandTileInteraction : NetworkBehaviour
             if (other.gameObject.layer == 7)
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
+                if (cubeScript)
                 cubeScript.OnHandExit(myPlayer.company);
             }
         }
@@ -72,11 +74,13 @@ public class HandTileInteraction : NetworkBehaviour
         if (other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
         {
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
-            if(!cubeScript.TileOccupied)
-            {
-                cubeScript.UpdateCompany(myPlayer.company);
-                cubeScript.EnableTile();
-                TriggerPressed = false;
+            if (cubeScript) {
+                if(!cubeScript.TileOccupied)
+                {
+                    cubeScript.UpdateCompany(myPlayer.company);
+                    cubeScript.EnableTile();
+                    TriggerPressed = false;
+                }
             }
         }
     }
