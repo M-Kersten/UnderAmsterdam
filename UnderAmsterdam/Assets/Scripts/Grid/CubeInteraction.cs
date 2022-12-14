@@ -395,6 +395,8 @@ public class CubeInteraction : NetworkBehaviour
                     {
                         // Add points to this company
                         // Gamemanager.Instance.pManager.AddPoints(company.Key);
+                        // Check for teamwork
+                        // TeamworkManager.Instance.CheckTeamwork(company);
                         return;
                     }
                 }

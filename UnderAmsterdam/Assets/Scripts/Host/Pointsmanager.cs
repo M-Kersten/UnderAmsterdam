@@ -10,6 +10,7 @@ public class Pointsmanager : MonoBehaviour
     private int pipeplacepoint = 500;
     private int piperemovepoint = 200;
     private int victorypoints = 4000;
+    [SerializeField] private int bonusPoints = 2000;
     private float time;
     private bool roundWinner;
 
@@ -30,6 +31,12 @@ public class Pointsmanager : MonoBehaviour
     {
         NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
         nObject.GetComponent<PlayerData>().points += pipeplacepoint;
+    }
+
+    public void TeamworkBonus(string company)
+    {
+        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
+        nObject.GetComponent<PlayerData>().points += bonusPoints;
     }
     public void RemovePoints(string company)
     {
