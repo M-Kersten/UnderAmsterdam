@@ -93,7 +93,7 @@ namespace Fusion.XR.Host
 
                 switch (SceneManager.GetActiveScene().name) {
                     case "A2Lobby":
-                        tPosition = new Vector3(3.03f, -0.454f, 2.06f);
+                        tPosition = new Vector3(3.7f, -2.154f, 2.02f);
                         tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     
                         lPlayer.transform.position = tPosition;
