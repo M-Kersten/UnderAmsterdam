@@ -14,7 +14,6 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
     [SerializeField] private GameObject linePreview;
-    [SerializeField] private GameObject particlesObject;
     [SerializeField] private ParticleSystem particles;
     [SerializeField] private ParticleSystem particlesWin;
     private PipeColouring pColouring;
@@ -172,7 +171,6 @@ public class CubeInteraction : NetworkBehaviour
 
     public void EnableTile()
     {
-        particlesObject.SetActive(false);
         //Gamemanager.Instance.pManager.RemovePoints(company);
         TileOccupied = true;
 
@@ -207,7 +205,6 @@ public class CubeInteraction : NetworkBehaviour
         }
         company = "Empty";
 
-        particlesObject.SetActive(true);
         particles.Play();
     }
     public void OnHandEnter(string playerCompany)

@@ -9,7 +9,6 @@ public class IOTileScript : NetworkBehaviour
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
-    [SerializeField] private GameObject particlesObject;
     [SerializeField] private ParticleSystem particles;
     [SerializeField] private float particlesBreathingTime;
 
@@ -20,7 +19,6 @@ public class IOTileScript : NetworkBehaviour
 
     public override void Spawned()
     {
-        particlesObject.SetActive(false);
         company = "Empty"; //Set company to default
     }
 
@@ -49,7 +47,6 @@ public class IOTileScript : NetworkBehaviour
 
         if (company == Gamemanager.Instance.localPlayerData.company)
         {
-            particlesObject.SetActive(true);
             particles.Play();
             SpawnIndicator(shouldBeOutput);
         }
