@@ -1,43 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Fusion.XR.Host;
+using System.Collections;
+using UnityEngine;
 
 public class StartButtons : MonoBehaviour
 {
     private int totalPressed;
     [SerializeField] private int sceneIndex = 1;
-    [SerializeField] GameObject stad; 
-   bool moveStreet;
-   float speed = 3; 
+    [SerializeField] private Animation Clip;
 
-    public void ButtonStatus(bool pressed) {
+    public void ButtonStatus(bool pressed)
+    {
         if (pressed)
             totalPressed++;
-        else 
+        else
             totalPressed--;
 
-        if (totalPressed == ConnectionManager.Instance._spawnedUsers.Count) {
-            moveStreet = true;
-            
+        if (totalPressed == ConnectionManager.Instance._spawnedUsers.Count)
+        {
+            StartCoroutine(SwitchingScene());
         }
-
-        Debug.Log("TotalPressed: " + totalPressed);
     }
-    
-    public void DevStart() {
+
+    private IEnumerator SwitchingScene()
+    {
+        Clip.Play();
+        yield return new WaitForSeconds(Clip.clip.length);
         Gamemanager.Instance.SceneSwitch(sceneIndex);
     }
-    void Update()
+
+    public void DevStart()
     {
-        if (stad.transform.position.y < 1.51f && moveStreet)
-        {
-            stad.transform.Translate(Vector3.up * speed * Time.deltaTime);
-        }
-        if (stad.transform.position.y == 1.51f && moveStreet)
-        {
-            Gamemanager.Instance.SceneSwitch(sceneIndex);
-        }
-        //  if else transform.Translate(0);
+        Gamemanager.Instance.SceneSwitch(sceneIndex);
     }
 }

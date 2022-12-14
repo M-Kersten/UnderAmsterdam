@@ -346,7 +346,7 @@ Transform:
   m_GameObject: {fileID: 200465189}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 0.56, y: 0.56, z: 0.56}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1535093255}
@@ -1808,27 +1808,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c4b40530eeed6c144bc8ecf07c8bc9b0, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.9894431
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c4b40530eeed6c144bc8ecf07c8bc9b0, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 1.9894431
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c4b40530eeed6c144bc8ecf07c8bc9b0, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 1.9894431
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c4b40530eeed6c144bc8ecf07c8bc9b0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.5
+      value: 14.084
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c4b40530eeed6c144bc8ecf07c8bc9b0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.06
+      value: -1.95
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c4b40530eeed6c144bc8ecf07c8bc9b0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.51
+      value: -8.89
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c4b40530eeed6c144bc8ecf07c8bc9b0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1873,6 +1873,22 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c4b40530eeed6c144bc8ecf07c8bc9b0, type: 3}
   m_PrefabInstance: {fileID: 1607228413}
   m_PrefabAsset: {fileID: 0}
+--- !u!111 &1607228415
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607228414}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 5edc1e68bf0a261499d62bd721a59283, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 5edc1e68bf0a261499d62bd721a59283, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1668633073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2326,6 +2342,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 200465190}
     m_Modifications:
+    - target: {fileID: 4444496388333365714, guid: a87712a47a94c064fbbf9d5a83dc2ec9, type: 3}
+      propertyPath: Clip
+      value: 
+      objectReference: {fileID: 1607228415}
     - target: {fileID: 4444496388333365714, guid: a87712a47a94c064fbbf9d5a83dc2ec9, type: 3}
       propertyPath: stad
       value: 
