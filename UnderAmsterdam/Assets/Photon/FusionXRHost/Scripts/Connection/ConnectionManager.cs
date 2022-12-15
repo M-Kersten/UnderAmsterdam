@@ -107,7 +107,7 @@ namespace Fusion.XR.Host
                         lPlayer.transform.rotation = tRotation;
                     break;
                     case "A4End":
-                        tPosition = new Vector3(0, 1.417f, 0);
+                        tPosition = new Vector3(0, 1f, 0);
                         tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     
                         lPlayer.transform.position = tPosition;
