@@ -50,7 +50,7 @@ public class IOTileScript : NetworkBehaviour
 
         if (company == Gamemanager.Instance.localPlayerData.company)
         {
-            StartCoroutine(BreatheSmoke());
+            Instantiate(particles, transform);
             SpawnIndicator(shouldBeOutput);
         }
         return true;
@@ -81,13 +81,5 @@ public class IOTileScript : NetworkBehaviour
     {
         InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
         indicatorScript.InitializeIndicator(shouldBeOutput);
-    }
-
-    private IEnumerator BreatheSmoke()
-    {
-        GameObject instance = Instantiate(particles, transform);
-        yield return new WaitForSeconds(12f);
-        Destroy(instance);
-        yield return null;
     }
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5543725438522911323}
   - component: {fileID: 2235418540369600061}
   - component: {fileID: 5882104027905775885}
+  - component: {fileID: 2586451439054393332}
   m_Layer: 7
   m_Name: DebrisParticles
   m_TagString: Untagged
@@ -601,7 +602,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 8
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -4812,3 +4813,16 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &2586451439054393332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3015758311105719085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a868245d6ea5a945991763a6c6a7567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 1

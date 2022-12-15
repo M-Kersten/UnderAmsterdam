@@ -204,7 +204,7 @@ public class CubeInteraction : NetworkBehaviour
         }
         company = "Empty";
 
-        StartCoroutine(DisplayDebris());
+        Instantiate(particles, transform);
     }
     public void OnHandEnter(string playerCompany)
     {
@@ -388,7 +388,6 @@ public class CubeInteraction : NetworkBehaviour
                         isChecked = true;
                         if (neighborsScript[i].CheckConnectionForWin())
                         {
-                            StartCoroutine(BurstFireWorks());
                             return true;
                         }
                         else return false;
@@ -402,6 +401,7 @@ public class CubeInteraction : NetworkBehaviour
                     {
                         // Add points to this company
                         // Gamemanager.Instance.pManager.AddPoints(company.Key);
+                        Instantiate(particlesWin, transform);
                         return true;
                     }
                 }
@@ -409,21 +409,5 @@ public class CubeInteraction : NetworkBehaviour
         }
         return false;
     }
-
-    private IEnumerator DisplayDebris()
-    {
-        GameObject instance = Instantiate(particles, transform);
-        yield return new WaitForSeconds(1f);
-        Destroy(instance);
-        yield return null;
-    }
-    private IEnumerator BurstFireWorks()
-    {
-        GameObject instance = Instantiate(particlesWin, transform);
-        yield return new WaitForSeconds(0.9f);
-        Destroy(instance);
-        yield return null;
-    }
-
 }
 
