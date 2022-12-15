@@ -100,7 +100,7 @@ namespace Fusion.XR.Host
                         lPlayer.transform.rotation = tRotation;
                     break;
                     case "A3Game": 
-                        tPosition = new Vector3(0, 1.417f, 0.323f);
+                        tPosition = new Vector3(0.74f, -0.489f, 0.67f);
                         tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     
                         lPlayer.transform.position = tPosition;

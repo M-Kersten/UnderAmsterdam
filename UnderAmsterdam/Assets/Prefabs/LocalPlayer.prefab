@@ -5159,7 +5159,6 @@ GameObject:
   - component: {fileID: 8397077673816484528}
   - component: {fileID: 8481349891358051823}
   - component: {fileID: 5285056550235599278}
-  - component: {fileID: 1826312011}
   - component: {fileID: 2798103753052138219}
   m_Layer: 9
   m_Name: LocalPlayer
@@ -5412,34 +5411,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1826312011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8439811097757408638}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f67fee4d7c09f5c4a89db085a53d6380, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  companyIcons:
-  - {fileID: 21300000, guid: 008b79d2c0a80d14d9863130dff5f48c, type: 3}
-  - {fileID: 21300000, guid: d8b69316ac0daf240ab1fe4c38102d76, type: 3}
-  - {fileID: 21300000, guid: fae5d8912baddcd41b658ae3a2ba7cf6, type: 3}
-  - {fileID: 21300000, guid: 54cc4bc4de252c34eb6c7f72f3ed0c5a, type: 3}
-  - {fileID: 21300000, guid: d7d833f81d92dd44e8fcbb78aba281f0, type: 3}
-  - {fileID: 21300000, guid: b5dec41245901ec48a695fbda5deb922, type: 3}
-  parentObject: {fileID: 1380628651833374662}
-  visualRadialObject: {fileID: 0}
-  maxActiveAngle: 260
-  minActiveAngle: 120
-  maxActiveAnglex: 90
-  minActiveAnglex: -80
-  iconImage: {fileID: 0}
-  pointsText: {fileID: 0}
-  topWatch: {fileID: 0}
 --- !u!95 &2798103753052138219
 Animator:
   serializedVersion: 4
