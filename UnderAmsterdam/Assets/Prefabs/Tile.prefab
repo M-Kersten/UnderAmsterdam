@@ -165,7 +165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1235379480579794588
 Transform:
   m_ObjectHideFlags: 0
@@ -451,6 +451,7 @@ MonoBehaviour:
   previewPipeParts: []
   activatedPipes: 
   playerInside: 0
+  obstructed: 0
   isHover: 0
   isChecked: 0
 --- !u!1 &5370217261044991784
@@ -1694,6 +1695,10 @@ PrefabInstance:
       value: Connector_98t
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7f37d774dc653034093c7f4cb9213ee4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f37d774dc653034093c7f4cb9213ee4, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -1779,6 +1784,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bca555bfd49da0d4399e06cba796c33c, type: 3}
       propertyPath: m_Name
       value: Connector_504t
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bca555bfd49da0d4399e06cba796c33c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bca555bfd49da0d4399e06cba796c33c, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2340,6 +2349,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a72e53925f65e824582dbb2a24bccbc7, type: 3}
       propertyPath: m_Name
       value: Connector_300t
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a72e53925f65e824582dbb2a24bccbc7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a72e53925f65e824582dbb2a24bccbc7, type: 3}
       propertyPath: m_StaticEditorFlags
