@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 
 public class HandTileInteraction : NetworkBehaviour
 {
+
     public RigPart side;
     public NetworkRig rig;
 
@@ -18,6 +19,7 @@ public class HandTileInteraction : NetworkBehaviour
     [SerializeField] private HammerScript myHammerScript;
 
     private bool handEnabled = true;
+
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -26,13 +28,16 @@ public class HandTileInteraction : NetworkBehaviour
         Gamemanager.Instance.CountDownStart.AddListener(ToggleHands);
         Gamemanager.Instance.CountDownEnd.AddListener(ToggleHands);
     }
+
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
-        if (GetInput<RigInput>(out var playerInputData)) //Get the input from the players 
+        if (GetInput<RigInput>(out RigInput playerInputData)) //Get the input from the players 
         {
             if (side == RigPart.RightController)
+            {
                 TriggerPressed = playerInputData.rightTriggerPressed;
+            }
 
             if (side == RigPart.LeftController)
             {
@@ -50,28 +55,37 @@ public class HandTileInteraction : NetworkBehaviour
         if (handEnabled)
         {
             if (!rig.IsLocalNetworkRig)
+            {
                 return;
+            }
 
             if (other.gameObject.layer == 7)
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 if (cubeScript)
+                {
                     cubeScript.OnHandEnter(myPlayer.company);
+                }
             }
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
         if (handEnabled)
         {
             if (!rig.IsLocalNetworkRig)
+            {
                 return;
+            }
 
             if (other.gameObject.layer == 7)
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 if (cubeScript)
+                {
                     cubeScript.OnHandExit(myPlayer.company);
+                }
             }
         }
     }
@@ -82,7 +96,7 @@ public class HandTileInteraction : NetworkBehaviour
         {
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
             if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied)
-                {
+            {
                 // Plays random block placing sound
                 int randomSound = Random.Range(0, 3);
                 switch (randomSound)
@@ -98,14 +112,16 @@ public class HandTileInteraction : NetworkBehaviour
                         break;
                 }
 
-                    cubeScript.UpdateCompany(myPlayer.company);
-                    cubeScript.EnableTile();
-                    TriggerPressed = false;
-                }
+                cubeScript.UpdateCompany(myPlayer.company);
+                cubeScript.EnableTile();
+                TriggerPressed = false;
             }
         }
+    }
+
     private void ToggleHands()
     {
         handEnabled = !handEnabled;
     }
+
 }

@@ -37,7 +37,7 @@ public class LightManager : MonoBehaviour
         
         while (currentTime < timing)
         {
-            t = i == 2 ? Mathf.Cos(Mathf.Pow((t % 4), 2)) * 0.3f : t / timing;
+            t = i == 1 ? Mathf.Cos(Mathf.Pow((t % 4), 2)) * 0.3f : t / timing;
             lamp.intensity = Mathf.Lerp(current, randIntensity, t);
 
             currentTime += Time.deltaTime;
