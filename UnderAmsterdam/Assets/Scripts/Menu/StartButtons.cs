@@ -7,7 +7,7 @@ public class StartButtons : MonoBehaviour
     private int totalPressed;
     [SerializeField] private int sceneIndex = 1;
     [SerializeField] private Animation Clip;
-    [SerializeField] private Animation Clip2;
+    [SerializeField] GameObject lobby;
 
     public void ButtonStatus(bool pressed)
     {
@@ -25,7 +25,7 @@ public class StartButtons : MonoBehaviour
     private IEnumerator SwitchingScene()
     {
         Clip.Play();
-        Clip2.Play();
+        lobby.transform.localScale = new Vector3(0, 0, 0);
         yield return new WaitForSeconds(Clip.clip.length);
         Gamemanager.Instance.SceneSwitch(sceneIndex);
     }
