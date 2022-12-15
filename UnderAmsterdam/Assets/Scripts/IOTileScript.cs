@@ -10,6 +10,7 @@ public class IOTileScript : NetworkBehaviour
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
     [SerializeField] private GameObject particles;
+    public int roundInputPipe;
     [SerializeField] private float particlesBreathingTime;
 
     [Networked(OnChanged = nameof(OnIOTileChanged))]
@@ -44,6 +45,8 @@ public class IOTileScript : NetworkBehaviour
 
         if (isOutput)
             Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
+        else
+            roundInputPipe = Gamemanager.Instance.currentRound;
 
         if (company == Gamemanager.Instance.localPlayerData.company)
         {

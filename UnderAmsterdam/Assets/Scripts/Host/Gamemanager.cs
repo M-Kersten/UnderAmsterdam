@@ -12,7 +12,6 @@ public class Gamemanager : MonoBehaviour
     public PlayerData localPlayerData;
     public CharacterController lPlayerCC;
     
-    public int round;
     public float roundTime = 45;
 
     [SerializeField] private Animator lPlayerAnimator;
@@ -23,6 +22,7 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private float amountOfRounds = 6;
     [SerializeField] private bool startGame;
 
+    [HideInInspector] public int currentRound;
     [HideInInspector] public Pointsmanager pManager;
 
     private HostTimerScript timer;
@@ -74,7 +74,7 @@ public class Gamemanager : MonoBehaviour
     {
         RoundStart.Invoke();
         timer.SetTimer(roundTime);
-        round++;
+        currentRound++;
     }
     private void OnRoundEnd()
     {
@@ -86,7 +86,7 @@ public class Gamemanager : MonoBehaviour
     {
         RoundLateEnd.Invoke();
 
-        if (round <= amountOfRounds)
+        if (currentRound <= amountOfRounds)
             OnCountDownStart();
         else
             StartCoroutine(OnGameEnd());
