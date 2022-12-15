@@ -44,7 +44,7 @@ public class IOTileScript : NetworkBehaviour
         if (isOutput)
             Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
         else
-            roundInputPipe = Gamemanager.Instance.round;
+            roundInputPipe = Gamemanager.Instance.currentRound;
 
         SpawnIndicator(shouldBeOutput);
         return true;

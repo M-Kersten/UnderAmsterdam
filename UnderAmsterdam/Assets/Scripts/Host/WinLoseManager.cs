@@ -45,7 +45,7 @@ public class WinLoseManager : MonoBehaviour
     {
         foreach(var company in _inputPipeTracker)
         {
-            if(company.Value >= Gamemanager.Instance.round)
+            if(company.Value >= Gamemanager.Instance.currentRound)
             {
                 //Add points to this company
                 // Gamemanager.Instance.pManager.AddPoints(company.Key);

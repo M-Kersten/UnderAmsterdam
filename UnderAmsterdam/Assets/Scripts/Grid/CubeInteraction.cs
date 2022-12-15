@@ -391,7 +391,7 @@ public class CubeInteraction : NetworkBehaviour
                 else if (neighbors[i].TryGetComponent(out IOTileScript IOPipe))
                 {
                     // from the same company and active and if it isnt output (aka where it came from)
-                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.round)
+                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.currentRound)
                     {
                         // Add points to this company
                         // Gamemanager.Instance.pManager.AddPoints(company.Key);
