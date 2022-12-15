@@ -9,9 +9,12 @@ public class IOTileScript : NetworkBehaviour
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
+<<<<<<< HEAD
     [SerializeField] private GameObject particles;
-    public int roundInputPipe;
     [SerializeField] private float particlesBreathingTime;
+=======
+    public int roundInputPipe;
+>>>>>>> development
 
     [Networked(OnChanged = nameof(OnIOTileChanged))]
     public string company { get; set; }
@@ -48,8 +51,11 @@ public class IOTileScript : NetworkBehaviour
         else
             roundInputPipe = Gamemanager.Instance.currentRound;
 
-        SpawnIndicator(shouldBeOutput);
-
+        if (company == Gamemanager.Instance.localPlayerData.company)
+        {
+            StartCoroutine(BreatheSmoke());
+            SpawnIndicator(shouldBeOutput);
+        }
         return true;
     }
 
@@ -76,11 +82,15 @@ public class IOTileScript : NetworkBehaviour
 
     public void SpawnIndicator(bool shouldBeOutput)
     {
-        if (company == Gamemanager.Instance.localPlayerData.company)
-        {
-            InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
-            indicatorScript.InitializeIndicator(shouldBeOutput);
-            Instantiate(particles, transform);
-        }
+        InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
+        indicatorScript.InitializeIndicator(shouldBeOutput);
+    }
+
+    private IEnumerator BreatheSmoke()
+    {
+        GameObject instance = Instantiate(particles, transform);
+        yield return new WaitForSeconds(12f);
+        Destroy(instance);
+        yield return null;
     }
 }
