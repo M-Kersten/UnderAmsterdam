@@ -86,7 +86,7 @@ public class Gamemanager : MonoBehaviour
     {
         RoundLateEnd.Invoke();
 
-        if (currentRound <= amountOfRounds)
+        if (currentRound < amountOfRounds)
             OnCountDownStart();
         else
             StartCoroutine(OnGameEnd());
@@ -96,7 +96,7 @@ public class Gamemanager : MonoBehaviour
         GameEnd.Invoke();
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
-        runner.SetActiveScene(1);
+        SceneSwitch(3); //EndGame scene
     }
     private IEnumerator PreRoundCountDown()
     {

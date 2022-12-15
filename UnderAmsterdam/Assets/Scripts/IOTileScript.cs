@@ -48,8 +48,7 @@ public class IOTileScript : NetworkBehaviour
         else
             roundInputPipe = Gamemanager.Instance.currentRound;
 
-        if (company == Gamemanager.Instance.localPlayerData.company)
-            SpawnIndicator(shouldBeOutput);
+        SpawnIndicator(shouldBeOutput);
 
         return true;
     }
@@ -77,8 +76,11 @@ public class IOTileScript : NetworkBehaviour
 
     public void SpawnIndicator(bool shouldBeOutput)
     {
-        InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
-        indicatorScript.InitializeIndicator(shouldBeOutput);
-        Instantiate(particles, transform);
+        if (company == Gamemanager.Instance.localPlayerData.company)
+        {
+            InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
+            indicatorScript.InitializeIndicator(shouldBeOutput);
+            Instantiate(particles, transform);
+        }
     }
 }
