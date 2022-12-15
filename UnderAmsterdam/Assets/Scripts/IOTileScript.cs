@@ -49,10 +49,8 @@ public class IOTileScript : NetworkBehaviour
             roundInputPipe = Gamemanager.Instance.currentRound;
 
         if (company == Gamemanager.Instance.localPlayerData.company)
-        {
-            Instantiate(particles, transform);
             SpawnIndicator(shouldBeOutput);
-        }
+
         return true;
     }
 
@@ -81,5 +79,6 @@ public class IOTileScript : NetworkBehaviour
     {
         InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
         indicatorScript.InitializeIndicator(shouldBeOutput);
+        Instantiate(particles, transform);
     }
 }
