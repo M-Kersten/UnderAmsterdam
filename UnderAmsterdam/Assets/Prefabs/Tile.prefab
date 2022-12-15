@@ -85,7 +85,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.19952111
+  - screenRelativeHeight: 0.0892373
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6499579172369857456}
@@ -107,7 +107,7 @@ LODGroup:
     - renderer: {fileID: 8568154178765094771}
     - renderer: {fileID: 6677355981094335472}
     - renderer: {fileID: 3015017480314333420}
-  - screenRelativeHeight: 0.19952111
+  - screenRelativeHeight: 0.0892373
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6801373107188293838}
@@ -117,7 +117,7 @@ LODGroup:
     - renderer: {fileID: 6653747869169583036}
     - renderer: {fileID: 5397062306358075203}
     - renderer: {fileID: 1558355647372016185}
-  - screenRelativeHeight: 0.10300999
+  - screenRelativeHeight: 0.047993112
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7468412960124391204}
@@ -133,7 +133,7 @@ LODGroup:
     - renderer: {fileID: 2756209397490390732}
     - renderer: {fileID: 8834661932521668190}
     - renderer: {fileID: 8720752831277609910}
-  - screenRelativeHeight: 0.033820637
+  - screenRelativeHeight: 0.028562251
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6311912561452822326}
@@ -450,6 +450,8 @@ MonoBehaviour:
   pipeParts: []
   previewPipeParts: []
   activatedPipes: 
+  playerInside: 0
+  obstructed: 0
   isHover: 0
   isChecked: 0
 --- !u!1 &5370217261044991784
