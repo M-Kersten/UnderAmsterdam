@@ -9,7 +9,7 @@ public class IOTileScript : NetworkBehaviour
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
-    [SerializeField] private ParticleSystem particles;
+    [SerializeField] private GameObject particles;
     [SerializeField] private float particlesBreathingTime;
 
     [Networked(OnChanged = nameof(OnIOTileChanged))]
@@ -47,7 +47,7 @@ public class IOTileScript : NetworkBehaviour
 
         if (company == Gamemanager.Instance.localPlayerData.company)
         {
-            particles.Play();
+            StartCoroutine(BreatheSmoke());
             SpawnIndicator(shouldBeOutput);
         }
         return true;
@@ -78,5 +78,13 @@ public class IOTileScript : NetworkBehaviour
     {
         InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
         indicatorScript.InitializeIndicator(shouldBeOutput);
+    }
+
+    private IEnumerator BreatheSmoke()
+    {
+        GameObject instance = Instantiate(particles, transform);
+        yield return new WaitForSeconds(12f);
+        Destroy(instance);
+        yield return null;
     }
 }

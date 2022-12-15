@@ -14,8 +14,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
     [SerializeField] private GameObject linePreview;
-    [SerializeField] private ParticleSystem particles;
-    [SerializeField] private ParticleSystem particlesWin;
+    [SerializeField] private GameObject particles, particlesWin;
     private PipeColouring pColouring;
     private NetworkObject[] neighbors;
     private CubeInteraction[] neighborsScript;
@@ -205,7 +204,7 @@ public class CubeInteraction : NetworkBehaviour
         }
         company = "Empty";
 
-        particles.Play();
+        StartCoroutine(DisplayDebris());
     }
     public void OnHandEnter(string playerCompany)
     {
@@ -389,7 +388,7 @@ public class CubeInteraction : NetworkBehaviour
                         isChecked = true;
                         if (neighborsScript[i].CheckConnectionForWin())
                         {
-                            particlesWin.Play();
+                            StartCoroutine(BurstFireWorks());
                             return true;
                         }
                         else return false;
@@ -408,5 +407,22 @@ public class CubeInteraction : NetworkBehaviour
             }
         }
         return false;
-    } 
+    }
+
+    private IEnumerator DisplayDebris()
+    {
+        GameObject instance = Instantiate(particles, transform);
+        yield return new WaitForSeconds(1f);
+        Destroy(instance);
+        yield return null;
+    }
+    private IEnumerator BurstFireWorks()
+    {
+        GameObject instance = Instantiate(particlesWin, transform);
+        yield return new WaitForSeconds(0.9f);
+        Destroy(instance);
+        yield return null;
+    }
+
 }
+
