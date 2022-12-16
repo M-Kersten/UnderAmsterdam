@@ -125,12 +125,13 @@ namespace Fusion.XR.Host
             }
          }
 
-             [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-            public void RPC_UpdatePlayers([RpcTarget] PlayerRef targetPlayer, Dictionary<PlayerRef, NetworkObject> Users)
+            [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+            public void RPC_UpdatePlayers([RpcTarget] PlayerRef targetPlayer,  Dictionary<PlayerRef, NetworkObject> Users, RpcInfo info = default)
             {
                 _spawnedUsers = Users;
                 Debug.Log("USERS UPDATED");
             }
+
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
