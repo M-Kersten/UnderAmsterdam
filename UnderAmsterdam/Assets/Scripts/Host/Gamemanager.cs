@@ -20,7 +20,7 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundCountDownTime = 3;
     [SerializeField] private float amountOfRounds = 6;
-    [SerializeField] private bool startGame;
+    [SerializeField] public bool startGame;
 
     [HideInInspector] public int currentRound;
     [HideInInspector] public Pointsmanager pManager;

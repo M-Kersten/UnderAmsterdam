@@ -108,6 +108,7 @@ namespace Fusion.XR.Host
                     
                         lPlayer.transform.position = tPosition;
                         lPlayer.transform.rotation = tRotation;
+                        Gamemanager.Instance.startGame = true;
                     break;
                     case "A4End":
                         tPosition = new Vector3(0, 1f, 0);
