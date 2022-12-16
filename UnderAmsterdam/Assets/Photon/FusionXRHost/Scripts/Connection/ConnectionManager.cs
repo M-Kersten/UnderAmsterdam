@@ -41,7 +41,7 @@ namespace Fusion.XR.Host
         
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
-        [Networked] public Dictionary<PlayerRef, NetworkObject> _spawnedUsers {get; set;} //= new Dictionary<PlayerRef, NetworkObject>();
+        public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
 
         private void Awake()
         {
@@ -125,7 +125,26 @@ namespace Fusion.XR.Host
             }
          }
 
+        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+        public void RPC_SendPlayerList(PlayerRef player, NetworkObject nObject)
+        {
+            if (!_spawnedUsers.ContainsKey(player))
+            _spawnedUsers.Add(player, nObject);
 
+            Debug.Log("SPAWNED USERS UPDATED");
+        }
+
+        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        public void Test() {
+            newTest();
+            foreach(var player in _spawnedUsers) {
+                Debug.Log("PLAYER: " + player.Key);
+            }
+        }
+
+        private void newTest() {
+            Debug.Log("SHOULD BE HOST");
+        }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             // The user's prefab has to be spawned by the host
@@ -137,6 +156,9 @@ namespace Fusion.XR.Host
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
+                RPC_SendPlayerList(player, networkPlayerObject);
+            } else {
+                Test();
             }
         }
 
