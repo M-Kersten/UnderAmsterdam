@@ -143,9 +143,9 @@ namespace Fusion.XR.Host
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
-                foreach(var player in _spawnedUsers){
-                    Debug.Log("SENDING TO " + player.Key);
-                    RPC_UpdatePlayers(player.Key, _spawnedUsers);
+                foreach(var sPlayer in _spawnedUsers){
+                    Debug.Log("SENDING TO " + sPlayer.Key);
+                    RPC_UpdatePlayers(sPlayer.Key, _spawnedUsers);
                 }
             }
         }
