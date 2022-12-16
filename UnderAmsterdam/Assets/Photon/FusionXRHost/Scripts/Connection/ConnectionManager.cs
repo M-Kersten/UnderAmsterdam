@@ -88,8 +88,8 @@ namespace Fusion.XR.Host
             Vector3 tPosition;
             Quaternion tRotation;
 
-            if (_spawnedUsers.ContainsKey(runner.LocalPlayer)) {
-                GameObject lPlayer = _spawnedUsers[runner.LocalPlayer].gameObject.GetComponent<Fusion.XR.Host.Rig.NetworkRig>().hardwareRig.gameObject;
+            if (!runner.LocalPlayer) {
+                GameObject lPlayer = Gamemanager.Instance.lPlayerCC.GetComponent<Fusion.XR.Host.Rig.NetworkRig>().hardwareRig.gameObject;
             
                 // Turn off CharacterController, so we can teleport the player
                 lPlayer.GetComponent<CharacterController>().enabled = false;
