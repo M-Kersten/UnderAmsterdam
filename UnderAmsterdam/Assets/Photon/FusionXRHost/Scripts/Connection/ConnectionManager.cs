@@ -126,7 +126,7 @@ namespace Fusion.XR.Host
          }
 
              [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-            public void RPC_UpdatePlayers(Dictionary<PlayerRef, NetworkObject> Users)
+            public void RPC_UpdatePlayers([RpcTarget] PlayerRef targetPlayer, Dictionary<PlayerRef, NetworkObject> Users)
             {
                 _spawnedUsers = Users;
                 Debug.Log("USERS UPDATED");
@@ -143,7 +143,9 @@ namespace Fusion.XR.Host
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
-                RPC_UpdatePlayers(_spawnedUsers);
+                foreach(var Users in _spawnedUsers){
+                    RPC_UpdatePlayers(Users.Key, _spawnedUsers);
+                }
             }
         }
 
