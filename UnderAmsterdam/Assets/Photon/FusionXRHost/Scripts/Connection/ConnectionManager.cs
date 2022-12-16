@@ -134,7 +134,7 @@ namespace Fusion.XR.Host
             Debug.Log("SPAWNED USERS UPDATED");
         }
 
-        [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+        [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
         public void Test() {
             newTest();
             foreach(var player in _spawnedUsers) {
