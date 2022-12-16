@@ -88,41 +88,39 @@ namespace Fusion.XR.Host
             Vector3 tPosition;
             Quaternion tRotation;
 
-            if (!runner.LocalPlayer) {
-                GameObject lPlayer = Gamemanager.Instance.lPlayerCC.gameObject;
-            
+            if (Gamemanager.Instance.lPlayerCC) {            
                 // Turn off CharacterController, so we can teleport the player
-                lPlayer.GetComponent<CharacterController>().enabled = false;
+                Gamemanager.Instance.lPlayerCC.enabled = false;
 
                 switch (SceneManager.GetActiveScene().name) {
                     case "A2Lobby":
                         tPosition = new Vector3(7.864f, -1.92f, 3.792f);
                         tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     
-                        lPlayer.transform.position = tPosition;
-                        lPlayer.transform.rotation = tRotation;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
                     break;
                     case "A3Game": 
                         tPosition = new Vector3(0.74f, -0.489f, 0.67f);
                         tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     
-                        lPlayer.transform.position = tPosition;
-                        lPlayer.transform.rotation = tRotation;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
                         Gamemanager.Instance.startGame = true;
                     break;
                     case "A4End":
                         tPosition = new Vector3(0, 1f, 0);
                         tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     
-                        lPlayer.transform.position = tPosition;
-                        lPlayer.transform.rotation = tRotation;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
                     break;
                     default:
                     // Do nothing
                     break;
                 }
             // Turn CharacterController back on, so player can move
-            lPlayer.GetComponent<CharacterController>().enabled = true;
+            Gamemanager.Instance.lPlayerCC.enabled = true;
             }
          }
 
