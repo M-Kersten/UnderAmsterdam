@@ -125,7 +125,7 @@ namespace Fusion.XR.Host
             }
          }
 
-            [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+            [Rpc]
             public void RPC_UpdatePlayers([RpcTarget] PlayerRef targetPlayer,  Dictionary<PlayerRef, NetworkObject> Users, RpcInfo info = default)
             {
                 _spawnedUsers = Users;
