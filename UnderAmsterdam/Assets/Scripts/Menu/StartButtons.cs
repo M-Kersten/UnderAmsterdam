@@ -1,6 +1,7 @@
 using Fusion.XR.Host;
 using System.Collections;
 using UnityEngine;
+using Fusion;
 
 public class StartButtons : MonoBehaviour
 {
@@ -8,6 +9,11 @@ public class StartButtons : MonoBehaviour
     [SerializeField] private int sceneIndex = 1;
     [SerializeField] private Animation Clip;
     [SerializeField] GameObject lobby;
+    private NetworkRunner runner;
+
+    void Start() {
+        runner = FindObjectOfType<NetworkRunner>();
+    }
 
     public void ButtonStatus(bool pressed)
     {
@@ -16,9 +22,12 @@ public class StartButtons : MonoBehaviour
         else
             totalPressed--;
 
-        if (totalPressed == ConnectionManager.Instance._spawnedUsers.Count)
+        if (totalPressed == runner.SessionInfo.PlayerCount)
         {
             StartCoroutine(SwitchingScene());
+            if (runner.IsServer)
+                runner.SessionInfo.IsOpen = false;
+
         }
     }
 

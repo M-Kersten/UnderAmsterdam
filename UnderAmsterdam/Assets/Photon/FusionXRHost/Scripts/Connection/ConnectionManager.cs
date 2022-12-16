@@ -37,6 +37,8 @@ namespace Fusion.XR.Host
 
         [Header("Event")]
         public UnityEvent onWillConnect = new UnityEvent();
+
+        [SerializeField] private int maxPlayers = 5;
         
         
 
@@ -75,6 +77,8 @@ namespace Fusion.XR.Host
             {
                 GameMode = mode,
                 SessionName = roomName,
+                PlayerCount = maxPlayers,
+
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = sceneManager
             };
