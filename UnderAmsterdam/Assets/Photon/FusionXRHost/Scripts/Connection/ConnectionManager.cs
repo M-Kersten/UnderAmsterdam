@@ -89,7 +89,7 @@ namespace Fusion.XR.Host
             Quaternion tRotation;
 
             if (!runner.LocalPlayer) {
-                GameObject lPlayer = Gamemanager.Instance.lPlayerCC.GetComponent<Fusion.XR.Host.Rig.NetworkRig>().hardwareRig.gameObject;
+                GameObject lPlayer = Gamemanager.Instance.lPlayerCC.gameObject;
             
                 // Turn off CharacterController, so we can teleport the player
                 lPlayer.GetComponent<CharacterController>().enabled = false;
@@ -126,13 +126,6 @@ namespace Fusion.XR.Host
             }
          }
 
-        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-        public void RPC_UpdatePlayers(NetworkRunner runner, [RpcTarget] PlayerRef player, Dictionary<PlayerRef, NetworkObject> Users){
-            Debug.Log("TESTING RPC SHOULD BE CLIENT");
-            _spawnedUsers = Users;
-        }
-
-
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             // The user's prefab has to be spawned by the host
@@ -144,11 +137,6 @@ namespace Fusion.XR.Host
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
-                foreach(var sPlayer in _spawnedUsers){
-                    Debug.Log("SENDING TO " + sPlayer.Key);
-                    if (sPlayer.Key != runner.LocalPlayer)
-                        RPC_UpdatePlayers(runner, sPlayer.Key, _spawnedUsers);
-                }
             }
         }
 
