@@ -126,7 +126,7 @@ namespace Fusion.XR.Host
          }
 
         [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
-        public void RPC_UpdatePlayers([RpcTarget] PlayerRef player, Dictionary<PlayerRef, NetworkObject> Users){
+        public void RPC_UpdatePlayers(NetworkRunner runner, [RpcTarget] PlayerRef player, Dictionary<PlayerRef, NetworkObject> Users){
             Debug.Log("TESTING RPC SHOULD BE CLIENT");
             _spawnedUsers = Users;
         }
@@ -145,7 +145,8 @@ namespace Fusion.XR.Host
                 //compManage.SendCompany(player, networkPlayerObject);
                 foreach(var sPlayer in _spawnedUsers){
                     Debug.Log("SENDING TO " + sPlayer.Key);
-                    RPC_UpdatePlayers(sPlayer.Key, _spawnedUsers);
+                    if (sPlayer.Key != runner.LocalPlayer)
+                        RPC_UpdatePlayers(runner, sPlayer.Key, _spawnedUsers);
                 }
             }
         }
