@@ -125,12 +125,10 @@ namespace Fusion.XR.Host
             }
          }
 
-        [Rpc]
-        public static void Rpc_MyStaticRpc(NetworkRunner runner, Dictionary<PlayerRef, NetworkObject> Users) { 
-            if(!runner.IsServer) {
-                _spawnedUsers = Users;
-            }
-            Debug.Log("RUNNING STATIC RPC");
+        [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+        public void RPC_UpdatePlayers([RpcTarget] PlayerRef player, Dictionary<PlayerRef, NetworkObject> Users){
+            Debug.Log("TESTING RPC SHOULD BE CLIENT");
+            _spawnedUsers = Users;
         }
 
 
@@ -145,7 +143,10 @@ namespace Fusion.XR.Host
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
-                Rpc_MyStaticRpc(_spawnedUsers);
+                foreach(var player in _spawnedUsers){
+                    Debug.Log("SENDING TO " + player.Key);
+                    RPC_UpdatePlayers(player.Key, _spawnedUsers);
+                }
             }
         }
 
