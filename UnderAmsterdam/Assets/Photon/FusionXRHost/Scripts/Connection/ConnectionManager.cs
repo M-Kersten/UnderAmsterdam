@@ -126,7 +126,7 @@ namespace Fusion.XR.Host
          }
 
             [Rpc]
-            public void RPC_UpdatePlayers([RpcTarget] PlayerRef targetPlayer,  Dictionary<PlayerRef, NetworkObject> Users, RpcInfo info = default)
+            public void RPC_UpdatePlayers(Dictionary<PlayerRef, NetworkObject> Users, RpcInfo info = default)
             {
                 _spawnedUsers = Users;
                 Debug.Log("USERS UPDATED");
