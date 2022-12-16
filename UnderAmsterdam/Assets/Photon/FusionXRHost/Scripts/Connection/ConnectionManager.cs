@@ -41,7 +41,7 @@ namespace Fusion.XR.Host
         
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
-        public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
+        [Networked] public Dictionary<PlayerRef, NetworkObject> _spawnedUsers {get; set;} //= new Dictionary<PlayerRef, NetworkObject>();
 
         private void Awake()
         {
@@ -126,23 +126,6 @@ namespace Fusion.XR.Host
          }
 
 
-            [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-            public void RPC_RequestUsers(PlayerRef myKey, RpcInfo info = default)
-                {
-                    Debug.Log(myKey + " Is requesting PlayerList");
-                    UpdatePlayerList();
-                }
-         
-            [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-            public void RPC_ReceiveUsers([RpcTarget] PlayerRef targetPlayer, PlayerRef givenKey, NetworkObject givenObj, RpcInfo info = default)
-                {
-                    if (!_spawnedUsers.ContainsKey(givenKey) && !runner.IsServer) {
-                        _spawnedUsers.Add(givenKey, givenObj);
-
-                        Debug.Log("RECEIVED PLAYER: " + givenKey + " NObject: " + givenObj);
-                    }
-                }
-
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             // The user's prefab has to be spawned by the host
@@ -154,19 +137,7 @@ namespace Fusion.XR.Host
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
-            } else {
-                RPC_RequestUsers(player);
             }
-        }
-        
-        private void UpdatePlayerList() {
-                foreach(var sPlayer in _spawnedUsers) {               // FOR EACH PLAYER
-                    Debug.Log("SEND PLAYERLIST TO " + sPlayer);
-                    foreach(var dPlayer in _spawnedUsers) {
-                        RPC_ReceiveUsers(sPlayer.Key, dPlayer.Key, dPlayer.Value);
-                        Debug.Log("SENDING PLAYER: " + dPlayer.Key + " " + dPlayer.Value);
-                    }
-                }
         }
 
         // Despawn the user object upon disconnection
