@@ -37,9 +37,21 @@ namespace Fusion.XR.Host
 
         [Header("Event")]
         public UnityEvent onWillConnect = new UnityEvent();
+        
+        
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
-        public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
+        [Networked(OnChanged = nameof(UpdatePlayerList))]
+        public Dictionary<PlayerRef, NetworkObject> _spawnedUsers {get; set;} // = new Dictionary<PlayerRef, NetworkObject>();
+
+
+         static void UpdatePlayerList(Changed<ConnectionManager> changed) {
+            Test(changed.Behaviour._spawnedUsers);
+         }
+
+         private void Test(Dictionary newDict) {
+            _spawnedUsers = newDict;
+         }
 
         private void Awake()
         {
@@ -85,6 +97,7 @@ namespace Fusion.XR.Host
         public void OnSceneLoadDone(NetworkRunner runner) { 
             Vector3 tPosition;
             Quaternion tRotation;
+
             if (_spawnedUsers.ContainsKey(runner.LocalPlayer)) {
                 GameObject lPlayer = _spawnedUsers[runner.LocalPlayer].gameObject.GetComponent<Fusion.XR.Host.Rig.NetworkRig>().hardwareRig.gameObject;
             
