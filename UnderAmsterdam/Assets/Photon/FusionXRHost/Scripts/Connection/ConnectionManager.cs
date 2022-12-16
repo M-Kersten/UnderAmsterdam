@@ -124,6 +124,14 @@ namespace Fusion.XR.Host
             lPlayer.GetComponent<CharacterController>().enabled = true;
             }
          }
+
+
+            [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+            public void RPC_RequestUsers(PlayerRef myKey, RpcInfo info = default)
+                {
+                    Debug.Log(myKey + " Is requesting PlayerList");
+                    UpdatePlayerList();
+                }
          
             [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
             public void RPC_ReceiveUsers([RpcTarget] PlayerRef targetPlayer, PlayerRef givenKey, NetworkObject givenObj, RpcInfo info = default)
@@ -146,7 +154,8 @@ namespace Fusion.XR.Host
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
-                UpdatePlayerList();
+            } else {
+                RPC_RequestUsers(player);
             }
         }
         
