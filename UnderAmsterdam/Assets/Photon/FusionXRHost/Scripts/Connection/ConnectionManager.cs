@@ -125,26 +125,13 @@ namespace Fusion.XR.Host
             }
          }
 
-        [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-        public void RPC_SendPlayerList(PlayerRef player, NetworkObject nObject)
-        {
-            if (!_spawnedUsers.ContainsKey(player))
-            _spawnedUsers.Add(player, nObject);
-
-            Debug.Log("SPAWNED USERS UPDATED");
-        }
-
-        [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
-        public void Test() {
-            newTest();
-            foreach(var player in _spawnedUsers) {
-                Debug.Log("PLAYER: " + player.Key);
+             [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+            public void RPC_UpdatePlayers(Dictionary<PlayerRef, NetworkObject> Users)
+            {
+                _spawnedUsers = Users;
+                Debug.Log("USERS UPDATED");
             }
-        }
 
-        private void newTest() {
-            Debug.Log("SHOULD BE HOST");
-        }
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             // The user's prefab has to be spawned by the host
@@ -156,9 +143,7 @@ namespace Fusion.XR.Host
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
-                RPC_SendPlayerList(player, networkPlayerObject);
-            } else {
-                Test();
+                RPC_UpdatePlayers(_spawnedUsers);
             }
         }
 
@@ -173,7 +158,6 @@ namespace Fusion.XR.Host
             }
         }
         #endregion
-
 
         #region Unused INetworkRunnerCallbacks 
         public void OnConnectedToServer(NetworkRunner runner) { }
