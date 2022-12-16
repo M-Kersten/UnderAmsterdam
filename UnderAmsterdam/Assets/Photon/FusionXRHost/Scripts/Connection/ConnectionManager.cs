@@ -41,17 +41,7 @@ namespace Fusion.XR.Host
         
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
-        [Networked(OnChanged = nameof(UpdatePlayerList))]
-        public Dictionary<PlayerRef, NetworkObject> _spawnedUsers {get; set;} // = new Dictionary<PlayerRef, NetworkObject>();
-
-
-         static void UpdatePlayerList(Changed<ConnectionManager> changed) {
-            Test(changed.Behaviour._spawnedUsers);
-         }
-
-         private void Test(Dictionary newDict) {
-            _spawnedUsers = newDict;
-         }
+        public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
 
         private void Awake()
         {
@@ -134,19 +124,30 @@ namespace Fusion.XR.Host
             lPlayer.GetComponent<CharacterController>().enabled = true;
             }
          }
+         
+            [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+            public NetworkObject RPC_ReceiveUser([RpcTarget] PlayerRef targetPlayer, NetworkObject UserObj, RpcInfo info = default)
+                {
+                    return UserObj;
+                }
+
+            private void AddPlayer(PlayerRef player, NetworkObject nObject) {
+                _spawnedUsers.Add(player, nObject);
+                Debug.Log("ADDED PLAYER: " + player + " NETWORK OBJ: " + nObject);
+            }
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
             // The user's prefab has to be spawned by the host
             if (runner.IsServer)
             {
-                Debug.Log($"OnPlayerJoined {player.PlayerId}/Local id: ({runner.LocalPlayer.PlayerId})");
                 // We make sure to give the input authority to the connecting player for their user's object
                 NetworkObject networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => {
                 });
 
+                AddPlayer(player, RPC_ReceiveUser(player, networkPlayerObject));
                 // Keep track of the player avatars so we can remove it when they disconnect
-                _spawnedUsers.Add(player, networkPlayerObject);
+                //_spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
             }
         }
