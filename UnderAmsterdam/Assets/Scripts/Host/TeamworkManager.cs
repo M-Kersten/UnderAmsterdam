@@ -33,13 +33,15 @@ public class TeamworkManager : MonoBehaviour
         return false;
     }
 
-    public void AddTeamWork(string company1, string company2)
+    public bool AddTeamWork(string company1, string company2)
     {
         // if both players are free, add them into contracts
         if (CheckFree(company1) && CheckFree(company2))
         {
             _companyContracts.Add(company1, company2);
+            return true;
         }
+        return false;
     }
 
     private string CheckMyCompany(string company)
@@ -77,7 +79,9 @@ public class TeamworkManager : MonoBehaviour
     public void EmptyTeamWork()
     {
         // Empty all contracts
+        if (_companyContracts.Count > 1)
         _companyContracts.Clear();
+        if (_doneCompanies.Count > 1)
         _doneCompanies.Clear();
     }
 }
