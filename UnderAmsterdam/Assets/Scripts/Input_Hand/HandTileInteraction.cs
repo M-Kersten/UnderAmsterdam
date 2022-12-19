@@ -88,7 +88,7 @@ public class HandTileInteraction : NetworkBehaviour
         {
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
             if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied)
-                {
+            {
                 // Plays random block placing sound
                 int randomSound = Random.Range(0, 3);
                 switch (randomSound)
@@ -104,12 +104,13 @@ public class HandTileInteraction : NetworkBehaviour
                         break;
                 }
 
-                    cubeScript.UpdateCompany(myPlayer.company);
-                    cubeScript.EnableTile();
-                    TriggerPressed = false;
-                }
+                Gamemanager.Instance.pManager.RemovePoints(myPlayer.company);
+                cubeScript.UpdateCompany(myPlayer.company);
+                cubeScript.EnableTile();
+                TriggerPressed = false;
             }
         }
+    }
     private void ToggleHands()
     {
         handEnabled = !handEnabled;

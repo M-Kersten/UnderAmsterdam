@@ -7,9 +7,9 @@ using Fusion;
 public class Pointsmanager : MonoBehaviour
 {
     private ConnectionManager coach;
-    private int pipeplacepoint = 500;
-    private int piperemovepoint = 200;
-    private int victorypoints = 4000;
+    private int pipeplacepoint = 40;
+    private int piperemovepoint = 20;
+    private int victorypoints = 400;
     private float time;
     private bool roundWinner;
 
@@ -29,26 +29,18 @@ public class Pointsmanager : MonoBehaviour
     public void AddPoints(string company)
     {
         NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-        nObject.GetComponent<PlayerData>().points += pipeplacepoint;
+        nObject.GetComponent<PlayerData>().points += piperemovepoint;
     }
     public void RemovePoints(string company)
     {
         NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-        nObject.GetComponent<PlayerData>().points -= piperemovepoint;
+        nObject.GetComponent<PlayerData>().points -= pipeplacepoint;
     }
 
-    public void CalculateRoundPoints(string company)
+    public void CalculateRoundPoints(string company, bool hasCompleted)
     {
         NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-
-        if (!roundWinner)
-        {
-            nObject.GetComponent<PlayerData>().points += victorypoints;
-            roundWinner = true;
-        }
-        else
-        {
-            nObject.GetComponent<PlayerData>().points -= victorypoints - (int)time * 10;
-        }
+        if (hasCompleted) nObject.GetComponent<PlayerData>().points += victorypoints;
+        //nObject.GetComponent<PlayerData>().points -= (int)time*10;
     }
 }

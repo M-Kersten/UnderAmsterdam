@@ -170,7 +170,6 @@ public class CubeInteraction : NetworkBehaviour
 
     public void EnableTile()
     {
-        //Gamemanager.Instance.pManager.RemovePoints(company);
         TileOccupied = true;
 
         OnRenderPipePreview(false);
@@ -180,7 +179,6 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void DisableTile()
     {
-        //Gamemanager.Instance.pManager.AddPoints(company);
         // Clear company and occupation state
         TileOccupied = false;
 
@@ -372,7 +370,7 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    public bool CheckConnectionForWin()
+    public void CheckConnectionForWin()
     {
         // For each neighbor...
         for (int i = 0; i < neighbors.Length; i++)
@@ -386,11 +384,7 @@ public class CubeInteraction : NetworkBehaviour
                     {
                         // Verify this neighbor and mark it as checked.
                         isChecked = true;
-                        if (neighborsScript[i].CheckConnectionForWin())
-                        {
-                            return true;
-                        }
-                        else return false;
+                        neighborsScript[i].CheckConnectionForWin();
                     }
                 }
                 // if it's an Output tile...
@@ -400,14 +394,14 @@ public class CubeInteraction : NetworkBehaviour
                     if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.currentRound)
                     {
                         // Add points to this company
-                        // Gamemanager.Instance.pManager.AddPoints(company.Key);
+                        Gamemanager.Instance.pManager.CalculateRoundPoints(company, true);
                         Instantiate(particlesWin, transform);
-                        return true;
+                        return;
                     }
                 }
             }
         }
-        return false;
+        //Gamemanager.Instance.pManager.CalculateRoundPoints(company, false);
     }
 }
 

@@ -33,6 +33,7 @@ public class HammerScript : NetworkBehaviour
             // Checks the company and the tile state
             if (touchedCube.TileOccupied && touchedCube.company == myData.company)
             {
+                Gamemanager.Instance.pManager.AddPoints(myData.company);
                 // Plays random block destroying sound
                 int randomSound = Random.Range(0, 3);
                 switch (randomSound)
