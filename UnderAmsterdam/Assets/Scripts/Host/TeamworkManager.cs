@@ -18,7 +18,7 @@ public class TeamworkManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        Gamemanager.Instance.RoundLateEnd.AddListener(EmptyTeamWork);
+        //Gamemanager.Instance.RoundLateEnd.AddListener(EmptyTeamWork);
     }
 
     private bool CheckFree(string company)
@@ -83,7 +83,9 @@ public class TeamworkManager : MonoBehaviour
     }
 
     private void EmptyTeamWork() {
+        if (_doneCompanies.Count > 1) 
         _doneCompanies.Clear();
+        if (_companyContracts.Count > 1)
         _companyContracts.Clear();
     }
 }
