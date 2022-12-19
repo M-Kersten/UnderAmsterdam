@@ -47,12 +47,6 @@ public class HandTileInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (handEnabled) {
-            if (!rig.IsLocalNetworkRig && other.gameObject.layer == 8) {
-                TeamworkManager.Instance.AddTeamWork(myPlayer.company, other.GetComponent<PlayerData>().company);
-                Debug.Log(myPlayer.company + " <3 " + other.GetComponent<PlayerData>().company);
-            }
-        }
         if (handEnabled)
         {
             if (!rig.IsLocalNetworkRig)
