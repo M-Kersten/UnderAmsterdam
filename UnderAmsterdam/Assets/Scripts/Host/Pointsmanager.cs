@@ -10,7 +10,7 @@ public class Pointsmanager : MonoBehaviour
     private int pipeplacepoint = 500;
     private int piperemovepoint = 200;
     private int victorypoints = 4000;
-    [SerializeField] private int bonusPoints = 2000;
+    private int bonusPoints = 2000;
     private float time;
     private bool roundWinner;
 
