@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 2029293101267887260}
   - component: {fileID: 2029293101267887261}
   - component: {fileID: 1150162312307650858}
-  - component: {fileID: -7997246501880354624}
   - component: {fileID: -4472651793590701330}
   m_Layer: 8
   m_Name: rock
@@ -141,22 +140,8 @@ MonoBehaviour:
     RawGuidValue: c6fe0222c7a766447a457b3d90bc7f67
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: -7997246501880354624}
   - {fileID: -4472651793590701330}
   SimulationBehaviours: []
---- !u!114 &-7997246501880354624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218248452795610559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed20898df713b57499474c3306732dfd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
 --- !u!114 &-4472651793590701330
 MonoBehaviour:
   m_ObjectHideFlags: 0
