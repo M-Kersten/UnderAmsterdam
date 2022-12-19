@@ -62,7 +62,7 @@
         "ConnectAttempts": 10,
         "ConnectInterval": 0.5,
         "ConnectionDefaultRtt": 0.1,
-        "ConnectionTimeout": 10.0,
+        "ConnectionTimeout": 1e99,
         "ConnectionPingInterval": 1.0,
         "ConnectionShutdownTime": 1.0,
         "MtuDefault": 1136,
@@ -155,7 +155,8 @@
     },
     "AssembliesToWeave": [
         "Assembly-CSharp",
-        "Assembly-CSharp-firstpass"
+        "Assembly-CSharp-firstpass",
+        "PhotonVoice.Fusion"
     ],
     "UseSerializableDictionary": true,
     "NullChecksForNetworkedProperties": true,
