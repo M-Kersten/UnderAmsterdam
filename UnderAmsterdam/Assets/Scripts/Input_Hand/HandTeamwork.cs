@@ -10,9 +10,13 @@ public class HandTeamwork : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 14 && other.gameObject.GetComponent<HandTeamwork>().myData.company != myData.company){ // Teamwork layer
-            if (TeamworkManager.Instance.AddTeamWork(myData.company, other.gameObject.GetComponent<HandTeamwork>().myData.company)) {
+        Debug.Log("MY COMPANY: " + myData.company);
+        Debug.Log("OTHER COMPANY: " + other.gameObject.GetComponent<HandTeamwork>().myData.company);
                 Debug.Log(myData.company + " <3 " + other.gameObject.GetComponent<HandTeamwork>().myData.company);
-            }
+
+            //if (TeamworkManager.Instance.AddTeamWork(myData.company, other.gameObject.GetComponent<HandTeamwork>().myData.company)) {
+            //    Debug.Log(myData.company + " <3 " + other.gameObject.GetComponent<HandTeamwork>().myData.company);
+            //}
         }
     }
 }
