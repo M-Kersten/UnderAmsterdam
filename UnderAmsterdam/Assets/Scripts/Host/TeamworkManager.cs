@@ -1,12 +1,14 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TeamworkManager : MonoBehaviour
 {
     public static TeamworkManager Instance;
-    private Dictionary<string, string> _companyContracts;
-    private Dictionary<string, bool> _doneCompanies;
+    private Dictionary<string, string> _companyContracts = new Dictionary<string, string>();
+    private Dictionary<string, bool> _doneCompanies = new Dictionary<string, bool>();
 
     private void Start()
     {
@@ -18,7 +20,7 @@ public class TeamworkManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        //Gamemanager.Instance.RoundLateEnd.AddListener(EmptyTeamWork);
+        Gamemanager.Instance.RoundLateEnd.AddListener(EmptyTeamWork);
     }
 
     private bool CheckFree(string company)
@@ -60,16 +62,6 @@ public class TeamworkManager : MonoBehaviour
         return null;
     }
 
-    void Update() {
-        if (Input.GetKeyDown("space")) {
-            foreach(var team in _companyContracts) 
-            {
-            Debug.Log("SIGNED CONTRACTS: " + team.Key + " " + team.Value);
-
-            }
-        }
-    }
-
     public void CheckTeamwork(string company)
     {
         // Show that I am done
@@ -78,14 +70,14 @@ public class TeamworkManager : MonoBehaviour
         if (_doneCompanies[CheckMyCompany(company)] && CheckMyCompany(company) != null)
         {
             // Add teamwork bonus to me
-            //Gamemanager.Instance.pManager.TeamworkBonus(company);
+            Gamemanager.Instance.pManager.TeamworkBonus(company);
         }
     }
 
-    private void EmptyTeamWork() {
-        if (_doneCompanies.Count > 1) 
-        _doneCompanies.Clear();
-        if (_companyContracts.Count > 1)
+    public void EmptyTeamWork()
+    {
+        // Empty all contracts
         _companyContracts.Clear();
+        _doneCompanies.Clear();
     }
 }
