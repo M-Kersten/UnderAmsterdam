@@ -72,6 +72,7 @@ public class TeamworkManager : MonoBehaviour
         if (_doneCompanies[CheckMyCompany(company)] && CheckMyCompany(company) != null)
         {
             // Add teamwork bonus to me
+            Debug.Log("BONUS TIME" );
             Gamemanager.Instance.pManager.TeamworkBonus(company);
         }
     }

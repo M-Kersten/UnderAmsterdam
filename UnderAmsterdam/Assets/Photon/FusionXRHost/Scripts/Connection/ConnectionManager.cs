@@ -54,8 +54,10 @@ namespace Fusion.XR.Host
             if (runner == null) runner = gameObject.AddComponent<NetworkRunner>();
             runner.ProvideInput = true;
 
-            if (Instance == null)
+            if (Instance == null) {
                 Instance = this;
+                DontDestroyOnLoad(this);
+            }
             else
                 Destroy(gameObject);
         }
