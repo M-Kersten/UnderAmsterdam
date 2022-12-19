@@ -8,7 +8,7 @@ public class PlayerData : NetworkBehaviour
 {
     [SerializeField] private GameObject playerCap;
     [SerializeField] private GameObject playerLeftHand, playerRightHand;
-    [SerializeField] private int startingPoints = 1000;
+    [SerializeField] private int startingPoints = 1500;
     [SerializeField] private WristMenu myMenu;
     private NetworkRig nRig;
 

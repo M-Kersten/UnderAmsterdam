@@ -56,7 +56,7 @@ public class ioScript : MonoBehaviour
         {
             outputPipes[i].StartPipeCheck();
         }
-        //CompanyManager.Instance.ResetCompanies();
+        CompanyManager.Instance.ResetCompanies();
     }
 
     private void AddPlayerOutputs()
@@ -66,7 +66,6 @@ public class ioScript : MonoBehaviour
         {
             foreach (var player in CompanyManager.Instance._companies)
             {
-                if (player.Value == PlayerRef.None) continue;
                 hasPlacedOutputs = true;
                 outputPipes.Add(PlaceIOPipe(player.Key, true));
             }
