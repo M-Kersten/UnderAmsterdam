@@ -15,6 +15,5 @@ public class Joinlobby : MonoBehaviour
         await connection.Connect();
 
         connection.runner.SetActiveScene(1);
-
     }
 }

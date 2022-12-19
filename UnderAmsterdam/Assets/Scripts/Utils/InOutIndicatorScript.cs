@@ -12,6 +12,7 @@ public class InOutIndicatorScript : MonoBehaviour
     private Vector3 startPos, forwardDir;
     public void InitializeIndicator(bool shouldBeOutput)
     {
+        Debug.Log("initializng indicator");
         LocalPlayer = GameObject.Find("LocalPlayer").gameObject;
         textObject.text = shouldBeOutput ? "OUT" : "IN";
         startPos = transform.position + new Vector3(0, heightOffset, 0);

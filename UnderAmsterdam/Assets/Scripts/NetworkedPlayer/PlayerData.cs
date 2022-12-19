@@ -25,11 +25,8 @@ public class PlayerData : NetworkBehaviour
     static void UpdatePlayer(Changed<PlayerData> changed)
     {
         ColourSystem color = ColourSystem.Instance;
-        Debug.Log("Setting player cap");
         color.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
-        Debug.Log("Setting left hand");
         color.SetColour(changed.Behaviour.playerLeftHand, changed.Behaviour.company);
-        Debug.Log("Setting right hand");
         color.SetColour(changed.Behaviour.playerRightHand, changed.Behaviour.company);
         changed.Behaviour.UpdateCompanyImage(changed.Behaviour.company);
     }
@@ -39,7 +36,6 @@ public class PlayerData : NetworkBehaviour
         if (nRig.IsLocalNetworkRig)
         {
             myMenu.ChangeImage(company);
-            Debug.Log("Setting watch");
             ColourSystem.Instance.SetColour(myMenu.topWatch, company);
         }
     }

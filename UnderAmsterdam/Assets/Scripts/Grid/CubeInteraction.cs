@@ -14,6 +14,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
     [SerializeField] private GameObject linePreview;
+    [SerializeField] private GameObject particles, particlesWin;
     private PipeColouring pColouring;
     private NetworkObject[] neighbors;
     private CubeInteraction[] neighborsScript;
@@ -203,6 +204,7 @@ public class CubeInteraction : NetworkBehaviour
         }
         company = "Empty";
 
+        Instantiate(particles, transform);
     }
     public void OnHandEnter(string playerCompany)
     {
@@ -370,37 +372,42 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    public void CheckConnectionForWin()
+    public bool CheckConnectionForWin()
     {
         // For each neighbor...
         for (int i = 0; i < neighbors.Length; i++)
         {
-            // if it's a normal tile...
             if (neighbors[i] != null) {
+                // if it's a normal tile...
                 if (neighborsScript[i] != null)
                 {
                     // from the same company and not checked yet...
                     if (company == neighborsScript[i].company && !neighborsScript[i].isChecked)
                     {
-                        // Verify its neighbor and mark it as checked.
+                        // Verify this neighbor and mark it as checked.
                         isChecked = true;
-                        neighborsScript[i].CheckConnectionForWin();
+                        if (neighborsScript[i].CheckConnectionForWin())
+                        {
+                            return true;
+                        }
+                        else return false;
                     }
                 }
                 // if it's an Output tile...
                 else if (neighbors[i].TryGetComponent(out IOTileScript IOPipe))
                 {
                     // from the same company and active and if it isnt output (aka where it came from)
-                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.round)
+                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.currentRound)
                     {
                         // Add points to this company
                         // Gamemanager.Instance.pManager.AddPoints(company.Key);
-                        // Check for teamwork
-                        // TeamworkManager.Instance.CheckTeamwork(company);
-                        return;
+                        Instantiate(particlesWin, transform);
+                        return true;
                     }
                 }
             }
         }
-    } 
+        return false;
+    }
 }
+
