@@ -64,10 +64,13 @@ public class TeamworkManager : MonoBehaviour
         return null;
     }
 
-    public void CheckTeamwork(string company)
-    {
-        // Show that I am done
+    public void CompanyDone(string company) {
         _doneCompanies.Add(company, true);
+        Debug.Log("company: " + company);
+    }
+
+    private void CheckTeamwork(string company)
+    {
         // Check if I had a contract and if my contract buddy is done
         if (_doneCompanies[CheckMyCompany(company)] && CheckMyCompany(company) != null)
         {
