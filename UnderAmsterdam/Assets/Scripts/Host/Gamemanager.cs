@@ -16,6 +16,7 @@ public class Gamemanager : MonoBehaviour
 
     [SerializeField] private Animator lPlayerAnimator;
     [SerializeField] private NetworkRunner runner;
+    public bool amIServer = Gamemanager.Instance.runner.IsServer;
 
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundCountDownTime = 3;

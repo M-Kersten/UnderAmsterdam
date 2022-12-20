@@ -9,6 +9,7 @@ public class TeamworkManager : MonoBehaviour
     public static TeamworkManager Instance;
     private Dictionary<string, string> _companyContracts = new Dictionary<string, string>();
     private Dictionary<string, bool> _doneCompanies = new Dictionary<string, bool>();
+    private bool host = Gamemanager.Instance.amIServer;
 
     private void Start()
     {
@@ -20,6 +21,7 @@ public class TeamworkManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        Gamemanager.Instance.RoundEnd.AddListener(CheckTeamwork);
         Gamemanager.Instance.RoundLateEnd.AddListener(EmptyTeamWork);
     }
 
@@ -52,7 +54,7 @@ public class TeamworkManager : MonoBehaviour
             // Am I the Key? Return the value, so we know who we worked with
             return _companyContracts[company];
         } else if(_companyContracts.ContainsValue(company))
-        { 
+        {
             // Am I the Value? Check what Key belongs to me and return that, so we know who we worked with
             foreach(var myCompany in _companyContracts)
             {
@@ -65,27 +67,30 @@ public class TeamworkManager : MonoBehaviour
     }
 
     public void CompanyDone(string company) {
-        _doneCompanies.Add(company, true);
-        Debug.Log("company: " + company);
+        if (host) {
+            _doneCompanies.Add(company, true);
+        }
     }
 
-    private void CheckTeamwork(string company)
+    private void CheckTeamwork()
     {
-        // Check if I had a contract and if my contract buddy is done
-        if (_doneCompanies[CheckMyCompany(company)] && CheckMyCompany(company) != null)
-        {
-            // Add teamwork bonus to me
-            Debug.Log("BONUS TIME" );
-            Gamemanager.Instance.pManager.TeamworkBonus(company);
+        if (_doneCompanies.Count > 1 && _doneCompanies != null && host) {
+            foreach(var company in _doneCompanies) { // go through all companies
+            // Check if other company is done
+                if(_doneCompanies[CheckMyCompany(company.Key)]){
+                    Debug.Log("BONUS TIME");
+                  Gamemanager.Instance.pManager.TeamworkBonus(company.Key);  
+                }
+            }
         }
     }
 
     public void EmptyTeamWork()
     {
         // Empty all contracts
-        if (_companyContracts.Count > 1)
+        if (_companyContracts.Count > 1 && _companyContracts != null && host)
         _companyContracts.Clear();
-        if (_doneCompanies.Count > 1)
+        if (_doneCompanies.Count > 1 && _doneCompanies != null && host)
         _doneCompanies.Clear();
     }
 }
