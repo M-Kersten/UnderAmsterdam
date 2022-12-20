@@ -36,6 +36,10 @@ public class Pointsmanager : MonoBehaviour
     public void TeamworkBonus(string company)
     {
         Debug.Log("ADDING BONUS TO: " + company);
+        foreach(var player in coach._spawnedUsers) {
+            Debug.Log("player: " + player.Key);
+            Debug.Log("nObject: " + player.Value);
+        }
         Debug.Log("nObject: " + coach._spawnedUsers[CompanyManager.Instance._companies[company]]);
         NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
         nObject.GetComponent<PlayerData>().points += bonusPoints;
