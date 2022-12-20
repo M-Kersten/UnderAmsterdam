@@ -87,12 +87,6 @@ namespace Fusion.XR.Host
             await runner.StartGame(args);
         }
 
-        void Update() {
-            if(Input.GetKeyDown("space"))
-                Debug.Log(runner.SessionInfo.PlayerCount);
-        }
-
-
         #region INetworkRunnerCallbacks
 
         public void OnSceneLoadDone(NetworkRunner runner) { 
