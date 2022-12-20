@@ -20,6 +20,7 @@ public class WristMenu : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI pointsText;
     [SerializeField] public GameObject topWatch;
+    [SerializeField] private GameObject goldParticles;
 
     private PlayerData myData;
 
@@ -57,5 +58,10 @@ public class WristMenu : MonoBehaviour
             if (companyIcons[i].name == company)
                 iconImage.GetComponent<Image>().sprite = companyIcons[i];
         }
+    }
+
+    public void winPoints(int wonPoints)
+    {
+        Instantiate(goldParticles, parentObject.transform).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+"+wonPoints.ToString();
     }
 }

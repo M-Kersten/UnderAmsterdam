@@ -6,7 +6,6 @@ using Fusion.XR.Host.Rig;
 
 public class PlayerData : NetworkBehaviour
 {
-    [SerializeField] private GameObject goldParticles;
     [SerializeField] private GameObject playerCap;
     [SerializeField] private GameObject playerLeftHand, playerRightHand;
     [SerializeField] private int startingPoints = 1500;
@@ -46,10 +45,5 @@ public class PlayerData : NetworkBehaviour
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
-    }
-
-    public void winPoints(int wonPoints)
-    {
-        //GameObject = Instantiate(goldParticles, transform);
     }
 }

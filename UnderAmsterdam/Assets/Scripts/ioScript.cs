@@ -56,7 +56,6 @@ public class ioScript : MonoBehaviour
         {
             outputPipes[i].StartPipeCheck();
         }
-        CompanyManager.Instance.ResetCompanies();
     }
 
     private void AddPlayerOutputs()
