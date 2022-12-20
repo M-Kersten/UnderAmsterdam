@@ -9,7 +9,7 @@ public class TeamworkManager : MonoBehaviour
     public static TeamworkManager Instance;
     private Dictionary<string, string> _companyContracts = new Dictionary<string, string>();
     private Dictionary<string, bool> _doneCompanies = new Dictionary<string, bool>();
-    private bool host = Gamemanager.Instance.amIServer;
+    private bool host;
 
     private void Start()
     {
@@ -37,6 +37,9 @@ public class TeamworkManager : MonoBehaviour
 
     public bool AddTeamWork(string company1, string company2)
     {
+        if (host == null) {
+            host = Gamemanager.Instance.amIServer;
+        }
         // if both players are free, add them into contracts
         if (CheckFree(company1) && CheckFree(company2))
         {
