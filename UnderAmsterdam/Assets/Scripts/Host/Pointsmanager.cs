@@ -6,7 +6,7 @@ using Fusion;
 
 public class Pointsmanager : MonoBehaviour
 {
-    private ConnectionManager coach;
+    [SerializeField] private ConnectionManager coach;
     private int pipeplacepoint = 500;
     private int piperemovepoint = 200;
     private int victorypoints = 4000;
@@ -35,6 +35,8 @@ public class Pointsmanager : MonoBehaviour
 
     public void TeamworkBonus(string company)
     {
+        Debug.Log("ADDING BONUS TO: " + company);
+        Debug.Log("nObject: " + coach._spawnedUsers[CompanyManager.Instance._companies[company]]);
         NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
         nObject.GetComponent<PlayerData>().points += bonusPoints;
     }
