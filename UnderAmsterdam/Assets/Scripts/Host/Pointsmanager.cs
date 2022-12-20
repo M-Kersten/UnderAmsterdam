@@ -13,22 +13,6 @@ public class Pointsmanager : MonoBehaviour
     private float time;
     private bool roundWinner;
 
-    void Update()
-    {
-        if (roundWinner)
-        {
-            if (time < victorypoints)
-                time += Time.deltaTime;
-        }
-
-                if(Input.GetKeyDown("space")) {
-        Debug.Log("spawned Users: ");
-        foreach(var player in ConnectionManager.Instance._spawnedUsers) {
-            Debug.Log("player: " + player.Key);
-            Debug.Log("nObject: " + player.Value);
-        }
-        }
-    }
     public void AddPoints(string company)
     {
         NetworkObject nObject = ConnectionManager.Instance._spawnedUsers[CompanyManager.Instance._companies[company]];

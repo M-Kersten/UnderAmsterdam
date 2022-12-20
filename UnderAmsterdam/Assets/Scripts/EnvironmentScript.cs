@@ -19,7 +19,7 @@ public class EnvironmentScript : NetworkBehaviour
         addedObjects = new List<NetworkObject>();
         runner = FindObjectOfType<NetworkRunner>();
         Gamemanager.Instance.GameStart.AddListener(spawnRock);
-        Gamemanager.Instance.GameEnd.AddListener(destroyRock);
+        //Gamemanager.Instance.GameEnd.AddListener(destroyRock);
     }
 
     private void Update()
