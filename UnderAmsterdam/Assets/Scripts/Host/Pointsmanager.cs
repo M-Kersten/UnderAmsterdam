@@ -39,8 +39,12 @@ public class Pointsmanager : MonoBehaviour
 
     public void CalculateRoundPoints(string company, bool hasCompleted)
     {
-        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-        if (hasCompleted) nObject.GetComponent<PlayerData>().points += victorypoints;
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+        if (hasCompleted)
+        {
+            player.points += victorypoints;
+            player.myMenu.winPoints(victorypoints);
+        }
         //nObject.GetComponent<PlayerData>().points -= (int)time*10;
     }
 }
