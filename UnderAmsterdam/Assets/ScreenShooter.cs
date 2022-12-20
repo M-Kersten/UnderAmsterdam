@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ScreenShooter : MonoBehaviour
 {
+    [SerializeField] private Camera myCamera;
+
     private void Start()
     {
         Gamemanager.Instance.GameEnd.AddListener(TakeScreenshot);
@@ -11,8 +13,14 @@ public class ScreenShooter : MonoBehaviour
 
     void TakeScreenshot()
     {
-        ScreenCapture.CaptureScreenshot("screenshot.png");
+        myCamera.targetTexture = RenderTexture.GetTemporary(1100, 555, 16);
+        Texture2D result = new Texture2D(myCamera.targetTexture.width, myCamera.targetTexture.height, TextureFormat.ARGB32, false);
+        Rect rect = new Rect(0, 0, myCamera.targetTexture.width, myCamera.targetTexture.height);
+        result.ReadPixels(rect, 0, 0);
+        byte[] byteArray = result.EncodeToPNG();
+        System.IO.File.WriteAllBytes(Application.dataPath + "/Screenshot.png", byteArray);
         Debug.Log("Screenshot taken");
+        //RenderTexture.ReleaseTemporary(myCamera.targetTexture);
     }
 
     private void Update()
