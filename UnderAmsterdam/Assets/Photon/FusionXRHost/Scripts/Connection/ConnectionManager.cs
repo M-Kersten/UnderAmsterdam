@@ -38,6 +38,10 @@ namespace Fusion.XR.Host
         [Header("Event")]
         public UnityEvent onWillConnect = new UnityEvent();
 
+        [SerializeField] private int maxPlayers = 5;
+        
+        
+
         // Dictionary of spawned user prefabs, to destroy them on disconnection
         public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
 
@@ -73,6 +77,8 @@ namespace Fusion.XR.Host
             {
                 GameMode = mode,
                 SessionName = roomName,
+                PlayerCount = maxPlayers,
+
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = sceneManager
             };
@@ -85,40 +91,40 @@ namespace Fusion.XR.Host
         public void OnSceneLoadDone(NetworkRunner runner) { 
             Vector3 tPosition;
             Quaternion tRotation;
-            if (_spawnedUsers.ContainsKey(runner.LocalPlayer)) {
-                GameObject lPlayer = _spawnedUsers[runner.LocalPlayer].gameObject.GetComponent<Fusion.XR.Host.Rig.NetworkRig>().hardwareRig.gameObject;
-            
+
+            if (Gamemanager.Instance.lPlayerCC) {            
                 // Turn off CharacterController, so we can teleport the player
-                lPlayer.GetComponent<CharacterController>().enabled = false;
+                Gamemanager.Instance.lPlayerCC.enabled = false;
 
                 switch (SceneManager.GetActiveScene().name) {
                     case "A2Lobby":
-                        tPosition = new Vector3(3.03f, -0.454f, 2.06f);
-                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
-                    
-                        lPlayer.transform.position = tPosition;
-                        lPlayer.transform.rotation = tRotation;
-                    break;
-                    case "A3Game": 
-                        tPosition = new Vector3(0, 1.417f, 0.323f);
-                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
-                    
-                        lPlayer.transform.position = tPosition;
-                        lPlayer.transform.rotation = tRotation;
-                    break;
-                    case "A4End":
-                        tPosition = new Vector3(0, 1.417f, 0);
+                        tPosition = new Vector3(7.864f, -1.92f, 3.792f);
                         tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     
-                        lPlayer.transform.position = tPosition;
-                        lPlayer.transform.rotation = tRotation;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
+                    break;
+                    case "A3Game": 
+                        tPosition = new Vector3(0.74f, -0.489f, 0.67f);
+                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                    
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
+                        Gamemanager.Instance.startGame = true;
+                    break;
+                    case "A4End":
+                        tPosition = new Vector3(0, 1f, 0);
+                        tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
+                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
                     break;
                     default:
                     // Do nothing
                     break;
                 }
             // Turn CharacterController back on, so player can move
-            lPlayer.GetComponent<CharacterController>().enabled = true;
+            Gamemanager.Instance.lPlayerCC.enabled = true;
             }
          }
 
@@ -127,11 +133,9 @@ namespace Fusion.XR.Host
             // The user's prefab has to be spawned by the host
             if (runner.IsServer)
             {
-                Debug.Log($"OnPlayerJoined {player.PlayerId}/Local id: ({runner.LocalPlayer.PlayerId})");
                 // We make sure to give the input authority to the connecting player for their user's object
                 NetworkObject networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => {
                 });
-
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);
@@ -149,7 +153,6 @@ namespace Fusion.XR.Host
             }
         }
         #endregion
-
 
         #region Unused INetworkRunnerCallbacks 
         public void OnConnectedToServer(NetworkRunner runner) { }
