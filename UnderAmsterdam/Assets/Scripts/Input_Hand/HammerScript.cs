@@ -5,6 +5,9 @@ using Fusion;
 
 public class HammerScript : NetworkBehaviour
 {
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip destroyingPipe1, destroyingPipe2, destroyingPipe3;
+
     [SerializeField] PlayerData myData;
     [SerializeField] private GameObject myHammer;
 
@@ -16,6 +19,7 @@ public class HammerScript : NetworkBehaviour
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         prevPosition = transform.position;
         InvokeRepeating("SavePosition", 0f, 0.1f);
     }
@@ -28,7 +32,24 @@ public class HammerScript : NetworkBehaviour
 
             // Checks the company and the tile state
             if (touchedCube.TileOccupied && touchedCube.company == myData.company)
+            {
+                // Plays random block destroying sound
+                int randomSound = Random.Range(0, 3);
+                switch (randomSound)
+                {
+                    case 0:
+                        audioSource.PlayOneShot(destroyingPipe1);
+                        break;
+                    case 1:
+                        audioSource.PlayOneShot(destroyingPipe2);
+                        break;
+                    case 2:
+                        audioSource.PlayOneShot(destroyingPipe3);
+                        break;
+                }
+
                 touchedCube.DisableTile();
+            }
         }
     }
 

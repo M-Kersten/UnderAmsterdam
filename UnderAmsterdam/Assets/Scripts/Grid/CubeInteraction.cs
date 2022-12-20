@@ -14,6 +14,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPart;
     [SerializeField] private GameObject connectorPartPreview;
     [SerializeField] private GameObject linePreview;
+    [SerializeField] private GameObject particles, particlesWin;
     private PipeColouring pColouring;
     private NetworkObject[] neighbors;
     private CubeInteraction[] neighborsScript;
@@ -35,6 +36,7 @@ public class CubeInteraction : NetworkBehaviour
     private bool isSpawned = false;
 
     public bool playerInside = false;
+    public bool obstructed = false;
     public bool isHover = false;
     private uint handHoverNumber = 0; // avoid enter/exit problem whith two hands
     public bool isChecked = false;
@@ -144,21 +146,26 @@ public class CubeInteraction : NetworkBehaviour
             }
         }
     }
-    [Tooltip("Should be activated before EnableTile()")]
-    public void UpdateCompany(string newCompany) {
-        company = newCompany;
-        pColouring.UpdateRenderer(company);
-    }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Rock"))
+            obstructed = true;
         if (other.CompareTag("Player"))
             playerInside = true;
     }
     private void OnTriggerExit(Collider other)
     {
+        if (other.CompareTag("Rock"))
+            obstructed = false;
         if (other.CompareTag("Player"))
             playerInside = false;
+    }
+
+    [Tooltip("Should be activated before EnableTile()")]
+    public void UpdateCompany(string newCompany) {
+        company = newCompany;
+        pColouring.UpdateRenderer(company);
     }
 
     public void EnableTile()
@@ -197,10 +204,11 @@ public class CubeInteraction : NetworkBehaviour
         }
         company = "Empty";
 
+        Instantiate(particles, transform);
     }
     public void OnHandEnter(string playerCompany)
     {
-        if (isSpawned && !playerInside && !TileOccupied)
+        if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
             isHover = true;
             handHoverNumber++;
@@ -211,7 +219,7 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void OnHandExit(string playerCompany)
     {
-        if (isSpawned && !TileOccupied)
+        if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
             //Stop the preview only when both hands are no more inside a tile
             if(true)
@@ -364,34 +372,42 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    public void CheckConnectionForWin()
+    public bool CheckConnectionForWin()
     {
         // For each neighbor...
         for (int i = 0; i < neighbors.Length; i++)
         {
-            // if it's a normal tile...
             if (neighbors[i] != null) {
+                // if it's a normal tile...
                 if (neighborsScript[i] != null)
                 {
                     // from the same company and not checked yet...
                     if (company == neighborsScript[i].company && !neighborsScript[i].isChecked)
                     {
-                        // Verify its neighbor and mark it as checked.
+                        // Verify this neighbor and mark it as checked.
                         isChecked = true;
-                        neighborsScript[i].CheckConnectionForWin();
+                        if (neighborsScript[i].CheckConnectionForWin())
+                        {
+                            return true;
+                        }
+                        else return false;
                     }
                 }
                 // if it's an Output tile...
                 else if (neighbors[i].TryGetComponent(out IOTileScript IOPipe))
                 {
                     // from the same company and active and if it isnt output (aka where it came from)
-                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput)
+                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.currentRound)
                     {
-                        WinLoseManager.Instance.AddInputTracker(company);
-                        return;
+                        // Add points to this company
+                        // Gamemanager.Instance.pManager.AddPoints(company.Key);
+                        Instantiate(particlesWin, transform);
+                        return true;
                     }
                 }
             }
         }
-    } 
+        return false;
+    }
 }
+

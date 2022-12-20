@@ -85,7 +85,7 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.19952111
+  - screenRelativeHeight: 0.0892373
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6499579172369857456}
@@ -107,7 +107,7 @@ LODGroup:
     - renderer: {fileID: 8568154178765094771}
     - renderer: {fileID: 6677355981094335472}
     - renderer: {fileID: 3015017480314333420}
-  - screenRelativeHeight: 0.19952111
+  - screenRelativeHeight: 0.0892373
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6801373107188293838}
@@ -117,7 +117,7 @@ LODGroup:
     - renderer: {fileID: 6653747869169583036}
     - renderer: {fileID: 5397062306358075203}
     - renderer: {fileID: 1558355647372016185}
-  - screenRelativeHeight: 0.10300999
+  - screenRelativeHeight: 0.047993112
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7468412960124391204}
@@ -133,7 +133,7 @@ LODGroup:
     - renderer: {fileID: 2756209397490390732}
     - renderer: {fileID: 8834661932521668190}
     - renderer: {fileID: 8720752831277609910}
-  - screenRelativeHeight: 0.033820637
+  - screenRelativeHeight: 0.028562251
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 6311912561452822326}
@@ -442,15 +442,18 @@ MonoBehaviour:
   _interpolationDataSource: 0
   PipePreview: {fileID: 4021521744409527741}
   PipeHolder: {fileID: 9066663096074062952}
-  neighbors: []
   connectorPart: {fileID: 4727706361188819431}
   connectorPartPreview: {fileID: 9054164455376291729}
   linePreview: {fileID: 4976049845006516312}
+  particles: {fileID: 3015758311105719085, guid: 7941efe4bde837d40a965000b1dc5d5e, type: 3}
+  particlesWin: {fileID: 8968066106114099241, guid: 9581265f5a266b64a9c580747c7ab860, type: 3}
   _TileOccupied: 0
   _company: Empty
   pipeParts: []
   previewPipeParts: []
   activatedPipes: 
+  playerInside: 0
+  obstructed: 0
   isHover: 0
   isChecked: 0
 --- !u!1 &5370217261044991784
@@ -1694,6 +1697,10 @@ PrefabInstance:
       value: Connector_98t
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7f37d774dc653034093c7f4cb9213ee4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f37d774dc653034093c7f4cb9213ee4, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -1779,6 +1786,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bca555bfd49da0d4399e06cba796c33c, type: 3}
       propertyPath: m_Name
       value: Connector_504t
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bca555bfd49da0d4399e06cba796c33c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bca555bfd49da0d4399e06cba796c33c, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -2340,6 +2351,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a72e53925f65e824582dbb2a24bccbc7, type: 3}
       propertyPath: m_Name
       value: Connector_300t
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a72e53925f65e824582dbb2a24bccbc7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a72e53925f65e824582dbb2a24bccbc7, type: 3}
       propertyPath: m_StaticEditorFlags

@@ -19,6 +19,9 @@ public class PlayerTestMove : MonoBehaviour
 
     void Start()
     {
+        // https://prnt.sc/FCTsqNJwEysf
+        DontDestroyOnLoad(this.gameObject);
+        
         character = GetComponent<CharacterController>();
         
         side = RigPart.RightController;

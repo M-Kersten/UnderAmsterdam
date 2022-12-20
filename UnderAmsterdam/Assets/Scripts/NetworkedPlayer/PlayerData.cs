@@ -7,24 +7,27 @@ using Fusion.XR.Host.Rig;
 public class PlayerData : NetworkBehaviour
 {
     [SerializeField] private GameObject playerCap;
+    [SerializeField] private GameObject playerLeftHand, playerRightHand;
     [SerializeField] private int startingPoints = 1000;
     [SerializeField] private WristMenu myMenu;
-    [SerializeField] private NetworkObject scoreBoard;
-    private ScoreBoard scoreBoardScript;
     private NetworkRig nRig;
 
     [Networked(OnChanged = nameof(UpdatePlayer))]
     public string company { get; set; }
 
-    [Networked] public int points {get; set;}
+    [Networked] public int points { get; set; }
 
-    public void ReceiveCompany(string givenCompany) {
+    public void ReceiveCompany(string givenCompany)
+    {
         company = givenCompany;
     }
 
     static void UpdatePlayer(Changed<PlayerData> changed)
     {
-        ColourSystem.Instance.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
+        ColourSystem color = ColourSystem.Instance;
+        color.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
+        color.SetColour(changed.Behaviour.playerLeftHand, changed.Behaviour.company);
+        color.SetColour(changed.Behaviour.playerRightHand, changed.Behaviour.company);
         changed.Behaviour.UpdateCompanyImage(changed.Behaviour.company);
     }
 
@@ -36,19 +39,11 @@ public class PlayerData : NetworkBehaviour
             ColourSystem.Instance.SetColour(myMenu.topWatch, company);
         }
     }
-    void Start()
+    private void Start()
     {
-        Gamemanager.Instance.RoundStart.AddListener(SendPlayerData);
+        DontDestroyOnLoad(this.gameObject);
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
-
-        scoreBoard = FindObjectOfType<NetworkRunner>().Spawn(scoreBoard, new Vector3(0, -10f, 0));
-        scoreBoardScript = scoreBoard.GetComponent<ScoreBoard>();
-    }
-
-    private void SendPlayerData()
-    {
-        scoreBoardScript.SendPlayerData(this);
     }
 }
