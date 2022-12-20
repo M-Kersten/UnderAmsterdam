@@ -13,9 +13,9 @@ public class ScreenShooter : MonoBehaviour
 
     void TakeScreenshot()
     {
-        myCamera.targetTexture = RenderTexture.GetTemporary(1100, 555, 16);
+        myCamera.targetTexture = RenderTexture.GetTemporary(550, 550, 16);
         Texture2D result = new Texture2D(myCamera.targetTexture.width, myCamera.targetTexture.height, TextureFormat.ARGB32, false);
-        Rect rect = new Rect(0, 0, myCamera.targetTexture.width, myCamera.targetTexture.height);
+        Rect rect = new Rect(275, 20, myCamera.targetTexture.width, myCamera.targetTexture.height);
         result.ReadPixels(rect, 0, 0);
         byte[] byteArray = result.EncodeToPNG();
         System.IO.File.WriteAllBytes(Application.dataPath + "/Screenshot.png", byteArray);
