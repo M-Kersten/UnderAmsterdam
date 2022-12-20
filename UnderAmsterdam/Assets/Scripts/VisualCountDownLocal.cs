@@ -8,10 +8,13 @@ public class VisualCountDownLocal : MonoBehaviour
 
     [SerializeField] private AudioClip countDown, countDownStart;
     [SerializeField] private TextMeshProUGUI counter;
+    [SerializeField] private GameObject gameOverObject;
+    private bool shouldGameOverBeOn = false;
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         Gamemanager.Instance.CountDownStart.AddListener(delegate { StartCoroutine(StartLocalCountDown()); } );
+        Gamemanager.Instance.GameEnd.AddListener(ToggleDisplayGameOverText);
     }
 
     private IEnumerator StartLocalCountDown()
@@ -30,5 +33,10 @@ public class VisualCountDownLocal : MonoBehaviour
         audioSource.PlayOneShot(countDownStart);
         yield return new WaitForSeconds(1);
         counter.gameObject.SetActive(false);
+    }
+    private void ToggleDisplayGameOverText()
+    {
+        shouldGameOverBeOn = !shouldGameOverBeOn;
+        gameOverObject.SetActive(shouldGameOverBeOn);
     }
 }
