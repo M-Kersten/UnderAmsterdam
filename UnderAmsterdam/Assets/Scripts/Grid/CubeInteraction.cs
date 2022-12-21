@@ -372,7 +372,9 @@ public class CubeInteraction : NetworkBehaviour
                 pipeParts[i].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                 pipeParts[i].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
                 pipeParts[i].transform.GetChild(2).transform.GetChild(0).gameObject.SetActive(true);
-                pipeParts[i].transform.GetChild(3).transform.GetChild(1).gameObject.SetActive(true);
+                pipeParts[i].transform.GetChild(2).transform.GetChild(1).gameObject.SetActive(true);
+                pipeParts[i].transform.GetChild(3).transform.GetChild(0).gameObject.SetActive(true);
+                pipeParts[i].transform.GetChild(3).transform.GetChild(2).gameObject.SetActive(true);
             }
         }else
         {
@@ -381,14 +383,18 @@ public class CubeInteraction : NetworkBehaviour
                 pipeParts[isLinePipe].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                 pipeParts[isLinePipe].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
                 pipeParts[isLinePipe].transform.GetChild(2).transform.GetChild(0).gameObject.SetActive(false);
-                pipeParts[isLinePipe].transform.GetChild(3).transform.GetChild(1).gameObject.SetActive(false);
+                pipeParts[isLinePipe].transform.GetChild(2).transform.GetChild(1).gameObject.SetActive(false);
+                pipeParts[isLinePipe].transform.GetChild(3).transform.GetChild(0).gameObject.SetActive(false);
+                pipeParts[isLinePipe].transform.GetChild(3).transform.GetChild(2).gameObject.SetActive(false);
             }
             if (neighborsScript[GetOppositeFace(isLinePipe)] != null)
             {
                 pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
                 pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(false);
                 pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(2).transform.GetChild(0).gameObject.SetActive(false);
-                pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(3).transform.GetChild(1).gameObject.SetActive(false);
+                pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(2).transform.GetChild(1).gameObject.SetActive(false);
+                pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(3).transform.GetChild(0).gameObject.SetActive(false);
+                pipeParts[GetOppositeFace(isLinePipe)].transform.GetChild(3).transform.GetChild(2).gameObject.SetActive(false);
             }
         }
     }

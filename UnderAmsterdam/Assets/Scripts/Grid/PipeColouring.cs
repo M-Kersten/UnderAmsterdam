@@ -29,11 +29,11 @@ public class PipeColouring : MonoBehaviour
                     ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(0).transform.GetChild(1).gameObject, pipeCompany);
                     ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(0).transform.GetChild(2).gameObject, pipeCompany);
 
-                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(2).transform.GetChild(0).gameObject, pipeCompany);
                     ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(2).transform.GetChild(1).gameObject, pipeCompany);
+                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(2).transform.GetChild(2).gameObject, pipeCompany);
 
-                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(3).transform.GetChild(0).gameObject, pipeCompany);
                     ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(3).transform.GetChild(1).gameObject, pipeCompany);
+                    ColourSystem.Instance.SetColour(selectedChild.transform.GetChild(3).transform.GetChild(2).gameObject, pipeCompany);
 
                 }
             }
