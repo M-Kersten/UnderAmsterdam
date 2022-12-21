@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class ScreenShooter : MonoBehaviour
 {
@@ -8,23 +9,34 @@ public class ScreenShooter : MonoBehaviour
 
     private void Start()
     {
+        myCamera.enabled = false;
         Gamemanager.Instance.GameEnd.AddListener(TakeScreenshot);
     }
 
     void TakeScreenshot()
     {
-        myCamera.targetTexture = RenderTexture.GetTemporary(550, 500, 16);
-        Texture2D result = new Texture2D(myCamera.targetTexture.width, myCamera.targetTexture.height, TextureFormat.ARGB32, false);
-        Rect rect = new Rect(250, 0, myCamera.targetTexture.width, myCamera.targetTexture.height);
-        result.ReadPixels(rect, 0, 0);
-        byte[] byteArray = result.EncodeToPNG();
-        System.IO.File.WriteAllBytes(Application.dataPath + "/Screenshot.png", byteArray);
+        StartCoroutine(RenderScreenshot());
+    }
+
+    IEnumerator RenderScreenshot()
+    {
+        yield return new WaitForEndOfFrame();
+
+        RenderTexture screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
+        myCamera.targetTexture = screenTexture;
+        RenderTexture.active = screenTexture;
+        myCamera.Render();
+        Texture2D renderedTexture = new Texture2D(550, 515);
+        renderedTexture.ReadPixels(new Rect(250, 0, 550, 515), 0, 0);
+        RenderTexture.active = null;
+        byte[] byteArray = renderedTexture.EncodeToPNG();
+        System.IO.File.WriteAllBytes(Application.dataPath + "/Textures/TopDownCapture.png", byteArray);
         Debug.Log("Screenshot taken");
-        //RenderTexture.ReleaseTemporary(myCamera.targetTexture);
+        AssetDatabase.Refresh();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown("space")) TakeScreenshot();
+        if (Input.GetKeyDown("space")) StartCoroutine(RenderScreenshot());
     }
 }

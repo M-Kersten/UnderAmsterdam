@@ -180,6 +180,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: face5e383eb29854cb7512ffffbdc98d, type: 3}
+--- !u!20 &164753325 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8439811098364466049, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+  m_PrefabInstance: {fileID: 237274402}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &205631123
 GameObject:
   m_ObjectHideFlags: 0
@@ -2184,11 +2189,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3711269286381758567, guid: fc2a274f9aa9a8c4fb6f3344dd3755d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3711269286381758567, guid: fc2a274f9aa9a8c4fb6f3344dd3755d1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.15
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3711269286381758567, guid: fc2a274f9aa9a8c4fb6f3344dd3755d1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2218,6 +2223,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3711269286381758584, guid: fc2a274f9aa9a8c4fb6f3344dd3755d1, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 164753325}
     - target: {fileID: 3711269286381758587, guid: fc2a274f9aa9a8c4fb6f3344dd3755d1, type: 3}
       propertyPath: m_Name
       value: TopDownCamera
