@@ -28,8 +28,9 @@ public class Pointsmanager : MonoBehaviour
     }
     public void AddPoints(string company)
     {
-        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-        nObject.GetComponent<PlayerData>().points += piperemovepoint;
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+        player.points += piperemovepoint;
+        player.myMenu.winPoints(piperemovepoint, false);
     }
     public void RemovePoints(string company)
     {
@@ -43,7 +44,7 @@ public class Pointsmanager : MonoBehaviour
         if (hasCompleted)
         {
             player.points += victorypoints;
-            player.myMenu.winPoints(victorypoints);
+            player.myMenu.winPoints(victorypoints, true);
         }
         //nObject.GetComponent<PlayerData>().points -= (int)time*10;
     }

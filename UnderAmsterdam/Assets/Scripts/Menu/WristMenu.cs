@@ -21,6 +21,7 @@ public class WristMenu : MonoBehaviour
     private TextMeshProUGUI pointsText;
     [SerializeField] public GameObject topWatch;
     [SerializeField] private GameObject goldParticles;
+    [SerializeField] private GameObject goldParticlesTiny;
 
     private PlayerData myData;
 
@@ -60,8 +61,9 @@ public class WristMenu : MonoBehaviour
         }
     }
 
-    public void winPoints(int wonPoints)
+    public void winPoints(int wonPoints, bool isChecked)
     {
-        Instantiate(goldParticles, parentObject.transform).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+"+wonPoints.ToString();
+        if (isChecked) Instantiate(goldParticles, parentObject.transform).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+"+wonPoints.ToString();
+        else Instantiate(goldParticlesTiny, parentObject.transform).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+" + wonPoints.ToString();
     }
 }
