@@ -12,7 +12,7 @@ public class CubeInteraction : NetworkBehaviour
 
     [SerializeField] private Transform PipePreview, PipeHolder;
     [SerializeField] private GameObject connectorPart;
-    [SerializeField] private GameObject connectorPartPreview;
+    [SerializeField] private GameObject connectorPartPreview, redDot;
     [SerializeField] private GameObject linePreview;
     [SerializeField] private GameObject particles, particlesWin;
     private PipeColouring pColouring;
@@ -37,8 +37,6 @@ public class CubeInteraction : NetworkBehaviour
 
     public bool playerInside = false;
     public bool obstructed = false;
-    public bool isHover = false;
-    private uint handHoverNumber = 0; // avoid enter/exit problem whith two hands
     public bool isChecked = false;
 
     void Start() {
@@ -147,6 +145,31 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
+    //Checks if each neighbor is compatible with player's company
+    public bool VerifyRules(string pCompany)
+    {
+        if (pCompany == "Empty") return true;
+
+        for (int i = 0; i < neighborsScript.Length; i++)
+        {
+            if (neighborsScript[i] == null || neighborsScript[i].company == "Empty") continue;
+            if
+            (//Incompatible company pairs
+                AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "power") ||
+                AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "data") ||
+                AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "gas") ||
+                AreMatchingPairs(pCompany, neighborsScript[i].company, "power", "gas")
+            ) return false;
+        }
+        
+        return true;
+    }
+
+    private bool AreMatchingPairs(string playerCompany, string neighborCompany, string companyA, string companyB)
+    {
+        return (playerCompany == companyA && neighborCompany == companyB || playerCompany == companyB && neighborCompany == companyA);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Rock"))
@@ -210,11 +233,13 @@ public class CubeInteraction : NetworkBehaviour
     {
         if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
-            isHover = true;
-            handHoverNumber++;
-
-            UpdateNeighborData(true , playerCompany);
-            OnRenderPipePreview(true);
+            if (VerifyRules(playerCompany))
+            {
+                UpdateNeighborData(true, playerCompany);
+                OnRenderPipePreview(true);
+            }
+            else redDot.SetActive(true);
+            
         }
     }
     public void OnHandExit(string playerCompany)
@@ -222,12 +247,8 @@ public class CubeInteraction : NetworkBehaviour
         if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
             //Stop the preview only when both hands are no more inside a tile
-            if(true)
-            {
-                isHover = false;
-                OnRenderPipePreview(false);
-            }
-            handHoverNumber--;
+            if(VerifyRules(playerCompany)) OnRenderPipePreview(false);
+            else redDot.SetActive(false);
         }
     }
 
