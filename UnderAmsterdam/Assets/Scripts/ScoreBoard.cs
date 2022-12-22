@@ -13,7 +13,7 @@ public class ScoreBoard : NetworkBehaviour
     [Networked(OnChanged = nameof(onSharedData))]
     private PlayerData sharedPlayer { get; set; }
 
-    private Dictionary<string, int> rankDict;
+    public Dictionary<string, int> rankDict;
 
     private int round = 0;
 
