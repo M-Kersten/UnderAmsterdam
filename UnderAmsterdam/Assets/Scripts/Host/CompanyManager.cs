@@ -25,7 +25,7 @@ public class CompanyManager : MonoBehaviour
         else
             Destroy(this);
             
-        Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
+        Gamemanager.Instance.RoundLateEnd.AddListener(ResetCompanies);
         Gamemanager.Instance.RoundStart.AddListener(loadSend);
         _companies = new Dictionary<string, PlayerRef> {
     {"water", emptyPlayer},

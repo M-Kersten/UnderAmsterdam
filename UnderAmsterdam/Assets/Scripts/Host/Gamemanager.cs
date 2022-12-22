@@ -8,7 +8,7 @@ public class Gamemanager : MonoBehaviour
 {
     public static Gamemanager Instance;
 
-    public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
+    public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd, GameOver;
     public PlayerData localPlayerData;
     public CharacterController lPlayerCC;
     
@@ -97,6 +97,7 @@ public class Gamemanager : MonoBehaviour
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
         SceneSwitch(3); //EndGame scene
+        GameOver.Invoke();
     }
     private IEnumerator PreRoundCountDown()
     {
