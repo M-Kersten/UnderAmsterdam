@@ -61,11 +61,14 @@ public class Gamemanager : MonoBehaviour
     private void OnGameStart()
     {
         GameStart.Invoke();
+        Debug.Log("GAMEMANAGER: ON GAME START");
         OnCountDownStart();
     }
     private void OnCountDownStart()
     {
         CountDownStart.Invoke();
+        Debug.Log("GAMEMANAGER: ON COUNTDOWN START");
+
         lPlayerCC.enabled = false;
         StartCoroutine(PreRoundCountDown());
     }
@@ -73,23 +76,31 @@ public class Gamemanager : MonoBehaviour
     {
         CountDownEnd.Invoke();
         lPlayerCC.enabled = true;
+        Debug.Log("GAMEMANAGER: ON COUNT DOWN END");
+
         OnRoundStart();
     }
     private void OnRoundStart()
     {
         RoundStart.Invoke();
+        Debug.Log("GAMEMANAGER: ON ROUND START");
+
         timer.SetTimer(roundTime);
         currentRound++;
     }
     private void OnRoundEnd()
     {
         RoundEnd.Invoke();
+        Debug.Log("GAMEMANAGER: ON ROUND END");
+
         roundTime += roundTimeIncrease;
         OnRoundLateEnd();
     }
     private void OnRoundLateEnd()
     {
         RoundLateEnd.Invoke();
+        Debug.Log("GAMEMANAGER: ON ROUND LATE END");
+
 
         if (currentRound < amountOfRounds)
             OnCountDownStart();
@@ -99,6 +110,8 @@ public class Gamemanager : MonoBehaviour
     private IEnumerator OnGameEnd()
     {
         GameEnd.Invoke();
+        Debug.Log("GAMEMANAGER: ON GAME END");
+
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
         SceneSwitch(3); //EndGame scene
