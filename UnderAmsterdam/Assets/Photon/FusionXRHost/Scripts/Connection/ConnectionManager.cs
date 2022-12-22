@@ -21,6 +21,7 @@ namespace Fusion.XR.Host
     {
 
         public static ConnectionManager Instance;
+        public UnityEvent A4Loaded;
 
         [Header("Room configuration")]
         public GameMode mode = GameMode.AutoHostOrClient;
@@ -113,11 +114,7 @@ namespace Fusion.XR.Host
                         Gamemanager.Instance.startGame = true;
                     break;
                     case "A4End":
-                        tPosition = new Vector3(0, 1f, 0);
-                        tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                    
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
+                        A4Loaded.Invoke();
                     break;
                     default:
                     // Do nothing

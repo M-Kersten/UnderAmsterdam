@@ -38,7 +38,7 @@ public class ScoreBoard : NetworkBehaviour
             if (perRound) Gamemanager.Instance.RoundStart.AddListener(GetStartPoints);
             Gamemanager.Instance.RoundEnd.AddListener(UpdateLeaderBoard);
             Gamemanager.Instance.GameEnd.AddListener(dontDestroy);
-            Gamemanager.Instance.GameOver.AddListener(warpPlayers);
+            ConnectionManager.Instance.A4Loaded.AddListener(warpPlayers);
         }
     }
 
@@ -105,11 +105,11 @@ public class ScoreBoard : NetworkBehaviour
 
     void warpPlayers()
     {
-
-        StartCoroutine(dd());
-
         NetworkObject nObject;
 
+        //Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(0f, 3f, 5.5f);
+        //Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
+        
         if (rankDict.Count == 0) return;
 
         nObject = cManager._spawnedUsers[savedCompanies[rankDict.ElementAt(0).Key]];
