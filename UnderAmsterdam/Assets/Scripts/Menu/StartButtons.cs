@@ -3,16 +3,24 @@ using System.Collections;
 using UnityEngine;
 using Fusion;
 
-public class StartButtons : MonoBehaviour
+public class StartButtons : NetworkBehaviour
 {
     private int totalPressed;
     [SerializeField] private int sceneIndex = 1;
     [SerializeField] private Animation Clip;
     [SerializeField] GameObject lobby;
+    private ConnectionManager cManager;
     private NetworkRunner runner;
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    void RPC_SwitchScene()
+    {
+        StartCoroutine(SwitchingScene());
+    }
 
     void Start() {
         runner = FindObjectOfType<NetworkRunner>();
+        cManager = FindObjectOfType<ConnectionManager>();
     }
 
     public void ButtonStatus(bool pressed)
@@ -22,9 +30,9 @@ public class StartButtons : MonoBehaviour
         else
             totalPressed--;
 
-        if (totalPressed == runner.SessionInfo.PlayerCount)
+        if (HasStateAuthority && totalPressed == cManager._spawnedUsers.Count)
         {
-            StartCoroutine(SwitchingScene());
+            RPC_SwitchScene();
             if (runner.IsServer)
                 runner.SessionInfo.IsOpen = false;
 

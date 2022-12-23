@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8741686586304934641}
   - component: {fileID: 8741686586304934654}
   - component: {fileID: 8741686586304934655}
-  - component: {fileID: 8741686586304934652}
+  - component: {fileID: 7855054738519761893}
   m_Layer: 7
   m_Name: Collider
   m_TagString: Untagged
@@ -160,7 +160,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &8741686586304934652
+--- !u!114 &7855054738519761893
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -169,28 +169,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8741686586304934650}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 593d3ac6e08f4468b819285084eac4dd, type: 3}
+  m_Script: {fileID: 11500000, guid: afa0b16014d59984d937527f82630e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 8741686586947151940}
-  onPress:
+  sound: {fileID: 8741686586304934655}
+  redMaterial: {fileID: 2100000, guid: b315fae4cd5ec4e17afda69728d70a06, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 9962dd93e7f24d147aaeeb0a2f7ee3c1, type: 2}
+  onReady:
     m_PersistentCalls:
       m_Calls: []
-  onRelease:
+  onNotReady:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8741686586304934652}
-        m_TargetAssemblyTypeName: ButtonVR, Assembly-CSharp
-        m_MethodName: SpawnSphere
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &8741686586608083300
 GameObject:
   m_ObjectHideFlags: 0
