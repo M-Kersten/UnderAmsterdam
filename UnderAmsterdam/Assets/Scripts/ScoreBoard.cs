@@ -11,8 +11,9 @@ public class ScoreBoard : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI roundTMP;
     [SerializeField] private ConnectionManager cManager;
     [SerializeField] private bool perRound;
+    [SerializeField] private NetworkObject localUser;
 
-    public Dictionary<string, int> rankDict;
+    private Dictionary<string, int> rankDict;
     private Dictionary<string, PlayerRef> savedCompanies;
     private int[] startPoints;
     private int round = 0;
@@ -20,7 +21,7 @@ public class ScoreBoard : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_SendData(PlayerData player, int startPoint)
     {
-        rankDict.Add(player.company, player.points - startPoint);
+        rankDict.Add(player.company, player.points - startPoint + rankDict.Count);
     }
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_DisplayData()
@@ -28,23 +29,23 @@ public class ScoreBoard : NetworkBehaviour
         round++;
         DisplayLeaderBoard();
     }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    void RPC_DontDestroy()
+    {
+        if (round == 1)
+            DontDestroyOnLoad(gameObject);
+    }
 
     public override void Spawned()
     {
-
         cManager = FindObjectOfType<ConnectionManager>();
         if (HasStateAuthority)
         {
             if (perRound) Gamemanager.Instance.RoundStart.AddListener(GetStartPoints);
             Gamemanager.Instance.RoundEnd.AddListener(UpdateLeaderBoard);
-            Gamemanager.Instance.GameEnd.AddListener(dontDestroy);
+            Gamemanager.Instance.RoundEnd.AddListener(RPC_DontDestroy);
             ConnectionManager.Instance.A4Loaded.AddListener(warpPlayers);
         }
-    }
-
-    void dontDestroy()
-    {
-        DontDestroyOnLoad(gameObject);
     }
 
     // Start is called before the first frame update
@@ -105,28 +106,39 @@ public class ScoreBoard : NetworkBehaviour
 
     void warpPlayers()
     {
-        NetworkObject nObject;
-
-        //Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(0f, 3f, 5.5f);
-        //Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
-        
+        PlayerRef pRef = cManager.networkPlayerObject.InputAuthority;
+        Debug.Log(rankDict.Count);
         if (rankDict.Count == 0) return;
 
-        nObject = cManager._spawnedUsers[savedCompanies[rankDict.ElementAt(0).Key]];
-        nObject.gameObject.transform.position = new Vector3(0f, 3f, 5.5f);
-        nObject.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
-
+        if (pRef == savedCompanies[rankDict.ElementAt(rankDict.Count - 1).Key])
+        {
+            Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(0f, 2.5f, 5.5f);
+            Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
+            return;
+        }
+        
         if (rankDict.Count == 1) return;
 
-        nObject = cManager._spawnedUsers[savedCompanies[rankDict.ElementAt(1).Key]];
-        nObject.gameObject.transform.position = new Vector3(-2.5f, 2.5f, 4.5f);
-        nObject.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
+        if (pRef == savedCompanies[rankDict.ElementAt(rankDict.Count - 2).Key])
+        {
+            Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(-2.5f, 2f, 4.5f);
+            Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
+            return;
+        }
 
         if (rankDict.Count == 2) return;
 
-        nObject = cManager._spawnedUsers[savedCompanies[rankDict.ElementAt(2).Key]];
-        nObject.gameObject.transform.position = new Vector3(2f, 2.5f, 3.5f);
-        nObject.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
+        if (pRef == savedCompanies[rankDict.ElementAt(rankDict.Count - 3).Key])
+        {
+            Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(2f, 2f, 3.5f);
+            Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
+            return;
+        }
+
+        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(0, 1f, 0);
+        Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+
     }
+
 
 }
