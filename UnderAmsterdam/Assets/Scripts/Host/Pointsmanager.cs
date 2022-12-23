@@ -6,6 +6,8 @@ using Fusion;
 
 public class Pointsmanager : MonoBehaviour
 {
+    [SerializeField] private LeaderBoardCanvas leaderBoard;
+
     private ConnectionManager coach;
     private int pipeplacepoint = 40;
     private int piperemovepoint = 20;
@@ -30,12 +32,13 @@ public class Pointsmanager : MonoBehaviour
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += piperemovepoint;
-        player.myMenu.winPoints(piperemovepoint, false);
+        player.myMenu.winPoints(piperemovepoint);
     }
     public void RemovePoints(string company)
     {
-        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-        nObject.GetComponent<PlayerData>().points -= pipeplacepoint;
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+        player.points -= pipeplacepoint;
+        //RemovePointPopup() should be added here
     }
 
     public void CalculateRoundPoints(string company, bool hasCompleted)
@@ -44,8 +47,7 @@ public class Pointsmanager : MonoBehaviour
         if (hasCompleted)
         {
             player.points += victorypoints;
-            player.myMenu.winPoints(victorypoints, true);
+            player.myMenu.winPoints(victorypoints);
         }
-        //nObject.GetComponent<PlayerData>().points -= (int)time*10;
     }
 }
