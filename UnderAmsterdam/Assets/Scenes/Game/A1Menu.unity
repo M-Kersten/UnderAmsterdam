@@ -406,6 +406,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 670047183, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8439811097757408637, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -749,7 +753,7 @@ PrefabInstance:
       objectReference: {fileID: 1500614363}
     - target: {fileID: 5176870935982106718, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: roundTime
-      value: 45
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5176870935982106718, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: amountOfRounds
@@ -765,7 +769,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5176870935982106718, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: roundTimeIncrease
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}

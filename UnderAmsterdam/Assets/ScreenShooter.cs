@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class ScreenShooter : MonoBehaviour
 {
     [SerializeField] private Camera myCamera;
+    [SerializeField] private Material myMaterial;
 
     private void Start()
     {
@@ -29,10 +29,11 @@ public class ScreenShooter : MonoBehaviour
         Texture2D renderedTexture = new Texture2D(550, 515);
         renderedTexture.ReadPixels(new Rect(250, 0, 550, 515), 0, 0);
         RenderTexture.active = null;
+        myMaterial.SetTexture("_MainTex", (Texture)renderedTexture);
+        /*
         byte[] byteArray = renderedTexture.EncodeToPNG();
         System.IO.File.WriteAllBytes(Application.dataPath + "/Textures/TopDownCapture.png", byteArray);
-        Debug.Log("Screenshot taken");
-        AssetDatabase.Refresh();
+        Debug.Log("Screenshot taken");*/
     }
 
     private void Update()
