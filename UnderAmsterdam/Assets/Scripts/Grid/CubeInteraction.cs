@@ -153,11 +153,13 @@ public class CubeInteraction : NetworkBehaviour
         for (int i = 0; i < neighborsScript.Length; i++)
         {
             if (neighborsScript[i] == null || neighborsScript[i].company == "Empty") continue;
-            if
-            (//Incompatible company pairs
+            if (//Incompatible company pairs, add more to implement more rules
                 AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "power") ||
                 AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "data") ||
-                AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "gas") ||
+                AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "sewage") ||
+                AreMatchingPairs(pCompany, neighborsScript[i].company, "power", "sewage") ||
+                AreMatchingPairs(pCompany, neighborsScript[i].company, "data", "sewage") ||
+                AreMatchingPairs(pCompany, neighborsScript[i].company, "data", "gas") ||
                 AreMatchingPairs(pCompany, neighborsScript[i].company, "power", "gas")
             ) return false;
         }
