@@ -9,6 +9,7 @@ public class ScreenShooter : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
         myCamera.enabled = false;
         Gamemanager.Instance.GameEnd.AddListener(TakeScreenshot);
     }
@@ -22,18 +23,11 @@ public class ScreenShooter : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
 
-        RenderTexture screenTexture = new RenderTexture(Screen.width, Screen.height, 16);
+        RenderTexture screenTexture = new RenderTexture(550, 515, 16);
         myCamera.targetTexture = screenTexture;
         RenderTexture.active = screenTexture;
         myCamera.Render();
-        Texture2D renderedTexture = new Texture2D(550, 515);
-        renderedTexture.ReadPixels(new Rect(250, 0, 550, 515), 0, 0);
-        RenderTexture.active = null;
-        myMaterial.SetTexture("_MainTex", (Texture)renderedTexture);
-        /*
-        byte[] byteArray = renderedTexture.EncodeToPNG();
-        System.IO.File.WriteAllBytes(Application.dataPath + "/Textures/TopDownCapture.png", byteArray);
-        Debug.Log("Screenshot taken");*/
+        myMaterial.mainTexture = screenTexture;
     }
 
     private void Update()
