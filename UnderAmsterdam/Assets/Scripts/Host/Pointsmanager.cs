@@ -9,7 +9,7 @@ public class Pointsmanager : MonoBehaviour
     [SerializeField] private LeaderBoardCanvas leaderBoard;
 
     private ConnectionManager coach;
-    private int pipeplacepoint = 40;
+    private int pipeplacepoint = -40;
     private int piperemovepoint = 20;
     private int victorypoints = 400;
     private float time;
@@ -32,13 +32,13 @@ public class Pointsmanager : MonoBehaviour
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += piperemovepoint;
-        player.myMenu.winPoints(piperemovepoint);
+        player.myMenu.winLosePoints(piperemovepoint);
     }
     public void RemovePoints(string company)
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
-        player.points -= pipeplacepoint;
-        //RemovePointPopup() should be added here
+        player.points += pipeplacepoint;
+        player.myMenu.winLosePoints(pipeplacepoint);
     }
 
     public void CalculateRoundPoints(string company, bool hasCompleted)
@@ -47,7 +47,7 @@ public class Pointsmanager : MonoBehaviour
         if (hasCompleted)
         {
             player.points += victorypoints;
-            player.myMenu.winPoints(victorypoints);
+            player.myMenu.winLosePoints(victorypoints);
         }
     }
 }

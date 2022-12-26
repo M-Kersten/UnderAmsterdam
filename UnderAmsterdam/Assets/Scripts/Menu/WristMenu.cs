@@ -10,8 +10,8 @@ public class WristMenu : NetworkBehaviour
     [Tooltip("Add company icons here")]
     [SerializeField] private Sprite[] companyIcons;
     [SerializeField] private TextMeshProUGUI pointsText;
-    [SerializeField] private GameObject iconImage, particleSpawn;
-    [SerializeField] private GameObject goldParticles;
+    [SerializeField] private GameObject iconImage;
+    [SerializeField] private GameObject goldParticles, lossParticles;
 
     private PlayerData myData;
 
@@ -40,8 +40,9 @@ public class WristMenu : NetworkBehaviour
         }
     }
 
-    public void winPoints(int wonPoints)
+    public void winLosePoints(int points)
     {
-        Instantiate(goldParticles, particleSpawn.transform).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+" + wonPoints.ToString();
+        if (points > 0) Instantiate(goldParticles, transform).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+" + points.ToString();
+        else Instantiate(lossParticles, transform).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = points.ToString();
     }
 }

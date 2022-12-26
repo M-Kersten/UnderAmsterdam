@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2827864829675965928}
   - component: {fileID: 5317499029006151462}
   m_Layer: 0
-  m_Name: addedpoints
+  m_Name: removedpoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +400
+  m_text: -400
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -77,13 +77,13 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282771711
-  m_fontColor: {r: 1, g: 0.90900075, b: 0.2688679, a: 1}
+    rgba: 4281868543
+  m_fontColor: {r: 1, g: 0.1273585, b: 0.22085877, a: 1}
   m_enableVertexGradient: 1
   m_colorMode: 3
   m_fontColorGradient:
-    topLeft: {r: 0.6132076, g: 0.5051176, b: 0, a: 1}
-    topRight: {r: 0.5283019, g: 0.43643963, b: 0.23673905, a: 1}
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 0.6226415, g: 0.54651475, b: 0.38474548, a: 1}
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
@@ -154,7 +154,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -273,7 +273,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 30
+      scalar: 20
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -548,7 +548,7 @@ ParticleSystem:
     startRotationX:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.34906584
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -712,7 +712,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.02
+      scalar: 0.07
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -911,11 +911,11 @@ ParticleSystem:
     arc:
       value: 360
       mode: 1
-      spread: 0
+      spread: 0.5
       speed:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 11.1
+        scalar: 10
         minScalar: 1
         maxCurve:
           serializedVersion: 2
@@ -971,7 +971,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 80
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -1410,7 +1410,7 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 0.041177094}
+        key1: {r: 1, g: 0, b: 0, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1425,9 +1425,9 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 55705
+        atime0: 0
         atime1: 65535
-        atime2: 65535
+        atime2: 0
         atime3: 0
         atime4: 0
         atime5: 0
@@ -4932,7 +4932,7 @@ GameObject:
   - component: {fileID: 7445791401175652214}
   - component: {fileID: 2566704108011697354}
   m_Layer: 0
-  m_Name: GoldParticles
+  m_Name: LossParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5031,8 +5031,8 @@ Light:
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
-  m_Color: {r: 1, g: 0.8583757, b: 0.0047169924, a: 1}
-  m_Intensity: 5
+  m_Color: {r: 1, g: 0.0039215684, b: 0.086425275, a: 1}
+  m_Intensity: 3
   m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
