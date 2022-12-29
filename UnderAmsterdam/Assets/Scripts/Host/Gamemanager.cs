@@ -12,7 +12,6 @@ public class Gamemanager : MonoBehaviour
     public PlayerData localPlayerData;
     public CharacterController lPlayerCC;
     
-    public int round;
     public float roundTime = 45;
 
     [SerializeField] private Animator lPlayerAnimator;
@@ -21,9 +20,11 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundCountDownTime = 3;
     [SerializeField] private float amountOfRounds = 6;
-    [SerializeField] private bool startGame;
+    [SerializeField] public bool startGame;
 
+    [HideInInspector] public int currentRound;
     [HideInInspector] public Pointsmanager pManager;
+
     private HostTimerScript timer;
 
     private void Awake()
@@ -38,6 +39,10 @@ public class Gamemanager : MonoBehaviour
         pManager = GetComponent<Pointsmanager>();
         timer = GetComponent<HostTimerScript>();
         timer.timerUp.AddListener(OnRoundEnd);
+    }
+
+    public void SceneSwitch(int index) {
+        runner.SetActiveScene(index);
     }
 
     private void FixedUpdate()
@@ -69,7 +74,7 @@ public class Gamemanager : MonoBehaviour
     {
         RoundStart.Invoke();
         timer.SetTimer(roundTime);
-        round++;
+        currentRound++;
     }
     private void OnRoundEnd()
     {
@@ -81,7 +86,7 @@ public class Gamemanager : MonoBehaviour
     {
         RoundLateEnd.Invoke();
 
-        if (round <= amountOfRounds)
+        if (currentRound < amountOfRounds)
             OnCountDownStart();
         else
             StartCoroutine(OnGameEnd());
@@ -96,6 +101,6 @@ public class Gamemanager : MonoBehaviour
         GameEnd.Invoke();
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
-        runner.SetActiveScene(1);
+        SceneSwitch(3); //EndGame scene
     }
 }

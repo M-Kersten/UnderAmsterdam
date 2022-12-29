@@ -94,8 +94,11 @@ MonoBehaviour:
   VisualObject: {fileID: 8311990801685875723}
   myRenderer: {fileID: 6644976781859735164}
   IndicatorPrefab: {fileID: 4677439228391939840, guid: e60e640658ba33f43b931dbda17e0101, type: 3}
-  _company: 
-  isOutput: 0
+  particles: {fileID: 1140853626522911437, guid: 7eb61807104b47e44824eeedb84f9a22, type: 3}
+  roundInputPipe: 0
+  particlesBreathingTime: 12
+  _company: Empty
+  _isOutput: 0
 --- !u!1001 &9195073122305323354
 PrefabInstance:
   m_ObjectHideFlags: 0

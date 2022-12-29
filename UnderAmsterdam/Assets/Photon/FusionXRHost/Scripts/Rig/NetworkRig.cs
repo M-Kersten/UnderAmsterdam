@@ -51,7 +51,6 @@ namespace Fusion.XR.Host.Rig
                 if (hardwareRig == null) Debug.LogError("Missing HardwareRig in the scene");
                 else {
                     Gamemanager.Instance.localPlayerData = pData;
-                    myMenu = hardwareRig.GetComponent<WristMenu>();
                 }
             }
         }
