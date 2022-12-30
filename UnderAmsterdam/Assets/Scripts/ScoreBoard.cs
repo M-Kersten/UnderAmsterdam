@@ -11,7 +11,7 @@ public class ScoreBoard : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI roundTMP;
     [SerializeField] private ConnectionManager cManager;
     [SerializeField] private bool perRound;
-    [SerializeField] private NetworkObject localUser;
+    [SerializeField] private Transform[] podiumPipes;
 
     private Dictionary<string, int> rankDict;
     private Dictionary<string, PlayerRef> savedCompanies;
@@ -30,10 +30,9 @@ public class ScoreBoard : NetworkBehaviour
         DisplayLeaderBoard();
     }
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    void RPC_DontDestroy()
+    void RPC_WarpPlayers()
     {
-        if (round == 1)
-            DontDestroyOnLoad(gameObject);
+        warpPlayers();
     }
 
     public override void Spawned()
@@ -43,8 +42,8 @@ public class ScoreBoard : NetworkBehaviour
         {
             if (perRound) Gamemanager.Instance.RoundStart.AddListener(GetStartPoints);
             Gamemanager.Instance.RoundEnd.AddListener(UpdateLeaderBoard);
-            Gamemanager.Instance.RoundEnd.AddListener(RPC_DontDestroy);
-            Gamemanager.Instance.GameEnd.AddListener(warpPlayers);
+            //Gamemanager.Instance.RoundEnd.AddListener(RPC_DontDestroy);
+            Gamemanager.Instance.GameEnd.AddListener(RPC_WarpPlayers);
         }
     }
 
@@ -106,39 +105,21 @@ public class ScoreBoard : NetworkBehaviour
 
     void warpPlayers()
     {
-        PlayerRef pRef = cManager.networkPlayerObject.InputAuthority;
-        Debug.Log(rankDict.Count);
-        if (rankDict.Count == 0) return;
-
-        if (pRef == savedCompanies[rankDict.ElementAt(rankDict.Count - 1).Key])
+        for (int i = 0; i < podiumPipes.Length && i < rankDict.Count; i++)
         {
-            Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(0f, 2.5f, 5.5f);
-            Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
-            return;
+            if (cManager.localPlayerRef == savedCompanies[rankDict.ElementAt(rankDict.Count - 1 - i).Key])
+            {
+                Gamemanager.Instance.lPlayerCC.enabled = false;
+                Gamemanager.Instance.lPlayerCC.gameObject.transform.position = podiumPipes[i].position + new Vector3(0, 2f - i/2f, -0.5f);
+                Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
+                Gamemanager.Instance.lPlayerCC.enabled = true;
+                return;
+            }
         }
         
-        if (rankDict.Count == 1) return;
-
-        if (pRef == savedCompanies[rankDict.ElementAt(rankDict.Count - 2).Key])
-        {
-            Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(-2.5f, 2f, 4.5f);
-            Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
-            return;
-        }
-
-        if (rankDict.Count == 2) return;
-
-        if (pRef == savedCompanies[rankDict.ElementAt(rankDict.Count - 3).Key])
-        {
-            Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(2f, 2f, 3.5f);
-            Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
-            return;
-        }
-
-        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(0, 1f, 0);
+        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(0, 0.5f, 0);
         Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
 
     }
-
 
 }
