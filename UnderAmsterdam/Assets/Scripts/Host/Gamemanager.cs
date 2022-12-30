@@ -101,6 +101,5 @@ public class Gamemanager : MonoBehaviour
         GameEnd.Invoke();
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
-        SceneSwitch(3); //EndGame scene
     }
 }
