@@ -39,8 +39,8 @@ namespace Fusion.XR.Host
         public UnityEvent onWillConnect = new UnityEvent();
 
         [SerializeField] private int maxPlayers = 5;
-        
-        
+
+        public NetworkObject networkPlayerObject;
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
         public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
@@ -127,7 +127,7 @@ namespace Fusion.XR.Host
             if (runner.IsServer)
             {
                 // We make sure to give the input authority to the connecting player for their user's object
-                NetworkObject networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => {
+                networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => {
                 });
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
