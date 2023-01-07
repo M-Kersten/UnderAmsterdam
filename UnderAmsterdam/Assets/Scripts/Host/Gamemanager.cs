@@ -16,7 +16,6 @@ public class Gamemanager : MonoBehaviour
 
     [SerializeField] private Animator lPlayerAnimator;
     [SerializeField] private NetworkRunner runner;
-    public bool amIServer;
 
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundCountDownTime = 3;
@@ -46,8 +45,6 @@ public class Gamemanager : MonoBehaviour
 
     public void SceneSwitch(int index) {
         runner.SetActiveScene(index);
-        if(runner.IsConnectedToServer)
-        amIServer = runner.IsServer;
     }
 
     private void FixedUpdate()
