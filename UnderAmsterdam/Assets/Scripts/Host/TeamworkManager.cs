@@ -21,7 +21,7 @@ public class TeamworkManager : MonoBehaviour
         }
 
         Gamemanager.Instance.RoundLateEnd.AddListener(CheckTeamwork);
-        Gamemanager.Instance.RoundLateEnd.AddListener(EmptyTeamWork);
+        Gamemanager.Instance.RoundStart.AddListener(EmptyTeamWork);
     }
 
     private bool CheckFree(string company)
@@ -78,7 +78,7 @@ public class TeamworkManager : MonoBehaviour
     {
             foreach(var company in _doneCompanies) { // go through all companies
             // Check if other company is done
-                if(CheckMyCompany(company.Key) != null && _doneCompanies[CheckMyCompany(company.Key)]){
+                if(CheckMyCompany(company.Key) != null && _doneCompanies.ContainsKey(CheckMyCompany(company.Key))){
                   Gamemanager.Instance.pManager.TeamworkBonus(company.Key);
                 }
             }
