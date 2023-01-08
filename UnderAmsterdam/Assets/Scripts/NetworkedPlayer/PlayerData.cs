@@ -28,16 +28,7 @@ public class PlayerData : NetworkBehaviour
         color.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
         color.SetColour(changed.Behaviour.playerLeftHand, changed.Behaviour.company);
         color.SetColour(changed.Behaviour.playerRightHand, changed.Behaviour.company);
-        changed.Behaviour.UpdateCompanyImage(changed.Behaviour.company);
-    }
-
-    private void UpdateCompanyImage(string company)
-    {
-        if (nRig.IsLocalNetworkRig)
-        {
-            myMenu.ChangeImage(company);
-            ColourSystem.Instance.SetColour(myMenu.topWatch, company);
-        }
+        changed.Behaviour.myMenu.ChangeImage(changed.Behaviour.company);
     }
     private void Start()
     {
