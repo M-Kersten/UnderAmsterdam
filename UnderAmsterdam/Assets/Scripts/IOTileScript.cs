@@ -9,6 +9,11 @@ public class IOTileScript : NetworkBehaviour
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
+    [SerializeField] private GameObject particles;
+    public int roundInputPipe;
+    [SerializeField] private float particlesBreathingTime;
+
+    [SerializeField] private LayerMask pipeLayer;
 
     [Networked(OnChanged = nameof(OnIOTileChanged))]
     public string company { get; set; }
@@ -42,8 +47,11 @@ public class IOTileScript : NetworkBehaviour
 
         if (isOutput)
             Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
+        else
+            roundInputPipe = Gamemanager.Instance.currentRound;
 
         SpawnIndicator(shouldBeOutput);
+
         return true;
     }
 
@@ -58,7 +66,9 @@ public class IOTileScript : NetworkBehaviour
         {
             // Getting the tile in front of it
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, -transform.right, out hit))
+            Ray ray = new Ray(transform.position, -transform.right);
+            
+            if (Physics.Raycast(ray, out hit, 3, pipeLayer))
             {
                 // Launching the checking process
                 CubeInteraction tile = hit.transform.GetComponent<CubeInteraction>();
@@ -74,6 +84,7 @@ public class IOTileScript : NetworkBehaviour
         {
             InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
             indicatorScript.InitializeIndicator(shouldBeOutput);
+            Instantiate(particles, transform);
         }
     }
 }

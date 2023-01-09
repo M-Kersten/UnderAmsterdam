@@ -18,8 +18,8 @@ GameObject:
   - component: {fileID: -3775747846731191431}
   - component: {fileID: -2638207197799899728}
   - component: {fileID: 650798183}
-  - component: {fileID: 650798185}
-  - component: {fileID: 730591828042348531}
+  - component: {fileID: 849524716340541326}
+  - component: {fileID: -2779480804108998074}
   m_Layer: 0
   m_Name: ConnectionManager
   m_TagString: Untagged
@@ -57,7 +57,7 @@ MonoBehaviour:
   mode: 6
   roomName: test
   connectOnStart: 1
-  runner: {fileID: 0}
+  runner: {fileID: 878090387540590312}
   userPrefab: {fileID: 2549000073306557744, guid: 2144eff5afa72854d9c63ebc7d89556a, type: 3}
   onWillConnect:
     m_PersistentCalls:
@@ -106,7 +106,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: deb9f539a0abada478477bfc104a92e6, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -225,11 +225,14 @@ MonoBehaviour:
       m_Calls: []
   localPlayerData: {fileID: 0}
   lPlayerCC: {fileID: 0}
-  round: 0
   roundTime: 240
+  lPlayerAnimator: {fileID: 0}
+  runner: {fileID: 0}
   roundTimeIncrease: 60
+  roundCountDownTime: 3
   amountOfRounds: 5
   startGame: 0
+  currentRound: 0
   pManager: {fileID: 0}
 --- !u!114 &6687331123855280171
 MonoBehaviour:
@@ -272,11 +275,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeMaterials:
-  - {fileID: 2100000, guid: 2e4075461b13b524d944e93791041537, type: 2}
-  - {fileID: 2100000, guid: c88774ea89e43e84b86ad41cf6e0ebfc, type: 2}
-  - {fileID: 2100000, guid: ee53215c86ca9ce408378eabdc922713, type: 2}
-  - {fileID: 2100000, guid: 8f33d25334d7a3f47a87558be9bb2474, type: 2}
-  - {fileID: 2100000, guid: 5304943412e79c847b1a1103e11463ef, type: 2}
+  - {fileID: 2100000, guid: 57cf848f65d105e4d8c43a04f5d6d275, type: 2}
+  - {fileID: 2100000, guid: 61b04c6508745ae48b2b997c84eef0ca, type: 2}
+  - {fileID: 2100000, guid: 1e9372d4f2f16b8438cf766d17f02be0, type: 2}
+  - {fileID: 2100000, guid: aebf48dea5eddc041ad716005dc3fb8b, type: 2}
+  - {fileID: 2100000, guid: 32ed26da6161bee4da49f3f1df801da4, type: 2}
   - {fileID: 2100000, guid: 24b4fac2fe11d2a41a01d41590e64452, type: 2}
   handMaterials:
   - {fileID: 2100000, guid: 2e4075461b13b524d944e93791041537, type: 2}
@@ -296,7 +299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfcfa8f3af971c449ed585b5e6e03c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &650798185
+--- !u!114 &849524716340541326
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -305,10 +308,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 878090387540590309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d364042fa508550449b4d31559cd9ba8, type: 3}
+  m_Script: {fileID: 11500000, guid: 33a38d73a8571ce438052dd31e09df5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &730591828042348531
+  DisconnectAfterKeepAlive: 0
+  KeepAliveInBackground: 60000
+  ApplyDontDestroyOnLoad: 1
+  runInBackground: 1
+  statsResetInterval: 1000
+  speakerPrefab: {fileID: 0}
+  primaryRecorder: {fileID: -2779480804108998074}
+  usePrimaryRecorder: 0
+  Settings:
+    AppIdRealtime: 
+    AppIdFusion: 
+    AppIdChat: 
+    AppIdVoice: 
+    AppVersion: 
+    UseNameServer: 1
+    FixedRegion: 
+    Server: 
+    Port: 0
+    ProxyServer: 
+    Protocol: 0
+    EnableProtocolFallback: 1
+    AuthMode: 0
+    EnableLobbyStatistics: 0
+    NetworkLogging: 1
+  ShowSettings: 1
+  UseFusionAppSettings: 1
+  UseFusionAuthValues: 1
+--- !u!114 &-2779480804108998074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -317,6 +347,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 878090387540590309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d364042fa508550449b4d31559cd9ba8, type: 3}
+  m_Script: {fileID: 11500000, guid: 91175dcc15224463780e01a8a98b1b60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  voiceDetection: 0
+  voiceDetectionThreshold: 0.01
+  voiceDetectionDelayMs: 500
+  interestGroup: 0
+  debugEchoMode: 0
+  reliableMode: 0
+  encrypt: 0
+  transmitEnabled: 1
+  samplingRate: 48000
+  frameDuration: 20000
+  bitrate: 30000
+  sourceType: 0
+  microphoneType: 0
+  audioClip: {fileID: 0}
+  loopAudioClip: 1
+  recordingEnabled: 1
+  audioSessionParameters:
+    Category: 4
+    Mode: 0
+    CategoryOptions: 0800000004000000
+  editorAudioSessionPreset: 0
+  androidNativeMicrophoneSettings:
+    AcousticEchoCancellation: 1
+    AutomaticGainControl: 1
+    NoiseSuppression: 1
+  stopRecordingWhenPaused: 0
+  useOnAudioFilterRead: 0
+  useMicrophoneTypeFallback: 1
+  recordWhenJoined: 1

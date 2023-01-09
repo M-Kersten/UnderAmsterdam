@@ -11,9 +11,13 @@ public class RandManager : MonoBehaviour
     public UnityEvent FlickeringLightsOn, FlickeringLightsOff, randomGrowOn;
 
     [Range(0,5)]    
-    [SerializeField] private ushort minFlickeringRound;
+    [SerializeField] private ushort minFlickeringRound = 0;
     [Range(0,5)]    
-    [SerializeField] private ushort minGrowingRound;
+    [SerializeField] private ushort minGrowingRound = 0;
+
+    private int totalPowerPts = 0;
+    
+    private CubeInteraction cubeInteraction;
     
     void Start()
     {
@@ -27,21 +31,21 @@ public class RandManager : MonoBehaviour
     }
     private void checkElecConnection()
     {
+        int currentRound = Gamemanager.Instance.currentRound;
+        //int IsPowerConnected = WinLoseManager.Instance._inputPipeTracker["power"];
+        int IsPowerConnected = totalPowerPts;
+        
         // Activate the event only if 
-        if (Gamemanager.Instance.round >= minFlickeringRound && 
-            WinLoseManager.Instance._inputPipeTracker["power"] < Gamemanager.Instance.round)
-        {
+        if (currentRound >= minFlickeringRound && IsPowerConnected < currentRound)
             FlickeringLightsOn.Invoke();
-        } 
-        else if (Gamemanager.Instance.round >= minFlickeringRound &&
-                   WinLoseManager.Instance._inputPipeTracker["power"] >= Gamemanager.Instance.round )
-        {
+        
+        else if (currentRound >= minFlickeringRound && IsPowerConnected >= currentRound )
             FlickeringLightsOff.Invoke();
-        }
+        
     }    
     private void randomGrowStep()
     {
-        if (Gamemanager.Instance.round >= minGrowingRound)
+        if (Gamemanager.Instance.currentRound >= minGrowingRound)
         {
             if (Random.Range(0,1) == 1)
             {
@@ -49,4 +53,10 @@ public class RandManager : MonoBehaviour
             }
         } 
     }
+
+    public void addPowerPts()
+    {
+        totalPowerPts++;
+    }
+    
 }
