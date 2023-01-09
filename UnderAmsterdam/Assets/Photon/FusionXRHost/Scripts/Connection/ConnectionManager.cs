@@ -97,15 +97,8 @@ namespace Fusion.XR.Host
                 Gamemanager.Instance.lPlayerCC.enabled = false;
 
                 switch (SceneManager.GetActiveScene().name) {
-                    case "A2Lobby":
-                        tPosition = new Vector3(7.864f, -1.92f, 3.792f);
-                        tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                    
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
-                    break;
-                    case "A3Game": 
-                        tPosition = new Vector3(0.74f, -0.489f, 0.67f);
+                    case "A3Game":
+                        tPosition = new Vector3(1.02216411f, 4.0f, 1.65285861f);
                         tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
