@@ -11,12 +11,20 @@ public class UISlider : MonoBehaviour
     [SerializeField] float minXPos = -0.4832999f;
     private Vector3 minPosition;
     private Vector3 maxPosition;
+    private float minValueForMixer = 0.0001f;
+
+    [SerializeField] private SettingsUI volumeMixer;
+    [Tooltip("Find all volumeType's in the SettingsUI audiomixer in Sounds folder")]
+    [SerializeField] private string volumeType;
+    [Tooltip("Is this slider used for volume?")]
+    [SerializeField] private bool volumeSlider = true;
     
     // Start is called before the first frame update
     void Start()
     {
         minPosition = new Vector3(minXPos, 0.961f, 0);
         maxPosition = new Vector3(-minXPos, 0.961f, 0);
+        handle.transform.localPosition = maxPosition;
     }
 
     private void Update()
@@ -31,9 +39,12 @@ public class UISlider : MonoBehaviour
             handle.transform.localPosition = maxPosition;
         }
     }
-    private float handlePosition()
+    public float handlePosition()
     {
-        return Mathf.InverseLerp(minPosition.x, maxPosition.x, handle.transform.localPosition.x);
+        float volume = minValueForMixer + Mathf.InverseLerp(minPosition.x, maxPosition.x, handle.transform.localPosition.x);
+        if (volumeSlider && volumeType != "")
+        volumeMixer.SetVolume(volumeType, volume);
+        return volume;
     }
 
     private void OnTriggerEnter(Collider other)
