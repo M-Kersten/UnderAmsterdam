@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12052104, g: 0.1861391, b: 0.33495972, a: 1}
+  m_IndirectSpecularColor: {r: 0.12076039, g: 0.18643652, b: 0.33524966, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -686,6 +686,18 @@ PrefabInstance:
     - target: {fileID: 878090387540590309, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: m_Name
       value: ConnectionManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 878090387540590313, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 878090387540590313, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: af69fbf66c6054946992f946294927e3, type: 3}
+    - target: {fileID: 878090387540590313, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: runner

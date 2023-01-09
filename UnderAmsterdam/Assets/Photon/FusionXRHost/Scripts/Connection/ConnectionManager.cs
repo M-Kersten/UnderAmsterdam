@@ -39,6 +39,8 @@ namespace Fusion.XR.Host
         public UnityEvent onWillConnect = new UnityEvent();
 
         [SerializeField] private int maxPlayers = 5;
+
+        private AudioSource audio;
         
         
 
@@ -64,6 +66,8 @@ namespace Fusion.XR.Host
         {
             // Launch the connection at start
             if (connectOnStart) await Connect();
+
+            audio = GetComponent<AudioSource>();
         }
 
         public async Task Connect()
@@ -98,13 +102,16 @@ namespace Fusion.XR.Host
 
                 switch (SceneManager.GetActiveScene().name) {
                     case "A2Lobby":
+                        audio.Play();
+                        audio.volume = 0.6f;
                         tPosition = new Vector3(7.864f, -1.92f, 3.792f);
                         tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
                     break;
-                    case "A3Game": 
+                    case "A3Game":
+                        audio.volume = 0.4f;
                         tPosition = new Vector3(0.74f, -0.489f, 0.67f);
                         tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     
