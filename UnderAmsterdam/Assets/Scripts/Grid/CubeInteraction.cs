@@ -39,6 +39,7 @@ public class CubeInteraction : NetworkBehaviour
 
     void Start() {
         pColouring = GetComponent<PipeColouring>();
+        Gamemanager.Instance.RoundEnd.AddListener(delegate { OnRenderPipePreview(false); });
     }
     public override void Spawned()
     {
