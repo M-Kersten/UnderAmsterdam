@@ -26,6 +26,28 @@ public class HandTileInteraction : NetworkBehaviour
         Gamemanager.Instance.CountDownStart.AddListener(ToggleHands);
         Gamemanager.Instance.CountDownEnd.AddListener(ToggleHands);
     }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_EnableTile(CubeInteraction cubeScript)
+    {
+        // Plays random block placing sound
+        int randomSound = Random.Range(0, 3);
+        switch (randomSound)
+        {
+            case 0:
+                audioSource.PlayOneShot(placingPipe1);
+                break;
+            case 1:
+                audioSource.PlayOneShot(placingPipe2);
+                break;
+            case 2:
+                audioSource.PlayOneShot(placingPipe3);
+                break;
+        }
+
+        cubeScript.EnableTile();
+    }
+
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
@@ -83,23 +105,8 @@ public class HandTileInteraction : NetworkBehaviour
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
             if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied && cubeScript.VerifyRules(myPlayer.company))
                 {
-                // Plays random block placing sound
-                int randomSound = Random.Range(0, 3);
-                switch (randomSound)
-                {
-                    case 0:
-                        audioSource.PlayOneShot(placingPipe1);
-                        break;
-                    case 1:
-                        audioSource.PlayOneShot(placingPipe2);
-                        break;
-                    case 2:
-                        audioSource.PlayOneShot(placingPipe3);
-                        break;
-                }
-
                     cubeScript.UpdateCompany(myPlayer.company);
-                    cubeScript.EnableTile();
+                    RPC_EnableTile(cubeScript);
                     TriggerPressed = false;
                 }
             }
