@@ -27,7 +27,7 @@ public class RandManager : MonoBehaviour
             Destroy(this);
         
         Gamemanager.Instance.RoundStart.AddListener(checkElecConnection);
-        Gamemanager.Instance.RoundStart.AddListener(randomGrowStep);
+        Gamemanager.Instance.RoundEnd.AddListener(randomGrowStep);
     }
     private void checkElecConnection()
     {

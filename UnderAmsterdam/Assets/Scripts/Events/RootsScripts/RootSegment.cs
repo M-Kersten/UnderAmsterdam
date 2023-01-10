@@ -10,7 +10,9 @@ public class RootSegment : MonoBehaviour
 {
 
     [SerializeField] private Transform[] controlPoints = new Transform[4];
+    [SerializeField] private Transform[] colliderTransform = new Transform[6];
     [SerializeField] private BezierPoint testPoint;
+    
 
     [Range(0, 1)]
     [SerializeField] private float t = 0;
@@ -28,7 +30,6 @@ public class RootSegment : MonoBehaviour
     {
         mesh = new Mesh { name = "root" };
         GetComponent<MeshFilter>().sharedMesh = mesh;
-        GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 
     private void GenerateMesh()
@@ -79,9 +80,6 @@ public class RootSegment : MonoBehaviour
                 
             }
         }
-        
-
-        
 
         mesh.SetVertices(verts);
         mesh.SetTriangles(triangle, 0);
@@ -118,7 +116,18 @@ public class RootSegment : MonoBehaviour
         {
             drawPoint((Vector3) circle2D.vertices[i].point);
         }
+        
         Handles.PositionHandle(testPoint.pos, testPoint.rot);
+        
+        //Colliders follows the curve
+        for (int i = 0; i < colliderTransform.Length; i++)
+        {
+            BezierPoint bezierPoint = GetBezierPoint((float)(i + 0.5f) / colliderTransform.Length);
+            colliderTransform[i].rotation = bezierPoint.rot;
+            colliderTransform[i].position = bezierPoint.pos;
+        }
+
+
     }
 
     private BezierPoint GetBezierPoint(float t)

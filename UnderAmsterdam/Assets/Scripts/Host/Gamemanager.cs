@@ -20,8 +20,9 @@ public class Gamemanager : MonoBehaviour
 
     [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundCountDownTime = 3;
-    [SerializeField] private float amountOfRounds = 6;
-    [SerializeField] public bool startGame;
+    
+    public int amountOfRounds = 6;
+    public bool startGame;
 
     [HideInInspector] public int currentRound = 0;
     [HideInInspector] public Pointsmanager pManager;
@@ -76,7 +77,6 @@ public class Gamemanager : MonoBehaviour
         RoundStart.Invoke();
         timer.SetTimer(roundTime);
         currentRound++;
-        Debug.Log(currentRound);
     }
     private void OnRoundEnd()
     {
