@@ -10,6 +10,7 @@ public class Gamemanager : MonoBehaviour
 
     public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
     public PlayerData localPlayerData;
+    public PlayerInputHandler playerInputHandler;
     public CharacterController lPlayerCC;
     
     public float roundTime = 45;

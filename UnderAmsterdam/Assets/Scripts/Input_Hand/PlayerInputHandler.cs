@@ -47,7 +47,7 @@ public class PlayerInputHandler : MonoBehaviour
         triggerActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
         gripActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "grip" });
         joystickActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
-        ExitButton.EnableWithDefaultXRBindings(side: side, new List<string> { "menuButton" });
+        ExitButton.EnableWithDefaultXRBindings(side: side, new List<string> { "secondaryButton" });
 
         side = RigPart.RightController;
         triggerActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
@@ -78,9 +78,8 @@ public class PlayerInputHandler : MonoBehaviour
         isAnyGripPressed = isLeftGripPressed || isRightGripPressed;
 
         /********************** ExitButton **********************/
-
-        isMenuPressed = ExitButton.action.ReadValue<float>() >= 0.95f;
-
+    
+        isMenuPressed = ExitButton.action.ReadValue<float>() >= 0.9f;
     }
 
     public RigInput GetPlayerInput(RigInput playerInputData) //return a struct with all local inputs when called

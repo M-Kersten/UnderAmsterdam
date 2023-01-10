@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2322481816848015232}
   - component: {fileID: 3769635877266248458}
-  - component: {fileID: 2997276575970244291}
   m_Layer: 0
   m_Name: Difficulty Valve
   m_TagString: Untagged
@@ -50,27 +49,12 @@ MonoBehaviour:
   valveCenter: {fileID: 239042104917829656}
   rHandTransform: {fileID: 0}
   lHandTransform: {fileID: 0}
-  playerInputHandler: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 0
+  playerInputHandler: {fileID: 0}
   angle: 0
   runner: {fileID: 0}
---- !u!114 &2997276575970244291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1748651048654728730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2091de11256aa1f40861e357b3b52163, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerInputHandler: {fileID: 0}
-  Child: {fileID: 0}
-  InteractionValveScript: {fileID: 0}
 --- !u!1 &2725303458190120811
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7826442468148282736
 Transform:
   m_ObjectHideFlags: 0
