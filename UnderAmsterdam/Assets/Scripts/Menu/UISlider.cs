@@ -14,6 +14,8 @@ public class UISlider : MonoBehaviour
     private float minValueForMixer = 0.0001f;
     private bool touched;
 
+    private Collider touchingCollider;
+
     [SerializeField] private SettingsUI volumeMixer;
     [Tooltip("Find all volumeType's in the SettingsUI audiomixer in Sounds folder")]
     [SerializeField] private string volumeType;
@@ -31,9 +33,15 @@ public class UISlider : MonoBehaviour
 
     private void Update()
     {
-        if(touched)
+        if(touched && touchingCollider != null)
         {
             handlePosition(handle.transform.localPosition.x);
+
+            if (touchingCollider.transform.position.x > handle.transform.position.x)
+                handle.transform.localPosition += new Vector3(0.01f, 0, 0);
+            else
+                handle.transform.localPosition -= new Vector3(0.01f, 0, 0);
+
             if (handle.transform.localPosition.x < minPosition.x)
             {
                 handle.transform.localPosition = minPosition;
@@ -54,15 +62,13 @@ public class UISlider : MonoBehaviour
             volumeMixer.MasterVolume();
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 8)
         {
             touched = true;
-            if (other.transform.position.x > handle.transform.position.x)
-                handle.transform.localPosition += new Vector3(0.01f, 0, 0);
-            else
-                handle.transform.localPosition -= new Vector3(0.01f, 0, 0);
+            touchingCollider = other;
+
             //handle.transform.position = new Vector3(other.transform.position.x, handle.transform.position.y, handle.transform.position.z);
         }
     }
@@ -72,6 +78,7 @@ public class UISlider : MonoBehaviour
         if(other.gameObject.layer == 8)
         {
             touched = false;
+            touchingCollider = null;
         }
     }
 }
