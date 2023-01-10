@@ -1,21 +1,30 @@
 using UnityEngine;
+using Fusion.XR.Host;
 using Fusion;
 using UnityEngine.Events;
+using System.Collections;
 
 public class Gamemanager : MonoBehaviour
 {
     public static Gamemanager Instance;
-    public Pointsmanager pManager;
-    public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd;
-    public PlayerData localPlayerData;
 
-    public int round;
+    public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
+    public PlayerData localPlayerData;
+    public CharacterController lPlayerCC;
+    
     public float roundTime = 45;
 
+    [SerializeField] private Animator lPlayerAnimator;
+    [SerializeField] private NetworkRunner runner;
+
     [SerializeField] private float roundTimeIncrease = 15;
-    [SerializeField] private float roundStartCountDown = 3;
-    [SerializeField] private bool startGame;
-   
+    [SerializeField] private float roundCountDownTime = 3;
+    [SerializeField] private float amountOfRounds = 6;
+    [SerializeField] public bool startGame;
+
+    [HideInInspector] public int currentRound;
+    [HideInInspector] public Pointsmanager pManager;
+
     private HostTimerScript timer;
 
     private void Awake()
@@ -32,6 +41,10 @@ public class Gamemanager : MonoBehaviour
         timer.timerUp.AddListener(OnRoundEnd);
     }
 
+    public void SceneSwitch(int index) {
+        runner.SetActiveScene(index);
+    }
+
     private void FixedUpdate()
     {
         if (startGame)
@@ -40,28 +53,54 @@ public class Gamemanager : MonoBehaviour
             startGame = false;
         }
     }
-
     private void OnGameStart()
     {
         GameStart.Invoke();
-        timer.SetTimer(roundTime + roundStartCountDown);
+        OnCountDownStart();
+    }
+    private void OnCountDownStart()
+    {
+        CountDownStart.Invoke();
+        lPlayerCC.enabled = false;
+        StartCoroutine(PreRoundCountDown());
+    }
+    private void OnCountDownEnd() 
+    {
+        CountDownEnd.Invoke();
+        lPlayerCC.enabled = true;
         OnRoundStart();
     }
     private void OnRoundStart()
     {
         RoundStart.Invoke();
-        round++;
+        timer.SetTimer(roundTime);
+        currentRound++;
     }
     private void OnRoundEnd()
     {
         RoundEnd.Invoke();
         roundTime += roundTimeIncrease;
-        timer.SetTimer(roundTime + roundStartCountDown);
         OnRoundLateEnd();
     }
     private void OnRoundLateEnd()
     {
         RoundLateEnd.Invoke();
-        OnRoundStart();
+
+        if (currentRound < amountOfRounds)
+            OnCountDownStart();
+        else
+            StartCoroutine(OnGameEnd());
+    }
+    private IEnumerator OnGameEnd()
+    {
+        GameEnd.Invoke();
+        lPlayerAnimator.Play("VisionFadeLocal", 0);
+        yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
+        SceneSwitch(3); //EndGame scene
+    }
+    private IEnumerator PreRoundCountDown()
+    {
+        yield return new WaitForSeconds(roundCountDownTime);
+        OnCountDownEnd();
     }
 }

@@ -9,11 +9,17 @@ public class IOTileScript : NetworkBehaviour
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
+<<<<<<< HEAD
+    [SerializeField] private GameObject particles;
+    [SerializeField] private float particlesBreathingTime;
+=======
+    public int roundInputPipe;
+>>>>>>> development
 
     [Networked(OnChanged = nameof(OnIOTileChanged))]
     public string company { get; set; }
 
-    public bool isOutput;
+    [Networked] public bool isOutput { get; set; }
 
     public override void Spawned()
     {
@@ -25,24 +31,7 @@ public class IOTileScript : NetworkBehaviour
         if (setCompany == "Empty")
         {
             company = setCompany;
-<<<<<<< HEAD
-            isOutput = shouldBeOutput;
-            for (int i = 0; i < pipeMaterials.Length; i++)
-            {
-                if (pipeMaterials[i].name == company)
-                {
-                    myRenderer.material = pipeMaterials[i];
-                }
-            }
-            VisualObject.SetActive(true);
-            if (company == Gamemanager.Instance.localPlayerData.company) {
-                InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
-                indicatorScript.InitializeIndicator(shouldBeOutput);
-            }
-            return true;
-=======
             return false;
->>>>>>> 02ded08d218531d7f3769e683bdcacef325a020d
         }
         if (!isSyncing && company != "Empty") return false; // This IOTile already has got a company
 
@@ -56,6 +45,17 @@ public class IOTileScript : NetworkBehaviour
             }
         }
         VisualObject.SetActive(true);
+
+        if (isOutput)
+            Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
+        else
+            roundInputPipe = Gamemanager.Instance.currentRound;
+
+        if (company == Gamemanager.Instance.localPlayerData.company)
+        {
+            StartCoroutine(BreatheSmoke());
+            SpawnIndicator(shouldBeOutput);
+        }
         return true;
     }
 
@@ -78,5 +78,19 @@ public class IOTileScript : NetworkBehaviour
                     tile.CheckConnectionForWin();
             }
         }
+    }
+
+    public void SpawnIndicator(bool shouldBeOutput)
+    {
+        InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
+        indicatorScript.InitializeIndicator(shouldBeOutput);
+    }
+
+    private IEnumerator BreatheSmoke()
+    {
+        GameObject instance = Instantiate(particles, transform);
+        yield return new WaitForSeconds(12f);
+        Destroy(instance);
+        yield return null;
     }
 }

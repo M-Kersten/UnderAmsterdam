@@ -59,6 +59,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Update()
     {
+
         /********************* Trigger *********************/
 
         isLeftTriggerPressed = triggerActionL.action.ReadValue<float>() >= 0.9f;
