@@ -98,6 +98,7 @@ namespace Fusion.XR.Host
 
                 switch (SceneManager.GetActiveScene().name) {
                     case "A3Game":
+
                         tPosition = new Vector3(1.02216411f, 4.0f, 1.65285861f);
                         tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     
