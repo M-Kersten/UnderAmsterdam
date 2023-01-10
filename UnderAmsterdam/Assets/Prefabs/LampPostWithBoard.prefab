@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 4295632069387129833}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.11, z: 0.11}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8312525860651930675}
@@ -96,7 +96,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 15e504933ccf6be46b4aabc7a8360499, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 51f7d423082d1504db4edbbe028a670f, type: 2}
+      objectReference: {fileID: 2100000, guid: 0a36de1db8ec2c342b0cec082068daec, type: 2}
     - target: {fileID: 919132149155446097, guid: 15e504933ccf6be46b4aabc7a8360499, type: 3}
       propertyPath: m_Name
       value: LampPostBoard
@@ -170,7 +170,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 15e504933ccf6be46b4aabc7a8360499, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 51f7d423082d1504db4edbbe028a670f, type: 2}
+      objectReference: {fileID: 2100000, guid: 0a36de1db8ec2c342b0cec082068daec, type: 2}
     - target: {fileID: 919132149155446097, guid: 15e504933ccf6be46b4aabc7a8360499, type: 3}
       propertyPath: m_Name
       value: LampPostBoard (1)
@@ -236,19 +236,23 @@ PrefabInstance:
     - target: {fileID: -4683669308469848369, guid: f72f1b07a1770f64487bba5ae002b1e6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 51f7d423082d1504db4edbbe028a670f, type: 2}
+      objectReference: {fileID: 2100000, guid: 0a36de1db8ec2c342b0cec082068daec, type: 2}
     - target: {fileID: -1439730007547781893, guid: f72f1b07a1770f64487bba5ae002b1e6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 51f7d423082d1504db4edbbe028a670f, type: 2}
+      objectReference: {fileID: 2100000, guid: 0a36de1db8ec2c342b0cec082068daec, type: 2}
     - target: {fileID: 919132149155446097, guid: f72f1b07a1770f64487bba5ae002b1e6, type: 3}
       propertyPath: m_Name
       value: street lamp2.0 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7071182760956848314, guid: f72f1b07a1770f64487bba5ae002b1e6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0a36de1db8ec2c342b0cec082068daec, type: 2}
     - target: {fileID: 7202271454713460447, guid: f72f1b07a1770f64487bba5ae002b1e6, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 51f7d423082d1504db4edbbe028a670f, type: 2}
+      objectReference: {fileID: 2100000, guid: 0a36de1db8ec2c342b0cec082068daec, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f72f1b07a1770f64487bba5ae002b1e6, type: 3}
 --- !u!4 &8312525860651930675 stripped
