@@ -7,7 +7,13 @@ using Fusion.XR.Host;
 public class CityMove : MonoBehaviour
 {
     [SerializeField] Dictionary<PlayerRef, bool> playersInGame;
+
     private Animation Anim;
+    void Start()
+    {
+        playersInGame = new Dictionary<PlayerRef, bool>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 8)
