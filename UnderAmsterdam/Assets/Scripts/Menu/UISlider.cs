@@ -1,3 +1,4 @@
+using Fusion.XR.Host.Rig;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,8 @@ public class UISlider : MonoBehaviour
     private float minValueForMixer = 0.0001f;
     private bool touched;
 
+    private NetworkRig myRig;
+
     private Collider touchingCollider;
 
     [SerializeField] private SettingsUI volumeMixer;
@@ -29,6 +32,11 @@ public class UISlider : MonoBehaviour
         maxPosition = new Vector3(-minXPos, 0.961f, 0);
         handle.transform.localPosition = maxPosition;
         handlePosition(handle.transform.localPosition.x);
+    }
+
+    public void GetRig(NetworkRig givenRig)
+    {
+        myRig = givenRig;
     }
 
     private void Update()
@@ -64,6 +72,9 @@ public class UISlider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (myRig != null && !myRig.IsLocalNetworkRig)
+            return;
+
         if (other.gameObject.layer == 8)
         {
             touched = true;
@@ -75,7 +86,10 @@ public class UISlider : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.layer == 8)
+        if (myRig != null && !myRig.IsLocalNetworkRig)
+            return;
+
+        if (other.gameObject.layer == 8)
         {
             touched = false;
             touchingCollider = null;

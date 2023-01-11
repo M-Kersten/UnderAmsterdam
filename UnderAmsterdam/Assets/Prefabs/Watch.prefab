@@ -876,8 +876,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6468528703887713424}
-  - component: {fileID: -8848167504224107037}
   - component: {fileID: -5084410179286982379}
+  - component: {fileID: 6504086448182867038}
   m_Layer: 0
   m_Name: Watch
   m_TagString: Untagged
@@ -903,20 +903,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 245.475, y: 12.871994, z: 90.671}
---- !u!136 &-8848167504224107037
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5948978275707878954}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.029
-  m_Height: 0.020000018
-  m_Direction: 1
-  m_Center: {x: 6.4149425e-10, y: 0.028481388, z: -0.0000000034078387}
 --- !u!114 &-5084410179286982379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -929,3 +915,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94b491f621b80f241920c618be7f8c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  myRig: {fileID: 0}
+--- !u!65 &6504086448182867038
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5948978275707878954}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.059004225, y: 0.0040616337, z: 0.058359496}
+  m_Center: {x: 0.0005336276, y: 0.028424103, z: 0.001091486}
