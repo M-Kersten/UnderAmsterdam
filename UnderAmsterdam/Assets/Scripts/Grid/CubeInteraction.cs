@@ -178,14 +178,14 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Rock"))
+        if (other.CompareTag("Rock") || other.CompareTag("Root"))
             obstructed = true;
         if (other.CompareTag("Player"))
             playerInside = true;
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Rock"))
+        if (other.CompareTag("Rock")|| other.CompareTag("Root"))
             obstructed = false;
         if (other.CompareTag("Player"))
             playerInside = false;
