@@ -4,6 +4,7 @@ using UnityEngine;
 using Fusion;
 using UnityEngine.SceneManagement;
 using Fusion.XR.Host;
+using System;
 
 public class ExitValve : MonoBehaviour
 {
