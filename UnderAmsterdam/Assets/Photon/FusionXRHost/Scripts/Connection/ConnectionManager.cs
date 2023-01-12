@@ -105,7 +105,7 @@ namespace Fusion.XR.Host
                         audio.Play();
                         audio.volume = 0.6f;
                         tPosition = new Vector3(7.864f, -1.92f, 3.792f);
-                        tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
                     
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
