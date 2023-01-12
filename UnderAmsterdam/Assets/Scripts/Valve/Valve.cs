@@ -25,6 +25,13 @@ public class Valve : MonoBehaviour
     {
         ray.origin = valveCenter.position;
 
+        Vector3 previousDir = new Vector3(0,0,0);
+        if (!playerInputHandler.isRightGripPressed && !playerInputHandler.isLeftGripPressed)
+        {
+            previousDir = direction;
+        }
+
+
         if (playerInputHandler.isRightGripPressed)
         {
             Vector3 rHandPosition = rHandTransform.position;
@@ -47,11 +54,12 @@ public class Valve : MonoBehaviour
         }
         if (Physics.Raycast(ray, out RaycastHit hitInfo, 10f, layerMask))
         {
-            angle = -Mathf.Atan2(ray.direction.y - valveCenter.position.y, ray.direction.x - valveCenterPos.x) * Mathf.Rad2Deg;
-            //angle = -Mathf.Atan2(ray.direction.y, ray.direction.x) * Mathf.Rad2Deg;
-            angle += valve.transform.localRotation.x;
+            //angle = -Mathf.Atan2(ray.direction.y - valveCenter.position.y, ray.direction.x - valveCenterPos.x) * Mathf.Rad2Deg;
+            angle = -Mathf.Atan2(ray.direction.y, ray.direction.x) * Mathf.Rad2Deg;
+            float prevAngle = -Mathf.Atan2(previousDir.y, previousDir.x) * Mathf.Rad2Deg;
+            angle += prevAngle;
+            //angle += valve.transform.localRotation.x;
         }
-
         valve.transform.localRotation = Quaternion.Slerp(valve.transform.localRotation, Quaternion.Euler(angle, 90, -90), 20f * Time.deltaTime);
         Debug.DrawRay(ray.origin, ray.direction);
     }
