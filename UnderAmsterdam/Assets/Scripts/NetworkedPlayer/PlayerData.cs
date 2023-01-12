@@ -12,6 +12,7 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] private WristMenu myMenu;
     [SerializeField] private HandTileInteraction rightHand, leftHand;
     private NetworkRig nRig;
+    private SettingsUI mySettings;
 
     [Networked(OnChanged = nameof(UpdatePlayer))]
     public string company { get; set; }

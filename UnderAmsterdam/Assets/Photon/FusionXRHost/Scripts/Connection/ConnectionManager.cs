@@ -40,7 +40,8 @@ namespace Fusion.XR.Host
 
         [SerializeField] private int maxPlayers = 5;
 
-        public NetworkObject networkPlayerObject;
+        public NetworkObject localNetworkPlayer;
+        private bool hasNetworkPlayer = false;
 
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
@@ -135,8 +136,13 @@ namespace Fusion.XR.Host
             if (runner.IsServer)
             {
                 // We make sure to give the input authority to the connecting player for their user's object
-                networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => {
+                NetworkObject networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => {
                 });
+                if (!hasNetworkPlayer)
+                {
+                    localNetworkPlayer = networkPlayerObject;
+                    hasNetworkPlayer = true;
+                }
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);

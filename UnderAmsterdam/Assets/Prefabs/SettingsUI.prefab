@@ -1473,16 +1473,44 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
+      propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
+      propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
       propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: -3970994810956818434}
+    - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
+      propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 2549000073306557745, guid: 2144eff5afa72854d9c63ebc7d89556a, type: 3}
+    - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
+      propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
       propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: LeftHanded
       objectReference: {fileID: 0}
     - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
+      propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
       propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: SettingsUI, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
+      propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerData, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8932400728124484909, guid: 650175115e34848338b729a0faae6c30, type: 3}
+      propertyPath: onRelease.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8932400728124484912, guid: 650175115e34848338b729a0faae6c30, type: 3}
       propertyPath: OutputAudioMixerGroup

@@ -52,7 +52,6 @@ public class HandTileInteraction : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (Input.GetKeyDown("space")) isRightHanded = !isRightHanded;
         base.FixedUpdateNetwork();
         if (GetInput<RigInput>(out var playerInputData)) //Get the input from the players 
         {
@@ -96,7 +95,6 @@ public class HandTileInteraction : NetworkBehaviour
 
         }
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -145,10 +143,5 @@ public class HandTileInteraction : NetworkBehaviour
     private void ToggleHands()
     {
         handEnabled = !handEnabled;
-    }
-    private void SwitchHands()
-    {
-        isRightHanded = !isRightHanded;
-        Debug.Log("YOOOOOLOOOOOO" + isRightHanded.ToString());
     }
 }
