@@ -23,15 +23,15 @@ public class LightManager : MonoBehaviour
         //Time between intensity change
         float timing = Random.Range(0.065f, 0.5f);
         float[] randIntensity = new float[lamp.Count];
-        float[] currents = new float[lamp.Count];
+        float[] currentIntensity = new float[lamp.Count];
         float currentTime = 0f;
         float t = 0f;
 
         int i = 0;
         
-        for (int j = 0; j < currents.Length; j++)
+        for (int j = 0; j < currentIntensity.Length; j++)
         {
-            currents[j] = lamp[j].intensity;
+            currentIntensity[j] = lamp[j].intensity;
             randIntensity[j] = Random.Range(minIntensity, maxIntensity);
         }
 
@@ -39,13 +39,14 @@ public class LightManager : MonoBehaviour
         {
             t = i == 1 ? Mathf.Cos(Mathf.Pow((t % 4), 2)) * 0.3f : t / timing;
  
-            for (int j = 0; j < currents.Length; j++)
+            for (int j = 0; j < currentIntensity.Length; j++)
             {
-                lamp[j].intensity = Mathf.Lerp(currents[j], randIntensity[j], t);
+                lamp[j].intensity = Mathf.Lerp(currentIntensity[j], randIntensity[j], t);
             }
-
+            sound.PlayOneShot(clipSound, 0.8f);
+            
             currentTime += Time.deltaTime;
-            i = (i + 1) % 14;
+            i = (i + 1) % 150;
             yield return null;
         }
         StartCoroutine(Blinker());
@@ -53,13 +54,11 @@ public class LightManager : MonoBehaviour
 
     private void FlickeringOn()
     {
-        //isStarted = true;
         StartCoroutine(Blinker());
     }
 
     private void FlickeringOff()
     {
-        //isStarted = false;
         StopAllCoroutines();
     }
 

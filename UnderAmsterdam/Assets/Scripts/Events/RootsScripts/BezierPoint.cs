@@ -27,5 +27,4 @@ public struct BezierPoint
     {
         return rot * localSpacePos;
     }
-
 }
