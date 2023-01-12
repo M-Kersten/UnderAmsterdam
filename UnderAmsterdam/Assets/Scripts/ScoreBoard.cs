@@ -107,7 +107,7 @@ public class ScoreBoard : NetworkBehaviour
     {
         for (int i = 0; i < podiumPipes.Length && i < rankDict.Count; i++)
         {
-            if (cManager.localPlayerRef == savedCompanies[rankDict.ElementAt(rankDict.Count - 1 - i).Key])
+            if (cManager.localPlayerRef == savedCompanies[rankDict.ElementAt(i).Key])
             {
                 Gamemanager.Instance.lPlayerCC.enabled = false;
                 Gamemanager.Instance.lPlayerCC.gameObject.transform.position = podiumPipes[i].position + new Vector3(0, 2f - i/2f, -0.5f);
@@ -116,9 +116,11 @@ public class ScoreBoard : NetworkBehaviour
                 return;
             }
         }
-        
+
+        Gamemanager.Instance.lPlayerCC.enabled = false;
         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(0, 0.5f, 0);
         Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+        Gamemanager.Instance.lPlayerCC.enabled = true;
 
     }
 
