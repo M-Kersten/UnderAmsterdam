@@ -10,6 +10,7 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] private GameObject playerLeftHand, playerRightHand;
     [SerializeField] private int startingPoints = 1000;
     [SerializeField] private WristMenu myMenu;
+    [SerializeField] private HandTileInteraction rightHand, leftHand;
     private NetworkRig nRig;
 
     [Networked(OnChanged = nameof(UpdatePlayer))]
@@ -36,5 +37,11 @@ public class PlayerData : NetworkBehaviour
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
+    }
+
+    public void SwitchHands()
+    {
+        rightHand.isRightHanded = !rightHand.isRightHanded;
+        leftHand.isRightHanded = !leftHand.isRightHanded;
     }
 }

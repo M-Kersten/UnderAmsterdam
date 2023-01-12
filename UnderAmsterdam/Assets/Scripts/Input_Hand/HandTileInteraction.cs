@@ -17,7 +17,9 @@ public class HandTileInteraction : NetworkBehaviour
     [SerializeField] private bool TriggerPressed = false;
     [SerializeField] private HammerScript myHammerScript;
 
+    public bool isRightHanded = true;
     private bool handEnabled = true;
+    private bool HammerEnabled = false;
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -50,19 +52,48 @@ public class HandTileInteraction : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        if (Input.GetKeyDown("space")) isRightHanded = !isRightHanded;
         base.FixedUpdateNetwork();
         if (GetInput<RigInput>(out var playerInputData)) //Get the input from the players 
         {
             if (side == RigPart.RightController)
-                TriggerPressed = playerInputData.rightTriggerPressed;
+            {
+                if (isRightHanded) TriggerPressed = playerInputData.rightTriggerPressed;
+                else
+                {
+                    // Switch to the Hammer/Hand if the Grip is pressed
+                    if (!HammerEnabled && playerInputData.rightGripPressed)
+                    {
+                        myHammerScript.ActivateHammer(true);
+                        HammerEnabled = true;
+                    }
+                    if (HammerEnabled && !playerInputData.rightGripPressed)
+                    {
+                        myHammerScript.ActivateHammer(false);
+                        HammerEnabled = false;
+                    }
+                }
+            }
 
             if (side == RigPart.LeftController)
             {
-                TriggerPressed = playerInputData.leftTriggerPressed;
-
-                // Switch to the Hammer/Hand if the Grip is pressed
-                myHammerScript.ActivateHammer(playerInputData.leftGripPressed);
+                if (!isRightHanded) TriggerPressed = playerInputData.leftTriggerPressed;
+                else
+                {
+                    // Switch to the Hammer/Hand if the Grip is pressed
+                    if (!HammerEnabled && playerInputData.leftGripPressed)
+                    {
+                        myHammerScript.ActivateHammer(true);
+                        HammerEnabled = true;
+                    }
+                    if (HammerEnabled && !playerInputData.leftGripPressed)
+                    {
+                        myHammerScript.ActivateHammer(false);
+                        HammerEnabled = false;
+                    }
+                }
             }
+
         }
     }
 
@@ -74,7 +105,7 @@ public class HandTileInteraction : NetworkBehaviour
             if (!rig.IsLocalNetworkRig)
                 return;
 
-            if (other.gameObject.layer == 7)
+            if (other.gameObject.layer == 7 && (side == RigPart.RightController && isRightHanded || side == RigPart.LeftController && !isRightHanded))
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 if (cubeScript)
@@ -89,7 +120,7 @@ public class HandTileInteraction : NetworkBehaviour
             if (!rig.IsLocalNetworkRig)
                 return;
 
-            if (other.gameObject.layer == 7)
+            if (other.gameObject.layer == 7 && (side == RigPart.RightController && isRightHanded || side == RigPart.LeftController && !isRightHanded))
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 if (cubeScript)
@@ -114,5 +145,10 @@ public class HandTileInteraction : NetworkBehaviour
     private void ToggleHands()
     {
         handEnabled = !handEnabled;
+    }
+    private void SwitchHands()
+    {
+        isRightHanded = !isRightHanded;
+        Debug.Log("YOOOOOLOOOOOO" + isRightHanded.ToString());
     }
 }

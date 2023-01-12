@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using Fusion.XR.Host;
 
 public class SettingsUI : MonoBehaviour
 {
+    [SerializeField] private ConnectionManager cManager;
     [SerializeField] private AudioMixer volumeMixer;
     private bool leftHandedMode;
     [SerializeField] private UISlider[] allSliders;
@@ -13,6 +15,7 @@ public class SettingsUI : MonoBehaviour
     [SerializeField] private Material[] leftHandButtonMaterials;
     [SerializeField] private GameObject leftHandButton;
     private Renderer leftHandButtonRenderer;
+    private PlayerData myPlayer;
 
     private void Start()
     {
@@ -44,6 +47,7 @@ public class SettingsUI : MonoBehaviour
 
     public void LeftHanded()
     {
+        cManager.networkPlayerObject.GetComponent<PlayerData>().SwitchHands();
         if (leftHandedMode)
         {
             leftHandButtonRenderer.material = leftHandButtonMaterials[0];
