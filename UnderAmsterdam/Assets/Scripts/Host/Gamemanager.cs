@@ -11,15 +11,15 @@ public class Gamemanager : MonoBehaviour
     public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
     public PlayerData localPlayerData;
     public CharacterController lPlayerCC;
-    
+
+    public float roundTimeIncrease = 15;
     public float roundTime = 45;
 
     [SerializeField] private Animator lPlayerAnimator;
     [SerializeField] private NetworkRunner runner;
 
-    [SerializeField] private float roundTimeIncrease = 15;
     [SerializeField] private float roundCountDownTime = 3;
-    [SerializeField] private float amountOfRounds = 6;
+    [SerializeField] private float amountOfRounds = 5;
     [SerializeField] public bool startGame;
 
     [HideInInspector] public int currentRound;
