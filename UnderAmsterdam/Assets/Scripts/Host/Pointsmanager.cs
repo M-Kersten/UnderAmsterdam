@@ -8,7 +8,7 @@ public class Pointsmanager : MonoBehaviour
 {
     [SerializeField] private LeaderBoardCanvas leaderBoard;
 
-    private ConnectionManager coach;
+    [SerializeField] ConnectionManager coach;
     private int pipeplacepoint = -40;
     private int piperemovepoint = 20;
     private int teamworkPoints = 1000;
@@ -16,7 +16,6 @@ public class Pointsmanager : MonoBehaviour
 
     void Start()
     {
-        coach = GetComponent<ConnectionManager>();
     }
 
     public void AddPoints(string company)
@@ -28,10 +27,9 @@ public class Pointsmanager : MonoBehaviour
 
     public void TeamworkBonus(string company)
     {
-        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-        PlayerData player = nObject.GetComponent<PlayerData>();
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += teamworkPoints;
-        leaderBoard.UpdateLeaderBoard(player);
+        player.myMenu.winLosePoints(teamworkPoints);
     }
 
     public void RemovePoints(string company)
