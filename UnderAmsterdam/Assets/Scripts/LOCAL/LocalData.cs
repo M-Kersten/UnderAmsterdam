@@ -11,7 +11,6 @@ public class LocalData : MonoBehaviour
 
     public void SwitchWatch()
     {
-        if (SceneManager.GetActiveScene().name != "A1Menu") Gamemanager.Instance.networkData.RPC_SwitchHands();
         if (myWristUI.transform.position == settingsPositions[1].position)
         {
             myWristUI.transform.parent = leftHand.transform;
