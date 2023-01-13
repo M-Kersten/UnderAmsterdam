@@ -6,8 +6,6 @@ using Fusion;
 
 public class Pointsmanager : MonoBehaviour
 {
-    [SerializeField] private LeaderBoardCanvas leaderBoard;
-
     [SerializeField] ConnectionManager coach;
     private int pipeplacepoint = -40;
     private int piperemovepoint = 20;
