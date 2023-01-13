@@ -105,14 +105,14 @@ public class Gamemanager : MonoBehaviour
         else
             StartCoroutine(OnGameEnd());
     }
-    private IEnumerator OnGameEnd()
+   private IEnumerator OnGameEnd()
     {
         GameEnd.Invoke();
         Debug.Log("GAMEMANAGER: ON GAME END");
 
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
-        SceneSwitch(3); //EndGame scene
+        //SceneSwitch(3); //EndGame scene
     }
     private IEnumerator PreRoundCountDown()
     {

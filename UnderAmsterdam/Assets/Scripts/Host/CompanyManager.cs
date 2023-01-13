@@ -64,7 +64,6 @@ public class CompanyManager : MonoBehaviour
                 return myCompany;
                 // If there are still companies left we haven't had yet, do this function again until we return a company that wasn't given yet
             }
-            Debug.LogError("Player has been through all companies, game should have ended");
             return "Empty";
         }
         Debug.LogError("No companies available");
