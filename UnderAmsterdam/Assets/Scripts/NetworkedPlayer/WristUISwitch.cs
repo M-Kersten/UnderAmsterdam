@@ -31,7 +31,7 @@ public class WristUISwitch : MonoBehaviour
                 MainMenuHands.Instance.attentionLight.gameObject.SetActive(false);
 
             if (myWristUI.activeSelf)
-                myWristUI.SetActive(false); 
+                myWristUI.SetActive(false);
             else
                 myWristUI.SetActive(true);
         }

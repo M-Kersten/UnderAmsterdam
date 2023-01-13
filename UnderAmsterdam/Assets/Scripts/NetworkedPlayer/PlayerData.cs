@@ -13,9 +13,8 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] public WristMenu myMenu;
     [SerializeField] private HandTileInteraction rightHand, leftHand;
     [SerializeField] private Transform leftTransform, rightTransform;
-    private Transform localLeftHand, localRightHand, settingsUI;
+    private Transform localLeftHand, localRightHand;
     private NetworkRig nRig;
-    private SettingsUI mySettings;
 
     [Networked(OnChanged = nameof(UpdatePlayer))]
     public string company { get; set; }
@@ -46,7 +45,6 @@ public class PlayerData : NetworkBehaviour
         localLeftHand = localLeftHand.GetChild(localLeftHand.childCount - 1);
         localRightHand = Gamemanager.Instance.lPlayerCC.transform.GetChild(2);
         localRightHand = localRightHand.GetChild(localRightHand.childCount - 1);
-        settingsUI = Gamemanager.Instance.lPlayerCC.transform.GetChild(1).GetChild(0);
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
@@ -62,12 +60,5 @@ public class PlayerData : NetworkBehaviour
         myWatch.transform.SetParent(receptionHand);
         myWatch.transform.position = receptionHand.position;
         myWatch.transform.rotation = receptionHand.rotation;
-
-        //Moving the menu UI
-        receptionHand = rightHand.isRightHanded ? localLeftHand : localRightHand;
-
-        settingsUI.transform.SetParent(receptionHand);
-        settingsUI.transform.position = receptionHand.position;
-        settingsUI.transform.rotation = receptionHand.rotation;
     }
 }
