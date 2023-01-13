@@ -26,6 +26,28 @@ public class HandTileInteraction : NetworkBehaviour
         Gamemanager.Instance.CountDownStart.AddListener(ToggleHands);
         Gamemanager.Instance.CountDownEnd.AddListener(ToggleHands);
     }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_EnableTile(CubeInteraction cubeScript)
+    {
+        // Plays random block placing sound
+        int randomSound = Random.Range(0, 3);
+        switch (randomSound)
+        {
+            case 0:
+                audioSource.PlayOneShot(placingPipe1);
+                break;
+            case 1:
+                audioSource.PlayOneShot(placingPipe2);
+                break;
+            case 2:
+                audioSource.PlayOneShot(placingPipe3);
+                break;
+        }
+
+        cubeScript.EnableTile();
+    }
+
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
@@ -78,16 +100,12 @@ public class HandTileInteraction : NetworkBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
+        if (handEnabled && other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
         {
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
-<<<<<<< HEAD
-            if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied)
-            {
-=======
             if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied && cubeScript.VerifyRules(myPlayer.company))
-                {
->>>>>>> development
+<<<<<<< HEAD
+            {
                 // Plays random block placing sound
                 int randomSound = Random.Range(0, 3);
                 switch (randomSound)
@@ -107,6 +125,13 @@ public class HandTileInteraction : NetworkBehaviour
                 cubeScript.UpdateCompany(myPlayer.company);
                 cubeScript.EnableTile();
                 TriggerPressed = false;
+=======
+                {
+                    cubeScript.UpdateCompany(myPlayer.company);
+                    RPC_EnableTile(cubeScript);
+                    TriggerPressed = false;
+                }
+>>>>>>> development
             }
         }
     }

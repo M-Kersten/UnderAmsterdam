@@ -9,49 +9,43 @@ public class Pointsmanager : MonoBehaviour
     [SerializeField] private LeaderBoardCanvas leaderBoard;
 
     private ConnectionManager coach;
-    private int pipeplacepoint = 40;
+<<<<<<< HEAD
+    private int pipeplacepoint = -40;
     private int piperemovepoint = 20;
     private int victorypoints = 400;
     private float time;
     private bool roundWinner;
+=======
+    private int pipeplacepoint = 500;
+    private int piperemovepoint = 200;
+    private int teamworkPoints = 1000;
+>>>>>>> development
 
     void Start()
     {
         coach = GetComponent<ConnectionManager>();
     }
 
-    void Update()
-    {
-        if (roundWinner)
-        {
-            if (time < victorypoints)
-                time += Time.deltaTime;
-        }
-    }
     public void AddPoints(string company)
     {
-<<<<<<< HEAD
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += piperemovepoint;
-        player.myMenu.winPoints(piperemovepoint, false);
-=======
+        player.myMenu.winLosePoints(piperemovepoint);
+    }
+    public void TeamworkBonus(string company)
+    {
         NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
         PlayerData player = nObject.GetComponent<PlayerData>();
-        player.points += pipeplacepoint;
+        player.points += teamworkPoints;
         leaderBoard.UpdateLeaderBoard(player);
->>>>>>> development
     }
     public void RemovePoints(string company)
     {
-        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-<<<<<<< HEAD
-        nObject.GetComponent<PlayerData>().points -= pipeplacepoint;
-=======
-        PlayerData player = nObject.GetComponent<PlayerData>();
-        player.points -= piperemovepoint;
-        leaderBoard.UpdateLeaderBoard(player);
->>>>>>> development
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+        player.points += pipeplacepoint;
+        player.myMenu.winLosePoints(pipeplacepoint);
     }
+<<<<<<< HEAD
 
     public void CalculateRoundPoints(string company, bool hasCompleted)
     {
@@ -59,8 +53,9 @@ public class Pointsmanager : MonoBehaviour
         if (hasCompleted)
         {
             player.points += victorypoints;
-            player.myMenu.winPoints(victorypoints, true);
+            player.myMenu.winLosePoints(victorypoints);
         }
-        //nObject.GetComponent<PlayerData>().points -= (int)time*10;
     }
+=======
+>>>>>>> development
 }
