@@ -10,7 +10,7 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] private GameObject playerLeftHand, playerRightHand;
     [SerializeField] private GameObject myWatch;
     [SerializeField] private int startingPoints = 1000;
-    [SerializeField] private WristMenu myMenu;
+    [SerializeField] public WristMenu myMenu;
     [SerializeField] private HandTileInteraction rightHand, leftHand;
     [SerializeField] private Transform leftTransform, rightTransform;
     private Transform localLeftHand, localRightHand, settingsUI;
