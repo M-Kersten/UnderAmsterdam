@@ -21,7 +21,7 @@ public class WristMenu : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        myData = Gamemanager.Instance.networkData;
+        myData = GetComponent<PlayerData>();
     }
 
     void Update()
