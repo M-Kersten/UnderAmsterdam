@@ -52,7 +52,7 @@ public class HammerScript : NetworkBehaviour
             CubeInteraction touchedCube = other.GetComponent<CubeInteraction>();
 
             // Checks the company and the tile state
-            if (touchedCube.TileOccupied && touchedCube.company == myData.company)
+            if (touchedCube.TileOccupied && touchedCube.company == myData.company && HasStateAuthority)
             {
                 RPC_DisableTile(touchedCube);
                 Gamemanager.Instance.pManager.AddPoints(myData.company);
