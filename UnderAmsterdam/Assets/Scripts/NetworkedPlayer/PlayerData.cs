@@ -8,7 +8,7 @@ public class PlayerData : NetworkBehaviour
 {
     [SerializeField] private GameObject playerCap;
     [SerializeField] private GameObject playerLeftHand, playerRightHand;
-    [SerializeField] private GameObject myWatch;
+    [SerializeField] private GameObject myWatch, topWatch;
     [SerializeField] private int startingPoints = 1000;
     [SerializeField] public WristMenu myMenu;
     [SerializeField] private HandTileInteraction rightHand, leftHand;
@@ -33,6 +33,7 @@ public class PlayerData : NetworkBehaviour
         color.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
         color.SetColour(changed.Behaviour.playerLeftHand, changed.Behaviour.company);
         color.SetColour(changed.Behaviour.playerRightHand, changed.Behaviour.company);
+        color.SetColour(changed.Behaviour.topWatch, changed.Behaviour.company);
         changed.Behaviour.myMenu.ChangeImage(changed.Behaviour.company);
     }
     private void Start()

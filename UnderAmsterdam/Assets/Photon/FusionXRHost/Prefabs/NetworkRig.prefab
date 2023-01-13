@@ -139,6 +139,7 @@ MonoBehaviour:
   myPlayer: {fileID: 5178302573922089146}
   TriggerPressed: 0
   myHammerScript: {fileID: 0}
+  isRightHanded: 1
 --- !u!1 &82848159007237601
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +336,7 @@ MonoBehaviour:
   myPlayer: {fileID: 5178302573922089146}
   TriggerPressed: 0
   myHammerScript: {fileID: 0}
+  isRightHanded: 1
 --- !u!54 &1494913258657655763
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -408,8 +410,15 @@ MonoBehaviour:
   playerCap: {fileID: 0}
   playerLeftHand: {fileID: 5497885959081905223}
   playerRightHand: {fileID: 2414488125583945353}
+  myWatch: {fileID: 0}
+  topWatch: {fileID: 5140859283467631035}
   startingPoints: 1000
   myMenu: {fileID: 7175881008005206016}
+  rightHand: {fileID: 0}
+  leftHand: {fileID: 0}
+  leftTransform: {fileID: 0}
+  rightTransform: {fileID: 0}
+  watchUI: {fileID: 0}
   _company: 
   _points: 0
 --- !u!114 &82848160101704040
@@ -531,6 +540,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d7d833f81d92dd44e8fcbb78aba281f0, type: 3}
   pointsText: {fileID: 1171633146608943449}
   iconImage: {fileID: 9140328845445941906}
+  goldParticles: {fileID: 0}
+  lossParticles: {fileID: 0}
   topWatch: {fileID: 5140859283467631035}
 --- !u!1 &4661418183432432794
 GameObject:
