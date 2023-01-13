@@ -25,18 +25,26 @@ public class Pointsmanager : MonoBehaviour
         player.points += piperemovepoint;
         player.myMenu.winLosePoints(piperemovepoint);
     }
+
     public void TeamworkBonus(string company)
+    {
+        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
+        PlayerData player = nObject.GetComponent<PlayerData>();
+        player.points += teamworkPoints;
+        leaderBoard.UpdateLeaderBoard(player);
+    }
+
+    public void RemovePoints(string company)
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += pipeplacepoint;
         player.myMenu.winLosePoints(pipeplacepoint);
-        player.points += teamworkPoints;
     }
-    public void RemovePoints(string company)
+
+    public void CalculateRoundPoints(string company)
     {
-        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-        PlayerData player = nObject.GetComponent<PlayerData>();
-        player.points -= piperemovepoint;
-        leaderBoard.UpdateLeaderBoard(player);
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+        player.points += victorypoints;
+        player.myMenu.winLosePoints(victorypoints);
     }
 }
