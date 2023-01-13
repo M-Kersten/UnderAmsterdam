@@ -8,9 +8,12 @@ public class PlayerData : NetworkBehaviour
 {
     [SerializeField] private GameObject playerCap;
     [SerializeField] private GameObject playerLeftHand, playerRightHand;
+    [SerializeField] private GameObject myWatch;
     [SerializeField] private int startingPoints = 1000;
     [SerializeField] private WristMenu myMenu;
     [SerializeField] private HandTileInteraction rightHand, leftHand;
+    [SerializeField] private Transform leftTransform, rightTransform;
+    private Transform localLeftHand, localRightHand, settingsUI;
     private NetworkRig nRig;
     private SettingsUI mySettings;
 
@@ -38,12 +41,33 @@ public class PlayerData : NetworkBehaviour
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
+
+        localLeftHand = Gamemanager.Instance.lPlayerCC.transform.GetChild(1);
+        localLeftHand = localLeftHand.GetChild(localLeftHand.childCount - 1);
+        localRightHand = Gamemanager.Instance.lPlayerCC.transform.GetChild(2);
+        localRightHand = localRightHand.GetChild(localRightHand.childCount - 1);
+        settingsUI = Gamemanager.Instance.lPlayerCC.transform.GetChild(1).GetChild(0);
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     public void RPC_SwitchHands()
     {
+        //Switching the hands
         rightHand.isRightHanded = !rightHand.isRightHanded;
         leftHand.isRightHanded = !leftHand.isRightHanded;
+
+        //Moving the watch
+        Transform receptionHand = rightHand.isRightHanded ? leftTransform : rightTransform;
+
+        myWatch.transform.SetParent(receptionHand);
+        myWatch.transform.position = receptionHand.position;
+        myWatch.transform.rotation = receptionHand.rotation;
+
+        //Moving the menu UI
+        receptionHand = rightHand.isRightHanded ? localLeftHand : localRightHand;
+
+        settingsUI.transform.SetParent(receptionHand);
+        settingsUI.transform.position = receptionHand.position;
+        settingsUI.transform.rotation = receptionHand.rotation;
     }
 }
