@@ -18,6 +18,8 @@ public class CompanyManager : MonoBehaviour
     // Dictionary that keeps track what player has what company at the moment
     public Dictionary<string, PlayerRef> _companies;
 
+    private Dictionary<PlayerRef, PlayerRef> _teamContracts = new Dictionary<PlayerRef, PlayerRef>();
+
     
     void Start(){
         if (Instance == null)
@@ -25,7 +27,7 @@ public class CompanyManager : MonoBehaviour
         else
             Destroy(this);
             
-        Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
+        Gamemanager.Instance.RoundLateEnd.AddListener(ResetCompanies);
         Gamemanager.Instance.RoundStart.AddListener(loadSend);
         _companies = new Dictionary<string, PlayerRef> {
     {"water", emptyPlayer},
@@ -79,10 +81,10 @@ public class CompanyManager : MonoBehaviour
     }
 
     // Function to send company to the correct player
-    private void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
+    private void SendCompany(PlayerRef targetPlayer, NetworkObject nObject) {
         string sentCompany = GetCompany(targetPlayer);
         // Grab the playerdata of the player we want to send the company to
-        player.gameObject.GetComponent<PlayerData>().ReceiveCompany(sentCompany);
+        nObject.gameObject.GetComponent<PlayerData>().ReceiveCompany(sentCompany);
     }
 
     public void ResetCompanies() {
