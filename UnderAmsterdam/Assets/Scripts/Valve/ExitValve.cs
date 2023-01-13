@@ -13,9 +13,11 @@ public class ExitValve : MonoBehaviour
     {
         valve.ValveTurned.AddListener(ReturnToMenu);
     }
-    private void ReturnToMenu()
+    public void ReturnToMenu()
     {
-        ConnectionManager.Instance.runner.Disconnect(Gamemanager.Instance.networkData.gameObject.GetComponent<NetworkObject>().InputAuthority);
+        Debug.Log("your mom");
+        //ConnectionManager.Instance.runner.Disconnect(Gamemanager.Instance.networkData.gameObject.GetComponent<NetworkObject>().InputAuthority);
+        ConnectionManager.Instance.runner.Shutdown();
         SceneManager.LoadScene(0);
         Debug.Log("exit");
     }

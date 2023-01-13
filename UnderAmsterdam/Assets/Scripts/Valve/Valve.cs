@@ -17,7 +17,7 @@ public class Valve : MonoBehaviour
     private Vector3 valveCenterPos;
     private float angle;
     
-    private bool triggered = false;
+    [SerializeField] private bool triggered = false;
     
     private void Start()
     {
@@ -63,10 +63,11 @@ public class Valve : MonoBehaviour
 
     private void valveTurned()
     {
-        if ((valve.transform.localRotation.eulerAngles.x >= 90 || valve.transform.localRotation.eulerAngles.x <= 90) && !triggered)
+        if ((valve.transform.localRotation.eulerAngles.x >= 90 || valve.transform.localRotation.eulerAngles.x <= -90) && !triggered)
         {
             ValveTurned.Invoke();
             triggered = true;
+            Debug.Log("aaaaaaaaaaaaaaa");
         }
 
     }
