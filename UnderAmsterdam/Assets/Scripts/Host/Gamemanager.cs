@@ -9,7 +9,8 @@ public class Gamemanager : MonoBehaviour
     public static Gamemanager Instance;
 
     public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
-    public PlayerData localPlayerData;
+    public PlayerData networkData;
+    [SerializeField] public LocalData localData;
     public PlayerInputHandler playerInputHandler;
     public CharacterController lPlayerCC;
 
