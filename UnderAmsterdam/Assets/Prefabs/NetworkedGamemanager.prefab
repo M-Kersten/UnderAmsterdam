@@ -136,6 +136,12 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ee53215c86ca9ce408378eabdc922713, type: 2}
   - {fileID: 2100000, guid: 8f33d25334d7a3f47a87558be9bb2474, type: 2}
   - {fileID: 2100000, guid: 5304943412e79c847b1a1103e11463ef, type: 2}
+  miscMaterials:
+  - {fileID: 2100000, guid: c9eb4ee3b74b8e840b9986964564644c, type: 2}
+  - {fileID: 2100000, guid: e2db3c6326e5753499af9e4ec97767f0, type: 2}
+  - {fileID: 2100000, guid: 1d3e81e6936a6254d83974d21ad0315a, type: 2}
+  - {fileID: 2100000, guid: 0beca47980654274480171e55472f748, type: 2}
+  - {fileID: 2100000, guid: aadc37c2d801cd94d8040f1f68d08ff1, type: 2}
 --- !u!114 &9040188838292508094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,6 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leaderBoard: {fileID: 0}
+  coach: {fileID: 0}
 --- !u!114 &9040188838292508095
 MonoBehaviour:
   m_ObjectHideFlags: 0
