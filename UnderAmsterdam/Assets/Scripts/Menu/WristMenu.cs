@@ -12,6 +12,7 @@ public class WristMenu : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI pointsText;
     [SerializeField] private GameObject iconImage;
     [SerializeField] private GameObject goldParticles, lossParticles;
+    [SerializeField] private HandTileInteraction rightHand;
 
     private PlayerData myData;
 
@@ -42,7 +43,8 @@ public class WristMenu : NetworkBehaviour
 
     public void winLosePoints(int points)
     {
-        if (points > 0) Instantiate(goldParticles, transform).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+" + points.ToString();
-        else Instantiate(lossParticles, transform).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = points.ToString();
+        Transform receptionHand = rightHand.isRightHanded ? myData.localLeftHand : myData.localRightHand;
+        if (points > 0) Instantiate(goldParticles, receptionHand).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+" + points.ToString();
+        else Instantiate(lossParticles, receptionHand).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = points.ToString();
     }
 }
