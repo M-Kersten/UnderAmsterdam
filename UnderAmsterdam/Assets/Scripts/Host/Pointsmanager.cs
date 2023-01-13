@@ -8,7 +8,7 @@ public class Pointsmanager : MonoBehaviour
 {
     [SerializeField] private LeaderBoardCanvas leaderBoard;
 
-    private ConnectionManager coach;
+    [SerializeField] ConnectionManager coach;
     private int pipeplacepoint = -40;
     private int piperemovepoint = 20;
     private int teamworkPoints = 1000;
@@ -16,7 +16,6 @@ public class Pointsmanager : MonoBehaviour
 
     void Start()
     {
-        coach = GetComponent<ConnectionManager>();
     }
 
     public void AddPoints(string company)
