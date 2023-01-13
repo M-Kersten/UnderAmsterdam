@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
-using Fusion.XR.Host;
+using UnityEngine.SceneManagement;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -45,7 +45,7 @@ public class SettingsUI : MonoBehaviour
 
     public void LeftHanded()
     {
-        Gamemanager.Instance.localPlayerData.RPC_SwitchHands();
+        if(SceneManager.GetActiveScene().name != "A1Menu") Gamemanager.Instance.localPlayerData.RPC_SwitchHands();
         if (leftHandedMode)
         {
             leftHandButtonRenderer.material = leftHandButtonMaterials[0];

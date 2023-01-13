@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuHands : MonoBehaviour
 {
@@ -34,7 +35,8 @@ public class MainMenuHands : MonoBehaviour
     }
     public void SwitchWatch()
     {
-        if (myMenuWatch.transform.position == watchPositions[1].position)
+        if (SceneManager.GetActiveScene().name != "A1Menu") return;
+            if (myMenuWatch.transform.position == watchPositions[1].position)
         {
             myMenuWatch.transform.parent = leftHand.transform;
             myMenuWatch.transform.position = watchPositions[0].position;
