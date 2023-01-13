@@ -409,7 +409,6 @@ public class CubeInteraction : NetworkBehaviour
                     if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.currentRound)
                     {
                         // Add points to this company
-                        Gamemanager.Instance.pManager.CalculateRoundPoints(company, true);
                         TeamworkManager.Instance.CompanyDone(company);
                         Instantiate(particlesWin, transform);
                         return;

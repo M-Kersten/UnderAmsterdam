@@ -91,7 +91,7 @@ public class CityMove : MonoBehaviour
         {
             for (int i = 0; i < objectSwitch.Length; i++)
             {
-                if (i != 4)
+                if (i != 4 && i != 6)
                 objectSwitch[i].SetActive(true);
                 if (i == 1)
                     objectSwitch[1].GetComponent<Renderer>().material = newMaterials[0];
