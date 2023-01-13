@@ -1,13 +1,37 @@
+using Fusion;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+
+[Serializable]
+public struct rootS
+{
+    private GameObject root;
+    public BoxCollider[] rootColliders;
+    public MeshRenderer rootMeshRenderer;
+
+    public rootS(GameObject root)
+    {
+        this.root = root;
+        this.rootMeshRenderer = root.GetComponent<MeshRenderer>();
+        this.rootColliders = root.GetComponentsInChildren<BoxCollider>();
+    }
+        
+}
+
+
 public class RootGrower : MonoBehaviour
 {
+
+    
     [SerializeField] private List<MeshRenderer> rootMeshRenderer;
     private List<Material> rootMat = new List<Material>();
+    [SerializeField] private List<GameObject> roots = new List<GameObject>();
+
+    private List<rootS> rooot = new List<rootS>();
     
     [SerializeField] private float maxGrow = 0.876f;
     
@@ -19,8 +43,9 @@ public class RootGrower : MonoBehaviour
 
     private int amountOfRound;
     private int currentRound;
+    
 
-    [SerializeField] private BoxCollider[] rootCollider = new BoxCollider[6];
+
     private MeshCollider rootColliderMesh;
 
     void Start()
@@ -35,37 +60,33 @@ public class RootGrower : MonoBehaviour
                     rootMat.Add(rootMeshRenderer[i].materials[j]);
                 }
             }
-        }
 
-        amountOfRound = Gamemanager.Instance.amountOfRounds;
+            rooot.Add(new rootS(roots[i]));
+        }
         
-        //RandManager.Instance.randomGrowOn.AddListener();
+        amountOfRound = Gamemanager.Instance.amountOfRounds;
     }
     
     void Update()
     {
         currentRound = Gamemanager.Instance.currentRound;
         
-        
-        
         for (int i = 0; i < rootMat.Count; i++)
         {
-            StartCoroutine(Grower(rootMat[i]));
+            StartCoroutine(Grower(rootMat[i], rooot[i]));
         }
-        
     }
     
-    IEnumerator Grower(Material mat)
+    IEnumerator Grower(Material mat, rootS root)
     {
         float growSteps = mat.GetFloat(GrowSteps);
         float growsRoundVal = (float) currentRound / (float) amountOfRound;
 
-
         //Collider activation
-        for (int i = 0; i < rootCollider.Length; i++)
+        for (int i = 0; i < root.rootColliders.Length; i++)
         {
-            if(growSteps >= (float) (i + 0.5f) / (float)rootCollider.Length)
-                rootCollider[i].enabled = true;
+            if(growSteps >= (float) (i + 0.5f) / (float) (root.rootColliders.Length - 0.5f))
+                root.rootColliders[i].enabled = true;
         }
         
         growsRoundVal *= Random.Range(0.9f, 1.1f);

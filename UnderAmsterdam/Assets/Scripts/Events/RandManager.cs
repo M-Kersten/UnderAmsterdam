@@ -5,62 +5,83 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
+using Fusion;
 
-public class RandManager : MonoBehaviour
+public class RandManager : NetworkBehaviour
 {
+
     public static RandManager Instance;
     public UnityEvent FlickeringLightsOn, FlickeringLightsOff;
 
-    [Range(0,5)]    
-    [SerializeField] private ushort minFlickeringRound = 0;
-    [Range(0,5)]    
-    [SerializeField] private ushort minGrowingRound = 0;
-    
+    [Range(0, 5)]
+    [SerializeField] private ushort minFlickeringRound;
+    private bool haveFlicker = false;
+
     [SerializeField] private int numberActivatedRoot = 3;
-    
     [SerializeField] private List<GameObject> rootList;
 
     private int totalPowerPts = 0;
-    
+
     private CubeInteraction cubeInteraction;
-    
-    void Start()
+
+    [Networked] public int rand { get; set; }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_RandRoot(int random)    
+    {
+        rootList[random].SetActive(true);
+    }
+
+    private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else
             Destroy(this);
         
+        
         Gamemanager.Instance.RoundStart.AddListener(checkElecConnection);
         Gamemanager.Instance.GameStart.AddListener(randomActivatedRoots);
     }
-    
+
     private void checkElecConnection()
     {
         int currentRound = Gamemanager.Instance.currentRound;
         //int IsPowerConnected = WinLoseManager.Instance._inputPipeTracker["power"];
         int IsPowerConnected = totalPowerPts;
-        
+
         // Activate the event only if 
-        if (currentRound >= minFlickeringRound && IsPowerConnected < currentRound)
-            FlickeringLightsOn.Invoke();
-        
-        else if (currentRound >= minFlickeringRound && IsPowerConnected >= currentRound )
-            FlickeringLightsOff.Invoke();
-    }    
-    
-    private void randomActivatedRoots()
-    {
-        for (int i = 0; i < numberActivatedRoot; i++)
+        if (currentRound >= minFlickeringRound && IsPowerConnected < currentRound && !haveFlicker)
         {
-            int rand = Random.Range(0, rootList.Count - 1);
-            rootList[rand].SetActive(true);
+            FlickeringLightsOn.Invoke();
+            haveFlicker = true;
+        } else if (currentRound >= minFlickeringRound && IsPowerConnected >= currentRound)
+        {
+            FlickeringLightsOff.Invoke();
         }
     }
 
     public void addPowerPts()
     {
-        totalPowerPts++;
+        if (!haveFlicker)
+        {
+            totalPowerPts++;
+        } else
+        {
+            //Avoid the lights to restart flickering
+            totalPowerPts += 1000;
+        }
     }
-    
+
+    private void randomActivatedRoots()
+    {
+        if(!Object.HasStateAuthority)
+            return;
+        
+        for (int i = 0; i < numberActivatedRoot; i++)
+        {
+            rand = Random.Range(0, rootList.Count - 1);        
+            RPC_RandRoot(rand);
+        }
+    }
+
 }

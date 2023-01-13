@@ -6,12 +6,12 @@ using Random = UnityEngine.Random;
 public class LightManager : MonoBehaviour
 {
     [SerializeField] private List<Light> lamp;
-    public float minIntensity = -2f;
-    public float maxIntensity = 2f;
+    public float minIntensity;
+    public float maxIntensity;
 
     [SerializeField] private AudioSource sound;
     [SerializeField] private AudioClip clipSound;
-    
+
     private void Start()
     {
         RandManager.Instance.FlickeringLightsOn.AddListener(FlickeringOn);
@@ -61,5 +61,4 @@ public class LightManager : MonoBehaviour
     {
         StopAllCoroutines();
     }
-
 }
