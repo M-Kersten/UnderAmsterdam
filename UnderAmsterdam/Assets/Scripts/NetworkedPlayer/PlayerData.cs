@@ -40,7 +40,8 @@ public class PlayerData : NetworkBehaviour
         points = startingPoints; //Starting amount of points for each player
     }
 
-    public void SwitchHands()
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    public void RPC_SwitchHands()
     {
         rightHand.isRightHanded = !rightHand.isRightHanded;
         leftHand.isRightHanded = !leftHand.isRightHanded;

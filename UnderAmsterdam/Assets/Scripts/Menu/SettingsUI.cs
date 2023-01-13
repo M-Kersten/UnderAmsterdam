@@ -45,7 +45,7 @@ public class SettingsUI : MonoBehaviour
 
     public void LeftHanded()
     {
-        Gamemanager.Instance.localPlayerData.SwitchHands();
+        Gamemanager.Instance.localPlayerData.RPC_SwitchHands();
         if (leftHandedMode)
         {
             leftHandButtonRenderer.material = leftHandButtonMaterials[0];
