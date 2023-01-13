@@ -75,12 +75,10 @@ public class UISlider : MonoBehaviour
         if (myRig != null && !myRig.IsLocalNetworkRig)
             return;
 
-        if (other.gameObject.layer == 8)
+        if (other.gameObject.layer == 8 && other.CompareTag("UI"))
         {
             touched = true;
             touchingCollider = other;
-
-            //handle.transform.position = new Vector3(other.transform.position.x, handle.transform.position.y, handle.transform.position.z);
         }
     }
 
