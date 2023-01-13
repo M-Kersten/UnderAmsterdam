@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FreezeOrientation : MonoBehaviour
 {
+    [SerializeField] private float yIncrease = 0.0015f;
     private Transform player;
     private Transform watch;
     private float localY;
@@ -16,10 +17,10 @@ public class FreezeOrientation : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         transform.LookAt(player);
         transform.position = new Vector3(watch.position.x, localY, watch.position.z);
-        localY += 0.0015f;
+        localY += yIncrease;
     }
 }
