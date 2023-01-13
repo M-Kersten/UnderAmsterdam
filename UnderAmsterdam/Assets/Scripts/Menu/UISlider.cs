@@ -87,7 +87,7 @@ public class UISlider : MonoBehaviour
         if (myRig != null && !myRig.IsLocalNetworkRig)
             return;
 
-        if (other.gameObject.layer == 8)
+        if (other.gameObject.layer == 8 && other.CompareTag("UI"))
         {
             touched = false;
             touchingCollider = null;
