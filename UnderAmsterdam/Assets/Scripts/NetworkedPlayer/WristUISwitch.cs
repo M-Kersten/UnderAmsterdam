@@ -20,12 +20,15 @@ public class WristUISwitch : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!myRig.IsLocalNetworkRig)
+
+        Debug.Log("WHO: " + other + " TAG: "  + other.tag + " layer: " + other.gameObject.layer);
+        if (myRig != null && !myRig.IsLocalNetworkRig)
             return;
 
-        if (myWristUI != null && other.gameObject.layer == 8 && !other.CompareTag("Player") && other.name == "Bone")
+        if (myWristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI"))
         {
-            Debug.Log("My Rig: " + myRig.IsLocalNetworkRig + " WHO TOUCHED ME: " + other);
+            if (MainMenuHands.Instance != null && MainMenuHands.Instance.attentionLight.gameObject.activeSelf)
+                MainMenuHands.Instance.attentionLight.gameObject.SetActive(false);
 
             if (myWristUI.activeSelf)
                 myWristUI.SetActive(false); 
