@@ -27,7 +27,6 @@ public class HammerScript : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RPC_DisableTile(CubeInteraction touchedCube)
     {
-                Gamemanager.Instance.pManager.AddPoints(myData.company);
         // Plays random block destroying sound
         int randomSound = Random.Range(0, 3);
         switch (randomSound)
@@ -53,7 +52,11 @@ public class HammerScript : NetworkBehaviour
             CubeInteraction touchedCube = other.GetComponent<CubeInteraction>();
 
             // Checks the company and the tile state
-            if (touchedCube.TileOccupied && touchedCube.company == myData.company) RPC_DisableTile(touchedCube);
+            if (touchedCube.TileOccupied && touchedCube.company == myData.company && HasStateAuthority)
+            {
+                RPC_DisableTile(touchedCube);
+                Gamemanager.Instance.pManager.AddPoints(myData.company);
+            }
         }
     }
 

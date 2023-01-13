@@ -12,10 +12,6 @@ public class Pointsmanager : MonoBehaviour
     private int teamworkPoints = 1000;
     private int victorypoints = 4000;
 
-    void Start()
-    {
-    }
-
     public void AddPoints(string company)
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();

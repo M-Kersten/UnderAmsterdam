@@ -134,9 +134,12 @@ public class HandTileInteraction : NetworkBehaviour
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
             if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied && cubeScript.VerifyRules(myPlayer.company))
             {
-                Gamemanager.Instance.pManager.RemovePoints(myPlayer.company);
                 cubeScript.UpdateCompany(myPlayer.company);
-                RPC_EnableTile(cubeScript);
+                if(HasStateAuthority)
+                {
+                    Gamemanager.Instance.pManager.RemovePoints(myPlayer.company);
+                    RPC_EnableTile(cubeScript);
+                }
                 TriggerPressed = false;
             }
         }

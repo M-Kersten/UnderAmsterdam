@@ -13,7 +13,7 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] public WristMenu myMenu;
     [SerializeField] private HandTileInteraction rightHand, leftHand;
     [SerializeField] private Transform leftTransform, rightTransform;
-    private Transform localLeftHand, localRightHand;
+    public Transform localLeftHand, localRightHand;
     private NetworkRig nRig;
     [SerializeField] private WristUISwitch watchUI;
 
