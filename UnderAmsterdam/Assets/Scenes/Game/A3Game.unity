@@ -3206,7 +3206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6577310376388540076, guid: 1594e7430a467c942b343f431e24e248, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 6577310376388540076, guid: 1594e7430a467c942b343f431e24e248, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3255,6 +3255,11 @@ Transform:
 --- !u!4 &1327295618 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5545754134508558449, guid: 1594e7430a467c942b343f431e24e248, type: 3}
+  m_PrefabInstance: {fileID: 1327295615}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1327295619 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2704807914376672984, guid: 1594e7430a467c942b343f431e24e248, type: 3}
   m_PrefabInstance: {fileID: 1327295615}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1333054258
@@ -3558,6 +3563,10 @@ PrefabInstance:
       propertyPath: NetworkGuid.RawGuidValue.Array.data[1]
       value: -6366575389424362841
       objectReference: {fileID: 0}
+    - target: {fileID: 7204667784912193126, guid: 291dbd1e311e4ee429fc29ce9e8b925d, type: 3}
+      propertyPath: podium
+      value: 
+      objectReference: {fileID: 1327295619}
     - target: {fileID: 7204667784912193126, guid: 291dbd1e311e4ee429fc29ce9e8b925d, type: 3}
       propertyPath: podiumPipes.Array.size
       value: 3

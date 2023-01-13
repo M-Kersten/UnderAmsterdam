@@ -12,6 +12,7 @@ public class ScoreBoard : NetworkBehaviour
     [SerializeField] private ConnectionManager cManager;
     [SerializeField] private bool perRound;
     [SerializeField] private Transform[] podiumPipes;
+    [SerializeField] private GameObject podium;
 
     private Dictionary<string, int> rankDict;
     private Dictionary<string, PlayerRef> savedCompanies;
@@ -52,6 +53,7 @@ public class ScoreBoard : NetworkBehaviour
     {
         rankDict = new Dictionary<string, int>();
         startPoints = new int[] { 0, 0, 0, 0, 0 };
+        podium.SetActive(false);
     }
 
     private void GetStartPoints()
@@ -105,6 +107,7 @@ public class ScoreBoard : NetworkBehaviour
 
     void warpPlayers()
     {
+        podium.SetActive(true);
         for (int i = 0; i < podiumPipes.Length && i < rankDict.Count; i++)
         {
             if (cManager.localPlayerRef == savedCompanies[rankDict.ElementAt(i).Key])
@@ -118,8 +121,8 @@ public class ScoreBoard : NetworkBehaviour
         }
 
         Gamemanager.Instance.lPlayerCC.enabled = false;
-        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(0, 0.5f, 0);
-        Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(1.02216411f, 4.0f, 5f);
+        Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 90, 0);
         Gamemanager.Instance.lPlayerCC.enabled = true;
 
     }
