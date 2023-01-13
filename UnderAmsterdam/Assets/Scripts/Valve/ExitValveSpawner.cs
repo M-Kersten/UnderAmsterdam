@@ -42,7 +42,7 @@ public class ExitValveSpawner : MonoBehaviour
             pipe.transform.position = Vector3.Lerp(pos, targetPos, elapsed / movementDuration);
             yield return null;
         }
-        pipe.transform.position = pos;
+        pipe.transform.position = targetPos;
 
         yield return true;
     }
@@ -53,7 +53,7 @@ public class ExitValveSpawner : MonoBehaviour
         Vector3 forwardPos = headQ * transform.forward + transform.position;
 
         GameObject pipe = Instantiate(ExitValvePrefab, forwardPos, Quaternion.identity);
-        StartCoroutine(MovePipe(pipe, new Vector3(pipe.transform.position.x, 1f, pipe.transform.position.z), pipe.transform.position));
+        StartCoroutine(MovePipe(pipe, new Vector3(pipe.transform.position.x, mainCam.position.y, pipe.transform.position.z), pipe.transform.position));
     }
     public void DespawnPipe(GameObject pipe)
     {
