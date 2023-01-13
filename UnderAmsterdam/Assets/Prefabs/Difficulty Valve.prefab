@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2322481816848015232}
-  - component: {fileID: 3769635877266248458}
+  - component: {fileID: 1264255263756974981}
+  - component: {fileID: 983028516859546167}
   m_Layer: 0
   m_Name: Difficulty Valve
   m_TagString: Untagged
@@ -33,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3769635877266248458
+--- !u!114 &1264255263756974981
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,9 +43,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 1748651048654728730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99e094183384a87419a99123f3fb0227, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a4893e6e15a683489562b239bdd62c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valve: {fileID: 7672782953730062236}
+  valveCenter: {fileID: 239042104917829656}
+  rHandTransform: {fileID: 0}
+  lHandTransform: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  ValveTurned:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &983028516859546167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748651048654728730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06648e06a993a294fae9f603b3c4fb03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timePerRound: 45
+  timeIncreasePerRound: 15
+  valve: {fileID: 1264255263756974981}
 --- !u!1 &2725303458190120811
 GameObject:
   m_ObjectHideFlags: 0

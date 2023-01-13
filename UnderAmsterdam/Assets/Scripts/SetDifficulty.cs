@@ -7,10 +7,12 @@ public class SetDifficulty : MonoBehaviour
     private Gamemanager gameManager;
     [SerializeField] private int timePerRound = 45;
     [SerializeField] private int timeIncreasePerRound = 15;
+    [SerializeField] private Valve valve;
 
     private void Start()
     {
-         gameManager = Gamemanager.Instance;
+        gameManager = Gamemanager.Instance;
+        valve.ValveTurned.AddListener(SetSettings);
     }
 
     private void SetSettings()
