@@ -72,11 +72,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   localPlayerData: {fileID: 0}
+  playerInputHandler: {fileID: 0}
   lPlayerCC: {fileID: 0}
+  roundTimeIncrease: 10
   roundTime: 45
   lPlayerAnimator: {fileID: 0}
   runner: {fileID: 0}
-  roundTimeIncrease: 8
   roundCountDownTime: 3
   amountOfRounds: 5
   startGame: 0
@@ -147,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfcfa8f3af971c449ed585b5e6e03c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bonusPoints: 2000
+  leaderBoard: {fileID: 0}
 --- !u!114 &9040188838292508095
 MonoBehaviour:
   m_ObjectHideFlags: 0
