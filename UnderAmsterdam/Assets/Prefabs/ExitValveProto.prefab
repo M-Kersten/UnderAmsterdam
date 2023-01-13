@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2322481816848015232}
   - component: {fileID: 3769635877266248458}
   - component: {fileID: 6160785123833770465}
+  - component: {fileID: 4235471556382045342}
   m_Layer: 0
   m_Name: ExitValveProto
   m_TagString: Untagged
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e094183384a87419a99123f3fb0227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  valve: {fileID: 6160785123833770465}
 --- !u!114 &6160785123833770465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +70,19 @@ MonoBehaviour:
   ValveTurned:
     m_PersistentCalls:
       m_Calls: []
+--- !u!135 &4235471556382045342
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748651048654728730}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2725303458190120811
 GameObject:
   m_ObjectHideFlags: 0
