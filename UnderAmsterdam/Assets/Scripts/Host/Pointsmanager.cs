@@ -33,14 +33,10 @@ public class Pointsmanager : MonoBehaviour
         player.points += teamworkPoints;
     }
     public void RemovePoints(string company)
-    public void CalculateRoundPoints(string company, bool hasCompleted)
     {
-        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
-        if (hasCompleted)
+        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
         PlayerData player = nObject.GetComponent<PlayerData>();
         player.points -= piperemovepoint;
         leaderBoard.UpdateLeaderBoard(player);
-            player.points += victorypoints;
-            player.myMenu.winLosePoints(victorypoints);
     }
 }
