@@ -76,7 +76,7 @@ public class IOTileScript : NetworkBehaviour
 
     public void SpawnIndicator(bool shouldBeOutput)
     {
-        if (company == Gamemanager.Instance.localPlayerData.company)
+        if (company == Gamemanager.Instance.networkData.company)
         {
             InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
             indicatorScript.InitializeIndicator(shouldBeOutput);

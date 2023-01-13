@@ -15,6 +15,7 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] private Transform leftTransform, rightTransform;
     private Transform localLeftHand, localRightHand;
     private NetworkRig nRig;
+    [SerializeField] private WristUISwitch watchUI;
 
     [Networked(OnChanged = nameof(UpdatePlayer))]
     public string company { get; set; }
@@ -40,6 +41,8 @@ public class PlayerData : NetworkBehaviour
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
+
+        watchUI.GetNetworkInfo(nRig, Gamemanager.Instance.localData.myWristUI);
 
         localLeftHand = Gamemanager.Instance.lPlayerCC.transform.GetChild(1);
         localLeftHand = localLeftHand.GetChild(localLeftHand.childCount - 1);

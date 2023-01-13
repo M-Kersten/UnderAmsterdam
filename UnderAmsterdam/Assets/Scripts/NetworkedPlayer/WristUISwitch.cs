@@ -5,17 +5,20 @@ using UnityEngine;
 
 public class WristUISwitch : MonoBehaviour
 {
-    private GameObject myWristUI;
-    [SerializeField] public NetworkRig myRig;
+    private NetworkRig myRig;
+    private SettingsUI wristUI;
+
 
     private void Start()
     {
-        if (myWristUI == null)
-        {
-            myWristUI = Gamemanager.Instance.lPlayerCC.transform.GetChild(1).GetChild(0).gameObject;
-            myWristUI.GetComponent<SettingsUI>().SetRigSliders(myRig);
-        }
-
+        wristUI = Gamemanager.Instance.localData.myWristUI;
+    }
+    public void GetNetworkInfo(NetworkRig givenRig, SettingsUI myUI)
+    {
+        wristUI = myUI;
+        myRig = givenRig;
+        Debug.Log("MyRig: " + myRig  + " UI: " + wristUI);
+        wristUI.SetRigSliders(myRig);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,15 +28,15 @@ public class WristUISwitch : MonoBehaviour
         if (myRig != null && !myRig.IsLocalNetworkRig)
             return;
 
-        if (myWristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI"))
+        if (wristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI"))
         {
             if (MainMenuHands.Instance != null && MainMenuHands.Instance.attentionLight.gameObject.activeSelf)
                 MainMenuHands.Instance.attentionLight.gameObject.SetActive(false);
 
-            if (myWristUI.activeSelf)
-                myWristUI.SetActive(false);
+            if (wristUI.gameObject.activeSelf)
+                wristUI.gameObject.SetActive(false);
             else
-                myWristUI.SetActive(true);
+                wristUI.gameObject.SetActive(true);
         }
     }
 }

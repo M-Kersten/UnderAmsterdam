@@ -738,6 +738,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 66885011328398770}
     - target: {fileID: 5178302573922089146, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+      propertyPath: watchUI
+      value: 
+      objectReference: {fileID: 7715247014709799565}
+    - target: {fileID: 5178302573922089146, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: leftHand
       value: 
       objectReference: {fileID: 8794589216197189097}
@@ -1648,6 +1652,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35b188f40bf7be24d8dd2cc8e570944a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7715247014709799565 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5290493374722361003, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+  m_PrefabInstance: {fileID: 2484170574470442022}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66885011328398770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b491f621b80f241920c618be7f8c9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8794589216197189097 stripped

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LocalData : MonoBehaviour
 {
-    [SerializeField] private SettingsUI myWristUI;
+    [SerializeField] public SettingsUI myWristUI;
     [SerializeField] private Transform[] settingsPositions;
     [SerializeField] GameObject realLeftHand, realRightHand;
 

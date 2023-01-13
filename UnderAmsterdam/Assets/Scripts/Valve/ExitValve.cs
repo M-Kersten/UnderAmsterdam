@@ -15,7 +15,7 @@ public class ExitValve : MonoBehaviour
     }
     private void ReturnToMenu()
     {
-        ConnectionManager.Instance.runner.Disconnect(Gamemanager.Instance.localPlayerData.gameObject.GetComponent<NetworkObject>().InputAuthority);
+        ConnectionManager.Instance.runner.Disconnect(Gamemanager.Instance.networkData.gameObject.GetComponent<NetworkObject>().InputAuthority);
         SceneManager.LoadScene(0);
         Debug.Log("exit");
     }

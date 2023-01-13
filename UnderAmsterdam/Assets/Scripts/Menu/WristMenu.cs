@@ -20,7 +20,7 @@ public class WristMenu : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        myData = Gamemanager.Instance.localPlayerData;
+        myData = Gamemanager.Instance.networkData;
     }
 
     void Update()

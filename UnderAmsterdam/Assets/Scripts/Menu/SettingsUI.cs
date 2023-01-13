@@ -45,7 +45,7 @@ public class SettingsUI : MonoBehaviour
 
     public void LeftHanded()
     {
-        if(SceneManager.GetActiveScene().name != "A1Menu") Gamemanager.Instance.localPlayerData.RPC_SwitchHands();
+        if(SceneManager.GetActiveScene().name != "A1Menu") Gamemanager.Instance.networkData.RPC_SwitchHands();
         if (leftHandedMode)
         {
             leftHandButtonRenderer.material = leftHandButtonMaterials[0];
