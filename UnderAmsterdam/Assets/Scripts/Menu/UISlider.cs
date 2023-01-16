@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Fusion;
 
-public class UISlider : MonoBehaviour
+public class UISlider : NetworkBehaviour
 {
     [SerializeField] public GameObject handle;
     [SerializeField] GameObject backgroundBase;
@@ -15,8 +15,6 @@ public class UISlider : MonoBehaviour
     private Vector3 maxPosition;
     private float minValueForMixer = 0.0001f;
     private bool touched;
-
-    private NetworkObject nObj;
 
     private Collider touchingCollider;
 
@@ -33,11 +31,6 @@ public class UISlider : MonoBehaviour
         maxPosition = new Vector3(-minXPos, 0.961f, 0);
         handle.transform.localPosition = maxPosition;
         handlePosition(handle.transform.localPosition.x);
-    }
-
-    public void GetRig(NetworkObject givenNObj)
-    {
-        nObj = givenNObj;
     }
 
     private void Update()
@@ -73,7 +66,7 @@ public class UISlider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (nObj != null && !nObj.HasInputAuthority)
+        if (!Object.HasInputAuthority)
             return;
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))
@@ -85,7 +78,7 @@ public class UISlider : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (nObj != null && !nObj.HasInputAuthority)
+        if (Object.HasInputAuthority)
             return;
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))

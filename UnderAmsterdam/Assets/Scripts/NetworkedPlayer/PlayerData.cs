@@ -41,8 +41,6 @@ public class PlayerData : NetworkBehaviour
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
-        
-        watchUI.GetNetworkInfo(Gamemanager.Instance.localData.myWristUI);
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
