@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12076039, g: 0.18643652, b: 0.33524966, a: 1}
+  m_IndirectSpecularColor: {r: 0.12052104, g: 0.1861391, b: 0.33495972, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1176,6 +1176,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8439811098364466051, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
 --- !u!20 &1225606328 stripped
@@ -1453,7 +1457,7 @@ MonoBehaviour:
   localData: {fileID: 1758203090}
   playerInputHandler: {fileID: 1500614366}
   lPlayerCC: {fileID: 1500614363}
-  mainCam: {fileID: 1848639266}
+  mainCam: {fileID: 0}
   roundTimeIncrease: 10
   roundTime: 45
   runner: {fileID: 349649071}
