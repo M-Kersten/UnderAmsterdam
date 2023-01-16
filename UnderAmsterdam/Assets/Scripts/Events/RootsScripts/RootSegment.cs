@@ -94,14 +94,14 @@ public class RootSegment : MonoBehaviour
         for (ushort i = 0; i < controlPoints.Length; i++)
             Gizmos.DrawSphere(controlPoints[i].position, 0.1f);
 
-        // Handles.DrawBezier
-        // (
-        //     GetPos(0),
-        //     GetPos(3),
-        //     GetPos(1),
-        //     GetPos(2),
-        //     Color.gray, Texture2D.grayTexture, 1f
-        // );
+        Handles.DrawBezier
+        (
+            GetPos(0),
+            GetPos(3),
+            GetPos(1),
+            GetPos(2),
+            Color.gray, Texture2D.grayTexture, 1f
+        );
 
         testPoint = GetBezierPoint(t);
 
