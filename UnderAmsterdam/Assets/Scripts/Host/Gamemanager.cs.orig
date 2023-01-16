@@ -107,12 +107,16 @@ public class Gamemanager : MonoBehaviour
         else
             StartCoroutine(OnGameEnd());
     }
+<<<<<<< HEAD
+    private IEnumerator OnGameEnd()
+=======
     private IEnumerator PreRoundCountDown()
     {
         yield return new WaitForSeconds(roundCountDownTime);
         OnCountDownEnd();
     }
-    private IEnumerator OnGameEnd()
+   private IEnumerator OnGameEnd()
+>>>>>>> Feature/Podium
     {
         GameEnd.Invoke();
         Debug.Log("GAMEMANAGER: ON GAME END");
