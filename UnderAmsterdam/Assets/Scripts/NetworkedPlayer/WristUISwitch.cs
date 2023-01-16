@@ -2,34 +2,27 @@ using Fusion.XR.Host.Rig;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
 
-public class WristUISwitch : MonoBehaviour
+public class WristUISwitch : NetworkBehaviour
 {
-    private NetworkRig myRig;
     private SettingsUI wristUI;
+    private bool canTouch = true;
+    [SerializeField] private int timeInSeconds = 1;
 
 
     private void Start()
     {
         wristUI = Gamemanager.Instance.localData.myWristUI;
     }
-    public void GetNetworkInfo(NetworkRig givenRig, SettingsUI myUI)
-    {
-        wristUI = myUI;
-        myRig = givenRig;
-        Debug.Log("MyRig: " + myRig  + " UI: " + wristUI);
-        wristUI.SetRigSliders(myRig);
-    }
 
     private void OnTriggerEnter(Collider other)
     {
 
-        Debug.Log("WHO: " + other + " TAG: "  + other.tag + " layer: " + other.gameObject.layer);
-        if (myRig != null && !myRig.IsLocalNetworkRig)
-            return;
-
-        if (wristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI"))
+        if (wristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI") && canTouch && Object.HasInputAuthority)
         {
+            Debug.Log("Object: " + Object + " Input: " + Object.InputAuthority + " ID: " + Object.Id);
+            StartCoroutine(TouchTimer(timeInSeconds));
             if (MainMenuHands.Instance != null && MainMenuHands.Instance.attentionLight.gameObject.activeSelf)
                 MainMenuHands.Instance.attentionLight.gameObject.SetActive(false);
 
@@ -38,5 +31,13 @@ public class WristUISwitch : MonoBehaviour
             else
                 wristUI.gameObject.SetActive(true);
         }
+        else
+            return;
+    }
+    private IEnumerator TouchTimer(int seconds)
+    {
+        canTouch = false;
+        yield return new WaitForSeconds(seconds);
+        canTouch = true;
     }
 }

@@ -500,6 +500,7 @@ MonoBehaviour:
   - {fileID: 82848158743448641}
   - {fileID: 511119904}
   - {fileID: 6374040095764509135}
+  - {fileID: 5290493374722361003}
   - {fileID: 82848159265621337}
   - {fileID: 82848159265621319}
   - {fileID: 623695491}
@@ -542,6 +543,10 @@ MonoBehaviour:
   iconImage: {fileID: 9140328845445941906}
   goldParticles: {fileID: 0}
   lossParticles: {fileID: 0}
+  rightHand: {fileID: 0}
+  myData: {fileID: 0}
+  leftWatch: {fileID: 0}
+  rightWatch: {fileID: 0}
   topWatch: {fileID: 5140859283467631035}
 --- !u!1 &4661418183432432794
 GameObject:
@@ -2511,6 +2516,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3982044186806394373, guid: 92b5a4001ccc96640892fe3ea13e2299, type: 3}
   m_PrefabInstance: {fileID: 8078068296527275966}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5290493374722361003 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -5084410179286982379, guid: 92b5a4001ccc96640892fe3ea13e2299, type: 3}
+  m_PrefabInstance: {fileID: 8078068296527275966}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b491f621b80f241920c618be7f8c9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9140328845445941906 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1063950092040777004, guid: 92b5a4001ccc96640892fe3ea13e2299, type: 3}
