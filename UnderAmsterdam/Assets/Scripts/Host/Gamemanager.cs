@@ -17,7 +17,6 @@ public class Gamemanager : MonoBehaviour
     public float roundTimeIncrease = 15;
     public float roundTime = 45;
 
-    [SerializeField] private Animator lPlayerAnimator;
     [SerializeField] private NetworkRunner runner;
 
     [SerializeField] private float roundCountDownTime = 3;
@@ -105,20 +104,18 @@ public class Gamemanager : MonoBehaviour
         if (currentRound < amountOfRounds)
             OnCountDownStart();
         else
-            StartCoroutine(OnGameEnd());
+            OnGameEnd();
     }
     private IEnumerator PreRoundCountDown()
     {
         yield return new WaitForSeconds(roundCountDownTime);
         OnCountDownEnd();
     }
-    private IEnumerator OnGameEnd()
+    private void OnGameEnd()
     {
         GameEnd.Invoke();
         Debug.Log("GAMEMANAGER: ON GAME END");
 
-        lPlayerAnimator.Play("VisionFadeLocal", 0);
-        yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
         SceneSwitch(3); //EndGame scene
     }
 }

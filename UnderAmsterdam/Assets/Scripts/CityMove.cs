@@ -90,7 +90,6 @@ public class CityMove : MonoBehaviour
             EnableObjectsAfterGameOver();
             toEnableObjects[1].GetComponent<Renderer>().material = newMaterials[0];
             toDisableObjects[0].GetComponent<Renderer>().material = newMaterials[1];
-
         }
         else
         {

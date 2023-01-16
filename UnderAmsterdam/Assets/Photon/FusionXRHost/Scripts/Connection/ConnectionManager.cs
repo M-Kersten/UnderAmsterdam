@@ -110,13 +110,14 @@ namespace Fusion.XR.Host
                     
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
-                    break;
+                        Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+                        break;
                     default:
                     // Do nothing
                     break;
                 }
-            // Turn CharacterController back on, so player can move
-            Gamemanager.Instance.lPlayerCC.enabled = true;
+                // Turn CharacterController back on, so player can move
+                Gamemanager.Instance.lPlayerCC.enabled = true;
             }
          }
 
