@@ -40,10 +40,13 @@ namespace Fusion.XR.Host
 
         [SerializeField] private int maxPlayers = 5;
 
+        //Merge conflict results! idk what it is!!
         public PlayerRef localPlayerRef;
         private bool hasPlayerRef = false;
+
         public NetworkObject localNetworkPlayer;
         private bool hasNetworkPlayer = false;
+        // >>>>>>>>>>>>>>
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
         public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();

@@ -42,8 +42,7 @@ public class ScoreBoard : NetworkBehaviour
         if (HasStateAuthority)
         {
             if (perRound) Gamemanager.Instance.RoundStart.AddListener(GetStartPoints);
-            Gamemanager.Instance.RoundEnd.AddListener(UpdateLeaderBoard);
-            //Gamemanager.Instance.RoundEnd.AddListener(RPC_DontDestroy);
+            Gamemanager.Instance.GameEnd.AddListener(UpdateLeaderBoard);
             Gamemanager.Instance.GameEnd.AddListener(RPC_WarpPlayers);
         }
     }
@@ -92,17 +91,7 @@ public class ScoreBoard : NetworkBehaviour
             PlayerTMP[i++].text = player.Key + " : " + player.Value.ToString();
         }
 
-        //Displays Header
-        if (round < 5)
-        {
-            roundTMP.text = "Round " + round.ToString();
-            rankDict.Clear();
-        }
-        else
-        {
-            roundTMP.text = "GAMEOVER";
-            savedCompanies = CompanyManager.Instance._companies;
-        }
+        savedCompanies = CompanyManager.Instance._companies;
     }
 
     void warpPlayers()
