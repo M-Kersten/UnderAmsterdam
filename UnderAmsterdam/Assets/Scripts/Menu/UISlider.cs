@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Fusion;
 
 public class UISlider : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class UISlider : MonoBehaviour
     private float minValueForMixer = 0.0001f;
     private bool touched;
 
-    private NetworkRig myRig;
+    private NetworkObject nObj;
 
     private Collider touchingCollider;
 
@@ -34,9 +35,9 @@ public class UISlider : MonoBehaviour
         handlePosition(handle.transform.localPosition.x);
     }
 
-    public void GetRig(NetworkRig givenRig)
+    public void GetRig(NetworkObject givenNObj)
     {
-        myRig = givenRig;
+        nObj = givenNObj;
     }
 
     private void Update()
@@ -72,7 +73,7 @@ public class UISlider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (myRig != null && !myRig.IsLocalNetworkRig)
+        if (nObj != null && !nObj.HasInputAuthority)
             return;
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))
@@ -84,7 +85,7 @@ public class UISlider : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (myRig != null && !myRig.IsLocalNetworkRig)
+        if (nObj != null && !nObj.HasInputAuthority)
             return;
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))

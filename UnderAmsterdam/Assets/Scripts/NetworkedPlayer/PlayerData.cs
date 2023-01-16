@@ -43,7 +43,7 @@ public class PlayerData : NetworkBehaviour
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
 
-        watchUI.GetNetworkInfo(nRig, Gamemanager.Instance.localData.myWristUI);
+        watchUI.GetNetworkInfo(Gamemanager.Instance.localData.myWristUI);
 
         localLeftHand = Gamemanager.Instance.lPlayerCC.transform.GetChild(1);
         localLeftHand = localLeftHand.GetChild(localLeftHand.childCount - 1);

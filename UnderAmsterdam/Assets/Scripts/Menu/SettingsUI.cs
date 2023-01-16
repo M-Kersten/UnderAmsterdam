@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using Fusion;
 
 public class SettingsUI : MonoBehaviour
 {
@@ -25,13 +26,13 @@ public class SettingsUI : MonoBehaviour
         volumeMixer.SetFloat(sliderType, Mathf.Log10(sliderValue) * 20);
     }
 
-    public void SetRigSliders(NetworkRig rig)
+    public void SetRigSliders(NetworkObject givenNObj)
     {
         foreach(UISlider slider in allSliders)
         {
-            slider.GetRig(rig);
+            slider.GetRig(givenNObj);
         }
-        masterSlider.GetRig(rig);
+        masterSlider.GetRig(givenNObj);
     }
 
     public void MasterVolume()
