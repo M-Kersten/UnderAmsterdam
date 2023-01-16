@@ -3,44 +3,26 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Fusion;
 
-public class WristMenu : MonoBehaviour
+public class WristMenu : NetworkBehaviour
 {
     [Tooltip("Add company icons here")]
-    [SerializeField]
-    private Sprite[] companyIcons;
-    [SerializeField]
-    GameObject parentObject;
-    [SerializeField]
-    GameObject visualRadialObject;
-    [SerializeField]
-    private float maxActiveAngle, minActiveAngle, maxActiveAnglex, minActiveAnglex;
-    [SerializeField]
-    private GameObject iconImage;
-    [SerializeField]
-    TextMeshProUGUI pointsText;
-    [SerializeField] public GameObject topWatch;
+    [SerializeField] private Sprite[] companyIcons;
+    [SerializeField] private TextMeshProUGUI pointsText;
+    [SerializeField] private GameObject iconImage;
+    [SerializeField] private GameObject goldParticles, lossParticles;
+    [SerializeField] private HandTileInteraction rightHand;
 
     private PlayerData myData;
+
+    public GameObject topWatch;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Grab the parent of this parent
-        visualRadialObject = transform.GetChild(0).gameObject;
-        visualRadialObject.SetActive(true);
-        myData = Gamemanager.Instance.localPlayerData;
+        myData = GetComponent<PlayerData>();
     }
-
-    // Update is called once per frame
-    //void FixedUpdate()
-    //{
-    //    // if the angle of the wrist is in between these numbers, show or don't show the menu
-    //    if (parentObject.transform.localEulerAngles.z < maxActiveAngle && parentObject.transform.localEulerAngles.z > minActiveAngle && parentObject.transform.localEulerAngles.x < maxActiveAnglex && parentObject.transform.localEulerAngles.x > minActiveAnglex)
-    //        visualRadialObject.SetActive(true);
-    //    else
-    //        visualRadialObject.SetActive(false);
-    //}
 
     void Update()
     {
@@ -57,5 +39,12 @@ public class WristMenu : MonoBehaviour
             if (companyIcons[i].name == company)
                 iconImage.GetComponent<Image>().sprite = companyIcons[i];
         }
+    }
+
+    public void winLosePoints(int points)
+    {
+        Transform receptionHand = rightHand.isRightHanded ? myData.localLeftHand : myData.localRightHand;
+        if (points > 0) Instantiate(goldParticles, receptionHand).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+" + points.ToString();
+        else Instantiate(lossParticles, receptionHand).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = points.ToString();
     }
 }
