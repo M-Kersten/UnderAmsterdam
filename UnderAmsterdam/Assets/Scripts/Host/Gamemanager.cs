@@ -13,6 +13,7 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] public LocalData localData;
     public PlayerInputHandler playerInputHandler;
     public CharacterController lPlayerCC;
+    public Transform mainCam;
 
     public float roundTimeIncrease = 15;
     public float roundTime = 45;
