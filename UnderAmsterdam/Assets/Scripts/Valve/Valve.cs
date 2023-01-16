@@ -17,14 +17,11 @@ public class Valve : MonoBehaviour
     private Vector3 valveCenterPos;
     private float angle;
     
-    [SerializeField] private bool triggered = false;
-    
     private void Start()
     {
         playerInputHandler = Gamemanager.Instance.playerInputHandler;
         lHandTransform = playerInputHandler.transform.GetChild(1).transform; // second child of local player is always left hand
         rHandTransform = playerInputHandler.transform.GetChild(2).transform; // third child of local player is always right hand
-        triggered = false;
     }
     
     private void FixedUpdate()
@@ -53,21 +50,22 @@ public class Valve : MonoBehaviour
 
             ray.direction = direction.normalized;
         }
-        
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 10f, layerMask))
+
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, 0.25f, layerMask))
             angle = -Mathf.Atan2(ray.direction.y, ray.direction.x) * Mathf.Rad2Deg;
-        
+
+        Vector3 newForward = Quaternion.Euler(0, angle, 0) * valve.transform.forward;
+        Debug.DrawRay(valveCenterPos, newForward * 0.25f, Color.green);
+
         valve.transform.localRotation = Quaternion.Slerp(valve.transform.localRotation, Quaternion.Euler(angle, 90, -90), 20f * Time.deltaTime);
         valveTurned();
     }
 
     private void valveTurned()
     {
-        if ((valve.transform.localRotation.eulerAngles.x >= 90 || valve.transform.localRotation.eulerAngles.x <= -90) && !triggered)
+        if ((valve.transform.localRotation.eulerAngles.x >= 90 || valve.transform.localRotation.eulerAngles.x <= -90))
         {
             ValveTurned.Invoke();
-            triggered = true;
-            Debug.Log("aaaaaaaaaaaaaaa");
         }
 
     }
