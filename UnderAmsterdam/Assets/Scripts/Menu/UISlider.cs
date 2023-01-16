@@ -66,7 +66,7 @@ public class UISlider : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!Object.HasInputAuthority)
+        if (Object != null && !Object.HasInputAuthority)
             return;
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))
@@ -78,7 +78,7 @@ public class UISlider : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (Object.HasInputAuthority)
+        if (Object != null && !Object.HasInputAuthority)
             return;
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))

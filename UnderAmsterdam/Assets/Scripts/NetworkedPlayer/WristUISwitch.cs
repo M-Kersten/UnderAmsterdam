@@ -18,10 +18,11 @@ public class WristUISwitch : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (Object != null && !Object.HasInputAuthority)
+            return;
 
-        if (wristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI") && canTouch && Object.HasInputAuthority)
+        if (wristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI") && canTouch)
         {
-            Debug.Log("Object: " + Object + " Input: " + Object.InputAuthority + " ID: " + Object.Id);
             StartCoroutine(TouchTimer(timeInSeconds));
             if (MainMenuHands.Instance != null && MainMenuHands.Instance.attentionLight.gameObject.activeSelf)
                 MainMenuHands.Instance.attentionLight.gameObject.SetActive(false);
@@ -31,8 +32,6 @@ public class WristUISwitch : NetworkBehaviour
             else
                 wristUI.gameObject.SetActive(true);
         }
-        else
-            return;
     }
     private IEnumerator TouchTimer(int seconds)
     {
