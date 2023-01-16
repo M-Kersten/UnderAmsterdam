@@ -19,7 +19,7 @@ public class WristUISwitch : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (nObj != null && !nObj.HasInputAuthority)
+        if (!other.transform.parent.parent.parent.parent.parent.parent.parent.GetComponent<NetworkObject>().InputAuthority)
             return;
 
         if (wristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI") && canTouch)
