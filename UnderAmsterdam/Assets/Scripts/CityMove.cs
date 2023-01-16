@@ -9,10 +9,9 @@ public class CityMove : MonoBehaviour
 {
     [SerializeField] Dictionary<PlayerRef, bool> playersInGame;
     Vector3 movedown;
-    private Animation Anim;
     private Vector3 playerPos;
     private Vector3 moveup;
-    [SerializeField] GameObject[] objectSwitch;
+    [SerializeField] GameObject[] toDisableObjects, toEnableObjects;
     [SerializeField] Material[] newMaterials;
     private bool gameEnded;
 
@@ -29,7 +28,6 @@ public class CityMove : MonoBehaviour
         {
             foreach (PlayerRef player in ConnectionManager.Instance.runner.ActivePlayers)
             {
-                Debug.Log("player" + player);
                 if (!playersInGame.ContainsKey(player))
                     playersInGame.Add(player, false);
             }
@@ -70,13 +68,13 @@ public class CityMove : MonoBehaviour
         StartCoroutine(MovePlayers(playerPos, moveup));
     }
 
-        private IEnumerator MovePlayers(Vector3 from, Vector3 to)
+    private IEnumerator MovePlayers(Vector3 from, Vector3 to)
     {
         float elapsed = 0;
         float duration = 5f;
 
+        //Disable player movement and slide them into the ground
         Gamemanager.Instance.lPlayerCC.enabled = false;
-
         while (elapsed < duration)
         {
             Gamemanager.Instance.lPlayerCC.gameObject.transform.position = Vector3.Lerp(from, to, elapsed / duration);
@@ -84,33 +82,38 @@ public class CityMove : MonoBehaviour
             yield return null;
         }
         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = to;
-
         Gamemanager.Instance.lPlayerCC.enabled = true;
 
+        //Swap objects depending on gamestate
         if (gameEnded)
         {
-            for (int i = 0; i < objectSwitch.Length; i++)
-            {
-                if (i != 4 && i != 6)
-                objectSwitch[i].SetActive(true);
-                if (i == 1)
-                    objectSwitch[1].GetComponent<Renderer>().material = newMaterials[0];
-                if (i == 0)
-                    objectSwitch[0].GetComponent<Renderer>().material = newMaterials[1];
+            EnableObjectsAfterGameOver();
+            toEnableObjects[1].GetComponent<Renderer>().material = newMaterials[0];
+            toDisableObjects[0].GetComponent<Renderer>().material = newMaterials[1];
 
-            }
-
-        } else
+        }
+        else
         {
-            for(int i = 0; i < objectSwitch.Length; i++)
-            {
-                objectSwitch[i].SetActive(false);
-            }
+            DisableObjectsAfterGameOver();
         }
 
         if (!Gamemanager.Instance.startGame)
             Gamemanager.Instance.startGame = true;
 
         yield return null;
+    }
+    private void DisableObjectsAfterGameOver()
+    {
+        for (int i = 0; i < toDisableObjects.Length; i++)
+        {
+            toDisableObjects[i].SetActive(false);
+        }
+    }
+    private void EnableObjectsAfterGameOver()
+    {
+        for (int i = 0; i < toEnableObjects.Length; i++)
+        {
+            toEnableObjects[i].SetActive(true);
+        }
     }
 }
