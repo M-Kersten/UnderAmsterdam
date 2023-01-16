@@ -21,8 +21,9 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private NetworkRunner runner;
 
     [SerializeField] private float roundCountDownTime = 3;
-    [SerializeField] private float amountOfRounds = 5;
-    [SerializeField] public bool startGame;
+    
+    public int amountOfRounds = 5;
+    public bool startGame;
 
     [HideInInspector] public int currentRound;
     [HideInInspector] public Pointsmanager pManager;
@@ -106,7 +107,7 @@ public class Gamemanager : MonoBehaviour
         else
             StartCoroutine(OnGameEnd());
     }
-   private IEnumerator OnGameEnd()
+    private IEnumerator OnGameEnd()
     {
         GameEnd.Invoke();
         Debug.Log("GAMEMANAGER: ON GAME END");

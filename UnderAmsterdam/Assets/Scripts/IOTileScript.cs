@@ -13,6 +13,8 @@ public class IOTileScript : NetworkBehaviour
     public int roundInputPipe;
     [SerializeField] private float particlesBreathingTime;
 
+    [SerializeField] private LayerMask pipeLayer;
+
     [Networked(OnChanged = nameof(OnIOTileChanged))]
     public string company { get; set; }
 
@@ -64,7 +66,9 @@ public class IOTileScript : NetworkBehaviour
         {
             // Getting the tile in front of it
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, -transform.right, out hit))
+            Ray ray = new Ray(transform.position, -transform.right);
+            
+            if (Physics.Raycast(ray, out hit, 3, pipeLayer))
             {
                 // Launching the checking process
                 CubeInteraction tile = hit.transform.GetComponent<CubeInteraction>();

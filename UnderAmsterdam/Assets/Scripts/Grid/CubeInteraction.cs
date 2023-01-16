@@ -15,6 +15,7 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview, redDot;
     [SerializeField] private GameObject linePreview;
     [SerializeField] private GameObject particles, particlesWin;
+
     private PipeColouring pColouring;
     private NetworkObject[] neighbors;
     private CubeInteraction[] neighborsScript;
@@ -62,9 +63,9 @@ public class CubeInteraction : NetworkBehaviour
             previewPipeParts[i++] = pipePreview.gameObject;
 
         activatedPipes = new bool[neighbors.Length]; //Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
-        isSpawned = true;
 
         company = "Empty";
+        isSpawned = true;
     }
 
     private void GetNeighbors()
@@ -173,14 +174,14 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Rock"))
+        if (other.CompareTag("Rock") || other.CompareTag("Root"))
             obstructed = true;
         if (other.CompareTag("Player"))
             playerInside = true;
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Rock"))
+        if (other.CompareTag("Rock")|| other.CompareTag("Root"))
             obstructed = false;
         if (other.CompareTag("Player"))
             playerInside = false;
@@ -412,6 +413,11 @@ public class CubeInteraction : NetworkBehaviour
                         Gamemanager.Instance.pManager.CalculateRoundPoints(company);
                         TeamworkManager.Instance.CompanyDone(company);
                         Instantiate(particlesWin, transform);
+
+                        //Flickering lights
+                        if (company == "power")
+                            RandManager.Instance.addPowerPts();
+                        
                         return;
                     }
                 }
