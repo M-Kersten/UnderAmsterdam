@@ -23,7 +23,6 @@ public class WristUISwitch : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
         Debug.Log("WHO: " + other + " TAG: "  + other.tag + " layer: " + other.gameObject.layer);
         if (myRig != null && !myRig.IsLocalNetworkRig)
             return;
