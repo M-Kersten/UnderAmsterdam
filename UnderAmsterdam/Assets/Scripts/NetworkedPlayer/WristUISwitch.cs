@@ -6,6 +6,7 @@ using Fusion;
 
 public class WristUISwitch : NetworkBehaviour
 {
+    [SerializeField] private bool input;
     private SettingsUI wristUI;
     private bool canTouch = true;
     [SerializeField] private int timeInSeconds = 1;
@@ -18,8 +19,11 @@ public class WristUISwitch : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (Object != null && !Object.HasInputAuthority)
-            return;
+        if(other.transform.root.TryGetComponent<NetworkObject>(out NetworkObject component))
+        {
+            if (!component.InputAuthority)
+                return;
+        }
 
         if (wristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI") && canTouch)
         {

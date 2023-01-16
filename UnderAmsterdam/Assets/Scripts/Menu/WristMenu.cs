@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Fusion;
+using UnityEngine.SceneManagement;
 
 public class WristMenu : NetworkBehaviour
 {
@@ -21,8 +22,11 @@ public class WristMenu : NetworkBehaviour
     void Update()
     {
         // Need a way to grab PlayerData from NetworkRig
-        if (myData != null)
+        if (SceneManager.GetActiveScene().name != "A1Menu" && myData != null && pointsText.text != myData.points.ToString())
+        {
+            winLosePoints(myData.points - int.Parse(pointsText.text));
             pointsText.text = myData.points.ToString();
+        }
     }
 
     public void ChangeImage(string company) {
@@ -35,7 +39,7 @@ public class WristMenu : NetworkBehaviour
         }
     }
 
-    public void winLosePoints(int points)
+    private void winLosePoints(int points)
     {
         Transform receptionHand = rightHand.isRightHanded ? leftWatch : rightWatch;
         if (points > 0) Instantiate(goldParticles, receptionHand).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+" + points.ToString();
