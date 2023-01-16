@@ -11,6 +11,8 @@ public class WristMenu : NetworkBehaviour
     [SerializeField] private Sprite[] companyIcons;
     [SerializeField] private TextMeshProUGUI pointsText;
     [SerializeField] private GameObject iconImage;
+    [SerializeField] private GameObject goldParticles, lossParticles;
+    [SerializeField] private HandTileInteraction rightHand;
 
     private PlayerData myData;
 
@@ -19,7 +21,7 @@ public class WristMenu : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        myData = Gamemanager.Instance.localPlayerData;
+        myData = GetComponent<PlayerData>();
     }
 
     void Update()
@@ -37,5 +39,12 @@ public class WristMenu : NetworkBehaviour
             if (companyIcons[i].name == company)
                 iconImage.GetComponent<Image>().sprite = companyIcons[i];
         }
+    }
+
+    public void winLosePoints(int points)
+    {
+        Transform receptionHand = rightHand.isRightHanded ? myData.localLeftHand : myData.localRightHand;
+        if (points > 0) Instantiate(goldParticles, receptionHand).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+" + points.ToString();
+        else Instantiate(lossParticles, receptionHand).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = points.ToString();
     }
 }

@@ -6,55 +6,37 @@ using Fusion;
 
 public class Pointsmanager : MonoBehaviour
 {
-    [SerializeField] private LeaderBoardCanvas leaderBoard;
-
-    private ConnectionManager coach;
-    private int pipeplacepoint = 500;
-    private int piperemovepoint = 200;
+    [SerializeField] ConnectionManager coach;
+    private int pipeplacepoint = -40;
+    private int piperemovepoint = 20;
+    private int teamworkPoints = 1000;
     private int victorypoints = 4000;
-    private float time;
-    private bool roundWinner;
 
-    void Start()
-    {
-        coach = GetComponent<ConnectionManager>();
-    }
-
-    void Update()
-    {
-        if (roundWinner)
-        {
-            if (time < victorypoints)
-                time += Time.deltaTime;
-        }
-    }
     public void AddPoints(string company)
     {
-        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-        PlayerData player = nObject.GetComponent<PlayerData>();
-        player.points += pipeplacepoint;
-        leaderBoard.UpdateLeaderBoard(player);
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+        player.points += piperemovepoint;
+        player.myMenu.winLosePoints(piperemovepoint);
     }
+
+    public void TeamworkBonus(string company)
+    {
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+        player.points += teamworkPoints;
+        player.myMenu.winLosePoints(teamworkPoints);
+    }
+
     public void RemovePoints(string company)
     {
-        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-        PlayerData player = nObject.GetComponent<PlayerData>();
-        player.points -= piperemovepoint;
-        leaderBoard.UpdateLeaderBoard(player);
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+        player.points += pipeplacepoint;
+        player.myMenu.winLosePoints(pipeplacepoint);
     }
 
     public void CalculateRoundPoints(string company)
     {
-        NetworkObject nObject = coach._spawnedUsers[CompanyManager.Instance._companies[company]];
-
-        if (!roundWinner)
-        {
-            nObject.GetComponent<PlayerData>().points += victorypoints;
-            roundWinner = true;
-        }
-        else
-        {
-            nObject.GetComponent<PlayerData>().points -= victorypoints - (int)time * 10;
-        }
+        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
+        player.points += victorypoints;
+        player.myMenu.winLosePoints(victorypoints);
     }
 }

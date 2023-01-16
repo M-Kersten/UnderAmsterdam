@@ -50,7 +50,7 @@ namespace Fusion.XR.Host.Rig
                 hardwareRig = FindObjectOfType<HardwareRig>();
                 if (hardwareRig == null) Debug.LogError("Missing HardwareRig in the scene");
                 else {
-                    Gamemanager.Instance.localPlayerData = pData;
+                    Gamemanager.Instance.networkData = pData;
                 }
             }
         }

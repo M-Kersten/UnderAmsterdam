@@ -19,9 +19,7 @@ public class CubeInteraction : NetworkBehaviour
     private NetworkObject[] neighbors;
     private CubeInteraction[] neighborsScript;
 
-    // When TileOccupied changes value, run OnPipeChanged function
-    [Networked(OnChanged = nameof(OnPipeChanged))]
-    public bool TileOccupied { get; set; } // can be changed and send over the network only by the host
+    public bool TileOccupied;
 
     // When company's values changes, run OnCompanyChange
     [SerializeField]
@@ -41,6 +39,7 @@ public class CubeInteraction : NetworkBehaviour
 
     void Start() {
         pColouring = GetComponent<PipeColouring>();
+        Gamemanager.Instance.RoundEnd.AddListener(delegate { OnRenderPipePreview(false); });
     }
     public override void Spawned()
     {
@@ -195,7 +194,6 @@ public class CubeInteraction : NetworkBehaviour
 
     public void EnableTile()
     {
-        //Gamemanager.Instance.pManager.RemovePoints(company);
         TileOccupied = true;
 
         OnRenderPipePreview(false);
@@ -205,7 +203,6 @@ public class CubeInteraction : NetworkBehaviour
     }
     public void DisableTile()
     {
-        //Gamemanager.Instance.pManager.AddPoints(company);
         // Clear company and occupation state
         TileOccupied = false;
 
@@ -307,22 +304,9 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    // This code gets ran ON OTHER PLAYERS when a pipe has been placed, changed is the new values of the placed pipe
-    static void OnPipeChanged(Changed<CubeInteraction> changed) // static because of networked var isPiped
+    private int GetOppositeFace(int index)
     {
-        changed.Behaviour.OnPipeRender(changed.Behaviour.TileOccupied);
-    }
-    
-    // Run this code locally for players where pipe hasn't changed yet
-    void OnPipeRender(bool isPipedCurrent)
-    {
-        if (isPipedCurrent) EnableTile();
-        else DisableTile();
-    }
-
-    private int GetOppositeFace(int i)
-    {
-        return i + 1 - 2 * (i % 2);            
+        return index + 1 - 2 * (index % 2);            
     }
 
     private void ResetActivatedPipes()
@@ -401,7 +385,7 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    public bool CheckConnectionForWin()
+    public void CheckConnectionForWin()
     {
         // For each neighbor...
         for (int i = 0; i < neighbors.Length; i++)
@@ -415,11 +399,7 @@ public class CubeInteraction : NetworkBehaviour
                     {
                         // Verify this neighbor and mark it as checked.
                         isChecked = true;
-                        if (neighborsScript[i].CheckConnectionForWin())
-                        {
-                            return true;
-                        }
-                        else return false;
+                        neighborsScript[i].CheckConnectionForWin();
                     }
                 }
                 // if it's an Output tile...
@@ -429,14 +409,15 @@ public class CubeInteraction : NetworkBehaviour
                     if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.currentRound)
                     {
                         // Add points to this company
-                        // Gamemanager.Instance.pManager.AddPoints(company.Key);
+                        Gamemanager.Instance.pManager.CalculateRoundPoints(company);
+                        TeamworkManager.Instance.CompanyDone(company);
                         Instantiate(particlesWin, transform);
-                        return true;
+                        return;
                     }
                 }
             }
         }
-        return false;
+        //Gamemanager.Instance.pManager.CalculateRoundPoints(company, false);
     }
 }
 

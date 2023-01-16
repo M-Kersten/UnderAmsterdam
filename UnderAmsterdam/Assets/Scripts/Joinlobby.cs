@@ -14,6 +14,6 @@ public class Joinlobby : MonoBehaviour
         connection.mode = Fusion.GameMode.AutoHostOrClient;
         await connection.Connect();
 
-        connection.runner.SetActiveScene(1);
+        connection.runner.SetActiveScene(2);
     }
 }
