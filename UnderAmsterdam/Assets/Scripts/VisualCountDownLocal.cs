@@ -44,6 +44,7 @@ public class VisualCountDownLocal : MonoBehaviour
     private IEnumerator DisableGameOver()
     {
         yield return new WaitForSeconds(gameOverDisableTime);
-        ToggleDisplayGameOverText();
+        shouldGameOverBeOn = !shouldGameOverBeOn;
+        gameOverObject.SetActive(shouldGameOverBeOn);
     }
 }

@@ -31,16 +31,28 @@ public class IOTileScript : NetworkBehaviour
         RaycastHit hit;
 
         if (Physics.Raycast(transform.position, Vector3.up, out hit))
-            IoNeighbourTiles.Add(hit.transform.gameObject.GetComponent<IOTileScript>());
+            if(hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
 
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
-            IoNeighbourTiles.Add(hit.transform.gameObject.GetComponent<IOTileScript>());
+        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
 
         if (Physics.Raycast(transform.position, Vector3.left, out hit))
-            IoNeighbourTiles.Add(hit.transform.gameObject.GetComponent<IOTileScript>());
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
 
         if (Physics.Raycast(transform.position, Vector3.right, out hit))
-            IoNeighbourTiles.Add(hit.transform.gameObject.GetComponent<IOTileScript>());
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit))
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.back, out hit))
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
     }
     private bool CheckNeighboursOccupied()
     {
