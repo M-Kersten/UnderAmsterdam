@@ -12782,6 +12782,7 @@ GameObject:
   - component: {fileID: 1604761813}
   - component: {fileID: 1604761812}
   - component: {fileID: 1604761814}
+  - component: {fileID: 1604761816}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -12860,6 +12861,23 @@ MonoBehaviour:
   m_PositionUnits: 1
   m_Speed: 1
   m_Position: 0
+--- !u!320 &1604761816
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1604761811}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 7fb06bee12507d64780f23c13885e487, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings: []
+  m_ExposedReferences:
+    m_References: []
 --- !u!1001 &1609160801
 PrefabInstance:
   m_ObjectHideFlags: 0
