@@ -29,11 +29,6 @@ public class ScoreBoard : NetworkBehaviour
     {
         DisplayLeaderBoard();
     }
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    void RPC_WarpPlayers()
-    {
-        WarpPlayers();
-    }
 
     public override void Spawned()
     {
@@ -42,7 +37,6 @@ public class ScoreBoard : NetworkBehaviour
         {
             if (perRound) Gamemanager.Instance.RoundStart.AddListener(GetStartPoints);
             Gamemanager.Instance.GameEnd.AddListener(UpdateLeaderBoard);
-            //Gamemanager.Instance.GameLateEnd.AddListener(RPC_WarpPlayers);
         }
     }
 
@@ -110,12 +104,5 @@ public class ScoreBoard : NetworkBehaviour
                 return;
             }
         }
-
-        /*Gamemanager.Instance.lPlayerCC.enabled = false;
-        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(1.02216411f, 4.0f, 5f);
-        Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 90, 0);
-        Gamemanager.Instance.lPlayerCC.enabled = true;*/
-
     }
-
 }
