@@ -15,16 +15,14 @@ public class WristUISwitch : NetworkBehaviour
     private void Start()
     {
         wristUI = Gamemanager.Instance.localData.myWristUI;
+        Debug.Log("My WristUI: " + wristUI + " GameObject: " + Gamemanager.Instance.localData.myWristUI.gameObject);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.transform.root.GetComponent<NetworkObject>() != null) {
-            if (!other.transform.root.GetComponent<NetworkObject>().InputAuthority)
+            if (!other.transform.root.GetComponent<NetworkObject>().HasInputAuthority)
                 return;
-
-            Debug.Log("collider: " + other + " input: " + other.transform.root.GetComponent<NetworkObject>().InputAuthority);
-
         }
 
         if (wristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI") && canTouch)

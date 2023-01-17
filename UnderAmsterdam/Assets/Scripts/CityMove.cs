@@ -56,6 +56,7 @@ public class CityMove : MonoBehaviour
                     if (playersInGame[active])
                     {
                         readyPlayers++;
+                        playersInGame[active] = false;
                         Debug.Log("PLAYER READY: " + active);
                     }
                     Debug.Log("active Player: " + active + " checking player: " + player.Key + " readyPlayers: " + readyPlayers);
@@ -84,6 +85,7 @@ public class CityMove : MonoBehaviour
         Debug.Log("enabling cap for: " + other);
         other.transform.root.GetComponent<PlayerData>().playerCap.SetActive(true);
     }
+
     private void EndOfGame()
     {
         playerPos = Gamemanager.Instance.lPlayerCC.transform.position;
