@@ -28,6 +28,8 @@ public class CityMove : MonoBehaviour
             {
                 if (!playersInGame.ContainsKey(player))
                     playersInGame.Add(player, false);
+
+                Debug.Log("player add: " + player);
             }
 
             PlayerRef tempplayer = other.GetComponentInParent<NetworkObject>().InputAuthority;
@@ -35,11 +37,12 @@ public class CityMove : MonoBehaviour
             if (playersInGame.ContainsKey(tempplayer) && !playersInGame[tempplayer])
             {
                 playersInGame[tempplayer] = true;
-                other.transform.root.GetComponent<PlayerData>().playerCap.SetActive(true);
+                RPC_EnableCap(other);
                 CheckAllPlayers();
             }
         }
     }
+
     private void CheckAllPlayers()
     {
         int readyPlayers = 0;
@@ -53,11 +56,14 @@ public class CityMove : MonoBehaviour
                     if (playersInGame[active])
                     {
                         readyPlayers++;
+                        Debug.Log("PLAYER READY: " + active);
                     }
+                    Debug.Log("active Player: " + active + " checking player: " + player.Key + " readyPlayers: " + readyPlayers);
                 }
                 else
                 {
                     playersInGame.Remove(player.Key);
+                    Debug.Log("Removing: " + player.Key);
                 }
             }
         }
@@ -70,6 +76,13 @@ public class CityMove : MonoBehaviour
             movedown = new Vector3(playerPos.x, -0.5f, playerPos.z);
             StartCoroutine(GameStartProcedure(playerPos, movedown));
         }
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    void RPC_EnableCap(Collider other)
+    {
+        Debug.Log("enabling cap for: " + other);
+        other.transform.root.GetComponent<PlayerData>().playerCap.SetActive(true);
     }
     private void EndOfGame()
     {
