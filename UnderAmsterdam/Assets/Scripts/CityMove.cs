@@ -12,7 +12,7 @@ public class CityMove : MonoBehaviour
     private Vector3 playerPos;
     private Vector3 moveup;
     [SerializeField] GameObject[] toDisableObjects, toEnableObjects;
-    [SerializeField] Material[] newMaterials;
+    [SerializeField] Material newMaterial;
     [SerializeField] ScoreBoard scoreBoard;
     void Start()
     {
@@ -107,7 +107,7 @@ public class CityMove : MonoBehaviour
         float duration = 5f;
 
         EnableObjectsBeforeGameOver();
-        toEnableObjects[0].GetComponent<Renderer>().material = newMaterials[0];
+        toDisableObjects[0].GetComponent<Renderer>().material = newMaterial;
 
         //Disable player movement and slide them into the ground
         Gamemanager.Instance.lPlayerCC.enabled = false;
