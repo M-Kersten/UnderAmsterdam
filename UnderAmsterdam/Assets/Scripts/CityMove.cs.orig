@@ -13,7 +13,12 @@ public class CityMove : MonoBehaviour
     private Vector3 moveup;
     [SerializeField] GameObject[] toDisableObjects, toEnableObjects;
     [SerializeField] Material[] newMaterials;
+<<<<<<< HEAD
+=======
     [SerializeField] ScoreBoard scoreBoard;
+    private bool gameEnded;
+>>>>>>> be3fc761c0629b4602df41b152c5257202c1741c
+
     void Start()
     {
         playersInGame = new Dictionary<PlayerRef, bool>();
@@ -81,14 +86,29 @@ public class CityMove : MonoBehaviour
         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = to;
         Gamemanager.Instance.lPlayerCC.enabled = true;
 
+<<<<<<< HEAD
         DisableObjectsAfterGameStart();
         Gamemanager.Instance.startGame = true;
-
-        yield return null;
+=======
+        //Swap objects depending on gamestate
+        if (gameEnded)
+        {
+            EnableObjectsAfterGameOver();
             GetComponent<Renderer>().material = newMaterials[1];
             //toEnableObjects[1].GetComponent<Renderer>().material = newMaterials[0];
             //toDisableObjects[0].GetComponent<Renderer>().material = newMaterials[1];
             scoreBoard.warpPlayers();
+        }
+        else
+        {
+            DisableObjectsAfterGameOver();
+        }
+
+        if (!gameEnded && !Gamemanager.Instance.startGame)
+            Gamemanager.Instance.startGame = true;
+>>>>>>> be3fc761c0629b4602df41b152c5257202c1741c
+
+        yield return null;
     }
 
     private IEnumerator GameOverProcedure(Vector3 from, Vector3 to)

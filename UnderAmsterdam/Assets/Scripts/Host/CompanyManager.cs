@@ -87,6 +87,8 @@ public class CompanyManager : MonoBehaviour
     }
 
     public void ResetCompanies() {
+
+        if (Gamemanager.Instance.currentRound >= Gamemanager.Instance.amountOfRounds) return;
         // Reset given companies
         availableCompanies = new List<string>{"water","gas","data","sewage","power"};
         _companies = new Dictionary<string, PlayerRef> {

@@ -9,25 +9,24 @@ public class ScoreBoard : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI[] PlayerTMP;
     [SerializeField] private TextMeshProUGUI roundTMP;
-    [SerializeField] private ConnectionManager cManager;
     [SerializeField] private bool perRound;
     [SerializeField] private Transform[] podiumPipes;
     [SerializeField] private GameObject podium;
+    [SerializeField] private GameObject container;
 
+    private ConnectionManager cManager;
     private Dictionary<string, int> rankDict;
     private Dictionary<string, PlayerRef> savedCompanies;
     private int[] startPoints;
-    private int round = 0;
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_SendData(PlayerData player, int startPoint)
     {
-        rankDict.Add(player.company, player.points - startPoint + rankDict.Count);
+        rankDict.Add(player.company, player.points - startPoint);
     }
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_DisplayData()
     {
-        round++;
         DisplayLeaderBoard();
     }
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -43,7 +42,7 @@ public class ScoreBoard : NetworkBehaviour
         {
             if (perRound) Gamemanager.Instance.RoundStart.AddListener(GetStartPoints);
             Gamemanager.Instance.GameEnd.AddListener(UpdateLeaderBoard);
-            Gamemanager.Instance.GameEnd.AddListener(RPC_WarpPlayers);
+            //Gamemanager.Instance.GameLateEnd.AddListener(RPC_WarpPlayers);
         }
     }
 
@@ -53,6 +52,7 @@ public class ScoreBoard : NetworkBehaviour
         rankDict = new Dictionary<string, int>();
         startPoints = new int[] { 0, 0, 0, 0, 0 };
         podium.SetActive(false);
+        container.SetActive(false);
     }
 
     private void GetStartPoints()
@@ -64,8 +64,9 @@ public class ScoreBoard : NetworkBehaviour
         }
     }
 
-    private void UpdateLeaderBoard()
+    public void UpdateLeaderBoard()
     {
+
         int i = 0;
         //Updates the dictionnary;
         foreach (var company in CompanyManager.Instance._companies)
@@ -83,6 +84,7 @@ public class ScoreBoard : NetworkBehaviour
 
     private void DisplayLeaderBoard()
     {
+        container.SetActive(true);
         int i = 0;
 
         //Displays points for each player in the dictionnary
@@ -94,7 +96,7 @@ public class ScoreBoard : NetworkBehaviour
         savedCompanies = CompanyManager.Instance._companies;
     }
 
-    void warpPlayers()
+    public void warpPlayers()
     {
         podium.SetActive(true);
         for (int i = 0; i < podiumPipes.Length && i < rankDict.Count; i++)
@@ -109,10 +111,10 @@ public class ScoreBoard : NetworkBehaviour
             }
         }
 
-        Gamemanager.Instance.lPlayerCC.enabled = false;
+        /*Gamemanager.Instance.lPlayerCC.enabled = false;
         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = new Vector3(1.02216411f, 4.0f, 5f);
         Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 90, 0);
-        Gamemanager.Instance.lPlayerCC.enabled = true;
+        Gamemanager.Instance.lPlayerCC.enabled = true;*/
 
     }
 

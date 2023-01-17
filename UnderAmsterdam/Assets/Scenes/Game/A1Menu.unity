@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12052104, g: 0.1861391, b: 0.33495972, a: 1}
+  m_IndirectSpecularColor: {r: 0.12076039, g: 0.18643652, b: 0.33524966, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1567,13 +1567,16 @@ MonoBehaviour:
   CountDownEnd:
     m_PersistentCalls:
       m_Calls: []
+  GameLateEnd:
+    m_PersistentCalls:
+      m_Calls: []
   networkData: {fileID: 0}
   localData: {fileID: 1758203090}
   playerInputHandler: {fileID: 1500614366}
   lPlayerCC: {fileID: 1500614363}
   mainCam: {fileID: 1225606329}
-  roundTimeIncrease: 10
-  roundTime: 45
+  roundTimeIncrease: 0
+  roundTime: 1
   runner: {fileID: 349649071}
   roundCountDownTime: 3
   amountOfRounds: 5
