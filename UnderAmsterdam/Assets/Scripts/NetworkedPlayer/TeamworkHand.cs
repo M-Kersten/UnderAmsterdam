@@ -15,6 +15,7 @@ public class TeamworkHand : MonoBehaviour
     {
         if (myNetworkObj.HasStateAuthority)
         {
+            Debug.Log("Host: " + myNetworkObj.HasStateAuthority + " Layer: " + collision.gameObject.layer + "Hand VS Cap: " + (transform.position.y > myCap.position.y));
             if (collision.gameObject.layer == 8 && transform.position.y > myCap.position.y)
             {
                 otherParent = collision.transform.parent.transform.parent;
