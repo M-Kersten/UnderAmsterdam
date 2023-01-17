@@ -1296,6 +1296,11 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 8439811098364466049, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
   m_PrefabInstance: {fileID: 1199640058}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1225606329 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8439811098364466054, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+  m_PrefabInstance: {fileID: 1199640058}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1317237042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1566,7 +1571,7 @@ MonoBehaviour:
   localData: {fileID: 1758203090}
   playerInputHandler: {fileID: 1500614366}
   lPlayerCC: {fileID: 1500614363}
-  mainCam: {fileID: 0}
+  mainCam: {fileID: 1225606329}
   roundTimeIncrease: 10
   roundTime: 45
   runner: {fileID: 349649071}
