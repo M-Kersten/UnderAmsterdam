@@ -47,8 +47,8 @@ public class PlayerData : NetworkBehaviour
     public void RPC_SwitchHands()
     {
         //Switching the hands
-        rightHand.isRightHanded = !rightHand.isRightHanded;
-        leftHand.isRightHanded = !leftHand.isRightHanded;
+        rightHand.SwitchHands();
+        leftHand.SwitchHands();
 
         //Moving the watch
         Transform receptionHand = rightHand.isRightHanded ? leftTransform : rightTransform;

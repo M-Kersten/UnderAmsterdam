@@ -148,4 +148,12 @@ public class HandTileInteraction : NetworkBehaviour
     {
         handEnabled = !handEnabled;
     }
+
+    public void SwitchHands()
+    {
+        myHammerScript.ActivateHammer(false);
+        HammerEnabled = false;
+
+        isRightHanded = !isRightHanded;
+    }
 }

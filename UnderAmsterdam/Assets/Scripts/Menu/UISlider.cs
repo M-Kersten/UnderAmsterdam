@@ -70,6 +70,9 @@ public class UISlider : NetworkBehaviour
         {
             if (!other.transform.root.GetComponent<NetworkObject>().InputAuthority)
                 return;
+
+            Debug.Log("collider: " + other + " input: " + other.transform.root.GetComponent<NetworkObject>().InputAuthority);
+
         }
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))
@@ -85,6 +88,8 @@ public class UISlider : NetworkBehaviour
         {
             if (!other.transform.root.GetComponent<NetworkObject>().InputAuthority)
                 return;
+            Debug.Log("collider: " + other + " input: " + other.transform.root.GetComponent<NetworkObject>().InputAuthority);
+
         }
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))

@@ -22,6 +22,9 @@ public class WristUISwitch : NetworkBehaviour
         if(other.transform.root.GetComponent<NetworkObject>() != null) {
             if (!other.transform.root.GetComponent<NetworkObject>().InputAuthority)
                 return;
+
+            Debug.Log("collider: " + other + " input: " + other.transform.root.GetComponent<NetworkObject>().InputAuthority);
+
         }
 
         if (wristUI != null && other.gameObject.layer == 8 && other.CompareTag("UI") && canTouch)
