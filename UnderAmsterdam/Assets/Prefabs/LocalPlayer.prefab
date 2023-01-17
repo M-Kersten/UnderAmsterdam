@@ -5050,7 +5050,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5234691376246264262
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5327,7 +5327,7 @@ MonoBehaviour:
   ExitButton:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Exit Button
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: 26ce82f5-a369-4f7d-95f7-ba79cc53abb4
@@ -6183,8 +6183,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.1
-  m_fontSizeBase: 0.1
+  m_fontSize: 0.08
+  m_fontSizeBase: 0.08
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
