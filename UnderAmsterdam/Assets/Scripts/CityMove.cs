@@ -84,7 +84,7 @@ public class CityMove : MonoBehaviour
         DisableObjectsAfterGameStart();
         Gamemanager.Instance.startGame = true;
 
-        scoreBoard.warpPlayers();
+        scoreBoard.WarpPlayers();
         yield return null;
     }
 

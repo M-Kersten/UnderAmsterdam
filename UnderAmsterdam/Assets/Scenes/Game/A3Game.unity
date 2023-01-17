@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12052104, g: 0.1861391, b: 0.33495972, a: 1}
+  m_IndirectSpecularColor: {r: 0.12076039, g: 0.18643652, b: 0.33524966, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10818,6 +10818,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 185967707}
     - target: {fileID: 7204667784912193126, guid: 291dbd1e311e4ee429fc29ce9e8b925d, type: 3}
+      propertyPath: container
+      value: 
+      objectReference: {fileID: 1836439557}
+    - target: {fileID: 7204667784912193126, guid: 291dbd1e311e4ee429fc29ce9e8b925d, type: 3}
       propertyPath: podiumPipes.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -10869,6 +10873,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7797292704749754195, guid: 291dbd1e311e4ee429fc29ce9e8b925d, type: 3}
   m_PrefabInstance: {fileID: 1836439555}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1836439558 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7204667784912193126, guid: 291dbd1e311e4ee429fc29ce9e8b925d, type: 3}
+  m_PrefabInstance: {fileID: 1836439555}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46171c11588a298439a574ca306fd1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1873138035
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18026,6 +18041,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+      propertyPath: scoreBoard
+      value: 
+      objectReference: {fileID: 1836439558}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: objectSwitch.Array.data[0]
       value: 

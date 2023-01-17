@@ -8,7 +8,7 @@ public class Gamemanager : MonoBehaviour
 {
     public static Gamemanager Instance;
 
-    public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd, GameLateEnd;
+    public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
     public PlayerData networkData;
     [SerializeField] public LocalData localData;
     public PlayerInputHandler playerInputHandler;
@@ -116,6 +116,5 @@ public class Gamemanager : MonoBehaviour
     {
         GameEnd.Invoke();
         Debug.Log("GAMEMANAGER: ON GAME END");
-        GameLateEnd.Invoke();
     }
 }

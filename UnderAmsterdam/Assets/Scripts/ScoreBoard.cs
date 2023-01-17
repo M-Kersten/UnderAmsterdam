@@ -32,7 +32,7 @@ public class ScoreBoard : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     void RPC_WarpPlayers()
     {
-        warpPlayers();
+        WarpPlayers();
     }
 
     public override void Spawned()
@@ -96,7 +96,7 @@ public class ScoreBoard : NetworkBehaviour
         savedCompanies = CompanyManager.Instance._companies;
     }
 
-    public void warpPlayers()
+    public void WarpPlayers()
     {
         podium.SetActive(true);
         for (int i = 0; i < podiumPipes.Length && i < rankDict.Count; i++)
