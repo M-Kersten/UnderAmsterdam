@@ -174,6 +174,8 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
+        
         if (other.CompareTag("Rock") || other.CompareTag("Root"))
             obstructed = true;
         if (other.CompareTag("Player"))
@@ -181,6 +183,8 @@ public class CubeInteraction : NetworkBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
+        ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
+        
         if (other.CompareTag("Rock")|| other.CompareTag("Root"))
             obstructed = false;
         if (other.CompareTag("Player"))
