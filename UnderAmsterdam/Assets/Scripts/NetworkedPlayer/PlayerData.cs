@@ -6,7 +6,7 @@ using Fusion.XR.Host.Rig;
 
 public class PlayerData : NetworkBehaviour
 {
-    [SerializeField] private GameObject playerCap;
+    [SerializeField] public GameObject playerCap;
     [SerializeField] private GameObject playerLeftHand, playerRightHand;
     [SerializeField] private GameObject myWatch, topWatch;
     [SerializeField] private int startingPoints = 1000;

@@ -35,6 +35,7 @@ public class CityMove : MonoBehaviour
             if (playersInGame.ContainsKey(tempplayer) && !playersInGame[tempplayer])
             {
                 playersInGame[tempplayer] = true;
+                other.transform.root.GetComponent<PlayerData>().playerCap.SetActive(true);
                 CheckAllPlayers();
             }
         }

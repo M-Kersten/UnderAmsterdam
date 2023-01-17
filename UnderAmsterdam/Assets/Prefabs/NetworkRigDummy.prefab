@@ -130,6 +130,10 @@ PrefabInstance:
       value: safetycap2
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7a2a47403e88fda45a1e38793acc0726, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7a2a47403e88fda45a1e38793acc0726, type: 3}
       propertyPath: m_TagString
       value: misc
       objectReference: {fileID: 0}
@@ -1561,6 +1565,7 @@ MonoBehaviour:
   myCap: {fileID: 454789841778871080}
   myNetworkObj: {fileID: 2549000073306557744}
   myData: {fileID: 7324134168333653148}
+  teamParticle: {fileID: 0}
 --- !u!4 &2549000074207914336 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 82848159265621318, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
@@ -1693,6 +1698,7 @@ MonoBehaviour:
   myCap: {fileID: 454789841778871080}
   myNetworkObj: {fileID: 2549000073306557744}
   myData: {fileID: 7324134168333653148}
+  teamParticle: {fileID: 0}
 --- !u!114 &2549000074207914367 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 82848159265621337, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
