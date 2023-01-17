@@ -62,6 +62,7 @@ public class Gamemanager : MonoBehaviour
     {
         GameStart.Invoke();
         Debug.Log("GAMEMANAGER: ON GAME START");
+        ConnectionManager.Instance.runner.SessionInfo.IsOpen = false;
         OnCountDownStart();
     }
     private void OnCountDownStart()

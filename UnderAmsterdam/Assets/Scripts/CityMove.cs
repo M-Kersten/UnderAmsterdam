@@ -42,13 +42,25 @@ public class CityMove : MonoBehaviour
     private void CheckAllPlayers()
     {
         int readyPlayers = 0;
-        foreach (var player in playersInGame)
+
+        foreach(var player in playersInGame)
         {
-            if (player.Value)
+            foreach(PlayerRef active in ConnectionManager.Instance.runner.ActivePlayers)
             {
-                readyPlayers++;
+                if(playersInGame.ContainsKey(active))
+                {
+                    if (playersInGame[active])
+                    {
+                        readyPlayers++;
+                    }
+                }
+                else
+                {
+                    playersInGame.Remove(player.Key);
+                }
             }
         }
+
         if (playersInGame.Count == readyPlayers && readyPlayers > 0)
         {
             //start animation down
