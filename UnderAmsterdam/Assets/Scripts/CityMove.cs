@@ -13,8 +13,8 @@ public class CityMove : MonoBehaviour
     private Vector3 moveup;
     [SerializeField] GameObject[] toDisableObjects, toEnableObjects;
     [SerializeField] Material[] newMaterials;
+    [SerializeField] ScoreBoard scoreBoard;
     private bool gameEnded;
-
 
     void Start()
     {
@@ -88,15 +88,17 @@ public class CityMove : MonoBehaviour
         if (gameEnded)
         {
             EnableObjectsAfterGameOver();
-            toEnableObjects[1].GetComponent<Renderer>().material = newMaterials[0];
-            toDisableObjects[0].GetComponent<Renderer>().material = newMaterials[1];
+            GetComponent<Renderer>().material = newMaterials[1];
+            //toEnableObjects[1].GetComponent<Renderer>().material = newMaterials[0];
+            //toDisableObjects[0].GetComponent<Renderer>().material = newMaterials[1];
+            scoreBoard.warpPlayers();
         }
         else
         {
             DisableObjectsAfterGameOver();
         }
 
-        if (!Gamemanager.Instance.startGame)
+        if (!gameEnded && !Gamemanager.Instance.startGame)
             Gamemanager.Instance.startGame = true;
 
         yield return null;

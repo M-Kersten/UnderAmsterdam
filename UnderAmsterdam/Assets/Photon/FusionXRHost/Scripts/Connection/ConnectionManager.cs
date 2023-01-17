@@ -106,7 +106,7 @@ namespace Fusion.XR.Host
                     case "A3Game":
 
                         tPosition = new Vector3(1.02216411f, 4.0f, 1.65285861f);
-                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                        tRotation = Quaternion.Euler(new Vector3(0, 180, 0));
                     
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
