@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Fusion;
 
-public class UISlider : MonoBehaviour
+public class UISlider : NetworkBehaviour
 {
     [SerializeField] public GameObject handle;
     [SerializeField] GameObject backgroundBase;
@@ -14,8 +15,6 @@ public class UISlider : MonoBehaviour
     private Vector3 maxPosition;
     private float minValueForMixer = 0.0001f;
     private bool touched;
-
-    private NetworkRig myRig;
 
     private Collider touchingCollider;
 
@@ -32,11 +31,6 @@ public class UISlider : MonoBehaviour
         maxPosition = new Vector3(-minXPos, 0.961f, 0);
         handle.transform.localPosition = maxPosition;
         handlePosition(handle.transform.localPosition.x);
-    }
-
-    public void GetRig(NetworkRig givenRig)
-    {
-        myRig = givenRig;
     }
 
     private void Update()
@@ -72,8 +66,12 @@ public class UISlider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (myRig != null && !myRig.IsLocalNetworkRig)
+        if (other.transform.root.TryGetComponent<NetworkObject>(out NetworkObject component))
+        {
+
+            if (!component.InputAuthority)
             return;
+        }
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))
         {
@@ -84,8 +82,11 @@ public class UISlider : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (myRig != null && !myRig.IsLocalNetworkRig)
-            return;
+        if (other.transform.root.TryGetComponent<NetworkObject>(out NetworkObject component))
+        {
+            if (!component.InputAuthority)
+                return;
+        }
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))
         {

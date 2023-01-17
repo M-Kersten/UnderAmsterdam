@@ -5686,6 +5686,7 @@ GameObject:
   - component: {fileID: 8439811098364466052}
   - component: {fileID: 8439811098364466055}
   - component: {fileID: 5713110006005797892}
+  - component: {fileID: 7584920052362907153}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5811,6 +5812,20 @@ MonoBehaviour:
   blinkDurationIn: 0.1
   blinkDurationSpentIn: 0.1
   blinkDurationOut: 0.1
+--- !u!136 &7584920052362907153
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8439811098364466051}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.15
+  m_Height: 0.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8439811098612244500
 GameObject:
   m_ObjectHideFlags: 0

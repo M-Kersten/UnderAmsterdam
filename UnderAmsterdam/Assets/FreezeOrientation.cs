@@ -10,9 +10,9 @@ public class FreezeOrientation : MonoBehaviour
 
     private void Start()
     {
-        player = Gamemanager.Instance.lPlayerCC.transform.GetChild(0).GetChild(0);
-        transform.parent = transform.parent.parent.parent;
-        localY = transform.position.y + 0.035f;
+        player = Gamemanager.Instance.mainCam;
+        transform.parent = Gamemanager.Instance.networkData.transform;
+        localY = transform.position.y + 0.055f;
     }
 
     // Update is called once per frame

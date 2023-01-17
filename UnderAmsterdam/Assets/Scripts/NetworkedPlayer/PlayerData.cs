@@ -13,7 +13,6 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] public WristMenu myMenu;
     [SerializeField] private HandTileInteraction rightHand, leftHand;
     [SerializeField] private Transform leftTransform, rightTransform;
-    public Transform localLeftHand, localRightHand;
     private NetworkRig nRig;
     [SerializeField] private WristUISwitch watchUI;
 
@@ -42,13 +41,6 @@ public class PlayerData : NetworkBehaviour
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
-
-        watchUI.GetNetworkInfo(nRig, Gamemanager.Instance.localData.myWristUI);
-
-        localLeftHand = Gamemanager.Instance.lPlayerCC.transform.GetChild(1);
-        localLeftHand = localLeftHand.GetChild(localLeftHand.childCount - 1);
-        localRightHand = Gamemanager.Instance.lPlayerCC.transform.GetChild(2);
-        localRightHand = localRightHand.GetChild(localRightHand.childCount - 1);
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]

@@ -17,21 +17,18 @@ public class Pointsmanager : MonoBehaviour
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += piperemovepoint;
-        player.myMenu.winLosePoints(piperemovepoint);
     }
 
     public void TeamworkBonus(string company)
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += teamworkPoints;
-        player.myMenu.winLosePoints(teamworkPoints);
     }
 
     public void RemovePoints(string company)
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += pipeplacepoint;
-        player.myMenu.winLosePoints(pipeplacepoint);
     }
 
     public void RemovePointsRoots(string company)
@@ -45,6 +42,5 @@ public class Pointsmanager : MonoBehaviour
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += victorypoints;
-        player.myMenu.winLosePoints(victorypoints);
     }
 }
