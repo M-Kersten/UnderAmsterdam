@@ -66,9 +66,11 @@ public class UISlider : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        bool temp = other.transform.root.GetComponent<NetworkObject>().InputAuthority;
-        if (!temp)
-            return;
+        if (other.transform.root.GetComponent<NetworkObject>() != null)
+        {
+            if (!other.transform.root.GetComponent<NetworkObject>().InputAuthority)
+                return;
+        }
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))
         {
@@ -79,9 +81,11 @@ public class UISlider : NetworkBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        bool temp = other.transform.root.GetComponent<NetworkObject>().InputAuthority;
-        if (!temp)
-            return;
+        if (other.transform.root.GetComponent<NetworkObject>() != null)
+        {
+            if (!other.transform.root.GetComponent<NetworkObject>().InputAuthority)
+                return;
+        }
 
         if (other.gameObject.layer == 8 && other.CompareTag("UI"))
         {
