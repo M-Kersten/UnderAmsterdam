@@ -9,6 +9,7 @@ public class VisualCountDownLocal : MonoBehaviour
     [SerializeField] private AudioClip countDown, countDownStart;
     [SerializeField] private TextMeshProUGUI counter;
     [SerializeField] private GameObject gameOverObject;
+    [SerializeField] private float gameOverDisableTime;
     private bool shouldGameOverBeOn = false;
     void Start()
     {
@@ -38,5 +39,11 @@ public class VisualCountDownLocal : MonoBehaviour
     {
         shouldGameOverBeOn = !shouldGameOverBeOn;
         gameOverObject.SetActive(shouldGameOverBeOn);
+        StartCoroutine(DisableGameOver());
+    }
+    private IEnumerator DisableGameOver()
+    {
+        yield return new WaitForSeconds(gameOverDisableTime);
+        ToggleDisplayGameOverText();
     }
 }
