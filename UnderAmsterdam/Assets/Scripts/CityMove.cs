@@ -84,11 +84,8 @@ public class CityMove : MonoBehaviour
         DisableObjectsAfterGameStart();
         Gamemanager.Instance.startGame = true;
 
+        scoreBoard.warpPlayers();
         yield return null;
-            GetComponent<Renderer>().material = newMaterials[1];
-            //toEnableObjects[1].GetComponent<Renderer>().material = newMaterials[0];
-            //toDisableObjects[0].GetComponent<Renderer>().material = newMaterials[1];
-            scoreBoard.warpPlayers();
     }
 
     private IEnumerator GameOverProcedure(Vector3 from, Vector3 to)
