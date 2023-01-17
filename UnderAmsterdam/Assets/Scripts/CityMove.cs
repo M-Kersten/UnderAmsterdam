@@ -13,8 +13,6 @@ public class CityMove : MonoBehaviour
     private Vector3 moveup;
     [SerializeField] GameObject[] toDisableObjects, toEnableObjects;
     [SerializeField] Material[] newMaterials;
-    private bool gameEnded;
-
 
     void Start()
     {
@@ -54,24 +52,23 @@ public class CityMove : MonoBehaviour
         if (playersInGame.Count == readyPlayers && readyPlayers > 0)
         {
             //start animation down
-            Debug.Log("play animation");
             playerPos = Gamemanager.Instance.lPlayerCC.gameObject.transform.position;
             moveup = playerPos;
             movedown = new Vector3(playerPos.x, -0.5f, playerPos.z);
-            StartCoroutine(MovePlayers(playerPos, movedown));
+            StartCoroutine(GameStartProcedure(playerPos, movedown));
         }
     }
     private void EndOfGame()
     {
-        gameEnded = true;
-        playerPos = Gamemanager.Instance.lPlayerCC.gameObject.transform.position;
-        StartCoroutine(MovePlayers(playerPos, moveup));
+        playerPos = Gamemanager.Instance.lPlayerCC.transform.position;
+        StartCoroutine(GameOverProcedure(playerPos, moveup));
     }
-
-    private IEnumerator MovePlayers(Vector3 from, Vector3 to)
+    private IEnumerator GameStartProcedure(Vector3 from, Vector3 to)
     {
         float elapsed = 0;
         float duration = 5f;
+
+        toDisableObjects[0].SetActive(false);
 
         //Disable player movement and slide them into the ground
         Gamemanager.Instance.lPlayerCC.enabled = false;
@@ -84,31 +81,44 @@ public class CityMove : MonoBehaviour
         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = to;
         Gamemanager.Instance.lPlayerCC.enabled = true;
 
-        //Swap objects depending on gamestate
-        if (gameEnded)
-        {
-            EnableObjectsAfterGameOver();
-            toEnableObjects[1].GetComponent<Renderer>().material = newMaterials[0];
-            toDisableObjects[0].GetComponent<Renderer>().material = newMaterials[1];
-        }
-        else
-        {
-            DisableObjectsAfterGameOver();
-        }
-
-        if (!Gamemanager.Instance.startGame)
-            Gamemanager.Instance.startGame = true;
+        DisableObjectsAfterGameStart();
+        Gamemanager.Instance.startGame = true;
 
         yield return null;
     }
-    private void DisableObjectsAfterGameOver()
+
+    private IEnumerator GameOverProcedure(Vector3 from, Vector3 to)
+    {
+        float elapsed = 0;
+        float duration = 5f;
+
+        EnableObjectsBeforeGameOver();
+        toEnableObjects[0].GetComponent<Renderer>().material = newMaterials[0];
+
+        //Disable player movement and slide them into the ground
+        Gamemanager.Instance.lPlayerCC.enabled = false;
+        while (elapsed < duration)
+        {
+            Gamemanager.Instance.lPlayerCC.gameObject.transform.position = Vector3.Lerp(from, to, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = to;
+        Gamemanager.Instance.lPlayerCC.enabled = true;
+
+        toDisableObjects[0].SetActive(true);
+
+        yield return null;
+    }
+
+    private void DisableObjectsAfterGameStart()
     {
         for (int i = 0; i < toDisableObjects.Length; i++)
         {
             toDisableObjects[i].SetActive(false);
         }
     }
-    private void EnableObjectsAfterGameOver()
+    private void EnableObjectsBeforeGameOver()
     {
         for (int i = 0; i < toEnableObjects.Length; i++)
         {
