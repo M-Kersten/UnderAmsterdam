@@ -74,7 +74,7 @@ public class CityMove : MonoBehaviour
             playerPos = Gamemanager.Instance.lPlayerCC.gameObject.transform.position;
             moveup = playerPos;
             movedown = new Vector3(playerPos.x, -0.5f, playerPos.z);
-            StartCoroutine(GameStartProcedure(playerPos, movedown));
+            GameStartProcedure(playerPos, movedown);
         }
     }
 
@@ -93,42 +93,34 @@ public class CityMove : MonoBehaviour
     private void EndOfGame()
     {
         playerPos = Gamemanager.Instance.lPlayerCC.transform.position;
-        StartCoroutine(GameOverProcedure(playerPos, moveup));
+        GameOverProcedure(playerPos, moveup);
     }
-    private IEnumerator GameStartProcedure(Vector3 from, Vector3 to)
+    private void GameStartProcedure(Vector3 from, Vector3 to)
     {
-        float elapsed = 0;
-        float duration = 5f;
-
         toDisableObjects[0].SetActive(false);
 
-        //Disable player movement and slide them into the ground
-        Gamemanager.Instance.lPlayerCC.enabled = false;
-        while (elapsed < duration)
-        {
-            Gamemanager.Instance.lPlayerCC.gameObject.transform.position = Vector3.Lerp(from, to, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = to;
-        Gamemanager.Instance.lPlayerCC.enabled = true;
+        StartCoroutine(MovePlayers(from, to));
 
         DisableObjectsAfterGameStart();
         Gamemanager.Instance.startGame = true;
 
         scoreBoard.WarpPlayers();
-        yield return null;
     }
 
-    private IEnumerator GameOverProcedure(Vector3 from, Vector3 to)
+    private void GameOverProcedure(Vector3 from, Vector3 to)
+    {
+        EnableObjectsBeforeGameOver();
+        toDisableObjects[0].GetComponent<Renderer>().material = newMaterial;
+
+        StartCoroutine(MovePlayers(from, to));
+
+        toDisableObjects[0].SetActive(true);
+    }
+    private IEnumerator MovePlayers(Vector3 from, Vector3 to)
     {
         float elapsed = 0;
         float duration = 5f;
 
-        EnableObjectsBeforeGameOver();
-        toDisableObjects[0].GetComponent<Renderer>().material = newMaterial;
-
-        //Disable player movement and slide them into the ground
         Gamemanager.Instance.lPlayerCC.enabled = false;
         while (elapsed < duration)
         {
@@ -138,10 +130,6 @@ public class CityMove : MonoBehaviour
         }
         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = to;
         Gamemanager.Instance.lPlayerCC.enabled = true;
-
-        toDisableObjects[0].SetActive(true);
-
-        yield return null;
     }
 
     private void DisableObjectsAfterGameStart()
