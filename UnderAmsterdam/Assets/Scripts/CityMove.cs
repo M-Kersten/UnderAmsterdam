@@ -56,8 +56,7 @@ public class CityMove : MonoBehaviour
                     if (playersInGame[active])
                     {
                         readyPlayers++;
-                        playersInGame[active] = false;
-                        Debug.Log("PLAYER READY: " + active);
+                        SetPlayerFalse(active);
                     }
                     Debug.Log("active Player: " + active + " checking player: " + player.Key + " readyPlayers: " + readyPlayers);
                 }
@@ -77,6 +76,11 @@ public class CityMove : MonoBehaviour
             movedown = new Vector3(playerPos.x, -0.5f, playerPos.z);
             GameStartProcedure(playerPos, movedown);
         }
+    }
+
+    void SetPlayerFalse(PlayerRef player)
+    {
+        playersInGame[player] = false;
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
