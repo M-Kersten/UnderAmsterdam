@@ -2475,10 +2475,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lamp:
-  - {fileID: 1095471355373642624}
-  - {fileID: 1095471354633001414}
-  - {fileID: 1095471355362318327}
-  - {fileID: 1095471354204976690}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   minIntensity: -2.5
   maxIntensity: 2.5
 --- !u!82 &5819317440758979573
@@ -3997,6 +4011,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BulkheadLightWhite
       objectReference: {fileID: 0}
+    - target: {fileID: 2518289722303678728, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6913512536273869752, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
       propertyPath: m_Type
       value: 2
@@ -4035,11 +4053,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
---- !u!108 &1095471354633001414 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 6913512536273869752, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
-  m_PrefabInstance: {fileID: 5819317439763333758}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4930250345154558309 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1488891507891731227, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
@@ -4112,6 +4125,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BulkheadLightWhite (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2518289722303678728, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6913512536273869752, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
       propertyPath: m_Type
       value: 2
@@ -4150,11 +4167,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
---- !u!108 &1095471354204976690 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 6913512536273869752, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
-  m_PrefabInstance: {fileID: 5819317440224472458}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4930250344793626257 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1488891507891731227, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
@@ -4265,11 +4277,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
---- !u!108 &1095471355373642624 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 6913512536273869752, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
-  m_PrefabInstance: {fileID: 5819317441309259832}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4930250345755591459 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1488891507891731227, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
@@ -4342,6 +4349,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BulkheadLightWhite (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 2518289722303678728, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6913512536273869752, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
       propertyPath: m_Type
       value: 2
@@ -4380,11 +4391,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
---- !u!108 &1095471355362318327 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: 6913512536273869752, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}
-  m_PrefabInstance: {fileID: 5819317441354583119}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4930250345811523412 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1488891507891731227, guid: 26e22952e2b9c684bbec0455f6d7fd80, type: 3}

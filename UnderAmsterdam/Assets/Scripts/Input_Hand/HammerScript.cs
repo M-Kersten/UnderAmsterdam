@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using Unity.VisualScripting;
 
 public class HammerScript : NetworkBehaviour
 {
@@ -44,6 +45,26 @@ public class HammerScript : NetworkBehaviour
 
         touchedCube.DisableTile();
     }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RPC_DisableRoot(NetworkObject touchedRoot)
+    {
+        // Plays random block destroying sound
+        int randomSound = Random.Range(0, 3);
+        switch (randomSound)
+        {
+            case 0:
+                audioSource.PlayOneShot(destroyingPipe1);
+                break;
+            case 1:
+                audioSource.PlayOneShot(destroyingPipe2);
+                break;
+            case 2:
+                audioSource.PlayOneShot(destroyingPipe3);
+                break;
+        }
+        touchedRoot.gameObject.SetActive(false);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -58,8 +79,16 @@ public class HammerScript : NetworkBehaviour
                 Gamemanager.Instance.pManager.AddPoints(myData.company);
             }
         }
+        
+        //Disable treeRoots
+        if (other.gameObject.layer == 14 && deltaPos.magnitude > 0.15f && HasStateAuthority)
+        {
+            NetworkObject root = other.gameObject.GetComponentInParent<NetworkObject>();
+            RPC_DisableRoot(root);
+            Gamemanager.Instance.pManager.RemovePointsRoots(myData.company);
+        }
     }
-
+    
     static void OnHammerChange(Changed<HammerScript> changed)
     {
         changed.Behaviour.ActivateHammer(changed.Behaviour.isActive);
