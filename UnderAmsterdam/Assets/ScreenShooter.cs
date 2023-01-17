@@ -29,9 +29,4 @@ public class ScreenShooter : MonoBehaviour
         myCamera.Render();
         myMaterial.mainTexture = screenTexture;
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown("space")) StartCoroutine(RenderScreenshot());
-    }
 }
