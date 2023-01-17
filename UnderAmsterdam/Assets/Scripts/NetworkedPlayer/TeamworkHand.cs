@@ -3,6 +3,7 @@ using Fusion.XR.Host.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion.XR.Host;
 
 public class TeamworkHand : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class TeamworkHand : MonoBehaviour
     [SerializeField] private NetworkObject myNetworkObj;
     [SerializeField] private PlayerData myData;
     private Transform otherParent;
+    [SerializeField] private GameObject teamParticle;
+    private NetworkObject particleObj;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -21,9 +24,17 @@ public class TeamworkHand : MonoBehaviour
                 otherParent = collision.transform.parent.transform.parent;
                 if (!otherParent.GetComponent<NetworkObject>().HasInputAuthority)
                 {
+                    particleObj = ConnectionManager.Instance.runner.Spawn(teamParticle, transform.position, transform.rotation);
+                    StartCoroutine(RemoveParticle());
                     TeamworkManager.Instance.AddTeamWork(myData.company, otherParent.GetComponent<PlayerData>().company);
                 }
             }
         }
+    }
+
+    IEnumerator RemoveParticle()
+    {
+        yield return new WaitForSeconds(teamParticle.GetComponent<ParticleSystem>().main.duration);
+        ConnectionManager.Instance.runner.Despawn(particleObj);
     }
 }
