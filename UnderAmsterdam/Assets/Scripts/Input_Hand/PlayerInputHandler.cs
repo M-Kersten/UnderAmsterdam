@@ -11,10 +11,14 @@ public class PlayerInputHandler : MonoBehaviour
 {
     public InputActionProperty joystickActionL;
     public InputActionProperty joystickActionR;
+
     public InputActionProperty triggerActionL;
     public InputActionProperty triggerActionR;
+
     public InputActionProperty gripActionL;
     public InputActionProperty gripActionR;
+
+    public InputActionProperty ExitButton;
 
     private RigPart side;
 
@@ -28,12 +32,13 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField]
     private bool isLeftTriggerPressed;
 
-    [SerializeField]
-    private bool isAnyGripPressed;
-    [SerializeField]
-    private bool isRightGripPressed;
-    [SerializeField]
-    private bool isLeftGripPressed;
+    public bool isAnyGripPressed;
+    public bool isRightGripPressed;
+    public bool isLeftGripPressed;
+
+    /*----- Not linked to network -----*/
+    public bool isMenuPressed;
+    /*---------------------------------*/
 
 
     private void Awake()
@@ -42,11 +47,14 @@ public class PlayerInputHandler : MonoBehaviour
         triggerActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
         gripActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "grip" });
         joystickActionL.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
+        ExitButton.EnableWithDefaultXRBindings(side: side, new List<string> { "secondaryButton" });
 
         side = RigPart.RightController;
         triggerActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
         gripActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "grip" });
         joystickActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
+
+
     }
 
     private void Update()
@@ -54,21 +62,24 @@ public class PlayerInputHandler : MonoBehaviour
 
         /********************* Trigger *********************/
 
-        isLeftTriggerPressed = (triggerActionL.action.ReadValue<float>() >= 0.9f);
-        isRightTriggerPressed = (triggerActionR.action.ReadValue<float>() >= 0.9f);
+        isLeftTriggerPressed = triggerActionL.action.ReadValue<float>() >= 0.9f;
+        isRightTriggerPressed = triggerActionR.action.ReadValue<float>() >= 0.9f;
 
         leftjoystickPosition = joystickActionL.action.ReadValue<Vector2>();
         rightjoystickPosition = joystickActionR.action.ReadValue<Vector2>();
 
-        isAnyTriggerPressed = (isLeftTriggerPressed || isRightTriggerPressed);
+        isAnyTriggerPressed = isLeftTriggerPressed || isRightTriggerPressed;
 
         /********************** Grip **********************/
 
-        isLeftGripPressed = (gripActionL.action.ReadValue<float>() >= 0.9f);
-        isRightGripPressed = (gripActionR.action.ReadValue<float>() >= 0.9f);
+        isLeftGripPressed = gripActionL.action.ReadValue<float>() >= 0.9f;
+        isRightGripPressed = gripActionR.action.ReadValue<float>() >= 0.9f;
 
-        isAnyGripPressed = (isLeftGripPressed || isRightGripPressed);
+        isAnyGripPressed = isLeftGripPressed || isRightGripPressed;
 
+        /********************** ExitButton **********************/
+    
+        isMenuPressed = ExitButton.action.ReadValue<float>() >= 0.9f;
     }
 
     public RigInput GetPlayerInput(RigInput playerInputData) //return a struct with all local inputs when called

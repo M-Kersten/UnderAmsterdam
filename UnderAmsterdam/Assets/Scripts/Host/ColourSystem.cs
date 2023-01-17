@@ -7,6 +7,7 @@ public class ColourSystem : MonoBehaviour
     [Tooltip("All pipe materials, named same as company")]
     [SerializeField] private Material[] pipeMaterials;
     [SerializeField] private Material[] handMaterials;
+    [SerializeField] private Material[] miscMaterials;
     public static ColourSystem Instance;
 
     void Start()
@@ -39,6 +40,12 @@ public class ColourSystem : MonoBehaviour
             for (int i = 0; i < handMaterials.Length; i++)
                 if (companyName + "Hand" == handMaterials[i].name)
                     givenGO.GetComponent<Renderer>().material = handMaterials[i];
+        }
+        else if(givenGO.tag == "misc")
+        {
+            for (int i = 0; i < miscMaterials.Length; i++)
+                if (companyName + "Misc" == miscMaterials[i].name)
+                    givenGO.GetComponent<Renderer>().material = miscMaterials[i];
         }
         else
         {

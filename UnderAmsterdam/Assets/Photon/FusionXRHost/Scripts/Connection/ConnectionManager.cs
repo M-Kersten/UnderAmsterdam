@@ -39,8 +39,14 @@ namespace Fusion.XR.Host
         public UnityEvent onWillConnect = new UnityEvent();
 
         [SerializeField] private int maxPlayers = 5;
-        
-        
+
+        //Merge conflict results! idk what it is!!
+        public PlayerRef localPlayerRef;
+        private bool hasPlayerRef = false;
+
+        public NetworkObject localNetworkPlayer;
+        private bool hasNetworkPlayer = false;
+        // >>>>>>>>>>>>>>
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
         public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
@@ -97,45 +103,42 @@ namespace Fusion.XR.Host
                 Gamemanager.Instance.lPlayerCC.enabled = false;
 
                 switch (SceneManager.GetActiveScene().name) {
-                    case "A2Lobby":
-                        tPosition = new Vector3(7.864f, -1.92f, 3.792f);
+                    case "A3Game":
+
+                        tPosition = new Vector3(1.02216411f, 4.0f, 1.65285861f);
                         tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
                     
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
                         Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
-                    break;
-                    case "A3Game": 
-                        tPosition = new Vector3(0.74f, -0.489f, 0.67f);
-                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
-                    
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
-                        Gamemanager.Instance.startGame = true;
-                    break;
-                    case "A4End":
-                        tPosition = new Vector3(0, 1f, 0);
-                        tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                    
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
-                    break;
+                        Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+                        break;
                     default:
                     // Do nothing
                     break;
                 }
-            // Turn CharacterController back on, so player can move
-            Gamemanager.Instance.lPlayerCC.enabled = true;
+                // Turn CharacterController back on, so player can move
+                Gamemanager.Instance.lPlayerCC.enabled = true;
             }
          }
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
+            if (!hasPlayerRef)
+            {
+                localPlayerRef = player;
+                hasPlayerRef = true;
+            }
             // The user's prefab has to be spawned by the host
             if (runner.IsServer)
             {
                 // We make sure to give the input authority to the connecting player for their user's object
                 NetworkObject networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => {
                 });
+                if (!hasNetworkPlayer)
+                {
+                    localNetworkPlayer = networkPlayerObject;
+                    hasNetworkPlayer = true;
+                }
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
                 //compManage.SendCompany(player, networkPlayerObject);

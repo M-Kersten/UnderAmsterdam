@@ -8,14 +8,24 @@ public class PlayerData : NetworkBehaviour
 {
     [SerializeField] private GameObject playerCap;
     [SerializeField] private GameObject playerLeftHand, playerRightHand;
+    [SerializeField] private GameObject myWatch, topWatch;
     [SerializeField] private int startingPoints = 1000;
-    [SerializeField] private WristMenu myMenu;
+    [SerializeField] public WristMenu myMenu;
+    [SerializeField] private HandTileInteraction rightHand, leftHand;
+    [SerializeField] private Transform leftTransform, rightTransform;
     private NetworkRig nRig;
+    public bool isSpawned = false;
+    [SerializeField] private WristUISwitch watchUI;
 
     [Networked(OnChanged = nameof(UpdatePlayer))]
     public string company { get; set; }
 
     [Networked] public int points { get; set; }
+
+    public override void Spawned()
+    {
+        isSpawned = true;
+    }
 
     public void ReceiveCompany(string givenCompany)
     {
@@ -28,16 +38,8 @@ public class PlayerData : NetworkBehaviour
         color.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
         color.SetColour(changed.Behaviour.playerLeftHand, changed.Behaviour.company);
         color.SetColour(changed.Behaviour.playerRightHand, changed.Behaviour.company);
-        changed.Behaviour.UpdateCompanyImage(changed.Behaviour.company);
-    }
-
-    private void UpdateCompanyImage(string company)
-    {
-        if (nRig.IsLocalNetworkRig)
-        {
-            myMenu.ChangeImage(company);
-            ColourSystem.Instance.SetColour(myMenu.topWatch, company);
-        }
+        color.SetColour(changed.Behaviour.topWatch, changed.Behaviour.company);
+        changed.Behaviour.myMenu.ChangeImage(changed.Behaviour.company);
     }
     private void Start()
     {
@@ -45,5 +47,20 @@ public class PlayerData : NetworkBehaviour
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
+    }
+
+    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
+    public void RPC_SwitchHands()
+    {
+        //Switching the hands
+        rightHand.isRightHanded = !rightHand.isRightHanded;
+        leftHand.isRightHanded = !leftHand.isRightHanded;
+
+        //Moving the watch
+        Transform receptionHand = rightHand.isRightHanded ? leftTransform : rightTransform;
+
+        myWatch.transform.SetParent(receptionHand);
+        myWatch.transform.position = receptionHand.position;
+        myWatch.transform.rotation = receptionHand.rotation;
     }
 }

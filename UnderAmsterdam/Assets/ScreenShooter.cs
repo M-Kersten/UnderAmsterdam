@@ -6,16 +6,18 @@ public class ScreenShooter : MonoBehaviour
 {
     [SerializeField] private Camera myCamera;
     [SerializeField] private Material myMaterial;
+    [SerializeField] private GameObject myQuad;
 
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        myQuad.SetActive(false);
         myCamera.enabled = false;
         Gamemanager.Instance.GameEnd.AddListener(TakeScreenshot);
     }
 
     void TakeScreenshot()
     {
+        myQuad.SetActive(true);
         StartCoroutine(RenderScreenshot());
     }
 
