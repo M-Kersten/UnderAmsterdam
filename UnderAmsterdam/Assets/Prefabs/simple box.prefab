@@ -59,16 +59,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3400c9aa7aa2a2b479d8c5692f35c9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectSwitch:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  newMaterials:
-  - {fileID: 2100000, guid: 7d3edd51e4ea0904c86524a0423861e0, type: 2}
-  - {fileID: 2100000, guid: f2bf409f71b39644380a708fbf2d4a75, type: 2}
+  toDisableObjects: []
+  toEnableObjects: []
+  newMaterial: {fileID: 2100000, guid: 7d3edd51e4ea0904c86524a0423861e0, type: 2}
+  scoreBoard: {fileID: 0}
 --- !u!1001 &8236017866459315399
 PrefabInstance:
   m_ObjectHideFlags: 0
