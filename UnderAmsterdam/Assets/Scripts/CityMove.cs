@@ -47,16 +47,19 @@ public class CityMove : MonoBehaviour
     {
         int readyPlayers = 0;
 
+        List<PlayerRef> tempList = new List<PlayerRef>();
+
         foreach(var player in playersInGame)
         {
             foreach(PlayerRef active in ConnectionManager.Instance.runner.ActivePlayers)
             {
-                if(playersInGame.ContainsKey(active))
+                int tempIndex = tempList.IndexOf(active);
+                if(playersInGame.ContainsKey(active) && tempList[tempIndex] == null)
                 {
                     if (playersInGame[active])
                     {
                         readyPlayers++;
-                        SetPlayerFalse(active);
+                        tempList.Add(active);
                     }
                     Debug.Log("active Player: " + active + " checking player: " + player.Key + " readyPlayers: " + readyPlayers);
                 }
@@ -76,11 +79,6 @@ public class CityMove : MonoBehaviour
             movedown = new Vector3(playerPos.x, -0.5f, playerPos.z);
             GameStartProcedure(playerPos, movedown);
         }
-    }
-
-    void SetPlayerFalse(PlayerRef player)
-    {
-        playersInGame[player] = false;
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
