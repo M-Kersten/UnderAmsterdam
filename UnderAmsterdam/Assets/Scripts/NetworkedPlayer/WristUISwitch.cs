@@ -14,8 +14,7 @@ public class WristUISwitch : NetworkBehaviour
 
     private void Start()
     {
-        wristUI = Gamemanager.Instance.localData.myWristUI;
-        Debug.Log("My WristUI: " + wristUI + " GameObject: " + Gamemanager.Instance.localData.myWristUI.gameObject);
+        wristUI = Gamemanager.Instance.localData.myWristUI; 
     }
 
     private void OnTriggerEnter(Collider other)

@@ -9,8 +9,11 @@ public class Gamemanager : MonoBehaviour
     public static Gamemanager Instance;
 
     public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
+
     public PlayerData networkData;
-    [SerializeField] public LocalData localData;
+
+    [SerializeField] private GameObject localPlayer; 
+    public LocalData localData;
     public PlayerInputHandler playerInputHandler;
     public CharacterController lPlayerCC;
     public Transform mainCam;
@@ -38,6 +41,12 @@ public class Gamemanager : MonoBehaviour
         }
         else
             Destroy(gameObject);
+
+        localPlayer = GameObject.Find("LocalPlayer");
+        localData = localPlayer.GetComponent<LocalData>();
+        playerInputHandler = localPlayer.GetComponent<PlayerInputHandler>();
+        lPlayerCC = localPlayer.GetComponent<CharacterController>();
+        mainCam = localPlayer.transform.GetChild(0).GetChild(0);
     }
     private void Start()
     {

@@ -120,7 +120,7 @@ namespace Fusion {
 
       switch (logType) {
         case LogType.Error:
-          Debug.LogError(fullMessage, obj);
+          Debug.LogWarning(fullMessage, obj);
           break;
         case LogType.Warn:
           Debug.LogWarning(fullMessage, obj);

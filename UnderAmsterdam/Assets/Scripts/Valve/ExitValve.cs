@@ -9,17 +9,19 @@ using System;
 public class ExitValve : MonoBehaviour
 {
     [SerializeField] private Valve valve;
+    [SerializeField] Animator lPlayerAnimator;
     private void Start()
     {
-        valve.ValveTurned.AddListener(ReturnToMenu);
+        valve.ValveTurned.AddListener(delegate { StartCoroutine(ReturnToMenu()); });
+        lPlayerAnimator = Gamemanager.Instance.localData.GetComponent<Animator>();
     }
-    public void ReturnToMenu()
+    public IEnumerator ReturnToMenu()
     {
-        Debug.Log("your mom");
-        //ConnectionManager.Instance.runner.Disconnect(Gamemanager.Instance.networkData.gameObject.GetComponent<NetworkObject>().InputAuthority);
+        lPlayerAnimator.Play("VisionFadeLocal", 0);
+        yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
+
         ConnectionManager.Instance.runner.Shutdown();
         SceneManager.LoadScene(0);
-        Debug.Log("exit");
     }
     private void OnTriggerExit(Collider other)
     {
