@@ -24,7 +24,7 @@ public class EnvironmentScript : NetworkBehaviour
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_DestroyRock()
+    public void RPC_DestroyRock()
     {
         doneOnce = false;
         foreach (GameObject spawned in addedObjects)
@@ -35,16 +35,14 @@ public class EnvironmentScript : NetworkBehaviour
     void Start()
     {
         addedObjects = new List<GameObject>();
-        Gamemanager.Instance.CountDownEnd.AddListener(spawnRock);
-        Gamemanager.Instance.GameEnd.AddListener(RPC_DestroyRock);
     }
 
-    void spawnRock()
+    public void spawnRock()
     {
         if (!HasStateAuthority || doneOnce) return;
 
         doneOnce = true;
         for (int i = 0; i < Random.Range(1, 4); i++)
-            RPC_SpawnRock(Random.Range(1 - lenght, lenght), Random.Range(-width, width), Random.Range(20, 60), Random.Range(20, 60), Random.Range(40, 80), (float)Random.Range(0, 360));
+            RPC_SpawnRock(Random.Range(1 - lenght, lenght)* 4 / 5, Random.Range(-width, width) * 4 / 5, Random.Range(20, 60), Random.Range(20, 60), Random.Range(60, 120), (float)Random.Range(0, 360));
     }
 }
