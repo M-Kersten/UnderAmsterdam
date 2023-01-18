@@ -20848,6 +20848,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4211828065328069439}
+  - component: {fileID: 4211828065328069441}
+  - component: {fileID: 4211828065328069440}
   m_Layer: 0
   m_Name: Eviroment
   m_TagString: Untagged
@@ -20872,6 +20874,44 @@ Transform:
   m_Father: {fileID: 76257032}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4211828065328069440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4211828065328069432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectInterest: 0
+  DefaultInterestGroups: []
+  DestroyWhenStateAuthorityLeaves: 0
+  AllowStateAuthorityOverride: 1
+  AoiPositionSource: {fileID: 0}
+  Flags: 2561
+  NetworkGuid:
+    RawGuidValue: bdaf6864fa0449838e11b046d802c458
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 4211828065328069441}
+  SimulationBehaviours: []
+--- !u!114 &4211828065328069441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4211828065328069432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034720bd2ae0574498ee5d2f46af0873, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolationDataSource: 0
+  rock: {fileID: 1218248452795610559, guid: c6fe0222c7a766447a457b3d90bc7f67, type: 3}
 --- !u!1001 &6711112496445346688
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20927,6 +20967,10 @@ PrefabInstance:
       propertyPath: scoreBoard
       value: 
       objectReference: {fileID: 1836439558}
+    - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+      propertyPath: rocksSystem
+      value: 
+      objectReference: {fileID: 4211828065328069441}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: objectSwitch.Array.data[0]
       value: 

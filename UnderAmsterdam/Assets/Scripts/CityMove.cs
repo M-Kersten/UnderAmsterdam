@@ -14,6 +14,7 @@ public class CityMove : MonoBehaviour
     [SerializeField] GameObject[] toDisableObjects, toEnableObjects;
     [SerializeField] Material newMaterial;
     [SerializeField] ScoreBoard scoreBoard;
+    [SerializeField] EnvironmentScript rocksSystem;
     void Start()
     {
         playersInGame = new Dictionary<PlayerRef, bool>();
@@ -95,6 +96,7 @@ public class CityMove : MonoBehaviour
     }
     private void GameStartProcedure(Vector3 from, Vector3 to)
     {
+        rocksSystem.spawnRock();
         toDisableObjects[0].SetActive(false);
 
         StartCoroutine(MovePlayers(from, to));
