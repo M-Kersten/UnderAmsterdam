@@ -21,15 +21,15 @@ public class RandManager : NetworkBehaviour
     [SerializeField] private List<GameObject> rootList;
 
     private int totalPowerPts = 0;
-
+    private int rand;
+    
     private CubeInteraction cubeInteraction;
-
-    [Networked] public int rand { get; set; }
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_RandRoot(int random)    
-    {
-        rootList[random].SetActive(true);
-    }
+    
+     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+     private void RPC_RandRoot(int random)    
+     {
+         rootList[random].SetActive(true);
+     }
 
     private void Awake()
     {
