@@ -2303,8 +2303,16 @@ PrefabInstance:
       value: 2.7669399
       objectReference: {fileID: 0}
     - target: {fileID: 5819317440758979570, guid: 94d0cc35edb06254e94456f853483bf7, type: 3}
+      propertyPath: maxIntensity
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819317440758979570, guid: 94d0cc35edb06254e94456f853483bf7, type: 3}
+      propertyPath: minIntensity
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5819317440758979570, guid: 94d0cc35edb06254e94456f853483bf7, type: 3}
       propertyPath: lamp.Array.size
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5819317440758979570, guid: 94d0cc35edb06254e94456f853483bf7, type: 3}
       propertyPath: lamp.Array.data[0]
@@ -13248,6 +13256,10 @@ PrefabInstance:
     - target: {fileID: 4295632069387129833, guid: 6007135fa91e9ca4081df1d33b38c9aa, type: 3}
       propertyPath: m_Name
       value: LampPostWithBoard (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4295632069387129833, guid: 6007135fa91e9ca4081df1d33b38c9aa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4295632069387129833, guid: 6007135fa91e9ca4081df1d33b38c9aa, type: 3}
       propertyPath: m_StaticEditorFlags
