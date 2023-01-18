@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
@@ -23,10 +23,10 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.66
+  m_AmbientIntensity: 0.17
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 141af5e5361e645438f2cc5575002b87, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 6292293909cd39f47a24b3bd7e3a7093, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -35,10 +35,10 @@ RenderSettings:
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 0.401
+  m_ReflectionIntensity: 0.252
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2059103124}
-  m_IndirectSpecularColor: {r: 0.048424914, g: 0.07476104, b: 0.13443512, a: 0.401}
+  m_IndirectSpecularColor: {r: 0.3497125, g: 0.18159476, b: 0.07999774, a: 0.252}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3765,6 +3765,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1888217564}
     m_Modifications:
+    - target: {fileID: 994507153843734499, guid: 9ebfee8068169c74e9009e8b6e460e9b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 994507154262907348, guid: 9ebfee8068169c74e9009e8b6e460e9b, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -15344,14 +15348,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2059103122}
-  m_LocalRotation: {x: -0.9854317, y: -0, z: -0, w: -0.17007178}
-  m_LocalPosition: {x: 0, y: 10.938, z: 0}
+  m_LocalRotation: {x: -0.8631415, y: -0.18193397, z: 0.35411164, w: -0.31063142}
+  m_LocalPosition: {x: 112, y: 71.8, z: 85.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1928372111}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: -199.584, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -221.689, y: 41.854004, z: -7.2369995}
 --- !u!108 &2059103124
 Light:
   m_ObjectHideFlags: 0
@@ -15364,7 +15368,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.25
+  m_Intensity: 0.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
