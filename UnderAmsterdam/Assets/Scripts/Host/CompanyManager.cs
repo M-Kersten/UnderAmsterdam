@@ -66,7 +66,7 @@ public class CompanyManager : MonoBehaviour
             }
             return "Empty";
         }
-        Debug.LogError("No companies available");
+        //Debug.LogError("No companies available");
         return "Empty";
     }
 
