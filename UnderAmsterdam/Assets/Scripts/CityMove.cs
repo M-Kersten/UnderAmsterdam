@@ -4,10 +4,11 @@ using UnityEngine;
 using Fusion;
 using Fusion.XR.Host;
 using UnityEngine.Events;
+using Photon.Realtime;
 
-public class CityMove : MonoBehaviour
+public class CityMove : NetworkBehaviour
 {
-    [SerializeField] Dictionary<PlayerRef, bool> playersInGame;
+    private List<PlayerRef> readyList= new List<PlayerRef>();
     Vector3 movedown;
     private Vector3 playerPos;
     private Vector3 moveup;
@@ -16,7 +17,6 @@ public class CityMove : MonoBehaviour
     [SerializeField] ScoreBoard scoreBoard;
     void Start()
     {
-        playersInGame = new Dictionary<PlayerRef, bool>();
         Gamemanager.Instance.GameEnd.AddListener(EndOfGame);
     }
 
@@ -24,21 +24,16 @@ public class CityMove : MonoBehaviour
     {
         if (other.gameObject.layer == 8)
         {
-            foreach (PlayerRef player in ConnectionManager.Instance.runner.ActivePlayers)
-            {
-                if (!playersInGame.ContainsKey(player))
-                    playersInGame.Add(player, false);
-
-                Debug.Log("player add: " + player);
-            }
-
             PlayerRef tempplayer = other.GetComponentInParent<NetworkObject>().InputAuthority;
-
-            if (playersInGame.ContainsKey(tempplayer) && !playersInGame[tempplayer])
+            // If I am host
+            if (HasStateAuthority && !readyList.Contains(tempplayer))
             {
-                playersInGame[tempplayer] = true;
-                RPC_EnableCap(other);
+                readyList.Add(tempplayer);
                 CheckAllPlayers();
+
+                // Always enable the cap when a player steps into the ready box first time.
+                if (!other.transform.root.GetComponent<PlayerData>().playerCap.activeSelf)
+                    RPC_EnableCap(other.transform.root.GetComponent<PlayerData>());
             }
         }
     }
@@ -46,46 +41,35 @@ public class CityMove : MonoBehaviour
     private void CheckAllPlayers()
     {
         int readyPlayers = 0;
-
-        List<PlayerRef> tempList = new List<PlayerRef>();
-
-        foreach(var player in playersInGame)
+        // Check if players in ready list are still in game
+        for(int i = 0; i < readyList.Count; i++)
         {
-            foreach(PlayerRef active in ConnectionManager.Instance.runner.ActivePlayers)
-            {
-                int tempIndex = tempList.IndexOf(active);
-                if(playersInGame.ContainsKey(active) && tempList[tempIndex] == null)
-                {
-                    if (playersInGame[active])
-                    {
-                        readyPlayers++;
-                        tempList.Add(active);
-                    }
-                    Debug.Log("active Player: " + active + " checking player: " + player.Key + " readyPlayers: " + readyPlayers);
-                }
-                else
-                {
-                    playersInGame.Remove(player.Key);
-                    Debug.Log("Removing: " + player.Key);
-                }
-            }
+            if (ConnectionManager.Instance._spawnedUsers.ContainsKey(readyList[i]))
+                readyPlayers++;
+            else
+                readyList.Remove(readyList[i]);
         }
 
-        if (playersInGame.Count == readyPlayers && readyPlayers > 0)
+        if (ConnectionManager.Instance._spawnedUsers.Count == readyPlayers && readyPlayers > 0)
         {
-            //start animation down
-            playerPos = Gamemanager.Instance.lPlayerCC.gameObject.transform.position;
-            moveup = playerPos;
-            movedown = new Vector3(playerPos.x, -0.5f, playerPos.z);
-            GameStartProcedure(playerPos, movedown);
+            RPC_StartGame();
         }
     }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
-    void RPC_EnableCap(Collider other)
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    void RPC_StartGame()
     {
-        Debug.Log("enabling cap for: " + other);
-        other.transform.root.GetComponent<PlayerData>().playerCap.SetActive(true);
+        //start animation down
+        playerPos = Gamemanager.Instance.lPlayerCC.gameObject.transform.position;
+        moveup = playerPos;
+        movedown = new Vector3(playerPos.x, -0.5f, playerPos.z);
+        GameStartProcedure(playerPos, movedown);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    void RPC_EnableCap(PlayerData pData)
+    {
+        pData.playerCap.SetActive(true);
     }
 
     private void EndOfGame()
@@ -132,6 +116,7 @@ public class CityMove : MonoBehaviour
 
     private void DisableObjectsAfterGameStart()
     {
+        this.GetComponent<BoxCollider>().enabled = false;
         for (int i = 0; i < toDisableObjects.Length; i++)
         {
             toDisableObjects[i].SetActive(false);
