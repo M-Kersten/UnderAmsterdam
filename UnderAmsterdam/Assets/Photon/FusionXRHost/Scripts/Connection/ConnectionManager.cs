@@ -17,6 +17,13 @@ namespace Fusion.XR.Host
      * - user despawn by the host on associated player disconnection
      * 
      **/
+    public enum ConnectionStatus
+    {
+        Disconnected,
+        Connecting,
+        Failed,
+        Connected
+    }
 
     public class ConnectionManager : MonoBehaviour, INetworkRunnerCallbacks
     {
@@ -51,6 +58,8 @@ namespace Fusion.XR.Host
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
         public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
+
+        public ConnectionStatus ConnectionStatus = ConnectionStatus.Disconnected;
 
         private void Awake()
         {
@@ -87,7 +96,8 @@ namespace Fusion.XR.Host
                 PlayerCount = maxPlayers,
 
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = sceneManager
+                SceneManager = sceneManager,
+                DisableClientSessionCreation = true
             };
             await runner.StartGame(args);
         }
@@ -145,6 +155,28 @@ namespace Fusion.XR.Host
                 //compManage.SendCompany(player, networkPlayerObject);
             }
         }
+        public void LeaveSession()
+        {
+            if (runner != null)
+                runner.Shutdown();
+            else
+                SetConnectionStatus(ConnectionStatus.Disconnected);
+        }
+
+        private void SetConnectionStatus(ConnectionStatus status)
+        {
+            Debug.Log($"Setting connection status to {status}");
+
+            ConnectionStatus = status;
+
+            if (!Application.isPlaying)
+                return;
+
+            if (status == ConnectionStatus.Disconnected || status == ConnectionStatus.Failed)
+            {
+                runner.SetActiveScene(0);
+            }
+        }
 
         // Despawn the user object upon disconnection
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -156,13 +188,22 @@ namespace Fusion.XR.Host
                 _spawnedUsers.Remove(player);
             }
         }
-        
-        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+        public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
         {
-            if (SceneManager.GetActiveScene().name == "A1Menu")
+            Debug.Log("ASSANDTIDDY calling on connect failed");
+            LeaveSession();
+            SetConnectionStatus(ConnectionStatus.Failed);
+        }
+
+        public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
+        {
+            if (runner.CurrentScene > 0)
             {
-                runner.SetActiveScene(0);
+                Debug.LogWarning($"Refused connection requested by {request.RemoteAddress}");
+                request.Refuse();
             }
+            else
+                request.Accept();
         }
         #endregion
 
@@ -171,15 +212,13 @@ namespace Fusion.XR.Host
         public void OnDisconnectedFromServer(NetworkRunner runner) { }
         public void OnInput(NetworkRunner runner, NetworkInput input) { }
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-        public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
         public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
         public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
         public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
         public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
         public void OnSceneLoadStart(NetworkRunner runner) { }
-        public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
         #endregion
     }
-
 }
