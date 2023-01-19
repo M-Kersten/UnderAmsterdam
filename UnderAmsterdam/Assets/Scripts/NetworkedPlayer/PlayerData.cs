@@ -6,7 +6,7 @@ using Fusion.XR.Host.Rig;
 
 public class PlayerData : NetworkBehaviour
 {
-    [SerializeField] private GameObject playerCap;
+    [SerializeField] public GameObject playerCap;
     [SerializeField] private GameObject playerLeftHand, playerRightHand;
     [SerializeField] private GameObject myWatch, topWatch;
     [SerializeField] private int startingPoints = 1000;
@@ -47,8 +47,8 @@ public class PlayerData : NetworkBehaviour
     public void RPC_SwitchHands()
     {
         //Switching the hands
-        rightHand.isRightHanded = !rightHand.isRightHanded;
-        leftHand.isRightHanded = !leftHand.isRightHanded;
+        rightHand.SwitchHands();
+        leftHand.SwitchHands();
 
         //Moving the watch
         Transform receptionHand = rightHand.isRightHanded ? leftTransform : rightTransform;

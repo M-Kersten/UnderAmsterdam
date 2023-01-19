@@ -6,6 +6,7 @@ using Fusion;
 public class IOTileScript : NetworkBehaviour
 {
     [SerializeField] private Material[] pipeMaterials;
+    [SerializeField] private List<IOTileScript> IoNeighbourTiles;
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
@@ -23,16 +24,57 @@ public class IOTileScript : NetworkBehaviour
     public override void Spawned()
     {
         company = "Empty"; //Set company to default
+        GetNeighbours();
     }
+    private void GetNeighbours()
+    {
+        RaycastHit hit;
 
+        if (Physics.Raycast(transform.position, Vector3.up, out hit))
+            if(hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.left, out hit))
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.right, out hit))
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit))
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.back, out hit))
+            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+    }
+    private bool CheckNeighboursOccupied()
+    {
+        for (int i = 0; i < IoNeighbourTiles.Count; i++)
+            if (IoNeighbourTiles[i].company != "Empty") 
+                return true;
+
+        return false;
+    }
     public bool TryEnableIOPipe(string setCompany, bool shouldBeOutput, bool isSyncing)
     {
-        if (setCompany == "Empty")
+        if (setCompany == "Empty" )
         {
             company = setCompany;
             return false;
         }
         if (!isSyncing && company != "Empty") return false; // This IOTile already has got a company
+
+        if (CheckNeighboursOccupied())
+        {
+            return false;
+        }
 
         company = setCompany;
         isOutput = shouldBeOutput;

@@ -14,14 +14,13 @@ public class WristUISwitch : NetworkBehaviour
 
     private void Start()
     {
-        wristUI = Gamemanager.Instance.localData.myWristUI;
+        wristUI = Gamemanager.Instance.localData.myWristUI; 
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.transform.root.TryGetComponent<NetworkObject>(out NetworkObject component))
-        {
-            if (!component.InputAuthority)
+        if(other.transform.root.GetComponent<NetworkObject>() != null) {
+            if (!other.transform.root.GetComponent<NetworkObject>().HasInputAuthority)
                 return;
         }
 

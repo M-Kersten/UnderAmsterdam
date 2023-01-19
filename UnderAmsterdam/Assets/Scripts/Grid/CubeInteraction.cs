@@ -174,13 +174,23 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
+        
         if (other.CompareTag("Rock") || other.CompareTag("Root"))
+        {
             obstructed = true;
+            OnRenderPipePreview(false);
+        }
         if (other.CompareTag("Player"))
+        {
             playerInside = true;
+            OnRenderPipePreview(false);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
+        ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
+        
         if (other.CompareTag("Rock")|| other.CompareTag("Root"))
             obstructed = false;
         if (other.CompareTag("Player"))

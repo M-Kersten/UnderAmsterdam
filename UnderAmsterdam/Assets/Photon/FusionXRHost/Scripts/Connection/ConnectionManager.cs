@@ -1,5 +1,6 @@
 using Fusion.Sockets;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -40,13 +41,13 @@ namespace Fusion.XR.Host
 
         [SerializeField] private int maxPlayers = 5;
 
-        //Merge conflict results! idk what it is!!
         public PlayerRef localPlayerRef;
         private bool hasPlayerRef = false;
 
         public NetworkObject localNetworkPlayer;
         private bool hasNetworkPlayer = false;
-        // >>>>>>>>>>>>>>
+
+        [SerializeField] private GameObject connectionManagerPrefab;
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
         public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
@@ -155,13 +156,19 @@ namespace Fusion.XR.Host
                 _spawnedUsers.Remove(player);
             }
         }
+        
+        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+        {
+            if (SceneManager.GetActiveScene().name == "A1Menu")
+            {
+                runner.SetActiveScene(0);
+            }
+        }
         #endregion
 
         #region Unused INetworkRunnerCallbacks 
         public void OnConnectedToServer(NetworkRunner runner) { }
-        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
         public void OnDisconnectedFromServer(NetworkRunner runner) { }
-        public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
         public void OnInput(NetworkRunner runner, NetworkInput input) { }
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
         public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
@@ -171,6 +178,7 @@ namespace Fusion.XR.Host
         public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
         public void OnSceneLoadStart(NetworkRunner runner) { }
+        public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
         #endregion
     }
 
