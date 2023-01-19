@@ -10,53 +10,30 @@ public class Joinlobby : MonoBehaviour
     [SerializeField] private Animator lPlayerAnimator;
     [SerializeField] ConnectionManager connection;
     [SerializeField] TextMeshProUGUI textinput;
-    public async void OnJoinHostLobby()
+    private bool canPressButton = true;
+
+    public async void OnAutoHostJoin()
     {
-        lPlayerAnimator.Play("VisionFadeLocal", 0);
-
-        connection.roomName = textinput.text;
-        connection.mode = Fusion.GameMode.AutoHostOrClient;
-
-        connection.runner.AddCallbacks(connection);
-
-        await connection.Connect();
-
-        if (connection.Connect().IsCompletedSuccessfully)
+        if (canPressButton)
         {
-            connection.runner.SetActiveScene(2);
+            connection.roomName = textinput.text;
+            connection.mode = Fusion.GameMode.AutoHostOrClient;
+
+            canPressButton = false;
+            StartCoroutine(ButtonCooldown());
+
+            await connection.Connect();
+
+            if (connection.runner.IsServer)
+            {
+                Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+                connection.runner.SetActiveScene(2);
+            }
         }
     }
-
-    public async void OnJoinLobby()
+    private IEnumerator ButtonCooldown()
     {
-        lPlayerAnimator.Play("VisionFadeLocal", 0);
-
-        connection.roomName = textinput.text;
-        connection.mode = Fusion.GameMode.Client;
-
-        connection.runner.AddCallbacks(connection);
-
-        await connection.Connect();
-
-        if (connection.Connect().IsCompletedSuccessfully)
-        {
-            connection.runner.SetActiveScene(2);
-        }
-    }
-    public async void onHostLobby()
-    {
-        lPlayerAnimator.Play("VisionFadeLocal", 0);
-
-        connection.roomName = textinput.text;
-        connection.mode = Fusion.GameMode.Host;
-
-        connection.runner.AddCallbacks(connection);
-
-        await connection.Connect();
-
-        if (connection.Connect().IsCompletedSuccessfully)
-        {
-            connection.runner.SetActiveScene(2);
-        }
+        yield return new WaitForSeconds(1);
+        canPressButton = true;
     }
 }

@@ -11,6 +11,7 @@ public class UpdateConnectionStatus : MonoBehaviour, INetworkRunnerCallbacks
 {
     private NetworkRunner runner;
     private AudioSource audioSource;
+    private ConnectionManager connectionManager;
 
     public AudioClip connectedToServer;
     public AudioClip disconnectedFromServer;
@@ -24,19 +25,10 @@ public class UpdateConnectionStatus : MonoBehaviour, INetworkRunnerCallbacks
        
     private void Start()
     {
-        // Find the associated runner, if not defined
-        if (runner == null) runner = GetComponentInParent<NetworkRunner>();
-        if (runner == null)
-        {
-            Debug.LogError("Should be stored under a NetworkRunner to be discoverable");
-            return;
-        }
-        runner.AddCallbacks(this);
-
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
 
-        var connectionManager = GetComponent<ConnectionManager>();
+        connectionManager = GetComponent<ConnectionManager>();
         connectionManager.onWillConnect.AddListener(OnWillConnect);
     }
 
@@ -50,6 +42,7 @@ public class UpdateConnectionStatus : MonoBehaviour, INetworkRunnerCallbacks
     void OnWillConnect()
     {
         DebugLog("Starting connection. Please wait...");
+        connectionManager.runner.AddCallbacks(this);
     }
 
     #region INetworkRunnerCallbacks

@@ -1,4 +1,5 @@
 using Fusion.Sockets;
+using Fusion.XR.Host.Rig;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,15 +62,12 @@ namespace Fusion.XR.Host
 
         public ConnectionStatus ConnectionStatus = ConnectionStatus.Disconnected;
 
+        [SerializeField] private GameObject networkRunnerPrefab;
+        [SerializeField] private UpdateConnectionStatus connectionStatusUpdater;
+        [SerializeField] private GameObject mainMenuDummy;
+
         private void Awake()
         {
-            // Check if a runner exist on the same game object
-            if (runner == null) runner = GetComponent<NetworkRunner>();
-
-            // Create the Fusion runner and let it know that we will be providing user input
-            if (runner == null) runner = gameObject.AddComponent<NetworkRunner>();
-            runner.ProvideInput = true;
-
             if (Instance == null)
                 Instance = this;
             else
@@ -81,9 +79,16 @@ namespace Fusion.XR.Host
             // Launch the connection at start
             if (connectOnStart) await Connect();
         }
-
         public async Task Connect()
         {
+            //Add network BS to gamemanager
+            GameObject newRunner = Instantiate(networkRunnerPrefab);
+            runner = newRunner.GetComponent<NetworkRunner>();
+            runner.AddCallbacks(this);
+            runner.ProvideInput = true;
+
+            runner.AddCallbacks(Gamemanager.Instance.localData.GetComponent<HardwareRig>());
+
             // Create the scene manager if it does not exist
             if (sceneManager == null) sceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>();
 
@@ -97,7 +102,6 @@ namespace Fusion.XR.Host
 
                 Scene = SceneManager.GetActiveScene().buildIndex,
                 SceneManager = sceneManager,
-                DisableClientSessionCreation = true
             };
             await runner.StartGame(args);
         }
@@ -112,7 +116,6 @@ namespace Fusion.XR.Host
             if (Gamemanager.Instance.lPlayerCC) {            
                 // Turn off CharacterController, so we can teleport the player
                 Gamemanager.Instance.lPlayerCC.enabled = false;
-
                 switch (SceneManager.GetActiveScene().name) {
                     case "A3Game":
 
@@ -155,28 +158,6 @@ namespace Fusion.XR.Host
                 //compManage.SendCompany(player, networkPlayerObject);
             }
         }
-        public void LeaveSession()
-        {
-            if (runner != null)
-                runner.Shutdown();
-            else
-                SetConnectionStatus(ConnectionStatus.Disconnected);
-        }
-
-        private void SetConnectionStatus(ConnectionStatus status)
-        {
-            Debug.Log($"Setting connection status to {status}");
-
-            ConnectionStatus = status;
-
-            if (!Application.isPlaying)
-                return;
-
-            if (status == ConnectionStatus.Disconnected || status == ConnectionStatus.Failed)
-            {
-                runner.SetActiveScene(0);
-            }
-        }
 
         // Despawn the user object upon disconnection
         public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -188,27 +169,24 @@ namespace Fusion.XR.Host
                 _spawnedUsers.Remove(player);
             }
         }
-        public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
-        {
-            Debug.Log("ASSANDTIDDY calling on connect failed");
-            LeaveSession();
-            SetConnectionStatus(ConnectionStatus.Failed);
-        }
 
-        public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
+        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
-            if (runner.CurrentScene > 0)
-            {
-                Debug.LogWarning($"Refused connection requested by {request.RemoteAddress}");
-                request.Refuse();
-            }
-            else
-                request.Accept();
+            Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+            mainMenuDummy.SetActive(true);
+
         }
+        public void OnConnectedToServer(NetworkRunner runner)
+        {
+            Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+
+            Debug.Log(runner.GetPhysicsScene());
+            runner.SetActiveScene(2);
+        }
+        public void OnSceneLoadStart(NetworkRunner runner) { mainMenuDummy.SetActive(false); }
         #endregion
 
         #region Unused INetworkRunnerCallbacks 
-        public void OnConnectedToServer(NetworkRunner runner) { }
         public void OnDisconnectedFromServer(NetworkRunner runner) { }
         public void OnInput(NetworkRunner runner, NetworkInput input) { }
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
@@ -217,8 +195,10 @@ namespace Fusion.XR.Host
         public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
         public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
-        public void OnSceneLoadStart(NetworkRunner runner) { }
-        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
+        private void SetConnectionStatus(ConnectionStatus status) { }
+        public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
+        public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+        public void LeaveSession() { }
         #endregion
     }
 }

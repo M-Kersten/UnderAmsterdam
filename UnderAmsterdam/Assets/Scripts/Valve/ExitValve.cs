@@ -12,16 +12,20 @@ public class ExitValve : MonoBehaviour
     [SerializeField] Animator lPlayerAnimator;
     private void Start()
     {
-        valve.ValveTurned.AddListener(delegate { StartCoroutine(ReturnToMenu()); });
+        valve.ValveTurned.AddListener(StartReturnMenu);
         lPlayerAnimator = Gamemanager.Instance.localData.GetComponent<Animator>();
     }
+    private void StartReturnMenu() { StartCoroutine(ReturnToMenu()); }
     public IEnumerator ReturnToMenu()
     {
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
 
-        ConnectionManager.Instance.runner.Shutdown();
+        if (ConnectionManager.Instance.runner != null)
+            ConnectionManager.Instance.runner.Shutdown();
+
         SceneManager.LoadScene(0);
+        Destroy(lPlayerAnimator.gameObject);
     }
     private void OnTriggerExit(Collider other)
     {

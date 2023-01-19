@@ -52,7 +52,8 @@ public class PlayerTestMove : MonoBehaviour
         {
             direction = headQ * new Vector3(joystickLeft.action.ReadValue<Vector2>().x, 0, joystickLeft.action.ReadValue<Vector2>().y);
         }
+
         if (character.enabled)
-        character.Move(direction * Time.fixedDeltaTime * speed);
+            character.Move(direction * Time.fixedDeltaTime * speed);
     }
 }

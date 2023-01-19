@@ -67,6 +67,5 @@ public class Valve : MonoBehaviour
         {
             ValveTurned.Invoke();
         }
-
     }
 }

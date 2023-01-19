@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   valve: {fileID: 6160785123833770465}
+  lPlayerAnimator: {fileID: 0}
 --- !u!114 &6160785123833770465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,20 +70,7 @@ MonoBehaviour:
     m_Bits: 256
   ValveTurned:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3769635877266248458}
-        m_TargetAssemblyTypeName: ExitValve, Assembly-CSharp
-        m_MethodName: ReturnToMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  triggered: 0
+      m_Calls: []
 --- !u!135 &4235471556382045342
 SphereCollider:
   m_ObjectHideFlags: 0
