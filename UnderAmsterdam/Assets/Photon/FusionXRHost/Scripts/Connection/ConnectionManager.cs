@@ -113,9 +113,8 @@ namespace Fusion.XR.Host
             Vector3 tPosition;
             Quaternion tRotation;
 
-            if (Gamemanager.Instance.lPlayerCC) {            
-                // Turn off CharacterController, so we can teleport the player
-                Gamemanager.Instance.lPlayerCC.enabled = false;
+            if (Gamemanager.Instance.localData) {            
+
                 switch (SceneManager.GetActiveScene().name) {
                     case "A3Game":
 
@@ -131,7 +130,6 @@ namespace Fusion.XR.Host
                     break;
                 }
                 // Turn CharacterController back on, so player can move
-                Gamemanager.Instance.lPlayerCC.enabled = true;
             }
          }
 
