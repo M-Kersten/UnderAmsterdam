@@ -12,6 +12,7 @@ public class CityMove : NetworkBehaviour
     Vector3 movedown;
     private Vector3 playerPos;
     private Vector3 moveup;
+    private bool endOfGame = false;
     [SerializeField] GameObject[] toDisableObjects, toEnableObjects;
     [SerializeField] Material newMaterial;
     [SerializeField] ScoreBoard scoreBoard;
@@ -87,12 +88,11 @@ public class CityMove : NetworkBehaviour
 
         DisableObjectsAfterGameStart();
         Gamemanager.Instance.startGame = true;
-
-        scoreBoard.WarpPlayers();
     }
 
     private void GameOverProcedure(Vector3 from, Vector3 to)
     {
+        endOfGame = true;
         EnableObjectsBeforeGameOver();
         toDisableObjects[0].GetComponent<Renderer>().material = newMaterial;
 
@@ -114,6 +114,7 @@ public class CityMove : NetworkBehaviour
         }
         Gamemanager.Instance.lPlayerCC.gameObject.transform.position = to;
         Gamemanager.Instance.lPlayerCC.enabled = true;
+        if (endOfGame) scoreBoard.WarpPlayers();
     }
 
     private void DisableObjectsAfterGameStart()
