@@ -176,6 +176,8 @@ namespace Fusion.XR.Host
         public void OnConnectedToServer(NetworkRunner runner)
         {
             Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+            Debug.Log(runner);
+            Debug.Log(runner.name);
             runner.SetActiveScene(2);
         }
         public void OnSceneLoadStart(NetworkRunner runner) { if(mainMenuDummy != null) mainMenuDummy.SetActive(false); }
@@ -190,7 +192,6 @@ namespace Fusion.XR.Host
         public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
         public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
-        private void SetConnectionStatus(ConnectionStatus status) { }
         public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
         public void LeaveSession() { }
