@@ -24,9 +24,18 @@ public class ExitValve : MonoBehaviour
         if (ConnectionManager.Instance.runner != null)
             ConnectionManager.Instance.runner.Shutdown();
 
+        //SceneManager.sceneLoaded += SetupNewMenuScene;
+        SceneManager.activeSceneChanged += SetupNewMenuScene;
         SceneManager.LoadScene(0);
-        Destroy(lPlayerAnimator.gameObject);
     }
+    private void SetupNewMenuScene(Scene scene, Scene scene2)
+    {
+        Debug.Log("GAMER");
+        //Destroy(lPlayerAnimator.gameObject);
+        ConnectionManager.Instance.mainMenuDummy = GameObject.Find("MainMenuDummy");
+        Gamemanager.Instance.FetchLocalPlayerComponents();
+    }
+
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer == 9) // 9 is player dummy, must use local player or other players can disable your pipe

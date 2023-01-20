@@ -64,7 +64,7 @@ namespace Fusion.XR.Host
 
         [SerializeField] private GameObject networkRunnerPrefab;
         [SerializeField] private UpdateConnectionStatus connectionStatusUpdater;
-        [SerializeField] private GameObject mainMenuDummy;
+        public GameObject mainMenuDummy;
 
         private void Awake()
         {
@@ -117,9 +117,7 @@ namespace Fusion.XR.Host
                 
                 switch (SceneManager.GetActiveScene().name) {
                     case "A1Menu":
-                        Debug.Log("SCENE: " + SceneManager.GetActiveScene().name);
-                        mainMenuDummy = GameObject.Find("MainMenuDummy");
-                        Gamemanager.Instance.FetchLocalPlayerComponents();
+                        
                         break;
                     case "A3Game":
 
@@ -176,7 +174,6 @@ namespace Fusion.XR.Host
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
             Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
-            mainMenuDummy.SetActive(true);
         }
         public void OnConnectedToServer(NetworkRunner runner)
         {

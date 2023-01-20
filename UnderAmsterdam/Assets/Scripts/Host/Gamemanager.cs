@@ -53,6 +53,7 @@ public class Gamemanager : MonoBehaviour
     public void FetchLocalPlayerComponents()
     {
         localPlayer = GameObject.Find("LocalPlayer");
+        Debug.Log(localPlayer);
         localData = localPlayer.GetComponent<LocalData>();
         playerInputHandler = localPlayer.GetComponent<PlayerInputHandler>();
         lPlayerCC = localPlayer.GetComponent<CharacterController>();
