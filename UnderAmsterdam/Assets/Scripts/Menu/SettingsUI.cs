@@ -1,3 +1,4 @@
+using Fusion;
 using Fusion.XR.Host.Rig;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ public class SettingsUI : MonoBehaviour
     [SerializeField] private Material[] leftHandButtonMaterials;
     [SerializeField] private GameObject leftHandButton;
     private Renderer leftHandButtonRenderer;
+    private NetworkObject myNetworkObject;
 
     private void Start()
     {
@@ -33,17 +35,26 @@ public class SettingsUI : MonoBehaviour
         }
     }
 
+    public void GetNetworkObj(NetworkObject givenNetworkObject)
+    {
+        myNetworkObject = givenNetworkObject;
+    }
+
     public void LeftHanded()
     {
-        if(SceneManager.GetActiveScene().name != "A1Menu") Gamemanager.Instance.networkData.RPC_SwitchHands();
-        if (leftHandedMode)
-        {
-            leftHandButtonRenderer.material = leftHandButtonMaterials[0];
-            leftHandedMode = false;
-        } else
-        {
+        if (myNetworkObject != null && myNetworkObject == Gamemanager.Instance.networkData.GetComponent<NetworkObject>().InputAuthority)
+            Gamemanager.Instance.networkData.RPC_SwitchHands();
+        else
+            MainMenuHands.Instance.SwitchWatch();
+
+        leftHandedMode = !leftHandedMode;
+        ButtonColour(leftHandedMode);
+    }
+    private void ButtonColour(bool lefthanded)
+    {
+        if(lefthanded)
             leftHandButtonRenderer.material = leftHandButtonMaterials[1];
-            leftHandedMode = true;
-        }
+        else
+            leftHandButtonRenderer.material = leftHandButtonMaterials[0];
     }
 }
