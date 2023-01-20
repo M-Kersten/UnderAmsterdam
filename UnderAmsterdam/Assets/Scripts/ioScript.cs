@@ -46,7 +46,7 @@ public class ioScript : MonoBehaviour
             westGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
 
         Gamemanager.Instance.RoundStart.AddListener(AddPlayerInputs);
-        Gamemanager.Instance.RoundStart.AddListener(AddPlayerOutputs);
+        Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
         Gamemanager.Instance.RoundEnd.AddListener(StartCheckingPipes);
     }
 
