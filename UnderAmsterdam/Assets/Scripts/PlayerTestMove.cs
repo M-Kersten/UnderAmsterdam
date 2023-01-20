@@ -58,7 +58,9 @@ public class PlayerTestMove : MonoBehaviour
             direction = headQ * new Vector3(joystickLeft.action.ReadValue<Vector2>().x, 0, joystickLeft.action.ReadValue<Vector2>().y);
         }
 
-        if (mainRigid != null)
-            mainRigid.velocity = (direction * Time.fixedDeltaTime * speed);
+        if (mainRigid != null && ConnectionManager.Instance.runner != null)
+            mainRigid.velocity = (direction * ConnectionManager.Instance.runner.DeltaTime * speed);
+        else if (mainRigid != null)
+            mainRigid.velocity = (direction * Time.deltaTime * speed);
     }
 }
