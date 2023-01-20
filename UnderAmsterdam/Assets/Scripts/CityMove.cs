@@ -115,7 +115,13 @@ public class CityMove : NetworkBehaviour
             Gamemanager.Instance.startGame = true;
 
         Gamemanager.Instance.localRigid.gameObject.transform.position = to;
-        if (endOfGame) scoreBoard.WarpPlayers();
+        if (endOfGame)
+        {
+            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+            yield return new WaitForSeconds(1f);
+            scoreBoard.WarpPlayers();
+            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+        }
     }
 
     private void DisableObjectsAfterGameStart()

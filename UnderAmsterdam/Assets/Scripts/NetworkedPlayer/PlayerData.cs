@@ -53,7 +53,7 @@ public class PlayerData : NetworkBehaviour
         //Moving the watch
         Transform receptionHand = rightHand.isRightHanded ? leftTransform : rightTransform;
 
-        myWatch.transform.SetParent(receptionHand);
+        myWatch.transform.parent = receptionHand;
         myWatch.transform.position = receptionHand.position;
         myWatch.transform.rotation = receptionHand.rotation;
     }

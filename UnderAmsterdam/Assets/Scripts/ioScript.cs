@@ -92,36 +92,42 @@ public class ioScript : MonoBehaviour
 
         while (!placedInput)
         {
-            //Randomly Choosing the wall among the 4 walls
-            wallSelect = Random.Range(0, 4);
-            
-            //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
-            switch (wallSelect) {
-                case 0:
-                    randomIndex = Random.Range(0, northGrid.Length);
-                    placedInput = northGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
-                    if (placedInput)
-                        chosenTile = northGrid[randomIndex];
-                    break;
-                case 1:
-                    randomIndex = Random.Range(0, southGrid.Length);
-                    placedInput = southGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
-                    if (placedInput)
-                        chosenTile = southGrid[randomIndex];
-                    break;
-                case 2:
-                    randomIndex = Random.Range(0, westGrid.Length);
-                    placedInput = westGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
-                    if (placedInput)
-                        chosenTile = westGrid[randomIndex]; 
-                    break;
-                case 3:
-                    randomIndex = Random.Range(0, eastGrid.Length);
-                    placedInput = eastGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
-                    if (placedInput)
-                        chosenTile = eastGrid[randomIndex];
-                    break;
+            if (isOutput)
+            {
+                randomIndex = Random.Range(0, westGrid.Length);
+                placedInput = westGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
+                if (placedInput)
+                    chosenTile = westGrid[randomIndex];
             }
+            else
+            {
+                wallSelect = Random.Range(0, 3);
+
+                //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
+                switch (wallSelect)
+                {
+                    case 0:
+                        randomIndex = Random.Range(0, northGrid.Length);
+                        placedInput = northGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
+                        if (placedInput)
+                            chosenTile = northGrid[randomIndex];
+                        break;
+                    case 1:
+                        randomIndex = Random.Range(0, southGrid.Length);
+                        placedInput = southGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
+                        if (placedInput)
+                            chosenTile = southGrid[randomIndex];
+                        break;
+                    case 2:
+                        randomIndex = Random.Range(0, eastGrid.Length);
+                        placedInput = eastGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
+                        if (placedInput)
+                            chosenTile = eastGrid[randomIndex];
+                        break;
+                }
+            }
+            //Randomly Choosing the wall among the 4 walls
+            
         }
         return chosenTile;
     }

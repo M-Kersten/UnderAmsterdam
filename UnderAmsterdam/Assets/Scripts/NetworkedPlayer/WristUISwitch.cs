@@ -4,17 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-public class WristUISwitch : NetworkBehaviour
+public class WristUISwitch : MonoBehaviour
 {
-    [SerializeField] private bool input;
     private SettingsUI wristUI;
     private bool canTouch = true;
     [SerializeField] private int timeInSeconds = 1;
+    private NetworkObject myNetworkObject;
 
 
     private void Start()
     {
-        wristUI = Gamemanager.Instance.localData.myWristUI; 
+        myNetworkObject = transform.root.GetComponent<NetworkObject>();
+        if (myNetworkObject != null)
+        {
+            if (myNetworkObject.InputAuthority == Gamemanager.Instance.networkData.GetComponent<NetworkObject>().InputAuthority)
+            {
+                wristUI = Gamemanager.Instance.localData.myWristUI;
+                wristUI.GetNetworkObj(myNetworkObject);
+            }
+        }
+        else
+            wristUI = Gamemanager.Instance.localData.myWristUI;
     }
 
     private void OnTriggerEnter(Collider other)
