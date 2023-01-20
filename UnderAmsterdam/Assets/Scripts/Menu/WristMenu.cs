@@ -25,7 +25,7 @@ public class WristMenu : NetworkBehaviour
         if (myData != null && pointsText.text != myData.points.ToString())
         {
             int addedPoints = myData.points - int.Parse(pointsText.text);
-            if (addedPoints == startingPoints) winLosePoints(addedPoints);
+            if (addedPoints != startingPoints) winLosePoints(addedPoints);
             pointsText.text = myData.points.ToString();
         }
     }
