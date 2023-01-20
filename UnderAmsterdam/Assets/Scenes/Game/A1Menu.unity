@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 0.86
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 141af5e5361e645438f2cc5575002b87, type: 2}
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 98a36fc8e9b0f534887010e59780fb74, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: dc8852a97cc243744907d6ea4f06ed67, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -997,14 +997,6 @@ RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
-    - target: {fileID: 5285056550235599278, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_Center.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5285056550235599278, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
-      propertyPath: m_Center.z
-      value: 0
-      objectReference: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1271991736}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
@@ -4910,6 +4902,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam: {fileID: 8439811097382936188}
   ExitValvePrefab: {fileID: 1748651048654728730, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+  buttonActivationTime: 2
 --- !u!1 &3632079133888132777
 GameObject:
   m_ObjectHideFlags: 0

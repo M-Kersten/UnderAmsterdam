@@ -62,7 +62,7 @@ public class CityMove : NetworkBehaviour
     void RPC_StartGame()
     {
         //start animation down
-        playerPos = Gamemanager.Instance.lPlayerCC.gameObject.transform.position;
+        playerPos = Gamemanager.Instance.localRigid.gameObject.transform.position;
         moveup = playerPos;
         movedown = new Vector3(playerPos.x, -0.5f, playerPos.z);
         GameStartProcedure(playerPos, movedown);
@@ -76,7 +76,7 @@ public class CityMove : NetworkBehaviour
 
     private void EndOfGame()
     {
-        playerPos = Gamemanager.Instance.lPlayerCC.transform.position;
+        playerPos = Gamemanager.Instance.localRigid.transform.position;
         GameOverProcedure(playerPos, moveup);
     }
     private void GameStartProcedure(Vector3 from, Vector3 to)
@@ -105,22 +105,14 @@ public class CityMove : NetworkBehaviour
         float elapsed = 0;
         float duration = 5f;
 
-        Gamemanager.Instance.lPlayerCC.enabled = false;
         while (elapsed < duration)
         {
-            Gamemanager.Instance.lPlayerCC.gameObject.transform.position = Vector3.Lerp(from, to, elapsed / duration);
+            Gamemanager.Instance.localRigid.gameObject.transform.position = Vector3.Lerp(from, to, elapsed / duration);
             elapsed += Time.deltaTime;
             yield return null;
         }
-        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = to;
-        Gamemanager.Instance.lPlayerCC.enabled = true;
-        if (endOfGame)
-        {
-            Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("VisionFadeLocal", 0);
-            yield return new WaitForSeconds(1f);
-            scoreBoard.WarpPlayers();
-            Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
-        }
+        Gamemanager.Instance.localRigid.gameObject.transform.position = to;
+        if (endOfGame) scoreBoard.WarpPlayers();
     }
 
     private void DisableObjectsAfterGameStart()

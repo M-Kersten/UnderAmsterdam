@@ -124,9 +124,9 @@ namespace Fusion.XR.Host
                         tPosition = new Vector3(1.02216411f, 4.0f, 1.65285861f);
                         tRotation = Quaternion.Euler(new Vector3(0, 180, 0));
                     
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
-                        Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+                        Gamemanager.Instance.localRigid.gameObject.transform.position = tPosition;
+                        Gamemanager.Instance.localRigid.gameObject.transform.rotation = tRotation;
+                        Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
                         break;
                     default:
                     // Do nothing
@@ -173,11 +173,11 @@ namespace Fusion.XR.Host
 
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
-            Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
         }
         public void OnConnectedToServer(NetworkRunner runner)
         {
-            Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
             runner.SetActiveScene(2);
         }
         public void OnSceneLoadStart(NetworkRunner runner) { if(mainMenuDummy != null) mainMenuDummy.SetActive(false); }

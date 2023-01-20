@@ -15,7 +15,7 @@ public class WristMenu : NetworkBehaviour
     [SerializeField] private HandTileInteraction rightHand;
     [SerializeField] private PlayerData myData;
     [SerializeField] private Transform leftWatch, rightWatch;
-    private bool startingPointsAdded = false;
+    private int startingPoints = 1000;
 
     public GameObject topWatch;
 
@@ -24,8 +24,8 @@ public class WristMenu : NetworkBehaviour
         // Need a way to grab PlayerData from NetworkRig
         if (myData != null && pointsText.text != myData.points.ToString())
         {
-            if (startingPointsAdded) winLosePoints(myData.points - int.Parse(pointsText.text));
-            else startingPointsAdded = true;
+            int addedPoints = myData.points - int.Parse(pointsText.text);
+            if (addedPoints == startingPoints) winLosePoints(addedPoints);
             pointsText.text = myData.points.ToString();
         }
     }

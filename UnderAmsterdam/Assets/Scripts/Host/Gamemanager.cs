@@ -15,7 +15,7 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private GameObject localPlayer; 
     public LocalData localData;
     public PlayerInputHandler playerInputHandler;
-    public CharacterController lPlayerCC;
+    public Rigidbody localRigid;
     public Transform mainCam;
 
     public float roundTimeIncrease = 15;
@@ -56,7 +56,7 @@ public class Gamemanager : MonoBehaviour
         Debug.Log(localPlayer);
         localData = localPlayer.GetComponent<LocalData>();
         playerInputHandler = localPlayer.GetComponent<PlayerInputHandler>();
-        lPlayerCC = localPlayer.GetComponent<CharacterController>();
+        localRigid = localPlayer.GetComponent<Rigidbody>();
         mainCam = localPlayer.transform.GetChild(0).GetChild(0);
     }
 
@@ -84,13 +84,11 @@ public class Gamemanager : MonoBehaviour
         CountDownStart.Invoke();
         Debug.Log("GAMEMANAGER: ON COUNTDOWN START");
 
-        lPlayerCC.enabled = false;
         StartCoroutine(PreRoundCountDown());
     }
     private void OnCountDownEnd() 
     {
         CountDownEnd.Invoke();
-        lPlayerCC.enabled = true;
         Debug.Log("GAMEMANAGER: ON COUNT DOWN END");
 
         OnRoundStart();
