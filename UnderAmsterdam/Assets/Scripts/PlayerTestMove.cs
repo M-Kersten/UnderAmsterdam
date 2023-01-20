@@ -27,20 +27,13 @@ public class PlayerTestMove : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         
         character = GetComponent<CharacterController>();
-        SetRigid();
+        mainRigid = GetComponent<Rigidbody>();
         
         side = RigPart.RightController;
         joystickRight.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
 
         side = RigPart.LeftController;
         joystickLeft.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
-    }
-
-    private void SetRigid()
-    {
-        mainRigid = gameObject.AddComponent<Rigidbody>();
-        mainRigid.useGravity = false;
-        mainRigid.freezeRotation = true;
     }
 
     public void SwitchMovementControles()

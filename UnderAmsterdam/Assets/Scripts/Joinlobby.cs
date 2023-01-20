@@ -26,7 +26,7 @@ public class Joinlobby : MonoBehaviour
 
             if (connection.runner.IsServer)
             {
-                Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+                Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
                 connection.runner.SetActiveScene(2);
             }
         }
