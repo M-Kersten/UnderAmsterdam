@@ -116,11 +116,8 @@ namespace Fusion.XR.Host
             if (Gamemanager.Instance.localData) {            
                 
                 switch (SceneManager.GetActiveScene().name) {
-                    case "A1Menu":
-                        
-                        break;
                     case "A3Game":
-
+                        Gamemanager.Instance.localData.gameObject.name = "LocalPlayerSession";
                         tPosition = new Vector3(1.02216411f, 4.0f, 1.65285861f);
                         tRotation = Quaternion.Euler(new Vector3(0, 180, 0));
                     
@@ -156,7 +153,6 @@ namespace Fusion.XR.Host
                 }
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
-                //compManage.SendCompany(player, networkPlayerObject);
             }
         }
 
@@ -174,6 +170,9 @@ namespace Fusion.XR.Host
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
             Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+
+            if(runner.IsServer)
+                _spawnedUsers.Remove(Gamemanager.Instance.networkData.GetComponent<NetworkObject>().InputAuthority);
         }
         public void OnConnectedToServer(NetworkRunner runner)
         {

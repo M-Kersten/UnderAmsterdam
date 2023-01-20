@@ -751,6 +751,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LocalPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 8439811097839705980, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
 --- !u!1001 &1113864512
@@ -1105,6 +1109,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1406285885 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8439811097908486506, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+  m_PrefabInstance: {fileID: 691630451}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1498357365 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5773322765113081302, guid: 6e7cad9d55012a34ea016ecc1473ce30, type: 3}
@@ -1116,6 +1125,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad3a134e6708d34db753437db0b37ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1531374920 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8439811098612244500, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+  m_PrefabInstance: {fileID: 691630451}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1582536266 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3460744257814704862, guid: a9d8a43639ff050478e29d6c04d36153, type: 3}
@@ -1246,11 +1260,11 @@ PrefabInstance:
     - target: {fileID: 706950498561336554, guid: 372f043b83acd1f49b2b774065f6cf8b, type: 3}
       propertyPath: realLeftHand
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1531374920}
     - target: {fileID: 706950498561336554, guid: 372f043b83acd1f49b2b774065f6cf8b, type: 3}
       propertyPath: realRightHand
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1406285885}
     - target: {fileID: 706950498561336554, guid: 372f043b83acd1f49b2b774065f6cf8b, type: 3}
       propertyPath: settingsPositions.Array.size
       value: 2

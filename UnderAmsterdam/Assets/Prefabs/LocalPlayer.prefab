@@ -8053,7 +8053,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CameraFloorOffsetObject: {fileID: 8439811097839705983}
   m_RequestedTrackingMode: 2
-  m_TrackingOriginMode: 2
+  m_TrackingOriginMode: 1
   m_TrackingSpace: 1
   m_CameraYOffset: 1.36144
 --- !u!114 &8439811097757408639
@@ -8294,6 +8294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam: {fileID: 8439811098364466054}
   ExitValvePrefab: {fileID: 1748651048654728730, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+  buttonActivationTime: 2
 --- !u!54 &6508602778269547862
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -8,12 +8,11 @@ using System;
 public class Joinlobby : MonoBehaviour
 {
     [SerializeField] private Animator lPlayerAnimator;
-    [SerializeField] ConnectionManager connection;
     [SerializeField] TextMeshProUGUI textinput;
     private bool canPressButton = true;
-
     public async void OnAutoHostJoin()
     {
+        ConnectionManager connection = ConnectionManager.Instance;
         if (canPressButton)
         {
             connection.roomName = textinput.text;
