@@ -98,7 +98,7 @@ public class ScoreBoard : NetworkBehaviour
             if (cManager.localPlayerRef == savedCompanies[rankDict.ElementAt(i).Key])
             {
                 Gamemanager.Instance.lPlayerCC.enabled = false;
-                Gamemanager.Instance.lPlayerCC.gameObject.transform.position = podiumPipes[i].position + new Vector3(0, 2f - i/2f, -0.5f);
+                Gamemanager.Instance.lPlayerCC.gameObject.transform.position = podiumPipes[i].position + new Vector3(0, 4.5f - i/2f, -0.5f);
                 Gamemanager.Instance.lPlayerCC.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
                 Gamemanager.Instance.lPlayerCC.enabled = true;
                 return;
