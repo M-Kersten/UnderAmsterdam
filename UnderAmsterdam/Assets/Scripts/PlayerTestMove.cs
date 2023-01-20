@@ -12,8 +12,8 @@ public class PlayerTestMove : MonoBehaviour
     [SerializeField] private RigPart side;
     [SerializeField] private Transform mainCam;
 
-    [Range(0f, 100f)]
-    [SerializeField] private float speed = 35f;
+    [Range(50f, 150f)]
+    [SerializeField] private float speed = 70f;
 
     private Rigidbody mainRigid;
 
