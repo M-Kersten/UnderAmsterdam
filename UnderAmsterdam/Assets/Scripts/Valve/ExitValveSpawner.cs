@@ -8,28 +8,29 @@ public class ExitValveSpawner : MonoBehaviour
 {
     [SerializeField] private Transform mainCam;
     [SerializeField] private GameObject ExitValvePrefab;
+    [SerializeField] private float buttonActivationTime = 2;
     private PlayerInputHandler playerInputHandler;
 
     private bool isSpawned = false;
-    private float timeRemaining = 2.75f;
+    private float timeRemaining = 2;
     private float movementDuration = 2;
     private void Start()
     {
         playerInputHandler = GetComponent<PlayerInputHandler>();
     }
     private void FixedUpdate() 
-    { 
-        if (isSpawned && SceneManager.GetActiveScene().name != "A1Menu") // and if scene is menu scene then dont spawn exit
-            return;
-
-        //The user should keep the button pressed to spawn the exit valve
-        if (playerInputHandler.isMenuPressed && timeRemaining > 0)
+    {
+        if (!isSpawned && SceneManager.GetActiveScene().name != "A1Menu" && playerInputHandler.isMenuPressed)
         {
-            timeRemaining -= Time.deltaTime;
-        }
-        else if(playerInputHandler.isMenuPressed && timeRemaining < 0)
-        {
-            SpawnPipe();
+            //The user should keep the button pressed to spawn the exit valve
+            if (timeRemaining > 0)
+            {
+                timeRemaining -= Time.deltaTime;
+            }
+            else if (timeRemaining < 0)
+            {
+                SpawnPipe();
+            }
         }
     }
     
@@ -59,6 +60,7 @@ public class ExitValveSpawner : MonoBehaviour
     {
         StartCoroutine(MovePipe(pipe, new Vector3(pipe.transform.position.x, -1f, pipe.transform.position.z), pipe.transform.position));
         isSpawned = false;
+        timeRemaining = buttonActivationTime;
         Destroy(pipe, movementDuration);
     }
 }
