@@ -12,7 +12,7 @@ public class Gamemanager : MonoBehaviour
 
     public PlayerData networkData;
 
-    [SerializeField] private GameObject localPlayer; 
+    [SerializeField] public GameObject localPlayer; 
     public LocalData localData;
     public PlayerInputHandler playerInputHandler;
     public Rigidbody localRigid;
