@@ -116,6 +116,10 @@ namespace Fusion.XR.Host
             if (Gamemanager.Instance.localData) {            
 
                 switch (SceneManager.GetActiveScene().name) {
+                    case "A1Menu":
+                        mainMenuDummy = GameObject.Find("MainMenuDummy");
+                        Gamemanager.Instance.FetchLocalPlayerComponents();
+                        break;
                     case "A3Game":
 
                         tPosition = new Vector3(1.02216411f, 4.0f, 1.65285861f);
@@ -172,7 +176,6 @@ namespace Fusion.XR.Host
         {
             Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
             mainMenuDummy.SetActive(true);
-
         }
         public void OnConnectedToServer(NetworkRunner runner)
         {

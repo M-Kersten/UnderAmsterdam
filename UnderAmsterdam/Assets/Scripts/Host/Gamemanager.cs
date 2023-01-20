@@ -42,17 +42,21 @@ public class Gamemanager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        localPlayer = GameObject.Find("LocalPlayer");
-        localData = localPlayer.GetComponent<LocalData>();
-        playerInputHandler = localPlayer.GetComponent<PlayerInputHandler>();
-        lPlayerCC = localPlayer.GetComponent<CharacterController>();
-        mainCam = localPlayer.transform.GetChild(0).GetChild(0);
+        FetchLocalPlayerComponents();
     }
     private void Start()
     {
         pManager = GetComponent<Pointsmanager>();
         timer = GetComponent<HostTimerScript>();
         timer.timerUp.AddListener(OnRoundEnd);
+    }
+    public void FetchLocalPlayerComponents()
+    {
+        localPlayer = GameObject.Find("LocalPlayer");
+        localData = localPlayer.GetComponent<LocalData>();
+        playerInputHandler = localPlayer.GetComponent<PlayerInputHandler>();
+        lPlayerCC = localPlayer.GetComponent<CharacterController>();
+        mainCam = localPlayer.transform.GetChild(0).GetChild(0);
     }
 
     public void SceneSwitch(int index) {
