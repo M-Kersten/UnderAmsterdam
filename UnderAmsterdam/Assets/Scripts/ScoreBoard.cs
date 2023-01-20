@@ -97,7 +97,7 @@ public class ScoreBoard : NetworkBehaviour
         {
             if (cManager.localPlayerRef == savedCompanies[rankDict.ElementAt(i).Key])
             {
-                Gamemanager.Instance.localRigid.gameObject.transform.position = podiumPipes[i].position + new Vector3(0, 4.5f - i/2f, -0.5f);
+                Gamemanager.Instance.localRigid.gameObject.transform.position = podiumPipes[i].position + new Vector3(0, 4.5f - i, -0.5f);
                 Gamemanager.Instance.localRigid.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
                 return;
             }
