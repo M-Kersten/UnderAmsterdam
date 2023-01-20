@@ -35,7 +35,6 @@ public class Pointsmanager : MonoBehaviour
     {
         PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
         player.points += pipeRootPoints;
-        player.myMenu.winLosePoints(pipeRootPoints);
     }
     
     public void CalculateRoundPoints(string company)

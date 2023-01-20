@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Fusion;
-using UnityEngine.SceneManagement;
 
 public class WristMenu : NetworkBehaviour
 {
@@ -16,15 +15,17 @@ public class WristMenu : NetworkBehaviour
     [SerializeField] private HandTileInteraction rightHand;
     [SerializeField] private PlayerData myData;
     [SerializeField] private Transform leftWatch, rightWatch;
+    private bool startingPointsAdded = false;
 
     public GameObject topWatch;
 
     void Update()
     {
         // Need a way to grab PlayerData from NetworkRig
-        if (SceneManager.GetActiveScene().name != "A1Menu" && myData != null && pointsText.text != myData.points.ToString())
+        if (myData != null && pointsText.text != myData.points.ToString())
         {
-            winLosePoints(myData.points - int.Parse(pointsText.text));
+            if (startingPointsAdded) winLosePoints(myData.points - int.Parse(pointsText.text));
+            else startingPointsAdded = true;
             pointsText.text = myData.points.ToString();
         }
     }
