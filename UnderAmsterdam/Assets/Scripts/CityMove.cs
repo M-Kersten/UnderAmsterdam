@@ -87,7 +87,6 @@ public class CityMove : NetworkBehaviour
         StartCoroutine(MovePlayers(from, to));
 
         DisableObjectsAfterGameStart();
-        Gamemanager.Instance.startGame = true;
     }
 
     private void GameOverProcedure(Vector3 from, Vector3 to)
@@ -111,8 +110,18 @@ public class CityMove : NetworkBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
+
+        if(!endOfGame)
+            Gamemanager.Instance.startGame = true;
+
         Gamemanager.Instance.localRigid.gameObject.transform.position = to;
-        if (endOfGame) scoreBoard.WarpPlayers();
+        if (endOfGame)
+        {
+            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+            yield return new WaitForSeconds(1f);
+            scoreBoard.WarpPlayers();
+            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+        }
     }
 
     private void DisableObjectsAfterGameStart()

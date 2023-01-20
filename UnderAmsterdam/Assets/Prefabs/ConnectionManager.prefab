@@ -66,6 +66,7 @@ MonoBehaviour:
   ConnectionStatus: 0
   networkRunnerPrefab: {fileID: 2463369283416682908, guid: 3d370280545a656439717ab8e9043dd4, type: 3}
   connectionStatusUpdater: {fileID: 878090387540590318}
+  mainMenuDummy: {fileID: 0}
 --- !u!114 &878090387540590318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,13 +304,13 @@ MonoBehaviour:
   localPlayer: {fileID: 0}
   localData: {fileID: 0}
   playerInputHandler: {fileID: 0}
-  lPlayerCC: {fileID: 0}
+  localRigid: {fileID: 0}
   mainCam: {fileID: 0}
   roundTimeIncrease: 10
   roundTime: 45
   runner: {fileID: 0}
   roundCountDownTime: 3
-  amountOfRounds: 1
+  amountOfRounds: 5
   startGame: 0
   currentRound: 0
   pManager: {fileID: 0}

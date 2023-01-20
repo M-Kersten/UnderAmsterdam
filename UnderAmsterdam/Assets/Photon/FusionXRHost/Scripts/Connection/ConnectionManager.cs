@@ -81,7 +81,6 @@ namespace Fusion.XR.Host
         }
         public async Task Connect()
         {
-            //Add network BS to gamemanager
             GameObject newRunner = Instantiate(networkRunnerPrefab);
             runner = newRunner.GetComponent<NetworkRunner>();
             runner.AddCallbacks(this);
