@@ -51,7 +51,7 @@ public class ExitValveSpawner : MonoBehaviour
     {
         isSpawned = true;
         Quaternion headQ = Quaternion.Euler(0, mainCam.eulerAngles.y, 0);
-        Vector3 forwardPos = headQ * transform.forward + transform.position;
+        Vector3 forwardPos = headQ * mainCam.transform.forward + transform.position;
 
         GameObject pipe = Instantiate(ExitValvePrefab, forwardPos, Quaternion.identity);
         StartCoroutine(MovePipe(pipe, new Vector3(pipe.transform.position.x, mainCam.position.y, pipe.transform.position.z), pipe.transform.position));
