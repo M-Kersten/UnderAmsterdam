@@ -114,9 +114,10 @@ namespace Fusion.XR.Host
             Quaternion tRotation;
 
             if (Gamemanager.Instance.localData) {            
-
+                
                 switch (SceneManager.GetActiveScene().name) {
                     case "A1Menu":
+                        Debug.Log("SCENE: " + SceneManager.GetActiveScene().name);
                         mainMenuDummy = GameObject.Find("MainMenuDummy");
                         Gamemanager.Instance.FetchLocalPlayerComponents();
                         break;
@@ -180,11 +181,9 @@ namespace Fusion.XR.Host
         public void OnConnectedToServer(NetworkRunner runner)
         {
             Gamemanager.Instance.lPlayerCC.GetComponent<Animator>().Play("VisionFadeLocal", 0);
-
-            Debug.Log(runner.GetPhysicsScene());
             runner.SetActiveScene(2);
         }
-        public void OnSceneLoadStart(NetworkRunner runner) { mainMenuDummy.SetActive(false); }
+        public void OnSceneLoadStart(NetworkRunner runner) { if(mainMenuDummy != null) mainMenuDummy.SetActive(false); }
         #endregion
 
         #region Unused INetworkRunnerCallbacks 
