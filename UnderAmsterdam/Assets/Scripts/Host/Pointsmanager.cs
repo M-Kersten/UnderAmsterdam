@@ -7,39 +7,55 @@ using Fusion;
 public class Pointsmanager : MonoBehaviour
 {
     [SerializeField] ConnectionManager coach;
+    private CompanyManager companyManager;
     private int pipeplacepoint = -40;
     private int pipeRootPoints = -220;
     private int piperemovepoint = 20;
     private int teamworkPoints = 1000;
     private int victorypoints = 4000;
-
+    private void Start()
+    {
+        companyManager = CompanyManager.Instance;
+    }
     public void AddPoints(string company)
     {
-        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
-        player.points += piperemovepoint;
+        if (CheckPlayerData(company))
+            GetPlayerData(company).points += piperemovepoint;
     }
 
     public void TeamworkBonus(string company)
     {
-        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
-        player.points += teamworkPoints;
+        if (CheckPlayerData(company))
+            GetPlayerData(company).points += teamworkPoints;
     }
 
     public void RemovePoints(string company)
     {
-        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
-        player.points += pipeplacepoint;
+        if (CheckPlayerData(company))
+            GetPlayerData(company).points += pipeplacepoint;
     }
 
     public void RemovePointsRoots(string company)
     {
-        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
-        player.points += pipeRootPoints;
+        if (CheckPlayerData(company))
+            GetPlayerData(company).points += pipeRootPoints;
     }
     
     public void CalculateRoundPoints(string company)
     {
-        PlayerData player = coach._spawnedUsers[CompanyManager.Instance._companies[company]].GetComponent<PlayerData>();
-        player.points += victorypoints;
+        if(CheckPlayerData(company))
+            GetPlayerData(company).points += victorypoints;
+    }
+    private bool CheckPlayerData(string company)
+    {
+        if (coach._spawnedUsers.ContainsKey(companyManager._companies[company]))
+            return true;
+        else
+            return false;
+    }
+    private PlayerData GetPlayerData(string company)
+    {
+        PlayerData player = coach._spawnedUsers[companyManager._companies[company]].GetComponent<PlayerData>();
+        return player;
     }
 }
