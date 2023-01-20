@@ -59,8 +59,15 @@ public class PlayerTestMove : MonoBehaviour
         }
 
         if (mainRigid != null && ConnectionManager.Instance.runner != null)
+        {
             mainRigid.velocity = (direction * ConnectionManager.Instance.runner.DeltaTime * speed);
+            Debug.Log("IN GAME: Velocity: " + mainRigid.velocity + " Delta: " + ConnectionManager.Instance.runner.DeltaTime);
+        }
         else if (mainRigid != null)
-            mainRigid.velocity = (direction * Time.deltaTime * speed);
+        {
+            mainRigid.velocity = (direction * Time.fixedDeltaTime * speed);
+            Debug.Log("MAIN MENU : Velocity: " + mainRigid.velocity + " delta: " + Time.fixedDeltaTime);
+
+        }
     }
 }
