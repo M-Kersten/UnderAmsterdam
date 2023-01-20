@@ -5351,6 +5351,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &4064928493596614304
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1515690352432044072}
+  m_Layer: 9
+  m_Name: ExitValvePrefabSpawnPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1515690352432044072
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064928493596614304}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8439811098364466054}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5301299265039949689
 GameObject:
   m_ObjectHideFlags: 0
@@ -8294,6 +8325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCam: {fileID: 8439811098364466054}
   ExitValvePrefab: {fileID: 1748651048654728730, guid: 20ab9f0c9dc85b443a2f3f872fac5e26, type: 3}
+  prefabSpawnPos: {fileID: 4064928493596614304}
   buttonActivationTime: 2
 --- !u!54 &6508602778269547862
 Rigidbody:
@@ -8597,6 +8629,7 @@ Transform:
   m_Children:
   - {fileID: 5713110004675456927}
   - {fileID: 206569542}
+  - {fileID: 1515690352432044072}
   m_Father: {fileID: 8439811097839705980}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

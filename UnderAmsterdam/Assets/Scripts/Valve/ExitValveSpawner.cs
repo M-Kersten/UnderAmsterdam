@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class ExitValveSpawner : MonoBehaviour
 {
     [SerializeField] private Transform mainCam;
-    [SerializeField] private GameObject ExitValvePrefab;
+    [SerializeField] private GameObject ExitValvePrefab, prefabSpawnPos;
     [SerializeField] private float buttonActivationTime = 2;
     private PlayerInputHandler playerInputHandler;
 
@@ -50,10 +50,8 @@ public class ExitValveSpawner : MonoBehaviour
     private void SpawnPipe()
     {
         isSpawned = true;
-        Quaternion headQ = Quaternion.Euler(0, mainCam.eulerAngles.y, 0);
-        Vector3 forwardPos = headQ * mainCam.transform.forward + transform.position;
 
-        GameObject pipe = Instantiate(ExitValvePrefab, forwardPos, Quaternion.identity);
+        GameObject pipe = Instantiate(ExitValvePrefab, prefabSpawnPos.transform.position, Quaternion.identity);
         StartCoroutine(MovePipe(pipe, new Vector3(pipe.transform.position.x, mainCam.position.y, pipe.transform.position.z), pipe.transform.position));
     }
     public void DespawnPipe(GameObject pipe)
