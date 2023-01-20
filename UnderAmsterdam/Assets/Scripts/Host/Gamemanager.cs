@@ -80,6 +80,7 @@ public class Gamemanager : MonoBehaviour
     }
     private void OnCountDownStart()
     {
+        Gamemanager.Instance.localRigid.isKinematic = true;
         CountDownStart.Invoke();
         Debug.Log("GAMEMANAGER: ON COUNTDOWN START");
 
@@ -88,6 +89,7 @@ public class Gamemanager : MonoBehaviour
     private void OnCountDownEnd() 
     {
         CountDownEnd.Invoke();
+        Gamemanager.Instance.localRigid.isKinematic = false;
         Debug.Log("GAMEMANAGER: ON COUNT DOWN END");
 
         OnRoundStart();

@@ -1082,6 +1082,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 7677259708304273163, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+      propertyPath: m_Height
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7677259708304273163, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+      propertyPath: m_Radius
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7677259708304273163, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
+      propertyPath: m_Center.y
+      value: -0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 7966728056829922977, guid: 477f02bca0b59924aa984e240cb28cc4, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -1257,7 +1269,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 2549000073306557745}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.15
   m_Height: 0.75
   m_Direction: 1

@@ -8084,7 +8084,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_CameraFloorOffsetObject: {fileID: 8439811097839705983}
   m_RequestedTrackingMode: 2
-  m_TrackingOriginMode: 1
+  m_TrackingOriginMode: 2
   m_TrackingSpace: 1
   m_CameraYOffset: 1.36144
 --- !u!114 &8439811097757408639
@@ -8743,7 +8743,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 8439811098364466051}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.15
   m_Height: 0.8
   m_Direction: 1

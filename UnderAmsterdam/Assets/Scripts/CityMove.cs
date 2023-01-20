@@ -81,7 +81,7 @@ public class CityMove : NetworkBehaviour
     }
     private void GameStartProcedure(Vector3 from, Vector3 to)
     {
-        rocksSystem.spawnRock();
+        //rocksSystem.spawnRock();
         toDisableObjects[0].SetActive(false);
 
         StartCoroutine(MovePlayers(from, to));
