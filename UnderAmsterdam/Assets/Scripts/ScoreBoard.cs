@@ -70,14 +70,14 @@ public class ScoreBoard : NetworkBehaviour
             RPC_SendData(player, startPoints[i++]);
         }
 
-        //Sorts ScoreBoard
-        rankDict = rankDict.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-
         RPC_DisplayData();
     }
 
     private void DisplayLeaderBoard()
     {
+        //Sorts ScoreBoard
+        rankDict = rankDict.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+
         container.SetActive(true);
         int i = 0;
 
