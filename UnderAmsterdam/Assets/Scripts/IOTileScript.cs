@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using Fusion.XR.Host;
 
 public class IOTileScript : NetworkBehaviour
 {
@@ -64,7 +65,7 @@ public class IOTileScript : NetworkBehaviour
     }
     public bool TryEnableIOPipe(string setCompany, bool shouldBeOutput, bool isSyncing)
     {
-        if (setCompany == "Empty" )
+        if (setCompany == "Empty")
         {
             company = setCompany;
             return false;
@@ -87,19 +88,23 @@ public class IOTileScript : NetworkBehaviour
         }
         VisualObject.SetActive(true);
 
+        Debug.Log("spawned pipe of company " + company);
+
         if (isOutput)
             Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
         else
+        {
             roundInputPipe = Gamemanager.Instance.currentRound;
-
-        SpawnIndicator(shouldBeOutput);
+            SpawnIndicator(false);
+        }
 
         return true;
     }
 
     static void OnIOTileChanged(Changed<IOTileScript> changed)
     {
-        changed.Behaviour.TryEnableIOPipe(changed.Behaviour.company, changed.Behaviour.isOutput, true);
+        if(ConnectionManager.Instance.runner.IsClient)
+            changed.Behaviour.TryEnableIOPipe(changed.Behaviour.company, changed.Behaviour.isOutput, true);
     }
 
     public void StartPipeCheck()

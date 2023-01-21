@@ -147,7 +147,6 @@ public class ioScript : MonoBehaviour
                 }
             }
             //Randomly Choosing the wall among the 4 walls
-            
         }
         return chosenTile;
     }
