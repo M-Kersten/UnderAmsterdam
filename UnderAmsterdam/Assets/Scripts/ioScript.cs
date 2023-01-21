@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Fusion;
+using Fusion.XR.Host;
 
 public class ioScript : MonoBehaviour
 {
@@ -46,8 +46,10 @@ public class ioScript : MonoBehaviour
             westGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
 
         Gamemanager.Instance.RoundStart.AddListener(AddPlayerInputs);
-        Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
         Gamemanager.Instance.RoundEnd.AddListener(StartCheckingPipes);
+
+        if (ConnectionManager.Instance.runner.IsServer)
+            Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
     }
 
     private void StartCheckingPipes()

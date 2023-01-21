@@ -31,27 +31,27 @@ public class IOTileScript : NetworkBehaviour
         RaycastHit hit;
 
         if (Physics.Raycast(transform.position, Vector3.up, out hit))
-            if(hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+            if(hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
                 IoNeighbourTiles.Add(tile);
 
         if (Physics.Raycast(transform.position, Vector3.down, out hit))
-            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
                 IoNeighbourTiles.Add(tile);
 
         if (Physics.Raycast(transform.position, Vector3.left, out hit))
-            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
                 IoNeighbourTiles.Add(tile);
 
         if (Physics.Raycast(transform.position, Vector3.right, out hit))
-            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
                 IoNeighbourTiles.Add(tile);
 
         if (Physics.Raycast(transform.position, Vector3.forward, out hit))
-            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
                 IoNeighbourTiles.Add(tile);
 
         if (Physics.Raycast(transform.position, Vector3.back, out hit))
-            if (hit.transform.gameObject.TryGetComponent<IOTileScript>(out IOTileScript tile))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
                 IoNeighbourTiles.Add(tile);
     }
     private bool CheckNeighboursOccupied()
@@ -99,6 +99,7 @@ public class IOTileScript : NetworkBehaviour
 
     static void OnIOTileChanged(Changed<IOTileScript> changed)
     {
+        Debug.Log("Placing pipe of comp: " + changed.Behaviour.company);
         changed.Behaviour.TryEnableIOPipe(changed.Behaviour.company, changed.Behaviour.isOutput, true);
     }
 
