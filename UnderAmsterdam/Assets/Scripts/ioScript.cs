@@ -5,6 +5,10 @@ using Fusion.XR.Host;
 
 public class ioScript : MonoBehaviour
 {
+    public static ioScript Instance;
+
+    [SerializeField] public List<CubeInteraction> tobeUncheckedPipes;
+
     [SerializeField] private List<IOTileScript> inputPipes;
     [SerializeField] private List<IOTileScript> outputPipes;
 
@@ -46,10 +50,18 @@ public class ioScript : MonoBehaviour
             westGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
 
         Gamemanager.Instance.RoundStart.AddListener(AddPlayerInputs);
+        Gamemanager.Instance.RoundStart.AddListener(UncheckAllCheckedPipes);
         Gamemanager.Instance.RoundEnd.AddListener(StartCheckingPipes);
 
         if (ConnectionManager.Instance.runner.IsServer)
             Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
+    }
+    private void UncheckAllCheckedPipes()
+    {
+        for (int i = 0; i < tobeUncheckedPipes.Count; i++)
+            tobeUncheckedPipes[i].isChecked = false;
+
+        tobeUncheckedPipes.Clear();
     }
 
     private void StartCheckingPipes()

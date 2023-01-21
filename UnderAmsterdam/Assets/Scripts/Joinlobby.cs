@@ -10,6 +10,7 @@ public class Joinlobby : MonoBehaviour
     [SerializeField] private Animator lPlayerAnimator;
     [SerializeField] TextMeshProUGUI textinput;
     private bool canPressButton = true;
+    [SerializeField] private float buttonCooldownSeconds = 8;
     public async void OnAutoHostJoin()
     {
         ConnectionManager connection = ConnectionManager.Instance;
@@ -32,7 +33,7 @@ public class Joinlobby : MonoBehaviour
     }
     private IEnumerator ButtonCooldown()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(buttonCooldownSeconds);
         canPressButton = true;
     }
 }

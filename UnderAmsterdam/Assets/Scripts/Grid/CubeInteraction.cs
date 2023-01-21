@@ -410,6 +410,7 @@ public class CubeInteraction : NetworkBehaviour
                     {
                         // Verify this neighbor and mark it as checked.
                         isChecked = true;
+                        ioScript.Instance.tobeUncheckedPipes.Add(this);
                         neighborsScript[i].CheckConnectionForWin();
                     }
                 }
