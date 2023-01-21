@@ -24,6 +24,11 @@ public class ioScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         // Random seed is set
         Random.InitState((int)System.DateTime.Now.Ticks);
 
