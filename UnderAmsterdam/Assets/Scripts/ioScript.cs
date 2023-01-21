@@ -29,6 +29,7 @@ public class ioScript : MonoBehaviour
 
         inputPipes = new List<IOTileScript>();
         outputPipes = new List<IOTileScript>();
+        tobeUncheckedPipes = new List<CubeInteraction>();
 
         northGrid = new IOTileScript[northWall.childCount];
         southGrid = new IOTileScript[southWall.childCount];
