@@ -14,15 +14,14 @@ public class TeamworkHand : MonoBehaviour
     [SerializeField] private GameObject teamParticle;
     private NetworkObject particleObj;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("COLLISION WITH: " + collision);
         if (myNetworkObj.HasStateAuthority && !ConnectionManager.Instance.runner.SessionInfo.IsOpen)
         {
-            Debug.Log("Host: " + myNetworkObj.HasStateAuthority + " Layer: " + collision.gameObject.layer + "Hand VS Cap: " + (transform.position.y > myCap.position.y));
-            if (collision.gameObject.layer == 15 && transform.position.y > myCap.position.y)
+            Debug.Log("Host: " + myNetworkObj.HasStateAuthority + " Layer: " + other.gameObject.layer + "Hand VS Cap: " + (transform.position.y > myCap.position.y));
+            if (other.gameObject.layer == 15 && transform.position.y > myCap.position.y)
             {
-                otherParent = collision.transform.parent.transform.parent;
+                otherParent = other.transform.parent.transform.parent;
                 if (!otherParent.GetComponent<NetworkObject>().HasInputAuthority)
                 {
                     particleObj = ConnectionManager.Instance.runner.Spawn(teamParticle, transform.position, transform.rotation);
