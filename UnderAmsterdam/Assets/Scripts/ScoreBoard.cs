@@ -17,58 +17,49 @@ public class ScoreBoard : NetworkBehaviour
     private ConnectionManager cManager;
     private Dictionary<string, int> rankDict;
     private Dictionary<string, PlayerRef> savedCompanies;
-    private int[] startPoints;
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void RPC_SendData(PlayerData player, int startPoint)
+    public void RPC_SendData(PlayerData player)
     {
-        rankDict.Add(player.company, player.points - startPoint);
+        rankDict.Add(player.company, player.points);
     }
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_DisplayData()
     {
         DisplayLeaderBoard();
     }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_SendPlayersCompany(string company, PlayerRef player)
+    {
+        savedCompanies.Add(company, player);
+    }
 
     public override void Spawned()
     {
         cManager = FindObjectOfType<ConnectionManager>();
-        if (HasStateAuthority)
-        {
-            if (perRound) Gamemanager.Instance.RoundStart.AddListener(GetStartPoints);
-            Gamemanager.Instance.GameEnd.AddListener(UpdateLeaderBoard);
-        }
+        if (HasStateAuthority) Gamemanager.Instance.GameEnd.AddListener(UpdateLeaderBoard);
     }
 
     // Start is called before the first frame update
     void Start()
     {
         rankDict = new Dictionary<string, int>();
-        startPoints = new int[] { 0, 0, 0, 0, 0 };
+        savedCompanies = new Dictionary<string, PlayerRef>();
         podium.SetActive(false);
         container.SetActive(false);
     }
 
-    private void GetStartPoints()
-    {
-        int i = 0;
-        foreach (var company in CompanyManager.Instance._companies)
-        {
-            if (company.Value != PlayerRef.None) startPoints[i++] = cManager._spawnedUsers[CompanyManager.Instance._companies[company.Key]].GetComponent<PlayerData>().points;
-        }
-    }
-
     public void UpdateLeaderBoard()
     {
-
-        int i = 0;
         //Updates the dictionnary;
         foreach (var company in CompanyManager.Instance._companies)
         {
             if (company.Value == PlayerRef.None) continue;
             PlayerData player = cManager._spawnedUsers[CompanyManager.Instance._companies[company.Key]].GetComponent<PlayerData>();
-            RPC_SendData(player, startPoints[i++]);
+            RPC_SendData(player);
         }
+
+        foreach (var company in CompanyManager.Instance._companies) RPC_SendPlayersCompany(company.Key, company.Value);
 
         RPC_DisplayData();
     }
@@ -82,12 +73,7 @@ public class ScoreBoard : NetworkBehaviour
         int i = 0;
 
         //Displays points for each player in the dictionnary
-        foreach (var player in rankDict)
-        {
-            PlayerTMP[i++].text = player.Key + " : " + player.Value.ToString();
-        }
-
-        savedCompanies = CompanyManager.Instance._companies;
+        foreach (var player in rankDict) PlayerTMP[i++].text = player.Key + " : " + player.Value.ToString();
     }
 
     public void WarpPlayers()
@@ -97,8 +83,8 @@ public class ScoreBoard : NetworkBehaviour
         {
             if (cManager.localPlayerRef == savedCompanies[rankDict.ElementAt(i).Key])
             {
-                Gamemanager.Instance.localPlayer.transform.position = podiumPipes[i].position + new Vector3(0, 4.5f - i, -0.5f);
-                Gamemanager.Instance.localPlayer.transform.eulerAngles = new Vector3(0, 180, 0);
+                Gamemanager.Instance.localRigid.gameObject.transform.position = podiumPipes[i].position + new Vector3(0, 4.5f - i, -0.5f);
+                Gamemanager.Instance.localRigid.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
                 return;
             }
         }
