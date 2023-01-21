@@ -99,7 +99,6 @@ public class IOTileScript : NetworkBehaviour
 
     static void OnIOTileChanged(Changed<IOTileScript> changed)
     {
-        Debug.Log("Placing pipe of comp: " + changed.Behaviour.company);
         changed.Behaviour.TryEnableIOPipe(changed.Behaviour.company, changed.Behaviour.isOutput, true);
     }
 
