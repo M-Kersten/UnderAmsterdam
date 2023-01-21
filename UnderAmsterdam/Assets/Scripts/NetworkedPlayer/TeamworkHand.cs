@@ -16,6 +16,7 @@ public class TeamworkHand : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("COLLISION WITH: " + collision);
         if (myNetworkObj.HasStateAuthority && !ConnectionManager.Instance.runner.SessionInfo.IsOpen)
         {
             Debug.Log("Host: " + myNetworkObj.HasStateAuthority + " Layer: " + collision.gameObject.layer + "Hand VS Cap: " + (transform.position.y > myCap.position.y));
