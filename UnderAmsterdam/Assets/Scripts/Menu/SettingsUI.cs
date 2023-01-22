@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class SettingsUI : MonoBehaviour
 {
     [SerializeField] private AudioMixer volumeMixer;
-    private bool leftHandedMode;
     [SerializeField] private UISlider[] allSliders;
     [SerializeField] private UISlider masterSlider;
     [SerializeField] private Material[] leftHandButtonMaterials;
@@ -47,8 +46,10 @@ public class SettingsUI : MonoBehaviour
         else
             MainMenuHands.Instance.SwitchWatch();
 
-        leftHandedMode = !leftHandedMode;
-        ButtonColour(leftHandedMode);
+        Gamemanager.Instance.localData.SwitchUI();
+
+        Gamemanager.Instance.localData.leftHanded = !Gamemanager.Instance.localData.leftHanded;
+        ButtonColour(Gamemanager.Instance.localData.leftHanded);
     }
     private void ButtonColour(bool lefthanded)
     {

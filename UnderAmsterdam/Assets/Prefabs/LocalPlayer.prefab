@@ -5655,7 +5655,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5961568258896440706}
   m_LocalRotation: {x: 0.6526337, y: 0.53785586, z: -0.46496576, w: -0.2618915}
-  m_LocalPosition: {x: 0.15, y: -0.016899973, z: -0.15689999}
+  m_LocalPosition: {x: 0.1566, y: -0.0224, z: -0.1442}
   m_LocalScale: {x: 0.49999982, y: 0.4999998, z: 0.50000024}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -8747,7 +8747,7 @@ CapsuleCollider:
   m_Radius: 0.15
   m_Height: 0.8
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.15, z: 0}
 --- !u!1 &8439811098612244500
 GameObject:
   m_ObjectHideFlags: 0
@@ -8979,7 +8979,7 @@ GameObject:
   - component: {fileID: 707411703934198122}
   - component: {fileID: 7381684478693780241}
   - component: {fileID: 7381684478693780242}
-  - component: {fileID: 7381684478693780239}
+  - component: {fileID: 2405254220889061501}
   m_Layer: 5
   m_Name: Collider
   m_TagString: Untagged
@@ -9127,7 +9127,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &7381684478693780239
+--- !u!114 &2405254220889061501
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9136,7 +9136,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8447807825537134211}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 593d3ac6e08f4468b819285084eac4dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 65e4c42035227e848a5e9412fc0542b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 5301299265039949689}
@@ -9149,30 +9149,6 @@ MonoBehaviour:
       - m_Target: {fileID: 360476674824946678}
         m_TargetAssemblyTypeName: SettingsUI, Assembly-CSharp
         m_MethodName: LeftHanded
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5058180989879885651}
-        m_TargetAssemblyTypeName: LocalData, Assembly-CSharp
-        m_MethodName: SwitchWatch
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenuHands, Assembly-CSharp
-        m_MethodName: SwitchWatch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -70,6 +70,7 @@ public class TeamworkManager : MonoBehaviour
     }
 
     public void CompanyDone(string company) {
+        if (!_doneCompanies.ContainsKey(company))
             _doneCompanies.Add(company, true);
         Debug.Log("TEAMWORK: ADDING COMPANY " + company);
     }

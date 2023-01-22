@@ -23,17 +23,17 @@ public class TeamworkHand : NetworkBehaviour
                 otherParent = other.transform.root;
                 if (!otherParent.GetComponent<NetworkObject>().HasInputAuthority)
                 {
-                    RPC_SendParticle();
-                    TeamworkManager.Instance.AddTeamWork(myData.company, otherParent.GetComponent<PlayerData>().company);
+                    if(TeamworkManager.Instance.AddTeamWork(myData.company, otherParent.GetComponent<PlayerData>().company));
+                        RPC_SendParticle();
                 }
             }
         }
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RPC_SendParticle()
+    public void RPC_SendParticle()
     {
         particleObj = Instantiate(teamParticle, transform.position, transform.rotation);
-        Destroy(particleObj, teamParticle.GetComponent<ParticleSystem>().main.duration);
+        Destroy(particleObj, teamParticle.GetComponent<ParticleSystem>().main.duration+5f);
     }
 }

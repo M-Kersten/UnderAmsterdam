@@ -21,6 +21,7 @@ public class ScoreBoard : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_SendData(PlayerData player)
     {
+        if(!rankDict.ContainsKey(player.company))
         rankDict.Add(player.company, player.points);
     }
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -31,6 +32,7 @@ public class ScoreBoard : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_SendPlayersCompany(string company, PlayerRef player)
     {
+        if (!savedCompanies.ContainsKey(company))
         savedCompanies.Add(company, player);
     }
 

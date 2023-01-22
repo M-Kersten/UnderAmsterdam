@@ -37,6 +37,9 @@ public class PlayerData : NetworkBehaviour
     }
     private void Start()
     {
+        if(Gamemanager.Instance.localData.leftHanded)
+            Gamemanager.Instance.localData.myWristUI.LeftHanded();
+
         DontDestroyOnLoad(this.gameObject);
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;

@@ -172,6 +172,8 @@ namespace Fusion.XR.Host
 
             if(runner.IsServer)
                 _spawnedUsers.Remove(Gamemanager.Instance.networkData.GetComponent<NetworkObject>().InputAuthority);
+
+            SceneManager.LoadScene(0);
         }
         public void OnConnectedToServer(NetworkRunner runner)
         {

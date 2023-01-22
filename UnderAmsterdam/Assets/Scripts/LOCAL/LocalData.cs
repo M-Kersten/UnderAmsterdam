@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,9 @@ public class LocalData : MonoBehaviour
     [SerializeField] public SettingsUI myWristUI;
     [SerializeField] private Transform[] settingsPositions;
     [SerializeField] GameObject leftHand, rightHand;
+    public bool leftHanded;
 
-    public void SwitchWatch()
+    public void SwitchUI()
     {
         if (myWristUI.transform.position == settingsPositions[1].position)
         {

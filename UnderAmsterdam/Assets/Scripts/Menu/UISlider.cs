@@ -39,10 +39,10 @@ public class UISlider : NetworkBehaviour
         {
             handlePosition(handle.transform.localPosition.x);
 
-            if (touchingCollider.transform.position.x > handle.transform.position.x)
-                handle.transform.localPosition += new Vector3(0.01f, 0, 0);
-            else
-                handle.transform.localPosition -= new Vector3(0.01f, 0, 0);
+          if (touchingCollider.transform.position.x > handle.transform.position.x)
+              handle.transform.localPosition += new Vector3(0.01f, 0, 0);
+          else
+              handle.transform.localPosition -= new Vector3(0.01f, 0, 0);
 
             if (handle.transform.localPosition.x < minPosition.x)
             {
