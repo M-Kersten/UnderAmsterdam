@@ -60,7 +60,7 @@ public class ioScript : MonoBehaviour
         Gamemanager.Instance.RoundEnd.AddListener(StartCheckingPipes);
 
         if (ConnectionManager.Instance.runner.IsServer)
-            Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
+            Gamemanager.Instance.RoundStart.AddListener(AddPlayerOutputs);
     }
     private void UncheckAllCheckedPipes()
     {

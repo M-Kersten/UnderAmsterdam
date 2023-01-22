@@ -38,7 +38,9 @@ public class PlayerData : NetworkBehaviour
     private void Start()
     {
         if(Gamemanager.Instance.localData.leftHanded)
-            Gamemanager.Instance.localData.myWristUI.LeftHanded();
+        {
+            RPC_SwitchHands();
+        }
 
         DontDestroyOnLoad(this.gameObject);
         nRig = GetComponent<NetworkRig>();

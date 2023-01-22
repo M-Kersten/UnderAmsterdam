@@ -9,7 +9,7 @@ public class LocalData : MonoBehaviour
     [SerializeField] public SettingsUI myWristUI;
     [SerializeField] private Transform[] settingsPositions;
     [SerializeField] GameObject leftHand, rightHand;
-    public bool leftHanded;
+    public bool leftHanded = false;
 
     public void SwitchUI()
     {

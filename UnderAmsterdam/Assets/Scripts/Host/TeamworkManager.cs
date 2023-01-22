@@ -40,7 +40,6 @@ public class TeamworkManager : MonoBehaviour
         // if both players are free, add them into contracts
         if (CheckFree(company1) && CheckFree(company2))
         {
-            Debug.Log("TEAMWORK: ADDING CONTRACT " + company1 + " " + company2);
             _companyContracts.Add(company1, company2);
             return true;
         }
@@ -72,7 +71,6 @@ public class TeamworkManager : MonoBehaviour
     public void CompanyDone(string company) {
         if (!_doneCompanies.ContainsKey(company))
             _doneCompanies.Add(company, true);
-        Debug.Log("TEAMWORK: ADDING COMPANY " + company);
     }
 
     private void CheckTeamwork()
@@ -87,13 +85,9 @@ public class TeamworkManager : MonoBehaviour
 
     public void EmptyTeamWork()
     {
-        Debug.Log("TEAMWORK: START EMPTYING..");
         // Empty all contracts
         _companyContracts = new Dictionary<string, string>();
 
         _doneCompanies = new Dictionary<string, bool>();
-
-        Debug.Log("TEAMWORK: DONE EMPTYING");
-
     }
 }

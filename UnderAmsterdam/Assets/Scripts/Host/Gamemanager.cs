@@ -74,7 +74,6 @@ public class Gamemanager : MonoBehaviour
     private void OnGameStart()
     {
         GameStart.Invoke();
-        Debug.Log("GAMEMANAGER: ON GAME START");
         ConnectionManager.Instance.runner.SessionInfo.IsOpen = false;
         OnCountDownStart();
     }
@@ -82,7 +81,6 @@ public class Gamemanager : MonoBehaviour
     {
         localRigid.isKinematic = true;
         CountDownStart.Invoke();
-        Debug.Log("GAMEMANAGER: ON COUNTDOWN START");
 
         StartCoroutine(PreRoundCountDown());
     }
@@ -90,31 +88,24 @@ public class Gamemanager : MonoBehaviour
     {
         CountDownEnd.Invoke();
         localRigid.isKinematic = false;
-        Debug.Log("GAMEMANAGER: ON COUNT DOWN END");
 
         OnRoundStart();
     }
     private void OnRoundStart()
     {
-        RoundStart.Invoke();
-        Debug.Log("GAMEMANAGER: ON ROUND START");
-
-        timer.SetTimer(roundTime);
         currentRound++;
+        RoundStart.Invoke();
+        timer.SetTimer(roundTime);
     }
     private void OnRoundEnd()
     {
         RoundEnd.Invoke();
-        Debug.Log("GAMEMANAGER: ON ROUND END");
-
         roundTime += roundTimeIncrease;
         OnRoundLateEnd();
     }
     private void OnRoundLateEnd()
     {
         RoundLateEnd.Invoke();
-        Debug.Log("GAMEMANAGER: ON ROUND LATE END");
-
 
         if (currentRound < amountOfRounds)
             OnCountDownStart();
@@ -129,6 +120,5 @@ public class Gamemanager : MonoBehaviour
     private void OnGameEnd()
     {
         GameEnd.Invoke();
-        Debug.Log("GAMEMANAGER: ON GAME END");
     }
 }

@@ -77,6 +77,7 @@ public class CityMove : NetworkBehaviour
     private void EndOfGame()
     {
         playerPos = Gamemanager.Instance.localRigid.transform.position;
+        moveup = new Vector3(playerPos.x, moveup.y, playerPos.z);
         GameOverProcedure(playerPos, moveup);
     }
     private void GameStartProcedure(Vector3 from, Vector3 to)

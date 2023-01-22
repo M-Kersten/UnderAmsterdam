@@ -23,7 +23,7 @@ public class TeamworkHand : NetworkBehaviour
                 otherParent = other.transform.root;
                 if (!otherParent.GetComponent<NetworkObject>().HasInputAuthority)
                 {
-                    if(TeamworkManager.Instance.AddTeamWork(myData.company, otherParent.GetComponent<PlayerData>().company));
+                    if(TeamworkManager.Instance.AddTeamWork(myData.company, otherParent.GetComponent<PlayerData>().company))
                         RPC_SendParticle();
                 }
             }
