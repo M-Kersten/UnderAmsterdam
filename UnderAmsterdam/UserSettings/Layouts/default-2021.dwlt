@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 100
+  controlID: 31
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -94,8 +94,8 @@ MonoBehaviour:
     y: 0
     width: 323
     height: 637
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 15}
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 90
+  controlID: 21
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 91
+  controlID: 22
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -349,22 +349,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Host
+    - Assets
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts/Host
+  - Assets
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: D:\Unity Projects\UnderAmsterdam\UnderAmsterdam
+  m_LastProjectPath: C:\Users\Qkoen\OneDrive\Desktop\Index\School\Github\UnderAmsterdam\UnderAmsterdam
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 97}
-    m_SelectedIDs: 70ac0a00
-    m_LastClickedID: 699504
-    m_ExpandedIDs: 00000000f28f0000f48f0000f68f0000f88f0000fa8f0000fc8f0000fe8f00005eac0a0000ca9a3b
+    scrollPos: {x: 0, y: 79}
+    m_SelectedIDs: 3a920000
+    m_LastClickedID: 37434
+    m_ExpandedIDs: 000000003a92000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -392,7 +392,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000f28f0000f48f0000f68f0000f88f0000fa8f0000fc8f0000fe8f0000
+    m_ExpandedIDs: 000000003a920000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -419,7 +419,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 1
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -520,23 +520,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 1e76d4ff
-      m_LastClickedID: -2853346
-      m_ExpandedIDs: 7298deff8a48e1ff28b7f5ff82d4ffff4ae6ffff00fbfffff4ffffff189900001a990000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: eefaffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: NetworkRigWithHandsandPhotonDummy Variant(Clone)
-        m_OriginalName: NetworkRigWithHandsandPhotonDummy Variant(Clone)
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -2012184
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 4}
       m_SearchString: 
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.20668545, y: 5.110623, z: 1.7956699}
+    m_Target: {x: 0.31026366, y: -12.180242, z: 19.077194}
     speed: 2
     m_Value: {x: -0.20668545, y: 5.110623, z: 1.7956699}
   m_RenderMode: 0
@@ -820,11 +820,11 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.19542663, y: 0.6564121, z: -0.18008296, w: -0.7069384}
+    m_Target: {x: -0.31455767, y: -0.0055637457, z: 0.004892088, w: -0.949888}
     speed: 2
-    m_Value: {x: -0.1953036, y: 0.6559989, z: -0.1799696, w: -0.7064934}
+    m_Value: {x: -0.19542661, y: 0.6564121, z: -0.18008296, w: -0.7069384}
   m_Size:
-    m_Target: 1.0178877
+    m_Target: 12.124355
     speed: 2
     m_Value: 1.0178877
   m_Ortho:

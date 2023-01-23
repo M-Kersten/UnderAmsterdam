@@ -17,6 +17,8 @@ public class CityMove : NetworkBehaviour
     [SerializeField] Material newMaterial;
     [SerializeField] ScoreBoard scoreBoard;
     [SerializeField] EnvironmentScript rocksSystem;
+    [SerializeField] private float moveDownY = -0.5f;
+    [SerializeField] private GameObject grabText;
     void Start()
     {
         Gamemanager.Instance.GameEnd.AddListener(EndOfGame);
@@ -35,7 +37,10 @@ public class CityMove : NetworkBehaviour
 
                 // Always enable the cap when a player steps into the ready box first time.
                 if (!other.transform.root.GetComponent<PlayerData>().playerCap.activeSelf)
+                {
                     RPC_EnableCap(other.transform.root.GetComponent<PlayerData>());
+                    grabText.SetActive(false);
+                }
             }
         }
     }
@@ -64,7 +69,7 @@ public class CityMove : NetworkBehaviour
         //start animation down
         playerPos = Gamemanager.Instance.localRigid.gameObject.transform.position;
         moveup = playerPos;
-        movedown = new Vector3(playerPos.x, -0.5f, playerPos.z);
+        movedown = new Vector3(playerPos.x, moveDownY, playerPos.z);
         GameStartProcedure(playerPos, movedown);
     }
 
