@@ -173,6 +173,7 @@ namespace Fusion.XR.Host
             if(runner.IsServer)
                 _spawnedUsers.Remove(Gamemanager.Instance.networkData.GetComponent<NetworkObject>().InputAuthority);
 
+            Gamemanager.Instance.localData.transform.position = new Vector3(0, 0, 0);
             SceneManager.LoadScene(0);
         }
         public void OnConnectedToServer(NetworkRunner runner)

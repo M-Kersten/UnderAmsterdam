@@ -26,7 +26,6 @@ public class ExitValve : MonoBehaviour
 
         SceneManager.activeSceneChanged += SetupNewMenuScene;
         SceneManager.LoadScene(0);
-        Destroy(lPlayerAnimator.gameObject);
     }
     private void SetupNewMenuScene(Scene scene, Scene scene2)
     {

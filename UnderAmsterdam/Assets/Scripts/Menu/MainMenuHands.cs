@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Fusion.XR.Host.Rig;
+using Fusion.XR.Host;
+
 
 public class MainMenuHands : MonoBehaviour
 {
@@ -15,15 +18,23 @@ public class MainMenuHands : MonoBehaviour
 
     public static MainMenuHands Instance;
 
+    private HardwareRig myRig;
+
+
     private void Start()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
         } else
         {
             Destroy(this);
         }
+        myRig = Gamemanager.Instance.localData.GetComponent<HardwareRig>();
+        ConnectionManager.Instance.mainMenuDummy = gameObject;
+
+        realLeftHand = myRig.leftHand.gameObject;
+        realRightHand = myRig.rightHand.gameObject;
     }
 
     private void Update() {

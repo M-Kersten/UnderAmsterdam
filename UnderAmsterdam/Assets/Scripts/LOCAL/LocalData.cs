@@ -10,6 +10,15 @@ public class LocalData : MonoBehaviour
     [SerializeField] private Transform[] settingsPositions;
     [SerializeField] GameObject leftHand, rightHand;
     public bool leftHanded = false;
+    public static LocalData Instance;
+
+    void Start()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     public void SwitchUI()
     {
