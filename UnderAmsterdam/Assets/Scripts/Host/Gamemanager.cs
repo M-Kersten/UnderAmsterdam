@@ -18,7 +18,7 @@ public class Gamemanager : MonoBehaviour
     public Rigidbody localRigid;
     public Transform mainCam;
 
-    public float roundTimeIncrease = 15;
+    public float roundTimeIncrease = 10;
     public float roundTime = 45;
 
     [SerializeField] private NetworkRunner runner;
@@ -32,6 +32,8 @@ public class Gamemanager : MonoBehaviour
     [HideInInspector] public Pointsmanager pManager;
 
     private HostTimerScript timer;
+
+    private float defaultRoundTimeIncrease = 10, defaultRoundTime = 45;
 
     private void Awake()
     {
@@ -57,6 +59,11 @@ public class Gamemanager : MonoBehaviour
         playerInputHandler = localPlayer.GetComponent<PlayerInputHandler>();
         localRigid = localPlayer.GetComponent<Rigidbody>();
         mainCam = localPlayer.transform.GetChild(0).GetChild(0);
+    }
+    public void ResetToDefaultValues()
+    {
+        roundTimeIncrease = defaultRoundTimeIncrease;
+        roundTime = defaultRoundTime;
     }
 
     public void SceneSwitch(int index) {

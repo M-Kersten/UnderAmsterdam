@@ -28,18 +28,20 @@ public class CityMove : NetworkBehaviour
     {
         if (other.gameObject.layer == 8)
         {
-            PlayerRef tempplayer = other.GetComponentInParent<NetworkObject>().InputAuthority;
+            PlayerRef temPplayer = other.GetComponentInParent<NetworkObject>().InputAuthority;
+            if(grabText.activeSelf)
+                grabText.SetActive(false);
             // If I am host
-            if (HasStateAuthority && !readyList.Contains(tempplayer))
+            if (HasStateAuthority && !readyList.Contains(temPplayer))
             {
-                readyList.Add(tempplayer);
+                readyList.Add(temPplayer);
                 CheckAllPlayers();
 
                 // Always enable the cap when a player steps into the ready box first time.
                 if (!other.transform.root.GetComponent<PlayerData>().playerCap.activeSelf)
                 {
                     RPC_EnableCap(other.transform.root.GetComponent<PlayerData>());
-                    grabText.SetActive(false);
+                    
                 }
             }
         }

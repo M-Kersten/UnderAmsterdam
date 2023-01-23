@@ -30,7 +30,6 @@ public class ExitValve : MonoBehaviour
     private void SetupNewMenuScene(Scene scene, Scene scene2)
     {
         ConnectionManager.Instance.mainMenuDummy = GameObject.Find("MainMenuDummy");
-        Gamemanager.Instance.FetchLocalPlayerComponents();
     }
 
     private void OnTriggerExit(Collider other)

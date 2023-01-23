@@ -175,6 +175,10 @@ namespace Fusion.XR.Host
 
             Gamemanager.Instance.localData.transform.position = new Vector3(0, 0, 0);
             SceneManager.LoadScene(0);
+
+            Gamemanager.Instance.gameObject.SetActive(false);
+            Gamemanager.Instance.gameObject.SetActive(true);
+            Gamemanager.Instance.ResetToDefaultValues();
         }
         public void OnConnectedToServer(NetworkRunner runner)
         {

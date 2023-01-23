@@ -11,9 +11,11 @@ public class PauseButton : MonoBehaviour
     [SerializeField] private AudioSource sound;
     [SerializeField] private Image myVignette;
     [SerializeField] private Sprite sPlay,sPause;
+    [SerializeField] private float waitForSeconds;
 
     GameObject presser;
     bool isPressed;
+    private bool cooldown;
 
     void Start()
     {
@@ -22,7 +24,7 @@ public class PauseButton : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!isPressed)
+        if (!isPressed && !cooldown)
         {
             button.transform.localPosition = new Vector3(0, 0.003f, 0);
             sound.Play();
@@ -40,7 +42,14 @@ public class PauseButton : MonoBehaviour
 
             presser = other.gameObject;
             isPressed = true;
+            cooldown = true;
+            StartCoroutine(TimerCooldown());
         }
+    }
+    private IEnumerator TimerCooldown()
+    {
+        yield return new WaitForSeconds(waitForSeconds);
+        cooldown = false;
     }
 
     private void OnTriggerExit(Collider other)
