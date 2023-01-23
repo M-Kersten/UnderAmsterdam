@@ -8,7 +8,7 @@ using Fusion.XR.Host.Rig;
 
 public class CubeInteraction : NetworkBehaviour
 {
-    private enum Direction {Right, Left, Behind, Front, Up, Down};
+    private enum Direction { Right, Left, Behind, Front, Up, Down };
 
     [SerializeField] private Transform PipePreview, PipeHolder;
     [SerializeField] private GameObject connectorPart;
@@ -38,7 +38,8 @@ public class CubeInteraction : NetworkBehaviour
     public bool obstructed = false;
     public bool isChecked = false;
 
-    void Start() {
+    void Start()
+    {
         pColouring = GetComponent<PipeColouring>();
         Gamemanager.Instance.RoundEnd.AddListener(delegate { OnRenderPipePreview(false); });
     }
@@ -54,7 +55,7 @@ public class CubeInteraction : NetworkBehaviour
 
         pipeParts = new GameObject[neighbors.Length];
         previewPipeParts = new GameObject[neighbors.Length];
-        
+
         int i = 0;
         foreach (Transform pipe in PipeHolder)
             pipeParts[i++] = pipe.gameObject;
@@ -72,7 +73,7 @@ public class CubeInteraction : NetworkBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, Vector3.up , out hit))
+        if (Physics.Raycast(transform.position, Vector3.up, out hit))
         {
             neighbors[(int)Direction.Up] = hit.transform.gameObject.GetComponent<NetworkObject>();
             neighborsScript[(int)Direction.Up] = hit.transform.gameObject.GetComponent<CubeInteraction>();
@@ -122,7 +123,7 @@ public class CubeInteraction : NetworkBehaviour
         {
             activatedPipes[i] = false;
 
-            if (neighbors[i] != null) 
+            if (neighbors[i] != null)
             {
                 // Check all of its neighbors and activate the corresponding pipes if it's from the same company
                 if (neighborsScript[i] != null)
@@ -152,7 +153,16 @@ public class CubeInteraction : NetworkBehaviour
 
         for (int i = 0; i < neighborsScript.Length; i++)
         {
-            if (neighborsScript[i] == null || neighborsScript[i].company == "Empty") continue;
+            if (neighbors[i] == null) continue;
+
+            if (neighborsScript[i] == null)
+            {
+                //If there is no normal tiles, check for IOTiles
+                if (neighbors[i].TryGetComponent(out IOTileScript IOTile) && IOTile.company != "Empty" && IOTile.company != pCompany) return false;
+                else continue;
+            }
+            else if (neighborsScript[i].company == "Empty") continue;
+
             if (//Incompatible company pairs, add more to implement more rules
                 AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "power") ||
                 AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "data") ||
@@ -163,7 +173,7 @@ public class CubeInteraction : NetworkBehaviour
                 AreMatchingPairs(pCompany, neighborsScript[i].company, "power", "gas")
             ) return false;
         }
-        
+
         return true;
     }
 
@@ -175,7 +185,7 @@ public class CubeInteraction : NetworkBehaviour
     private void OnTriggerEnter(Collider other)
     {
         ReliableOnTriggerExit.NotifyTriggerEnter(other, gameObject, OnTriggerExit);
-        
+
         if (other.CompareTag("Rock") || other.CompareTag("Root"))
         {
             obstructed = true;
@@ -190,15 +200,16 @@ public class CubeInteraction : NetworkBehaviour
     private void OnTriggerExit(Collider other)
     {
         ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
-        
-        if (other.CompareTag("Rock")|| other.CompareTag("Root"))
+
+        if (other.CompareTag("Rock") || other.CompareTag("Root"))
             obstructed = false;
         if (other.CompareTag("Player"))
             playerInside = false;
     }
 
     [Tooltip("Should be activated before EnableTile()")]
-    public void UpdateCompany(string newCompany) {
+    public void UpdateCompany(string newCompany)
+    {
         company = newCompany;
         pColouring.UpdateRenderer(company);
     }
@@ -249,7 +260,7 @@ public class CubeInteraction : NetworkBehaviour
                 OnRenderPipePreview(true);
             }
             else redDot.SetActive(true);
-            
+
         }
     }
     public void OnHandExit(string playerCompany)
@@ -257,7 +268,7 @@ public class CubeInteraction : NetworkBehaviour
         if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
             //Stop the preview only when both hands are no more inside a tile
-            if(VerifyRules(playerCompany)) OnRenderPipePreview(false);
+            if (VerifyRules(playerCompany)) OnRenderPipePreview(false);
             else redDot.SetActive(false);
         }
     }
@@ -288,7 +299,7 @@ public class CubeInteraction : NetworkBehaviour
                     neighborsScript[i].TryShowConnector();
                     neighborsScript[i].TryExtendPipe();
                 }
-                
+
             }
         }
         TryExtendPipe();
@@ -296,7 +307,7 @@ public class CubeInteraction : NetworkBehaviour
 
     private void OnRenderPipePreview(bool isActive)
     {
-        if (!isSpawned) 
+        if (!isSpawned)
             return;
 
         connectorPartPreview.SetActive(isActive);
@@ -317,7 +328,7 @@ public class CubeInteraction : NetworkBehaviour
 
     private int GetOppositeFace(int index)
     {
-        return index + 1 - 2 * (index % 2);            
+        return index + 1 - 2 * (index % 2);
     }
 
     private void ResetActivatedPipes()
@@ -365,7 +376,7 @@ public class CubeInteraction : NetworkBehaviour
         if (enable)
         {
             for (int i = 0; i < amountFaces; i++)
-            {            
+            {
                 pipeParts[i].transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
                 pipeParts[i].transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
                 pipeParts[i].transform.GetChild(2).transform.GetChild(0).gameObject.SetActive(true);
@@ -373,7 +384,8 @@ public class CubeInteraction : NetworkBehaviour
                 pipeParts[i].transform.GetChild(3).transform.GetChild(0).gameObject.SetActive(true);
                 pipeParts[i].transform.GetChild(3).transform.GetChild(2).gameObject.SetActive(true);
             }
-        }else
+        }
+        else
         {
             if (neighborsScript[isLinePipe] != null)
             {
@@ -401,7 +413,8 @@ public class CubeInteraction : NetworkBehaviour
         // For each neighbor...
         for (int i = 0; i < neighbors.Length; i++)
         {
-            if (neighbors[i] != null) {
+            if (neighbors[i] != null)
+            {
                 // if it's a normal tile...
                 if (neighborsScript[i] != null)
                 {
@@ -428,7 +441,7 @@ public class CubeInteraction : NetworkBehaviour
                         //Flickering lights
                         if (company == "power")
                             RandManager.Instance.addPowerPts();
-                        
+
                         return;
                     }
                 }
