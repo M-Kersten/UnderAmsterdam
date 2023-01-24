@@ -16,6 +16,7 @@ public class CityMove : NetworkBehaviour
     [SerializeField] ScoreBoard scoreBoard;
     [SerializeField] private float moveDownY = -0.5f;
     [SerializeField] private GameObject grabText;
+    [SerializeField] private GameObject helmetParticles;
     
     void Start()
     {
@@ -28,7 +29,10 @@ public class CityMove : NetworkBehaviour
         {
             PlayerRef temPplayer = other.GetComponentInParent<NetworkObject>().InputAuthority;
             if(grabText.activeSelf)
+            {
+                helmetParticles.GetComponent<ParticleSystem>().Play();
                 grabText.SetActive(false);
+            }
             // If I am host
             if (HasStateAuthority && !readyList.Contains(temPplayer))
             {
@@ -38,8 +42,7 @@ public class CityMove : NetworkBehaviour
                 // Always enable the cap when a player steps into the ready box first time.
                 if (!other.transform.root.GetComponent<PlayerData>().playerCap.activeSelf)
                 {
-                    RPC_EnableCap(other.transform.root.GetComponent<PlayerData>());
-                    
+                    RPC_EnableCap(other.transform.root.GetComponent<PlayerData>());   
                 }
             }
         }
