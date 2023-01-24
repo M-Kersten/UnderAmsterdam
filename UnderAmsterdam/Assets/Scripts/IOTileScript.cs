@@ -24,7 +24,6 @@ public class IOTileScript : NetworkBehaviour
 
     public override void Spawned()
     {
-        company = "Empty"; //Set company to default
         GetNeighbours();
     }
     private void GetNeighbours()

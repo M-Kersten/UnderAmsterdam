@@ -22,13 +22,12 @@ public class Joinlobby : MonoBehaviour
             canPressButton = false;
             StartCoroutine(ButtonCooldown());
 
+            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+
             await connection.Connect();
 
             if (connection.runner.IsServer)
-            {
-                Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
                 connection.runner.SetActiveScene(2);
-            }
         }
     }
     private IEnumerator ButtonCooldown()

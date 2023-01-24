@@ -39,9 +39,9 @@ public class ExitValveSpawner : MonoBehaviour
         float elapsed = 0;
         while (elapsed < movementDuration)
         {
-            elapsed += Time.deltaTime;
-            pipe.transform.position = Vector3.Lerp(pos, targetPos, elapsed / movementDuration);
-            yield return null;
+                elapsed += Time.deltaTime;
+                pipe.transform.position = Vector3.Lerp(pos, targetPos, elapsed / movementDuration);
+                yield return null;
         }
         pipe.transform.position = targetPos;
 
@@ -57,9 +57,8 @@ public class ExitValveSpawner : MonoBehaviour
     }
     public void DespawnPipe(GameObject pipe)
     {
-        StartCoroutine(MovePipe(pipe, new Vector3(pipe.transform.position.x, -1f, pipe.transform.position.z), pipe.transform.position));
         isSpawned = false;
         timeRemaining = buttonActivationTime;
-        Destroy(pipe, movementDuration + 3);
+        Destroy(pipe, movementDuration);
     }
 }
