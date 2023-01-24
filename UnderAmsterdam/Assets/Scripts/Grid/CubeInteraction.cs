@@ -37,6 +37,7 @@ public class CubeInteraction : NetworkBehaviour
     public bool playerInside = false;
     public bool obstructed = false;
     public bool isChecked = false;
+    public bool isPlayTile;
 
     void Start()
     {
@@ -150,7 +151,8 @@ public class CubeInteraction : NetworkBehaviour
     //Checks if each neighbor is compatible with player's company
     public bool VerifyRules(string pCompany)
     {
-        if (pCompany == "Empty") return true;
+        if(!isPlayTile)
+            if (pCompany == "Empty") return true;
 
         for (int i = 0; i < neighborsScript.Length; i++)
         {

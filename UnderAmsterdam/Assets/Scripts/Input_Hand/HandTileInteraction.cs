@@ -137,7 +137,8 @@ public class HandTileInteraction : NetworkBehaviour
                 cubeScript.UpdateCompany(myPlayer.company);
                 if(HasStateAuthority)
                 {
-                    Gamemanager.Instance.pManager.RemovePoints(myPlayer.company);
+                    if (!cubeScript.isPlayTile)
+                        Gamemanager.Instance.pManager.RemovePoints(myPlayer.company);
                     RPC_EnableTile(cubeScript);
                 }
                 TriggerPressed = false;

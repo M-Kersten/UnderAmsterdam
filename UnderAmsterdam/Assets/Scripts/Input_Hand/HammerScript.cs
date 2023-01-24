@@ -76,7 +76,8 @@ public class HammerScript : NetworkBehaviour
             if (touchedCube.TileOccupied && touchedCube.company == myData.company && HasStateAuthority)
             {
                 RPC_DisableTile(touchedCube);
-                Gamemanager.Instance.pManager.AddPoints(myData.company);
+                if(!touchedCube.isPlayTile)
+                    Gamemanager.Instance.pManager.AddPoints(myData.company);
             }
         }
         
