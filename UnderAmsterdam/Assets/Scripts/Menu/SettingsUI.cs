@@ -30,7 +30,7 @@ public class SettingsUI : MonoBehaviour
         foreach(UISlider slider in allSliders)
         {
             slider.handle.transform.localPosition = new Vector3(masterSlider.handle.transform.localPosition.x, slider.handle.transform.localPosition.y, slider.handle.transform.localPosition.z);
-            slider.handlePosition(masterSlider.handle.transform.localPosition.x);
+            slider.HandlePosition(masterSlider.handle.transform.localPosition.x);
         }
     }
 
