@@ -9,9 +9,6 @@ public class LightManager : MonoBehaviour
     public float minIntensity;
     public float maxIntensity;
 
-    //[SerializeField] private AudioSource sound;
-    //[SerializeField] private AudioClip clipSound;
-
     private void Start()
     {
         RandManager.Instance.FlickeringLightsOn.AddListener(FlickeringOn);
@@ -43,8 +40,7 @@ public class LightManager : MonoBehaviour
             {
                 lamp[j].intensity = Mathf.Lerp(currentIntensity[j], randIntensity[j], t);
             }
-            //sound.PlayOneShot(clipSound, 0.8f);
-            
+
             currentTime += Time.deltaTime;
             i = (i + 1) % 150;
             yield return null;
