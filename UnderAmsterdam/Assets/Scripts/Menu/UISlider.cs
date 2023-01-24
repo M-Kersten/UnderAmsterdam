@@ -32,14 +32,14 @@ public class UISlider : MonoBehaviour
         minPosition = new Vector3(minXPos, 0.961f, 0);
         maxPosition = new Vector3(-minXPos, 0.961f, 0);
         handle.transform.localPosition = maxPosition;
-        handlePosition(handle.transform.localPosition.x);
+        HandlePosition(handle.transform.localPosition.x);
     }
 
     private void Update()
     {
         if(touched && touchingCollider != null)
         {
-            handlePosition(handle.transform.localPosition.x);
+            HandlePosition(handle.transform.localPosition.x);
 
             float newPosition = handle.transform.parent.InverseTransformPoint(touchingCollider.transform.position).x;
 
@@ -49,7 +49,7 @@ public class UISlider : MonoBehaviour
             handle.transform.localPosition = new Vector3(newX, handle.transform.localPosition.y, handle.transform.localPosition.z);
         }
     }
-    public void handlePosition(float localPositionX)
+    public void HandlePosition(float localPositionX)
     {
         float volume = minValueForMixer + Mathf.InverseLerp(minPosition.x, maxPosition.x, localPositionX);
         fillBase.fillAmount = volume;
@@ -88,6 +88,7 @@ public class UISlider : MonoBehaviour
         {
             touched = false;
             touchingCollider = null;
+            HandlePosition(handle.transform.localPosition.x);
         }
     }
 }

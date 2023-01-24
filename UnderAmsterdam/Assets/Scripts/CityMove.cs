@@ -27,8 +27,9 @@ public class CityMove : NetworkBehaviour
     {
         if (other.gameObject.layer == 8)
         {
-            PlayerRef temPplayer = other.GetComponentInParent<NetworkObject>().InputAuthority;
-            if(grabText.activeSelf)
+            NetworkObject otherObj = other.GetComponentInParent<NetworkObject>();
+            PlayerRef temPplayer = otherObj.InputAuthority;
+            if(grabText.activeSelf && otherObj.HasInputAuthority)
             {
                 helmetParticles.GetComponent<ParticleSystem>().Play();
                 grabText.SetActive(false);
