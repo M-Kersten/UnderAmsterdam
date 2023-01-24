@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Fusion;
 
-public class UISlider : NetworkBehaviour
+public class UISlider : MonoBehaviour
 {
     [SerializeField] public GameObject handle;
     [SerializeField] GameObject backgroundBase;
@@ -16,6 +16,8 @@ public class UISlider : NetworkBehaviour
     private float minValueForMixer = 0.0001f;
     private bool touched;
 
+    private Vector3 handInLocalSpace;
+    private float handMovedSinceTouch;
     private Collider touchingCollider;
 
     [SerializeField] private SettingsUI volumeMixer;
@@ -39,19 +41,12 @@ public class UISlider : NetworkBehaviour
         {
             handlePosition(handle.transform.localPosition.x);
 
-          if (touchingCollider.transform.position.x > handle.transform.position.x)
-              handle.transform.localPosition += new Vector3(0.01f, 0, 0);
-          else
-              handle.transform.localPosition -= new Vector3(0.01f, 0, 0);
+            float newPosition = handle.transform.parent.InverseTransformPoint(touchingCollider.transform.position).x;
 
-            if (handle.transform.localPosition.x < minPosition.x)
-            {
-                handle.transform.localPosition = minPosition;
-            }
-            if (handle.transform.localPosition.x > maxPosition.x)
-            {
-                handle.transform.localPosition = maxPosition;
-            }
+            handMovedSinceTouch = newPosition - handInLocalSpace.x;
+            float newX = Mathf.Clamp(handInLocalSpace.x + handMovedSinceTouch, minPosition.x, maxPosition.x);
+
+            handle.transform.localPosition = new Vector3(newX, handle.transform.localPosition.y, handle.transform.localPosition.z);
         }
     }
     public void handlePosition(float localPositionX)
@@ -76,6 +71,8 @@ public class UISlider : NetworkBehaviour
         {
             touched = true;
             touchingCollider = other;
+            handInLocalSpace = handle.transform.parent.InverseTransformPoint(touchingCollider.transform.position);
+
         }
     }
 
