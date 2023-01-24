@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3769635877266248458}
   - component: {fileID: 6160785123833770465}
   - component: {fileID: 4235471556382045342}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ExitValveProto
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,9 +69,11 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+  OtherValve: []
   ValveTurned:
     m_PersistentCalls:
       m_Calls: []
+  alreadyCall: 0
 --- !u!135 &4235471556382045342
 SphereCollider:
   m_ObjectHideFlags: 0

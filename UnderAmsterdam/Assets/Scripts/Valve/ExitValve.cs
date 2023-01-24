@@ -10,6 +10,7 @@ public class ExitValve : MonoBehaviour
 {
     [SerializeField] private Valve valve;
     [SerializeField] Animator lPlayerAnimator;
+    public ExitValveSpawner spawnerRef;
     private void Start()
     {
         valve.ValveTurned.AddListener(StartReturnMenu);
@@ -18,6 +19,7 @@ public class ExitValve : MonoBehaviour
     private void StartReturnMenu() { StartCoroutine(ReturnToMenu()); }
     public IEnumerator ReturnToMenu()
     {
+        spawnerRef.DespawnPipe(gameObject);
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
 
@@ -32,11 +34,12 @@ public class ExitValve : MonoBehaviour
         ConnectionManager.Instance.mainMenuDummy = GameObject.Find("MainMenuDummy");
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == 9) // 9 is player dummy, must use local player or other players can disable your pipe
+        Debug.Log(other.gameObject.name);
+        if (other.gameObject.layer == 9) // LP is LocalPlayerTag
         {
-            GetComponent<ExitValveSpawner>().DespawnPipe(gameObject);
+            spawnerRef.DespawnPipe(gameObject);
         }
     }
 }

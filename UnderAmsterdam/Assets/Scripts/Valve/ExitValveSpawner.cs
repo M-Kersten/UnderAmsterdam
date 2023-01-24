@@ -52,6 +52,7 @@ public class ExitValveSpawner : MonoBehaviour
         isSpawned = true;
 
         GameObject pipe = Instantiate(ExitValvePrefab, prefabSpawnPos.transform.position, Quaternion.identity);
+        pipe.GetComponent<ExitValve>().spawnerRef = this;
         StartCoroutine(MovePipe(pipe, new Vector3(pipe.transform.position.x, mainCam.position.y, pipe.transform.position.z), pipe.transform.position));
     }
     public void DespawnPipe(GameObject pipe)
@@ -59,6 +60,6 @@ public class ExitValveSpawner : MonoBehaviour
         StartCoroutine(MovePipe(pipe, new Vector3(pipe.transform.position.x, -1f, pipe.transform.position.z), pipe.transform.position));
         isSpawned = false;
         timeRemaining = buttonActivationTime;
-        Destroy(pipe, movementDuration);
+        Destroy(pipe, movementDuration + 3);
     }
 }
