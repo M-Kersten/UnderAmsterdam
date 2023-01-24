@@ -182,9 +182,7 @@ namespace Fusion.XR.Host
         }
         public void OnConnectedToServer(NetworkRunner runner)
         {
-            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
-            Debug.Log(runner);
-            Debug.Log(runner.name);
+            //Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
             runner.SetActiveScene(2);
         }
         public void OnSceneLoadStart(NetworkRunner runner) { if(mainMenuDummy != null) mainMenuDummy.SetActive(false); }
