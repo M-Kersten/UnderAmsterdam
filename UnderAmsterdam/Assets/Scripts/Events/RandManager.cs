@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -38,11 +37,36 @@ public class RandManager : NetworkBehaviour
         else
             Destroy(this);
         
-        
-        Gamemanager.Instance.RoundStart.AddListener(checkElecConnection);
+        //Gamemanager.Instance.RoundStart.AddListener(checkElecConnection);
         Gamemanager.Instance.GameStart.AddListener(randomActivatedRoots);
     }
 
+
+
+    private void randomActivatedRoots()
+    {
+        if(!Object.HasStateAuthority)
+            return;
+        
+        for (int i = 0; i < numberActivatedRoot; i++)
+        {
+            rand = Random.Range(0, rootList.Count - 1);        
+            RPC_RandRoot(rand);
+        }
+    }
+    
+    public void addPowerPts()
+    {
+        if (!haveFlicker)
+        {
+            totalPowerPts++;
+        } else
+        {
+            //Avoid the lights to restart flickering
+            totalPowerPts += 1000;
+        }
+    }
+    
     private void checkElecConnection()
     {
         int currentRound = Gamemanager.Instance.currentRound;
@@ -59,29 +83,4 @@ public class RandManager : NetworkBehaviour
             FlickeringLightsOff.Invoke();
         }
     }
-
-    public void addPowerPts()
-    {
-        if (!haveFlicker)
-        {
-            totalPowerPts++;
-        } else
-        {
-            //Avoid the lights to restart flickering
-            totalPowerPts += 1000;
-        }
-    }
-
-    private void randomActivatedRoots()
-    {
-        if(!Object.HasStateAuthority)
-            return;
-        
-        for (int i = 0; i < numberActivatedRoot; i++)
-        {
-            rand = Random.Range(0, rootList.Count - 1);        
-            RPC_RandRoot(rand);
-        }
-    }
-
 }
