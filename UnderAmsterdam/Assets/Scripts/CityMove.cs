@@ -70,7 +70,7 @@ public class CityMove : NetworkBehaviour
         playerPos = Gamemanager.Instance.localRigid.gameObject.transform.position;
         moveup = playerPos;
         movedown = new Vector3(playerPos.x, moveDownY, playerPos.z);
-        GameStartProcedure(playerPos, movedown);
+        StartCoroutine(MovePlayers(playerPos, movedown));
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -83,29 +83,20 @@ public class CityMove : NetworkBehaviour
     {
         playerPos = Gamemanager.Instance.localRigid.transform.position;
         moveup = new Vector3(playerPos.x, moveup.y, playerPos.z);
-        GameOverProcedure(playerPos, moveup);
-    }
-    private void GameStartProcedure(Vector3 from, Vector3 to)
-    {
-        toDisableObjects[0].SetActive(false);
-
-        StartCoroutine(MovePlayers(from, to));
-
-        DisableObjectsAfterGameStart();
-    }
-
-    private void GameOverProcedure(Vector3 from, Vector3 to)
-    {
         endOfGame = true;
         EnableObjectsBeforeGameOver();
         toDisableObjects[0].GetComponent<Renderer>().material = newMaterial;
-
-        StartCoroutine(MovePlayers(from, to));
-
+        StartCoroutine(MovePlayers(playerPos, moveup));
         toDisableObjects[0].SetActive(true);
     }
     private IEnumerator MovePlayers(Vector3 from, Vector3 to)
     {
+        if (!endOfGame)
+        {
+            toDisableObjects[0].SetActive(false);
+            toDisableObjects[1].SetActive(false);
+        }
+
         float elapsed = 0;
         float duration = 5f;
 
@@ -116,8 +107,11 @@ public class CityMove : NetworkBehaviour
             yield return null;
         }
 
-        if(!endOfGame)
+        if (!endOfGame)
+        {
             Gamemanager.Instance.startGame = true;
+            DisableObjectsAfterGameStart();
+        }
 
         Gamemanager.Instance.localRigid.gameObject.transform.position = to;
         if (endOfGame)

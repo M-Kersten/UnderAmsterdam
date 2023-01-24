@@ -55,7 +55,7 @@ public class RandManager : NetworkBehaviour
         }
     }
     
-    public void addPowerPts()
+    /*public void addPowerPts()
     {
         if (!haveFlicker)
         {
@@ -82,5 +82,5 @@ public class RandManager : NetworkBehaviour
         {
             FlickeringLightsOff.Invoke();
         }
-    }
+    }*/
 }
