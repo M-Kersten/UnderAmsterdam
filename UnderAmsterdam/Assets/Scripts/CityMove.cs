@@ -98,6 +98,7 @@ public class CityMove : NetworkBehaviour
         {
             toDisableObjects[0].SetActive(false);
             toDisableObjects[1].SetActive(false);
+            toDisableObjects[2].SetActive(false);
         }
 
         float elapsed = 0;

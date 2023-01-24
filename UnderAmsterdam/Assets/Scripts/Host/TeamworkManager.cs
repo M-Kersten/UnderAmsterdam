@@ -75,17 +75,22 @@ public class TeamworkManager : MonoBehaviour
 
     private void CheckTeamwork()
     {
-            foreach(var company in _doneCompanies) { // go through all companies
-            // Check if other company is done
-                if(CheckMyCompany(company.Key) != null && _doneCompanies.ContainsKey(CheckMyCompany(company.Key))){
-                  Gamemanager.Instance.pManager.TeamworkBonus(company.Key);
-                }
+        foreach (var company in _doneCompanies)
+        { // go through all companies
+          // Check if other company is done
+            if (CheckMyCompany(company.Key) != null && _doneCompanies.ContainsKey(CheckMyCompany(company.Key)))
+            {
+                Debug.Log("aaaaaa");
+                Debug.Log("Company" + company.Key);
+                Gamemanager.Instance.pManager.TeamworkBonus(company.Key);
             }
+        }
     }
 
     public void EmptyTeamWork()
     {
         // Empty all contracts
+        Debug.Log("empty teamwork");
         _companyContracts = new Dictionary<string, string>();
 
         _doneCompanies = new Dictionary<string, bool>();

@@ -14702,6 +14702,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0318636fd6225f4ebc1a44cc856510b, type: 3}
+--- !u!1 &1608649028 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 601960683413820356, guid: e0318636fd6225f4ebc1a44cc856510b, type: 3}
+  m_PrefabInstance: {fileID: 1608649027}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1609160801
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22824,6 +22829,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1836439558}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+      propertyPath: toDisableObjects.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: toEnableObjects.Array.data[0]
       value: 
       objectReference: {fileID: 331511961}
@@ -22842,21 +22851,34 @@ PrefabInstance:
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: toDisableObjects.Array.data[2]
       value: 
-      objectReference: {fileID: 331511961}
+      objectReference: {fileID: 1608649028}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: toDisableObjects.Array.data[3]
       value: 
-      objectReference: {fileID: 165688158}
+      objectReference: {fileID: 331511961}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: toDisableObjects.Array.data[4]
       value: 
+      objectReference: {fileID: 165688158}
+    - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+      propertyPath: toDisableObjects.Array.data[5]
+      value: 
       objectReference: {fileID: 1377658332}
+    - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+      propertyPath: toDisableObjects.Array.data[6]
+      value: 
+      objectReference: {fileID: 2851164453913277424}
     - target: {fileID: 8809536164166280477, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: m_Name
       value: simple box
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+--- !u!1 &2851164453913277424 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2851164451953860548, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+  m_PrefabInstance: {fileID: 2851164453913277423}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4211828065328069432
 GameObject:
   m_ObjectHideFlags: 0
