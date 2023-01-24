@@ -36,7 +36,7 @@ public class Valve : MonoBehaviour
     {
         ray.origin = valveCenter.position;
         
-        if (playerInputHandler.isRightGripPressed)
+        if (playerInputHandler.isRightGripPressed || playerInputHandler.isRightTriggerPressed)
         {
             Vector3 rHandPosition = rHandTransform.position;
             valveCenterPos = valveCenter.position;
@@ -48,7 +48,7 @@ public class Valve : MonoBehaviour
             
 
         }
-        else if (playerInputHandler.isLeftGripPressed)
+        else if (playerInputHandler.isLeftGripPressed || playerInputHandler.isLeftTriggerPressed)
         {
             Vector3 lHandPosition = lHandTransform.position;
             valveCenterPos = valveCenter.position;

@@ -26,11 +26,11 @@ public class PlayerInputHandler : MonoBehaviour
     public Vector2 rightjoystickPosition;
 
     [SerializeField]
-    private bool isAnyTriggerPressed;
+    public bool isAnyTriggerPressed;
     [SerializeField]
-    private bool isRightTriggerPressed;
+    public bool isRightTriggerPressed;
     [SerializeField]
-    private bool isLeftTriggerPressed;
+    public bool isLeftTriggerPressed;
 
     public bool isAnyGripPressed;
     public bool isRightGripPressed;
