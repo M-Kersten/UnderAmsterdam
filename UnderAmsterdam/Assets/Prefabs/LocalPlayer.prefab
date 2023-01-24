@@ -644,7 +644,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb697c5bdcc0ec74fb4a7f727b0962ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   handle: {fileID: 2593730915652271069}
   backgroundBase: {fileID: 2593730915814435293}
   fillBase: {fileID: 2593730917083619353}
@@ -794,7 +793,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb697c5bdcc0ec74fb4a7f727b0962ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   handle: {fileID: 2593730917212456770}
   backgroundBase: {fileID: 2593730917508977986}
   fillBase: {fileID: 2593730915523157126}
@@ -5195,7 +5193,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb697c5bdcc0ec74fb4a7f727b0962ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   handle: {fileID: 873194695192693607}
   backgroundBase: {fileID: 873194695495309671}
   fillBase: {fileID: 2127741704440242044}
@@ -5375,7 +5372,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4064928493596614304}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6075,7 +6072,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb697c5bdcc0ec74fb4a7f727b0962ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   handle: {fileID: 8845614533871755724}
   backgroundBase: {fileID: 8845614534032028620}
   fillBase: {fileID: 8845614532046109192}
