@@ -44,8 +44,6 @@ public class RootGrower : MonoBehaviour
     private int amountOfRound;
     private int currentRound;
     
-
-
     private MeshCollider rootColliderMesh;
 
     void Start()
@@ -98,8 +96,6 @@ public class RootGrower : MonoBehaviour
             mat.SetFloat(GrowSteps, growSteps);
             yield return new WaitForSeconds (refreshRate);
         }
-
-
     }
 }
 

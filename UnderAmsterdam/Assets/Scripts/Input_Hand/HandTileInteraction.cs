@@ -144,6 +144,7 @@ public class HandTileInteraction : NetworkBehaviour
             }
         }
     }
+    
     private void ToggleHands()
     {
         handEnabled = !handEnabled;

@@ -43,6 +43,7 @@ public class CubeInteraction : NetworkBehaviour
         pColouring = GetComponent<PipeColouring>();
         Gamemanager.Instance.RoundEnd.AddListener(delegate { OnRenderPipePreview(false); });
     }
+    
     public override void Spawned()
     {
         ResetActivatedPipes();
@@ -197,6 +198,7 @@ public class CubeInteraction : NetworkBehaviour
             OnRenderPipePreview(false);
         }
     }
+    
     private void OnTriggerExit(Collider other)
     {
         ReliableOnTriggerExit.NotifyTriggerExit(other, gameObject);
@@ -223,6 +225,7 @@ public class CubeInteraction : NetworkBehaviour
         OnRenderPipePart(true);
         pColouring.UpdateRenderer(company);
     }
+    
     public void DisableTile()
     {
         // Clear company and occupation state
@@ -250,6 +253,7 @@ public class CubeInteraction : NetworkBehaviour
 
         Instantiate(particles, transform);
     }
+    
     public void OnHandEnter(string playerCompany)
     {
         if (isSpawned && !playerInside && !obstructed && !TileOccupied)
@@ -263,6 +267,7 @@ public class CubeInteraction : NetworkBehaviour
 
         }
     }
+    
     public void OnHandExit(string playerCompany)
     {
         if (isSpawned && !playerInside && !obstructed && !TileOccupied)
@@ -439,15 +444,14 @@ public class CubeInteraction : NetworkBehaviour
                         Instantiate(particlesWin, transform);
 
                         //Flickering lights
-                        if (company == "power")
-                            RandManager.Instance.addPowerPts();
+                        /*if (company == "power")
+                            RandManager.Instance.addPowerPts();*/
 
                         return;
                     }
                 }
             }
         }
-        //Gamemanager.Instance.pManager.CalculateRoundPoints(company, false);
     }
 }
 

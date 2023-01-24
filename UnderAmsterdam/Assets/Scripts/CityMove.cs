@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using Fusion.XR.Host;
-using UnityEngine.Events;
-using Photon.Realtime;
 
 public class CityMove : NetworkBehaviour
 {
@@ -16,9 +14,9 @@ public class CityMove : NetworkBehaviour
     [SerializeField] GameObject[] toDisableObjects, toEnableObjects;
     [SerializeField] Material newMaterial;
     [SerializeField] ScoreBoard scoreBoard;
-    [SerializeField] EnvironmentScript rocksSystem;
     [SerializeField] private float moveDownY = -0.5f;
     [SerializeField] private GameObject grabText;
+    
     void Start()
     {
         Gamemanager.Instance.GameEnd.AddListener(EndOfGame);
@@ -89,7 +87,6 @@ public class CityMove : NetworkBehaviour
     }
     private void GameStartProcedure(Vector3 from, Vector3 to)
     {
-        //rocksSystem.spawnRock();
         toDisableObjects[0].SetActive(false);
 
         StartCoroutine(MovePlayers(from, to));

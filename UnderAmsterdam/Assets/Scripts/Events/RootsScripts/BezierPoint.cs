@@ -7,11 +7,6 @@ public struct BezierPoint
     public Vector3 pos;
     public Quaternion rot;
     
-    public BezierPoint (Vector3 pos, Quaternion rot)
-    {
-        this.pos = pos;
-        this.rot = rot;
-    }
     public BezierPoint (Vector3 pos, Vector3 forward)
     {
         this.pos = pos;
