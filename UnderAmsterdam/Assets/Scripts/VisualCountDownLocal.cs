@@ -30,7 +30,7 @@ public class VisualCountDownLocal : MonoBehaviour
         counter.text = "1";
         audioSource.PlayOneShot(countDown);
         yield return new WaitForSeconds(1);
-        counter.text = "Start!";
+        counter.text = "Start! \n Round " + Gamemanager.Instance.currentRound;
         audioSource.PlayOneShot(countDownStart);
         yield return new WaitForSeconds(1);
         counter.gameObject.SetActive(false);
