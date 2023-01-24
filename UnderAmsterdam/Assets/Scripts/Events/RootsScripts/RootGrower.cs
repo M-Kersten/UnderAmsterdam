@@ -1,4 +1,3 @@
-using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,14 +18,11 @@ public struct rootS
         this.rootMeshRenderer = root.GetComponent<MeshRenderer>();
         this.rootColliders = root.GetComponentsInChildren<BoxCollider>();
     }
-        
+    
 }
-
 
 public class RootGrower : MonoBehaviour
 {
-
-    
     [SerializeField] private List<MeshRenderer> rootMeshRenderer;
     private List<Material> rootMat = new List<Material>();
     [SerializeField] private List<GameObject> roots = new List<GameObject>();
