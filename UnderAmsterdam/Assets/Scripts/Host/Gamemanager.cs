@@ -64,6 +64,7 @@ public class Gamemanager : MonoBehaviour
     {
         roundTimeIncrease = defaultRoundTimeIncrease;
         roundTime = defaultRoundTime;
+        currentRound = 0;
     }
 
     public void SceneSwitch(int index) {
