@@ -92,7 +92,7 @@ public class IOTileScript : NetworkBehaviour
             Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
 
             //If we are on the first round then just spawn an indicator, round start is already ongoing.
-            if(Gamemanager.Instance.currentRound == 1) SpawnIndicator(true);
+            if (Gamemanager.Instance.currentRound == 1) SpawnIndicator(true);
         }
         else
         {

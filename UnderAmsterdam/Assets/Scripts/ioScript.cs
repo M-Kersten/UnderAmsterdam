@@ -55,12 +55,12 @@ public class ioScript : MonoBehaviour
         foreach (Transform tile in westWall)
             westGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
 
+        if (ConnectionManager.Instance.runner.IsServer)
+            Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
+
         Gamemanager.Instance.RoundStart.AddListener(AddPlayerInputs);
         Gamemanager.Instance.RoundStart.AddListener(UncheckAllCheckedPipes);
         Gamemanager.Instance.RoundEnd.AddListener(StartCheckingPipes);
-
-        if (ConnectionManager.Instance.runner.IsServer)
-            Gamemanager.Instance.RoundStart.AddListener(AddPlayerOutputs);
     }
     private void UncheckAllCheckedPipes()
     {
