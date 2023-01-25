@@ -17,9 +17,6 @@ public class CompanyManager : MonoBehaviour
     public PlayerRef emptyPlayer = new();
     // Dictionary that keeps track what player has what company at the moment
     public Dictionary<string, PlayerRef> _companies;
-
-    private Dictionary<PlayerRef, PlayerRef> _teamContracts = new Dictionary<PlayerRef, PlayerRef>();
-
     
     void Start(){
         if (Instance == null)

@@ -9,6 +9,8 @@ public class TeamworkManager : MonoBehaviour
     public static TeamworkManager Instance;
     private Dictionary<string, string> _companyContracts = new Dictionary<string, string>();
     private Dictionary<string, bool> _doneCompanies = new Dictionary<string, bool>();
+    private Dictionary<PlayerRef, PlayerRef> _donePlayers = new Dictionary<PlayerRef, PlayerRef>();
+    private CompanyManager compManager;
 
     private void Start()
     {
@@ -20,6 +22,7 @@ public class TeamworkManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
+        compManager = CompanyManager.Instance;
         Gamemanager.Instance.RoundLateEnd.AddListener(CheckTeamwork);
         Gamemanager.Instance.RoundStart.AddListener(EmptyTeamWork);
     }
@@ -70,19 +73,26 @@ public class TeamworkManager : MonoBehaviour
 
     public void CompanyDone(string company) {
         if (!_doneCompanies.ContainsKey(company))
+        {
             _doneCompanies.Add(company, true);
+
+            // If other player is done + I am not a key or Value ( doing this cause company gets reset before we can give points )
+            if (_donePlayers.ContainsKey(compManager._companies[CheckMyCompany(company)]) && !_donePlayers.ContainsKey(compManager._companies[company]))
+                _donePlayers[compManager._companies[CheckMyCompany(company)]] = compManager._companies[company];
+                else if (!_donePlayers.ContainsValue(compManager._companies[company]))
+                _donePlayers.Add(compManager._companies[company], compManager.emptyPlayer);
+        }
     }
 
     private void CheckTeamwork()
     {
-        foreach (var company in _doneCompanies)
-        { // go through all companies
-          // Check if other company is done
-            if (CheckMyCompany(company.Key) != null && _doneCompanies.ContainsKey(CheckMyCompany(company.Key)))
+        foreach(var player in _donePlayers)
+        {
+            if(player.Value != compManager.emptyPlayer)
             {
-                Debug.Log("aaaaaa");
-                Debug.Log("Company" + company.Key);
-                Gamemanager.Instance.pManager.TeamworkBonus(company.Key);
+                // Add points to both players in the contract
+                Gamemanager.Instance.pManager.TeamworkBonus(player.Key);
+                Gamemanager.Instance.pManager.TeamworkBonus(player.Value);
             }
         }
     }
@@ -90,9 +100,9 @@ public class TeamworkManager : MonoBehaviour
     public void EmptyTeamWork()
     {
         // Empty all contracts
-        Debug.Log("empty teamwork");
         _companyContracts = new Dictionary<string, string>();
 
         _doneCompanies = new Dictionary<string, bool>();
+        _donePlayers = new Dictionary<PlayerRef, PlayerRef>();
     }
 }

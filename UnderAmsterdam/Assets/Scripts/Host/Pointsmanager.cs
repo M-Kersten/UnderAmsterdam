@@ -23,10 +23,12 @@ public class Pointsmanager : MonoBehaviour
             GetPlayerData(company).points += piperemovepoint;
     }
 
-    public void TeamworkBonus(string company)
+    public void TeamworkBonus(PlayerRef player)
     {
-        if (CheckPlayerData(company))
-            GetPlayerData(company).points += teamworkPoints;
+        if (coach._spawnedUsers.ContainsKey(player))
+        {
+            coach._spawnedUsers[player].GetComponent<PlayerData>().points+= teamworkPoints;
+        }
     }
 
     public void RemovePoints(string company)
@@ -46,10 +48,14 @@ public class Pointsmanager : MonoBehaviour
         if(CheckPlayerData(company))
             GetPlayerData(company).points += victorypoints;
     }
+
     private bool CheckPlayerData(string company)
     {
-        if (coach._spawnedUsers.ContainsKey(companyManager._companies[company]))
-            return true;
+        if(companyManager._companies.ContainsKey(company))
+            if (coach._spawnedUsers.ContainsKey(companyManager._companies[company]))
+                return true;
+            else
+                return false;
         else
             return false;
     }
