@@ -17,7 +17,6 @@ public class CompanyManager : MonoBehaviour
     public PlayerRef emptyPlayer = new();
     // Dictionary that keeps track what player has what company at the moment
     public Dictionary<string, PlayerRef> _companies;
-
     
     void Start(){
         if (Instance == null)
@@ -25,7 +24,7 @@ public class CompanyManager : MonoBehaviour
         else
             Destroy(this);
             
-        Gamemanager.Instance.RoundEnd.AddListener(ResetCompanies);
+        Gamemanager.Instance.RoundLateEnd.AddListener(ResetCompanies);
         Gamemanager.Instance.RoundStart.AddListener(loadSend);
         _companies = new Dictionary<string, PlayerRef> {
     {"water", emptyPlayer},
@@ -62,10 +61,9 @@ public class CompanyManager : MonoBehaviour
                 return myCompany;
                 // If there are still companies left we haven't had yet, do this function again until we return a company that wasn't given yet
             }
-            Debug.LogError("Player has been through all companies, game should have ended");
             return "Empty";
         }
-        Debug.LogError("No companies available");
+        //Debug.LogError("No companies available");
         return "Empty";
     }
 
@@ -79,13 +77,15 @@ public class CompanyManager : MonoBehaviour
     }
 
     // Function to send company to the correct player
-    private void SendCompany(PlayerRef targetPlayer, NetworkObject player) {
+    private void SendCompany(PlayerRef targetPlayer, NetworkObject nObject) {
         string sentCompany = GetCompany(targetPlayer);
         // Grab the playerdata of the player we want to send the company to
-        player.gameObject.GetComponent<PlayerData>().ReceiveCompany(sentCompany);
+        nObject.gameObject.GetComponent<PlayerData>().ReceiveCompany(sentCompany);
     }
 
     public void ResetCompanies() {
+
+        if (Gamemanager.Instance.currentRound >= Gamemanager.Instance.amountOfRounds) return;
         // Reset given companies
         availableCompanies = new List<string>{"water","gas","data","sewage","power"};
         _companies = new Dictionary<string, PlayerRef> {

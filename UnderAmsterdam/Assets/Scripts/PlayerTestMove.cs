@@ -11,7 +11,11 @@ public class PlayerTestMove : MonoBehaviour
     [SerializeField] private InputActionProperty joystickRight;
     [SerializeField] private RigPart side;
     [SerializeField] private Transform mainCam;
-    [SerializeField] private float speed = 2;
+
+    [Range(50f, 150f)]
+    [SerializeField] private float speed = 70f;
+
+    private Rigidbody mainRigid;
 
     private CharacterController character;
     private Vector3 direction;
@@ -23,6 +27,7 @@ public class PlayerTestMove : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         
         character = GetComponent<CharacterController>();
+        mainRigid = GetComponent<Rigidbody>();
         
         side = RigPart.RightController;
         joystickRight.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
@@ -52,7 +57,10 @@ public class PlayerTestMove : MonoBehaviour
         {
             direction = headQ * new Vector3(joystickLeft.action.ReadValue<Vector2>().x, 0, joystickLeft.action.ReadValue<Vector2>().y);
         }
-        if (character.enabled)
-        character.Move(direction * Time.fixedDeltaTime * speed);
+
+        if (mainRigid != null && ConnectionManager.Instance.runner != null)
+            mainRigid.velocity = (direction * ConnectionManager.Instance.runner.DeltaTime * speed);
+        else if (mainRigid != null)
+            mainRigid.velocity = (direction * Time.fixedDeltaTime * speed);
     }
 }

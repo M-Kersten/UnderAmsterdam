@@ -56,16 +56,6 @@ namespace Fusion.XR.Host.Rig
         public HardwareHeadset headset;
         public NetworkRunner runner;
         public PlayerInputHandler playerInputHandler;
-        
-        private void Start()
-        {
-            if(runner == null)
-            {
-                Debug.LogError("Runner has to be set in the inspector to forward the input");
-            } else 
-            runner.AddCallbacks(this);
-
-        }
 
         #region Locomotion
         // Update the hardware rig rotation. This will trigger a Riginput network update

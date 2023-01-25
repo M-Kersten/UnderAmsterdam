@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using Fusion.XR.Host;
 
 public class IOTileScript : NetworkBehaviour
 {
     [SerializeField] private Material[] pipeMaterials;
+    [SerializeField] private List<IOTileScript> IoNeighbourTiles;
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
     [SerializeField] private GameObject particles;
     public int roundInputPipe;
     [SerializeField] private float particlesBreathingTime;
+
+    [SerializeField] private LayerMask pipeLayer;
 
     [Networked(OnChanged = nameof(OnIOTileChanged))]
     public string company { get; set; }
@@ -20,9 +24,44 @@ public class IOTileScript : NetworkBehaviour
 
     public override void Spawned()
     {
-        company = "Empty"; //Set company to default
+        GetNeighbours();
     }
+    private void GetNeighbours()
+    {
+        RaycastHit hit;
 
+        if (Physics.Raycast(transform.position, Vector3.up, out hit))
+            if(hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.left, out hit))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.right, out hit))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+
+        if (Physics.Raycast(transform.position, Vector3.back, out hit))
+            if (hit.transform.gameObject.TryGetComponent(out IOTileScript tile))
+                IoNeighbourTiles.Add(tile);
+    }
+    private bool CheckNeighboursOccupied()
+    {
+        for (int i = 0; i < IoNeighbourTiles.Count; i++)
+            if (IoNeighbourTiles[i].company != "Empty") 
+                return true;
+
+        return false;
+    }
     public bool TryEnableIOPipe(string setCompany, bool shouldBeOutput, bool isSyncing)
     {
         if (setCompany == "Empty")
@@ -31,6 +70,11 @@ public class IOTileScript : NetworkBehaviour
             return false;
         }
         if (!isSyncing && company != "Empty") return false; // This IOTile already has got a company
+
+        if (CheckNeighboursOccupied())
+        {
+            return false;
+        }
 
         company = setCompany;
         isOutput = shouldBeOutput;
@@ -44,18 +88,25 @@ public class IOTileScript : NetworkBehaviour
         VisualObject.SetActive(true);
 
         if (isOutput)
+        {
             Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
-        else
-            roundInputPipe = Gamemanager.Instance.currentRound;
 
-        SpawnIndicator(shouldBeOutput);
+            //If we are on the first round then just spawn an indicator, round start is already ongoing.
+            if (Gamemanager.Instance.currentRound == 1) SpawnIndicator(true);
+        }
+        else
+        {
+            roundInputPipe = Gamemanager.Instance.currentRound;
+            SpawnIndicator(false);
+        }
 
         return true;
     }
 
     static void OnIOTileChanged(Changed<IOTileScript> changed)
     {
-        changed.Behaviour.TryEnableIOPipe(changed.Behaviour.company, changed.Behaviour.isOutput, true);
+        if(ConnectionManager.Instance.runner.IsClient)
+            changed.Behaviour.TryEnableIOPipe(changed.Behaviour.company, changed.Behaviour.isOutput, true);
     }
 
     public void StartPipeCheck()
@@ -64,7 +115,9 @@ public class IOTileScript : NetworkBehaviour
         {
             // Getting the tile in front of it
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, -transform.right, out hit))
+            Ray ray = new Ray(transform.position, -transform.right);
+            
+            if (Physics.Raycast(ray, out hit, 3, pipeLayer))
             {
                 // Launching the checking process
                 CubeInteraction tile = hit.transform.GetComponent<CubeInteraction>();
@@ -76,7 +129,7 @@ public class IOTileScript : NetworkBehaviour
 
     public void SpawnIndicator(bool shouldBeOutput)
     {
-        if (company == Gamemanager.Instance.localPlayerData.company)
+        if (company == Gamemanager.Instance.networkData.company)
         {
             InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
             indicatorScript.InitializeIndicator(shouldBeOutput);

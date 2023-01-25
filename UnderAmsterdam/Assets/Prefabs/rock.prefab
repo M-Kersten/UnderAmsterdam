@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 2029293101267887260}
   - component: {fileID: 2029293101267887261}
   - component: {fileID: 1150162312307650858}
-  - component: {fileID: -7997246501880354624}
-  - component: {fileID: -4472651793590701330}
   m_Layer: 8
   m_Name: rock
   m_TagString: Rock
@@ -140,49 +138,8 @@ MonoBehaviour:
   NetworkGuid:
     RawGuidValue: c6fe0222c7a766447a457b3d90bc7f67
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: -7997246501880354624}
-  - {fileID: -4472651793590701330}
+  NetworkedBehaviours: []
   SimulationBehaviours: []
---- !u!114 &-7997246501880354624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218248452795610559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed20898df713b57499474c3306732dfd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
---- !u!114 &-4472651793590701330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218248452795610559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
-  InterpolationSpace: 0
-  InterpolationTarget: {fileID: 0}
-  InterpolateErrorCorrection: 1
-  InterpolatedErrorCorrectionSettings:
-    MinRate: 3.3
-    MaxRate: 10
-    PosBlendStart: 0.25
-    PosBlendEnd: 1
-    PosMinCorrection: 0.025
-    PosTeleportDistance: 2
-    RotBlendStart: 0.1
-    RotBlendEnd: 0.5
-    RotTeleportRadians: 1.5
 --- !u!1 &2029293100608677865
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,5 +183,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.03002756, y: 0.02395502, z: 0.010382629}
+  m_Size: {x: 0.03002756, y: 0.02395502, z: 0.015}
   m_Center: {x: -0.006342871, y: -0.000106405474, z: 0.0009413191}

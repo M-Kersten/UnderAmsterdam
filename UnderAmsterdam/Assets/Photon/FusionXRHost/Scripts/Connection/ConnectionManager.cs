@@ -1,5 +1,7 @@
 using Fusion.Sockets;
+using Fusion.XR.Host.Rig;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -16,6 +18,13 @@ namespace Fusion.XR.Host
      * - user despawn by the host on associated player disconnection
      * 
      **/
+    public enum ConnectionStatus
+    {
+        Disconnected,
+        Connecting,
+        Failed,
+        Connected
+    }
 
     public class ConnectionManager : MonoBehaviour, INetworkRunnerCallbacks
     {
@@ -39,21 +48,26 @@ namespace Fusion.XR.Host
         public UnityEvent onWillConnect = new UnityEvent();
 
         [SerializeField] private int maxPlayers = 5;
-        
-        
+
+        public PlayerRef localPlayerRef;
+        private bool hasPlayerRef = false;
+
+        public NetworkObject localNetworkPlayer;
+        private bool hasNetworkPlayer = false;
+
+        [SerializeField] private GameObject connectionManagerPrefab;
 
         // Dictionary of spawned user prefabs, to destroy them on disconnection
         public Dictionary<PlayerRef, NetworkObject> _spawnedUsers = new Dictionary<PlayerRef, NetworkObject>();
 
+        public ConnectionStatus ConnectionStatus = ConnectionStatus.Disconnected;
+
+        [SerializeField] private GameObject networkRunnerPrefab;
+        [SerializeField] private UpdateConnectionStatus connectionStatusUpdater;
+        public GameObject mainMenuDummy;
+
         private void Awake()
         {
-            // Check if a runner exist on the same game object
-            if (runner == null) runner = GetComponent<NetworkRunner>();
-
-            // Create the Fusion runner and let it know that we will be providing user input
-            if (runner == null) runner = gameObject.AddComponent<NetworkRunner>();
-            runner.ProvideInput = true;
-
             if (Instance == null)
                 Instance = this;
             else
@@ -65,9 +79,15 @@ namespace Fusion.XR.Host
             // Launch the connection at start
             if (connectOnStart) await Connect();
         }
-
         public async Task Connect()
         {
+            GameObject newRunner = Instantiate(networkRunnerPrefab);
+            runner = newRunner.GetComponent<NetworkRunner>();
+            runner.AddCallbacks(this);
+            runner.ProvideInput = true;
+
+            runner.AddCallbacks(Gamemanager.Instance.localData.GetComponent<HardwareRig>());
+
             // Create the scene manager if it does not exist
             if (sceneManager == null) sceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>();
 
@@ -80,7 +100,7 @@ namespace Fusion.XR.Host
                 PlayerCount = maxPlayers,
 
                 Scene = SceneManager.GetActiveScene().buildIndex,
-                SceneManager = sceneManager
+                SceneManager = sceneManager,
             };
             await runner.StartGame(args);
         }
@@ -92,53 +112,46 @@ namespace Fusion.XR.Host
             Vector3 tPosition;
             Quaternion tRotation;
 
-            if (Gamemanager.Instance.lPlayerCC) {            
-                // Turn off CharacterController, so we can teleport the player
-                Gamemanager.Instance.lPlayerCC.enabled = false;
-
+            if (Gamemanager.Instance.localData) {            
+                
                 switch (SceneManager.GetActiveScene().name) {
-                    case "A2Lobby":
-                        tPosition = new Vector3(7.864f, -1.92f, 3.792f);
-                        tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    case "A3Game":
+                        Gamemanager.Instance.localData.gameObject.name = "LocalPlayerSession";
+                        tPosition = new Vector3(1.02216411f, 4.0f, 1.65285861f);
+                        tRotation = Quaternion.Euler(new Vector3(0, 180, 0));
                     
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
-                    break;
-                    case "A3Game": 
-                        tPosition = new Vector3(0.74f, -0.489f, 0.67f);
-                        tRotation = Quaternion.Euler(new Vector3(0, 90, 0));
-                    
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
-                        Gamemanager.Instance.startGame = true;
-                    break;
-                    case "A4End":
-                        tPosition = new Vector3(0, 1f, 0);
-                        tRotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                    
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.position = tPosition;
-                        Gamemanager.Instance.lPlayerCC.gameObject.transform.rotation = tRotation;
-                    break;
+                        Gamemanager.Instance.localRigid.gameObject.transform.position = tPosition;
+                        Gamemanager.Instance.localRigid.gameObject.transform.rotation = tRotation;
+                        Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+                        break;
                     default:
                     // Do nothing
                     break;
                 }
-            // Turn CharacterController back on, so player can move
-            Gamemanager.Instance.lPlayerCC.enabled = true;
+                // Turn CharacterController back on, so player can move
             }
          }
 
         public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
         {
+            if (!hasPlayerRef)
+            {
+                localPlayerRef = player;
+                hasPlayerRef = true;
+            }
             // The user's prefab has to be spawned by the host
             if (runner.IsServer)
             {
                 // We make sure to give the input authority to the connecting player for their user's object
                 NetworkObject networkPlayerObject = runner.Spawn(userPrefab, position: transform.position, rotation: transform.rotation, inputAuthority: player, (runner, obj) => {
                 });
+                if (!hasNetworkPlayer)
+                {
+                    localNetworkPlayer = networkPlayerObject;
+                    hasNetworkPlayer = true;
+                }
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
-                //compManage.SendCompany(player, networkPlayerObject);
             }
         }
 
@@ -152,23 +165,41 @@ namespace Fusion.XR.Host
                 _spawnedUsers.Remove(player);
             }
         }
+
+        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
+        {
+            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+            Gamemanager.Instance.gameOngoing = false;
+            if (runner.IsServer)
+                _spawnedUsers.Remove(Gamemanager.Instance.networkData.GetComponent<NetworkObject>().InputAuthority);
+
+            Gamemanager.Instance.localData.transform.position = new Vector3(0, 0, 0);
+            SceneManager.LoadScene(0);
+
+            Gamemanager.Instance.gameObject.SetActive(false);
+            Gamemanager.Instance.gameObject.SetActive(true);
+            Gamemanager.Instance.ResetToDefaultValues();
+        }
+        public void OnConnectedToServer(NetworkRunner runner)
+        {
+            //Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+            runner.SetActiveScene(2);
+        }
+        public void OnSceneLoadStart(NetworkRunner runner) { if(mainMenuDummy != null) mainMenuDummy.SetActive(false); }
         #endregion
 
         #region Unused INetworkRunnerCallbacks 
-        public void OnConnectedToServer(NetworkRunner runner) { }
-        public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason) { }
         public void OnDisconnectedFromServer(NetworkRunner runner) { }
-        public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
         public void OnInput(NetworkRunner runner, NetworkInput input) { }
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input) { }
-        public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
         public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message) { }
         public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList) { }
         public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
         public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
         public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
-        public void OnSceneLoadStart(NetworkRunner runner) { }
+        public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token) { }
+        public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason) { }
+        public void LeaveSession() { }
         #endregion
     }
-
 }

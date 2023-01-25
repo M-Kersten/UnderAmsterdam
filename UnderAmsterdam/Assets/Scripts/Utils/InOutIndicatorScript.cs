@@ -12,8 +12,8 @@ public class InOutIndicatorScript : MonoBehaviour
     private Vector3 startPos, forwardDir;
     public void InitializeIndicator(bool shouldBeOutput)
     {
-        Debug.Log("initializng indicator");
-        LocalPlayer = GameObject.Find("LocalPlayer").gameObject;
+        Debug.Log("initializng indicator " + shouldBeOutput + " for COMPANY");
+        LocalPlayer = GameObject.Find("LocalPlayerSession").gameObject;
         textObject.text = shouldBeOutput ? "OUT" : "IN";
         startPos = transform.position + new Vector3(0, heightOffset, 0);
         forwardDir = (LocalPlayer.transform.position - transform.position).normalized;

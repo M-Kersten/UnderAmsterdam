@@ -1,9 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Fusion.XR.Host;
 
 public class ioScript : MonoBehaviour
 {
+    public static ioScript Instance;
+
+    [SerializeField] public List<CubeInteraction> tobeUncheckedPipes;
+
     [SerializeField] private List<IOTileScript> inputPipes;
     [SerializeField] private List<IOTileScript> outputPipes;
 
@@ -19,11 +24,17 @@ public class ioScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         // Random seed is set
         Random.InitState((int)System.DateTime.Now.Ticks);
 
         inputPipes = new List<IOTileScript>();
         outputPipes = new List<IOTileScript>();
+        tobeUncheckedPipes = new List<CubeInteraction>();
 
         northGrid = new IOTileScript[northWall.childCount];
         southGrid = new IOTileScript[southWall.childCount];
@@ -44,9 +55,19 @@ public class ioScript : MonoBehaviour
         foreach (Transform tile in westWall)
             westGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
 
+        if (ConnectionManager.Instance.runner.IsServer)
+            Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
+
         Gamemanager.Instance.RoundStart.AddListener(AddPlayerInputs);
-        Gamemanager.Instance.RoundStart.AddListener(AddPlayerOutputs);
+        Gamemanager.Instance.RoundStart.AddListener(UncheckAllCheckedPipes);
         Gamemanager.Instance.RoundEnd.AddListener(StartCheckingPipes);
+    }
+    private void UncheckAllCheckedPipes()
+    {
+        for (int i = 0; i < tobeUncheckedPipes.Count; i++)
+            tobeUncheckedPipes[i].isChecked = false;
+
+        tobeUncheckedPipes.Clear();
     }
 
     private void StartCheckingPipes()
@@ -91,36 +112,41 @@ public class ioScript : MonoBehaviour
 
         while (!placedInput)
         {
-            //Randomly Choosing the wall among the 4 walls
-            wallSelect = Random.Range(0, 4);
-            
-            //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
-            switch (wallSelect) {
-                case 0:
-                    randomIndex = Random.Range(0, northGrid.Length);
-                    placedInput = northGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
-                    if (placedInput)
-                        chosenTile = northGrid[randomIndex];
-                    break;
-                case 1:
-                    randomIndex = Random.Range(0, southGrid.Length);
-                    placedInput = southGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
-                    if (placedInput)
-                        chosenTile = southGrid[randomIndex];
-                    break;
-                case 2:
-                    randomIndex = Random.Range(0, westGrid.Length);
-                    placedInput = westGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
-                    if (placedInput)
-                        chosenTile = westGrid[randomIndex]; 
-                    break;
-                case 3:
-                    randomIndex = Random.Range(0, eastGrid.Length);
-                    placedInput = eastGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
-                    if (placedInput)
-                        chosenTile = eastGrid[randomIndex];
-                    break;
+            if (isOutput)
+            {
+                randomIndex = Random.Range(0, westGrid.Length);
+                placedInput = westGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
+                if (placedInput)
+                    chosenTile = westGrid[randomIndex];
             }
+            else
+            {
+                wallSelect = Random.Range(0, 3);
+
+                //For each wall is checked if the pipe isn't already placed with these coordinates then activate it
+                switch (wallSelect)
+                {
+                    case 0:
+                        randomIndex = Random.Range(0, northGrid.Length);
+                        placedInput = northGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
+                        if (placedInput)
+                            chosenTile = northGrid[randomIndex];
+                        break;
+                    case 1:
+                        randomIndex = Random.Range(0, southGrid.Length);
+                        placedInput = southGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
+                        if (placedInput)
+                            chosenTile = southGrid[randomIndex];
+                        break;
+                    case 2:
+                        randomIndex = Random.Range(0, eastGrid.Length);
+                        placedInput = eastGrid[randomIndex].TryEnableIOPipe(company, isOutput, false);
+                        if (placedInput)
+                            chosenTile = eastGrid[randomIndex];
+                        break;
+                }
+            }
+            //Randomly Choosing the wall among the 4 walls
         }
         return chosenTile;
     }
