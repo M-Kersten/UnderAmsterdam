@@ -12,7 +12,7 @@ public class Gamemanager : MonoBehaviour
 
     public PlayerData networkData;
 
-    [SerializeField] public GameObject localPlayer; 
+    public GameObject localPlayer;
     public LocalData localData;
     public PlayerInputHandler playerInputHandler;
     public Rigidbody localRigid;
@@ -24,20 +24,22 @@ public class Gamemanager : MonoBehaviour
     [SerializeField] private NetworkRunner runner;
 
     [SerializeField] private float roundCountDownTime = 3;
-    
-    public int amountOfRounds = 5;
-    public bool startGame;
 
-    [HideInInspector] public int currentRound;
+    public int amountOfRounds = 5;
+
+    public int currentRound;
     [HideInInspector] public Pointsmanager pManager;
 
     private HostTimerScript timer;
 
     private float defaultRoundTimeIncrease = 10, defaultRoundTime = 45;
 
+    public bool gameOngoing;
+
     private void Awake()
     {
-        if (Instance == null) {
+        if (Instance == null)
+        {
             Instance = this;
             DontDestroyOnLoad(this);
         }
@@ -67,66 +69,79 @@ public class Gamemanager : MonoBehaviour
         currentRound = 0;
     }
 
-    public void SceneSwitch(int index) {
+    public void SceneSwitch(int index)
+    {
         runner.SetActiveScene(index);
     }
 
-    private void FixedUpdate()
+    public void OnGameStart()
     {
-        if (startGame)
-        {
-            OnGameStart();
-            startGame = false;
-        }
-    }
-    private void OnGameStart()
-    {
+        gameOngoing = true;
         GameStart.Invoke();
         ConnectionManager.Instance.runner.SessionInfo.IsOpen = false;
         OnCountDownStart();
     }
     private void OnCountDownStart()
     {
-        localRigid.isKinematic = true;
-        CountDownStart.Invoke();
+        if (gameOngoing)
+        {
+            localRigid.isKinematic = true;
+            CountDownStart.Invoke();
 
-        StartCoroutine(PreRoundCountDown());
+            StartCoroutine(PreRoundCountDown());
+        }
     }
-    private void OnCountDownEnd() 
+    private void OnCountDownEnd()
     {
-        CountDownEnd.Invoke();
-        localRigid.isKinematic = false;
+        if (gameOngoing)
+        {
+            CountDownEnd.Invoke();
+            localRigid.isKinematic = false;
 
-        OnRoundStart();
+            OnRoundStart();
+        }
     }
     private void OnRoundStart()
     {
-        currentRound++;
-        RoundStart.Invoke();
-        timer.SetTimer(roundTime);
+        if (gameOngoing)
+        {
+            currentRound++;
+            RoundStart.Invoke();
+            timer.SetTimer(roundTime);
+        }
     }
     private void OnRoundEnd()
     {
-        RoundEnd.Invoke();
-        roundTime += roundTimeIncrease;
-        OnRoundLateEnd();
+        if (gameOngoing)
+        {
+            RoundEnd.Invoke();
+            roundTime += roundTimeIncrease;
+            OnRoundLateEnd();
+        }
     }
     private void OnRoundLateEnd()
     {
-        RoundLateEnd.Invoke();
+        if (gameOngoing)
+        {
+            RoundLateEnd.Invoke();
 
-        if (currentRound < amountOfRounds)
-            OnCountDownStart();
-        else
-            OnGameEnd();
+            if (currentRound < amountOfRounds)
+                OnCountDownStart();
+            else
+                OnGameEnd();
+        }
     }
     private IEnumerator PreRoundCountDown()
     {
-        yield return new WaitForSeconds(roundCountDownTime);
-        OnCountDownEnd();
+        if (gameOngoing)
+        {
+            yield return new WaitForSeconds(roundCountDownTime);
+            OnCountDownEnd();
+        }
     }
     private void OnGameEnd()
     {
+        gameOngoing = false;
         GameEnd.Invoke();
     }
 }
