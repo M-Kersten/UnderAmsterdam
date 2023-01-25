@@ -114,7 +114,7 @@ public class CityMove : NetworkBehaviour
 
         if (!endOfGame)
         {
-            Gamemanager.Instance.startGame = true;
+            Gamemanager.Instance.OnGameStart();
             DisableObjectsAfterGameStart();
         }
 

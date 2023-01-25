@@ -169,8 +169,8 @@ namespace Fusion.XR.Host
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
             Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
-
-            if(runner.IsServer)
+            Gamemanager.Instance.gameOngoing = false;
+            if (runner.IsServer)
                 _spawnedUsers.Remove(Gamemanager.Instance.networkData.GetComponent<NetworkObject>().InputAuthority);
 
             Gamemanager.Instance.localData.transform.position = new Vector3(0, 0, 0);
