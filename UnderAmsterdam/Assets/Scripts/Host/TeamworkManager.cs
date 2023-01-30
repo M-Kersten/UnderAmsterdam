@@ -68,7 +68,7 @@ public class TeamworkManager : MonoBehaviour
             }
         }
         // I didn't work with anyone
-        return null;
+        return "NULL";
     }
 
     public void CompanyDone(string company) {
@@ -77,10 +77,13 @@ public class TeamworkManager : MonoBehaviour
             _doneCompanies.Add(company, true);
 
             // If other player is done + I am not a key or Value ( doing this cause company gets reset before we can give points )
-            if (_donePlayers.ContainsKey(compManager._companies[CheckMyCompany(company)]) && !_donePlayers.ContainsKey(compManager._companies[company]))
-                _donePlayers[compManager._companies[CheckMyCompany(company)]] = compManager._companies[company];
+            if(compManager._companies.ContainsKey(CheckMyCompany(company)))
+            {
+                if (_donePlayers.ContainsKey(compManager._companies[CheckMyCompany(company)]) && !_donePlayers.ContainsKey(compManager._companies[company]))
+                    _donePlayers[compManager._companies[CheckMyCompany(company)]] = compManager._companies[company];
                 else if (!_donePlayers.ContainsValue(compManager._companies[company]))
-                _donePlayers.Add(compManager._companies[company], compManager.emptyPlayer);
+                    _donePlayers.Add(compManager._companies[company], compManager.emptyPlayer);
+            }
         }
     }
 
