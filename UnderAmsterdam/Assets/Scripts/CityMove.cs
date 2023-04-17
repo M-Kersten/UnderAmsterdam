@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using Fusion.XR.Host;
+using TMPro;
 
 public class CityMove : NetworkBehaviour
 {
@@ -15,8 +16,8 @@ public class CityMove : NetworkBehaviour
     [SerializeField] Material newMaterial;
     [SerializeField] ScoreBoard scoreBoard;
     [SerializeField] private float moveDownY = -0.5f;
-    [SerializeField] private GameObject grabText;
-    [SerializeField] private GameObject helmetParticles;
+    [SerializeField] private TextMeshPro textOne, textTwo;
+    [SerializeField] private GameObject helmetParticles, grabText;
     
     void Start()
     {
@@ -29,10 +30,11 @@ public class CityMove : NetworkBehaviour
         {
             NetworkObject otherObj = other.GetComponentInParent<NetworkObject>();
             PlayerRef temPplayer = otherObj.InputAuthority;
-            if(grabText.activeSelf && otherObj.HasInputAuthority)
+            if(textOne.gameObject.activeSelf && textTwo.gameObject.activeSelf && otherObj.HasInputAuthority)
             {
                 helmetParticles.GetComponent<ParticleSystem>().Play();
-                grabText.SetActive(false);
+                textOne.text = "You've already grabbed a helmet!<br>You're ready!";
+                textTwo.text = "You've already grabbed a helmet!<br>You're ready!";
             }
             // If I am host
             if (HasStateAuthority && !readyList.Contains(temPplayer))
@@ -114,6 +116,7 @@ public class CityMove : NetworkBehaviour
 
         if (!endOfGame)
         {
+            grabText.SetActive(false);
             Gamemanager.Instance.OnGameStart();
             DisableObjectsAfterGameStart();
         }
