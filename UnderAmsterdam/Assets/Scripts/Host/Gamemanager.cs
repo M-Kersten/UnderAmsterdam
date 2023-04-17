@@ -4,7 +4,7 @@ using Fusion;
 using UnityEngine.Events;
 using System.Collections;
 
-public class Gamemanager : MonoBehaviour
+public class Gamemanager : NetworkBehaviour
 {
     public static Gamemanager Instance;
 
