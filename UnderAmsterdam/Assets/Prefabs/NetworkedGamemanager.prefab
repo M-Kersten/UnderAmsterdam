@@ -50,7 +50,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a11270fb767804a9d04cd4f50acb4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   GameStart:
     m_PersistentCalls:
       m_Calls: []
@@ -191,6 +190,5 @@ MonoBehaviour:
   NetworkGuid:
     RawGuidValue: 0012c3ab294de1441ba0bf432759eef8
   NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 9040188838292508066}
+  NetworkedBehaviours: []
   SimulationBehaviours: []

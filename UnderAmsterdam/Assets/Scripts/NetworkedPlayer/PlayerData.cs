@@ -13,6 +13,7 @@ public class PlayerData : NetworkBehaviour
     [SerializeField] public WristMenu myMenu;
     [SerializeField] private HandTileInteraction rightHand, leftHand;
     [SerializeField] private Transform leftTransform, rightTransform;
+    private PlayerRef myPlayerRef;
     private NetworkRig nRig;
     [SerializeField] private WristUISwitch watchUI;
 
@@ -41,11 +42,29 @@ public class PlayerData : NetworkBehaviour
         {
             RPC_SwitchHands();
         }
+        myPlayerRef = GetComponent<NetworkObject>().InputAuthority;
+
+        if(!HasStateAuthority)
+        Rpc_RequestRoundInfo(myPlayerRef);
 
         DontDestroyOnLoad(this.gameObject);
         nRig = GetComponent<NetworkRig>();
         myMenu = GetComponent<NetworkRig>().myMenu;
         points = startingPoints; //Starting amount of points for each player
+    }
+
+    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+    public void Rpc_RequestRoundInfo(PlayerRef player)
+    {
+        Rpc_RoundInfo(player, Gamemanager.Instance.currentRound, Gamemanager.Instance.roundTime, Gamemanager.Instance.roundTimeIncrease);
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    public void Rpc_RoundInfo([RpcTarget] PlayerRef player, int cRound, float rndTime, float rndIncrease)
+    {
+        Gamemanager.Instance.currentRound = cRound;
+        Gamemanager.Instance.roundTime = rndTime;
+        Gamemanager.Instance.roundTimeIncrease = rndIncrease;
     }
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]

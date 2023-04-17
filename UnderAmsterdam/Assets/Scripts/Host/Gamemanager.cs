@@ -4,7 +4,7 @@ using Fusion;
 using UnityEngine.Events;
 using System.Collections;
 
-public class Gamemanager : NetworkBehaviour
+public class Gamemanager : MonoBehaviour
 {
     public static Gamemanager Instance;
 
@@ -67,19 +67,6 @@ public class Gamemanager : NetworkBehaviour
         roundTimeIncrease = defaultRoundTimeIncrease;
         roundTime = defaultRoundTime;
         currentRound = 0;
-    }
-
-    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void Rpc_RequestRoundInfo(PlayerRef player)
-    {
-        Rpc_RoundInfo(player, currentRound, roundTime, roundTimeIncrease);
-    }
-
-    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
-    public void Rpc_RoundInfo([RpcTarget] PlayerRef player, int cRound, float rndTime, float rndIncrease) {
-        currentRound = cRound;
-        roundTime = rndTime;
-        roundTimeIncrease = rndIncrease;
     }
 
     public void SceneSwitch(int index)

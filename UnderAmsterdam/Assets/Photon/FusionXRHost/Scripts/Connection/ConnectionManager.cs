@@ -125,9 +125,6 @@ namespace Fusion.XR.Host
                         Gamemanager.Instance.localRigid.gameObject.transform.rotation = tRotation;
                         Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
 
-                        if(runner.IsClient)
-                        Gamemanager.Instance.Rpc_RequestRoundInfo(localPlayerRef);
-
                         break;
                     default:
                     // Do nothing

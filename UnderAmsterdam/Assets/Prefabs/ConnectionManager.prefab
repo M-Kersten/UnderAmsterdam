@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 1679005737}
   - component: {fileID: 1679005738}
   - component: {fileID: 1679005739}
-  - component: {fileID: 2929720686910157061}
   m_Layer: 0
   m_Name: ConnectionManager
   m_TagString: Untagged
@@ -280,7 +279,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a11270fb767804a9d04cd4f50acb4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interpolationDataSource: 0
   GameStart:
     m_PersistentCalls:
       m_Calls: []
@@ -316,27 +314,3 @@ MonoBehaviour:
   currentRound: 0
   pManager: {fileID: 0}
   gameOngoing: 0
---- !u!114 &2929720686910157061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878090387540590309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectInterest: 0
-  DefaultInterestGroups: []
-  DestroyWhenStateAuthorityLeaves: 0
-  AllowStateAuthorityOverride: 1
-  AoiPositionSource: {fileID: 0}
-  Flags: 2305
-  NetworkGuid:
-    RawGuidValue: bbc0044c62e044b4da7dfcbdb6564e40
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 1679005739}
-  SimulationBehaviours: []
