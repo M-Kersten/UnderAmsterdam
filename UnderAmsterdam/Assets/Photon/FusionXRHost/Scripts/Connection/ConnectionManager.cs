@@ -152,6 +152,8 @@ namespace Fusion.XR.Host
                 }
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
+                // Update the joining player's round info to the host's
+                Gamemanager.Instance.Rpc_RoundInfo(player, Gamemanager.Instance.currentRound, Gamemanager.Instance.roundTime, Gamemanager.Instance.roundTimeIncrease);
             }
         }
 

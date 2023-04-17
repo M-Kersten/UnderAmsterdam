@@ -69,6 +69,13 @@ public class Gamemanager : MonoBehaviour
         currentRound = 0;
     }
 
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All, HostMode = RpcHostMode.SourceIsHostPlayer)]
+    public void Rpc_RoundInfo([RpcTarget] PlayerRef player, int cRound, float rndTime, float rndIncrease) {
+        currentRound = cRound;
+        roundTime = rndTime;
+        roundTimeIncrease = rndIncrease;
+    }
+
     public void SceneSwitch(int index)
     {
         runner.SetActiveScene(index);
