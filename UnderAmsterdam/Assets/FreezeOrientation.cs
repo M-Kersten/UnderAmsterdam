@@ -11,7 +11,7 @@ public class FreezeOrientation : MonoBehaviour
     private void Start()
     {
         player = Gamemanager.Instance.mainCam;
-        transform.parent = Gamemanager.Instance.networkData.transform;
+        transform.SetParent(Gamemanager.Instance.networkData.transform);
         localY = transform.position.y + 0.055f;
     }
 
