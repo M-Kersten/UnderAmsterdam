@@ -1,5 +1,6 @@
 using Fusion.Sockets;
 using Fusion.XR.Host.Rig;
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -123,6 +124,10 @@ namespace Fusion.XR.Host
                         Gamemanager.Instance.localRigid.gameObject.transform.position = tPosition;
                         Gamemanager.Instance.localRigid.gameObject.transform.rotation = tRotation;
                         Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+
+                        if(runner.IsClient)
+                        Gamemanager.Instance.Rpc_RequestRoundInfo(localPlayerRef);
+
                         break;
                     default:
                     // Do nothing
@@ -152,9 +157,6 @@ namespace Fusion.XR.Host
                 }
                 // Keep track of the player avatars so we can remove it when they disconnect
                 _spawnedUsers.Add(player, networkPlayerObject);
-                // Update the joining player's round info to the host's
-                if(player != localPlayerRef)
-                Gamemanager.Instance.Rpc_RoundInfo(player, Gamemanager.Instance.currentRound, Gamemanager.Instance.roundTime, Gamemanager.Instance.roundTimeIncrease);
             }
         }
 
