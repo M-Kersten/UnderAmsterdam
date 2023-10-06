@@ -3,7 +3,8 @@ UnderAmsterdam was a project made for the municipality of Amsterdam to create aw
 The aim for this game is to let up to five players compete in several rounds trying to lay down pipes/cables for their respective team/company (each round the players switch teams/companies).
 Players will be forced to cooperate as the limited space runs out for everyone to finish their task.
 
-This is the trailer of UnderAmsterdam
+Below is the YouTube trailer of UnderAmsterdam
+https://youtu.be/20LDenq10yU
 
 [![Link to the trailer of UnderAmsterdam](https://img.youtube.com/vi/20LDenq10yU/sddefault.jpg)](https://youtu.be/20LDenq10yU)
 ![image](https://github.com/Omega-The-III/UnderAmsterdam/assets/57790446/e0c96d39-deef-4f3b-9337-78d9fabe157d)
