@@ -3,6 +3,8 @@ UnderAmsterdam was a project made for the municipality of Amsterdam to create aw
 The aim for this game is to let up to five players compete in several rounds trying to lay down pipes/cables for their respective team/company (each round the players switch teams/companies).
 Players will be forced to cooperate as the limited space runs out for everyone to finish their task.
 
+This project was made in Unity with Photon Fusion
+
 Below is the YouTube trailer of UnderAmsterdam
 https://youtu.be/20LDenq10yU
 
