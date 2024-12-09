@@ -11,6 +11,8 @@ public class Joinlobby : MonoBehaviour
     [SerializeField] TextMeshProUGUI textinput;
     private bool canPressButton = true;
     [SerializeField] private float buttonCooldownSeconds = 8;
+    
+    [ContextMenu("Host join")]
     public async void OnAutoHostJoin()
     {
         ConnectionManager connection = ConnectionManager.Instance;
