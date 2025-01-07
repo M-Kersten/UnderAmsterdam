@@ -117,10 +117,10 @@ namespace Fusion.XR.Host
                 switch (SceneManager.GetActiveScene().name) {
                     case "A3Game":
                         Gamemanager.Instance.localData.gameObject.name = "LocalPlayerSession";
-                        tPosition = new Vector3(1.02216411f, 4.0f, 1.65285861f);
+                        //tPosition = new Vector3(1.02216411f, 0.0f, 1.65285861f);
                         tRotation = Quaternion.Euler(new Vector3(0, 180, 0));
                     
-                        Gamemanager.Instance.localRigid.gameObject.transform.position = tPosition;
+                        //Gamemanager.Instance.localRigid.gameObject.transform.position = tPosition;
                         Gamemanager.Instance.localRigid.gameObject.transform.rotation = tRotation;
                         Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
                         break;
