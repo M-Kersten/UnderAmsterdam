@@ -3,6 +3,7 @@ using Fusion.XR.Host;
 using Fusion;
 using UnityEngine.Events;
 using System.Collections;
+using Fusion.XR.Host.Rig;
 
 public class Gamemanager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class Gamemanager : MonoBehaviour
     public LocalData localData;
     public PlayerInputHandler playerInputHandler;
     public Rigidbody localRigid;
+    public HardwareRig hardwareRig;
     public Transform mainCam;
 
     public float roundTimeIncrease = 10;
@@ -60,6 +62,7 @@ public class Gamemanager : MonoBehaviour
         localData = localPlayer.GetComponent<LocalData>();
         playerInputHandler = localPlayer.GetComponent<PlayerInputHandler>();
         localRigid = localPlayer.GetComponent<Rigidbody>();
+        hardwareRig = localPlayer.GetComponent<HardwareRig>();
         mainCam = localPlayer.transform.GetChild(0).GetChild(0);
     }
     public void ResetToDefaultValues()

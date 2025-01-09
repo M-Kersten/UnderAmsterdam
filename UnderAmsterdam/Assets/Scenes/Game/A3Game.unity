@@ -23410,12 +23410,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+      propertyPath: moveDownY
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: scoreBoard
       value: 
       objectReference: {fileID: 1836439558}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+      propertyPath: helmetParticles
+      value: 
+      objectReference: {fileID: 2851164453913277425}
+    - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: toEnableObjects.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: toDisableObjects.Array.size
@@ -23428,11 +23436,15 @@ PrefabInstance:
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: toEnableObjects.Array.data[1]
       value: 
-      objectReference: {fileID: 1836439557}
+      objectReference: {fileID: 331511961}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: toEnableObjects.Array.data[2]
       value: 
-      objectReference: {fileID: 1836439557}
+      objectReference: {fileID: 165688158}
+    - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+      propertyPath: toEnableObjects.Array.data[3]
+      value: 
+      objectReference: {fileID: 185967707}
     - target: {fileID: 8145343612149235624, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
       propertyPath: toDisableObjects.Array.data[0]
       value: 
@@ -23475,6 +23487,11 @@ PrefabInstance:
 --- !u!1 &2851164453913277424 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2851164451953860548, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
+  m_PrefabInstance: {fileID: 2851164453913277423}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2851164453913277425 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2851164451953860545, guid: 543038eb64fa24745af7241d5076db4f, type: 3}
   m_PrefabInstance: {fileID: 2851164453913277423}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &4211828065328069432

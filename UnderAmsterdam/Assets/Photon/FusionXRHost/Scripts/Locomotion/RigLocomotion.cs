@@ -34,7 +34,8 @@ namespace Fusion.XR.Host.Locomotion
         public List<RayBeamer> teleportBeamers;
 
         bool rotating = false;
-        float timeStarted = 0;
+
+        private float turnTimer = 0f;
 
         HardwareRig rig;
 
@@ -60,41 +61,35 @@ namespace Fusion.XR.Host.Locomotion
                 Debug.LogError("RigLocomotion: for locomotion to be possible, at least one layer has to be added to locomotionLayerMask, add used on locomotion surface colliders");
         }
 
-        protected virtual void Update()
+        private void FixedUpdate()
         {
             CheckSnapTurn();
         }
 
-        protected virtual void CheckSnapTurn() { 
-            if (rotating) return;
-            if (timeStarted > 0f)
-            {
-                // Wait for a certain amount of time before allowing another turn.
-                if (timeStarted + debounceTime < Time.time)
-                {
-                    timeStarted = 0f;
-                }
+        protected virtual void CheckSnapTurn() 
+        { 
+            if (rotating) 
                 return;
-            }
 
-            //var leftStickTurn = leftControllerTurnAction.action.ReadValue<Vector2>().x;
+            turnTimer += Time.deltaTime;
+
+            if (turnTimer <= debounceTime)
+                return;
+            
             var rightStickTurn = rightControllerTurnAction.action.ReadValue<Vector2>().x;
+            var snapAngle = Mathf.Sign(rightStickTurn) * snapDegree;
 
-/*            if (Mathf.Abs(leftStickTurn) > rotationInputThreshold)
-            {
-                timeStarted = Time.time;
-                StartCoroutine(Rotate(Mathf.Sign(leftStickTurn) * snapDegree));
-            }*/
             if (Mathf.Abs(rightStickTurn) > rotationInputThreshold)
             {
-                timeStarted = Time.time;
-                StartCoroutine(Rotate(Mathf.Sign(rightStickTurn) * snapDegree));
+                turnTimer = 0;
+                rotating = true;
+                rig.Rotate(snapAngle);
+                rotating = false;
             }
         }
 
         IEnumerator Rotate(float angle)
         {
-            timeStarted = Time.time;
             rotating = true;
             yield return rig.FadedRotate(angle);
             rotating = false;

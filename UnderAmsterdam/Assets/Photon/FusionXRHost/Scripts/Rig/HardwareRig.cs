@@ -67,9 +67,17 @@ namespace Fusion.XR.Host.Rig
         // Update the hardware rig position. This will trigger a Riginput network update
         public virtual void Teleport(Vector3 position)
         {
+            Gamemanager.Instance.localRigid.interpolation = RigidbodyInterpolation.None;
             Vector3 headsetOffet = headset.transform.position - transform.position;
             headsetOffet.y = 0;
             transform.position = position - headsetOffet;
+            StartCoroutine(ResetInterpolationAfterFrame());
+        }
+
+        IEnumerator ResetInterpolationAfterFrame()
+        {
+            yield return null;
+            Gamemanager.Instance.localRigid.interpolation = RigidbodyInterpolation.Interpolate;
         }
 
         // Teleport the rig with a fader

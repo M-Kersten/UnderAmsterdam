@@ -17,16 +17,13 @@ public class PlayerTestMove : MonoBehaviour
 
     private Rigidbody mainRigid;
 
-    private CharacterController character;
     private Vector3 direction;
     private Quaternion headQ;
 
     void Start()
     {
-        // https://prnt.sc/FCTsqNJwEysf
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(gameObject);
         
-        character = GetComponent<CharacterController>();
         mainRigid = GetComponent<Rigidbody>();
         
         side = RigPart.RightController;
@@ -57,7 +54,7 @@ public class PlayerTestMove : MonoBehaviour
         {
             direction = headQ * new Vector3(joystickLeft.action.ReadValue<Vector2>().x, 0, joystickLeft.action.ReadValue<Vector2>().y);
         }
-
+        
         if (mainRigid != null && ConnectionManager.Instance.runner != null)
             mainRigid.velocity = (direction * ConnectionManager.Instance.runner.DeltaTime * speed);
         else if (mainRigid != null)

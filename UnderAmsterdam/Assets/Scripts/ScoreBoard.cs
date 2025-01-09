@@ -22,18 +22,20 @@ public class ScoreBoard : NetworkBehaviour
     public void RPC_SendData(PlayerData player)
     {
         if(!rankDict.ContainsKey(player.company))
-        rankDict.Add(player.company, player.points);
+            rankDict.Add(player.company, player.points);
     }
+    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_DisplayData()
     {
         DisplayLeaderBoard();
     }
+    
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void RPC_SendPlayersCompany(string company, PlayerRef player)
     {
         if (!savedCompanies.ContainsKey(company))
-        savedCompanies.Add(company, player);
+            savedCompanies.Add(company, player);
     }
 
     public override void Spawned()
@@ -85,7 +87,9 @@ public class ScoreBoard : NetworkBehaviour
         {
             if (cManager.localPlayerRef == savedCompanies[rankDict.ElementAt(i).Key])
             {
-                Gamemanager.Instance.localRigid.gameObject.transform.position = podiumPipes[i].position + new Vector3(0, 3.5f - i, -0.5f);
+                Debug.Log($"warping you to: podium {i}");
+                Gamemanager.Instance.hardwareRig.Teleport(podiumPipes[i].position + new Vector3(0, 3.5f - i, -0.5f));
+                //Gamemanager.Instance.localRigid.gameObject.transform.position = podiumPipes[i].position + new Vector3(0, 3.5f - i, -0.5f);
                 Gamemanager.Instance.localRigid.gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
                 return;
             }

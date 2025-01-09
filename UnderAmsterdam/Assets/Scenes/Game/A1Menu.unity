@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 193541598}
   - component: {fileID: 193541597}
   - component: {fileID: 193541596}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -315,6 +315,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1679005739, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
+      propertyPath: roundTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1679005739, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
+      propertyPath: roundTimeIncrease
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 878090387540590309, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: m_Name
       value: ConnectionManager
@@ -892,6 +900,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6508602778269547862, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6508602778269547862, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8439811097757408636, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_CameraYOffset
+      value: 1.6
+      objectReference: {fileID: 0}
     - target: {fileID: 8439811097757408637, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -959,6 +979,22 @@ PrefabInstance:
     - target: {fileID: 8439811097908486505, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: isRayEnabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8439811098364466049, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_ClearFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8439811098364466049, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.8867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 8439811098364466049, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.8867924
+      objectReference: {fileID: 0}
+    - target: {fileID: 8439811098364466049, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.8867924
       objectReference: {fileID: 0}
     - target: {fileID: 8439811098364466051, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_Layer

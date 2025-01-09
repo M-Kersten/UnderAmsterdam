@@ -16,35 +16,65 @@ public class CityMove : NetworkBehaviour
     [SerializeField] ScoreBoard scoreBoard;
     [SerializeField] private float moveDownY = -0.5f;
     [SerializeField] private GameObject grabText;
-    [SerializeField] private GameObject helmetParticles;
+    [SerializeField] private ParticleSystem helmetParticles;
     
     void Start()
     {
         Gamemanager.Instance.GameEnd.AddListener(EndOfGame);
     }
 
+    public static NetworkObject GetLocalPlayer()
+    {
+        foreach (var networkObject in FindObjectsOfType<NetworkObject>())
+        {
+            if (networkObject.HasInputAuthority)
+            {
+                return networkObject;
+            }
+        }
+        return null;
+    }
+
+    [ContextMenu("Grab helmet")]
+    public void TestGrabHelmet()
+    {
+        var localPlayer = GetLocalPlayer();
+        if (localPlayer != null)
+        {
+            GrabHelmet(localPlayer.gameObject);
+        }
+    }
+  
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 8)
         {
-            NetworkObject otherObj = other.GetComponentInParent<NetworkObject>();
-            PlayerRef temPplayer = otherObj.InputAuthority;
-            if(grabText.activeSelf && otherObj.HasInputAuthority)
-            {
-                helmetParticles.GetComponent<ParticleSystem>().Play();
-                grabText.SetActive(false);
-            }
-            // If I am host
-            if (HasStateAuthority && !readyList.Contains(temPplayer))
-            {
-                readyList.Add(temPplayer);
-                CheckAllPlayers();
+            GrabHelmet(other.gameObject);
+        }
+    }
 
-                // Always enable the cap when a player steps into the ready box first time.
-                if (!other.transform.root.GetComponent<PlayerData>().playerCap.activeSelf)
-                {
-                    RPC_EnableCap(other.transform.root.GetComponent<PlayerData>());   
-                }
+    private void GrabHelmet(GameObject other)
+    {
+        NetworkObject otherObj = other.GetComponentInParent<NetworkObject>();
+        PlayerRef tempPlayer = otherObj.InputAuthority;
+        PlayerData playerData = other.transform.root.GetComponent<PlayerData>();
+            
+        if(grabText.activeSelf && otherObj.HasInputAuthority)
+        {
+            helmetParticles.Play();
+            grabText.SetActive(false);
+        }
+            
+        // If I am host
+        if (HasStateAuthority && !readyList.Contains(tempPlayer))
+        {
+            readyList.Add(tempPlayer);
+            CheckAllPlayers();
+
+            // Always enable the cap when a player steps into the ready box first time.
+            if (!playerData.playerCap.activeSelf)
+            {
+                RPC_EnableCap(playerData);   
             }
         }
     }
