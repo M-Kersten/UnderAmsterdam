@@ -105,7 +105,7 @@ public class IOTileScript : NetworkBehaviour
 
     static void OnIOTileChanged(Changed<IOTileScript> changed)
     {
-        if(ConnectionManager.Instance.runner.IsClient)
+        if(Gamemanager.Instance.ConnectionManager.runner.IsClient)
             changed.Behaviour.TryEnableIOPipe(changed.Behaviour.company, changed.Behaviour.isOutput, true);
     }
 

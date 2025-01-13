@@ -16,7 +16,7 @@ public class TeamworkHand : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (myNetworkObj.HasStateAuthority && !ConnectionManager.Instance.runner.SessionInfo.IsOpen)
+        if (myNetworkObj.HasStateAuthority && !Gamemanager.Instance.ConnectionManager.runner.SessionInfo.IsOpen)
         {
             if (other.gameObject.layer == 15 && transform.position.y > myCap.position.y)
             {

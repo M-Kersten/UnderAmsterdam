@@ -25,9 +25,9 @@ public class Pointsmanager : MonoBehaviour
 
     public void TeamworkBonus(PlayerRef player)
     {
-        if (coach._spawnedUsers.ContainsKey(player))
+        if (coach.SpawnedUsers.ContainsKey(player))
         {
-            coach._spawnedUsers[player].GetComponent<PlayerData>().points+= teamworkPoints;
+            coach.SpawnedUsers[player].GetComponent<PlayerData>().points+= teamworkPoints;
         }
     }
 
@@ -52,7 +52,7 @@ public class Pointsmanager : MonoBehaviour
     private bool CheckPlayerData(string company)
     {
         if(companyManager._companies.ContainsKey(company))
-            if (coach._spawnedUsers.ContainsKey(companyManager._companies[company]))
+            if (coach.SpawnedUsers.ContainsKey(companyManager._companies[company]))
                 return true;
             else
                 return false;
@@ -61,7 +61,7 @@ public class Pointsmanager : MonoBehaviour
     }
     private PlayerData GetPlayerData(string company)
     {
-        PlayerData player = coach._spawnedUsers[companyManager._companies[company]].GetComponent<PlayerData>();
+        PlayerData player = coach.SpawnedUsers[companyManager._companies[company]].GetComponent<PlayerData>();
         return player;
     }
 }

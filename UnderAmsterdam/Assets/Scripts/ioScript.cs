@@ -55,7 +55,7 @@ public class ioScript : MonoBehaviour
         foreach (Transform tile in westWall)
             westGrid[i++] = tile.gameObject.GetComponent<IOTileScript>();
 
-        if (ConnectionManager.Instance.runner.IsServer)
+        if (Gamemanager.Instance.ConnectionManager.runner.IsServer)
             Gamemanager.Instance.GameStart.AddListener(AddPlayerOutputs);
 
         Gamemanager.Instance.RoundStart.AddListener(AddPlayerInputs);

@@ -85,13 +85,13 @@ public class CityMove : NetworkBehaviour
         // Check if players in ready list are still in game
         for(int i = 0; i < readyList.Count; i++)
         {
-            if (ConnectionManager.Instance._spawnedUsers.ContainsKey(readyList[i]))
+            if (Gamemanager.Instance.ConnectionManager.SpawnedUsers.ContainsKey(readyList[i]))
                 readyPlayers++;
             else
                 readyList.Remove(readyList[i]);
         }
 
-        if (ConnectionManager.Instance._spawnedUsers.Count == readyPlayers && readyPlayers > 0)
+        if (Gamemanager.Instance.ConnectionManager.SpawnedUsers.Count == readyPlayers && readyPlayers > 0)
         {
             RPC_StartGame();
         }

@@ -4,13 +4,15 @@ using Fusion;
 using UnityEngine.Events;
 using System.Collections;
 using Fusion.XR.Host.Rig;
+using UnityEngine.SceneManagement;
 
 public class Gamemanager : MonoBehaviour
 {
     public static Gamemanager Instance;
-
+    
     public UnityEvent GameStart, RoundStart, RoundEnd, RoundLateEnd, GameEnd, CountDownStart, CountDownEnd;
 
+    public ConnectionManager ConnectionManager;
     public PlayerData networkData;
 
     public GameObject localPlayer;
@@ -22,8 +24,6 @@ public class Gamemanager : MonoBehaviour
 
     public float roundTimeIncrease = 10;
     public float roundTime = 45;
-
-    [SerializeField] private NetworkRunner runner;
 
     [SerializeField] private float roundCountDownTime = 3;
 
@@ -65,6 +65,7 @@ public class Gamemanager : MonoBehaviour
         hardwareRig = localPlayer.GetComponent<HardwareRig>();
         mainCam = localPlayer.transform.GetChild(0).GetChild(0);
     }
+    
     public void ResetToDefaultValues()
     {
         roundTimeIncrease = defaultRoundTimeIncrease;
@@ -72,16 +73,11 @@ public class Gamemanager : MonoBehaviour
         currentRound = 0;
     }
 
-    public void SceneSwitch(int index)
-    {
-        runner.SetActiveScene(index);
-    }
-
     public void OnGameStart()
     {
         gameOngoing = true;
         GameStart.Invoke();
-        ConnectionManager.Instance.runner.SessionInfo.IsOpen = false;
+        ConnectionManager.runner.SessionInfo.IsOpen = false;
         OnCountDownStart();
     }
     private void OnCountDownStart()
@@ -146,5 +142,33 @@ public class Gamemanager : MonoBehaviour
     {
         gameOngoing = false;
         GameEnd.Invoke();
+    }
+    
+    public void TeleportToStartPosition()
+    {
+        if (!localData || SceneManager.GetActiveScene().buildIndex <= 0) 
+            return;
+        
+        localData.gameObject.name = "LocalPlayerSession";
+        var tPosition = new Vector3(1.02216411f, 0.0f, 1.65285861f);
+        var tRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+        localRigid.gameObject.transform.rotation = tRotation;
+        hardwareRig.Teleport(tPosition);
+        localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+    }
+    
+    public void ShutdownPlayer(NetworkRunner runner)
+    {
+        localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+        gameOngoing = false;
+        if (runner.IsServer)
+            ConnectionManager.SpawnedUsers.Remove(networkData.GetComponent<NetworkObject>().InputAuthority);
+
+        localData.transform.position = new Vector3(0, 0, 0);
+        SceneManager.LoadScene(0);
+
+        gameObject.SetActive(false);
+        gameObject.SetActive(true);
+        ResetToDefaultValues();
     }
 }

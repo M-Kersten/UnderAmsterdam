@@ -67,9 +67,12 @@ public class CompanyManager : MonoBehaviour
         return "Empty";
     }
 
-    public void loadSend() {
-        foreach(var player in ConnectionManager.Instance._spawnedUsers) {
-            if (!playerHistory.ContainsKey(player.Key)) {
+    public void loadSend() 
+    {
+        foreach(var player in Gamemanager.Instance.ConnectionManager.SpawnedUsers) 
+        {
+            if (!playerHistory.ContainsKey(player.Key)) 
+            {
                 playerHistory.Add(player.Key, new List<string>());
             }
             SendCompany(player.Key, player.Value);
@@ -77,22 +80,27 @@ public class CompanyManager : MonoBehaviour
     }
 
     // Function to send company to the correct player
-    private void SendCompany(PlayerRef targetPlayer, NetworkObject nObject) {
+    private void SendCompany(PlayerRef targetPlayer, NetworkObject nObject) 
+    {
         string sentCompany = GetCompany(targetPlayer);
         // Grab the playerdata of the player we want to send the company to
         nObject.gameObject.GetComponent<PlayerData>().ReceiveCompany(sentCompany);
     }
 
-    public void ResetCompanies() {
+    public void ResetCompanies()
+    {
+        if (Gamemanager.Instance.currentRound >= Gamemanager.Instance.amountOfRounds)
+            return;
 
-        if (Gamemanager.Instance.currentRound >= Gamemanager.Instance.amountOfRounds) return;
         // Reset given companies
-        availableCompanies = new List<string>{"water","gas","data","sewage","power"};
-        _companies = new Dictionary<string, PlayerRef> {
-    {"water", emptyPlayer},
-    {"gas", emptyPlayer},
-    {"data", emptyPlayer},
-    {"sewage", emptyPlayer},
-    {"power", emptyPlayer}};
+        availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
+        _companies = new Dictionary<string, PlayerRef>
+        {
+            { "water", emptyPlayer },
+            { "gas", emptyPlayer },
+            { "data", emptyPlayer },
+            { "sewage", emptyPlayer },
+            { "power", emptyPlayer }
+        };
     }
 }

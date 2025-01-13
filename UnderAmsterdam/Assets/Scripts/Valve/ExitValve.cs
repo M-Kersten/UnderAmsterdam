@@ -23,15 +23,15 @@ public class ExitValve : MonoBehaviour
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
 
-        if (ConnectionManager.Instance.runner != null)
-            ConnectionManager.Instance.runner.Shutdown();
+        if (Gamemanager.Instance.ConnectionManager.runner != null)
+            Gamemanager.Instance.ConnectionManager.runner.Shutdown();
 
         SceneManager.activeSceneChanged += SetupNewMenuScene;
         SceneManager.LoadScene(0);
     }
     private void SetupNewMenuScene(Scene scene, Scene scene2)
     {
-        ConnectionManager.Instance.mainMenuDummy = GameObject.Find("MainMenuDummy");
+        Gamemanager.Instance.ConnectionManager.ConnectionSettings.MainMenuDummy = GameObject.Find("MainMenuDummy");
     }
 
     void OnTriggerExit(Collider other)

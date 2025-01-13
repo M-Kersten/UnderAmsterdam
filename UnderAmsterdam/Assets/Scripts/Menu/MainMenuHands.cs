@@ -31,7 +31,7 @@ public class MainMenuHands : MonoBehaviour
             Destroy(this);
         }
         myRig = Gamemanager.Instance.localData.GetComponent<HardwareRig>();
-        ConnectionManager.Instance.mainMenuDummy = gameObject;
+        Gamemanager.Instance.ConnectionManager.ConnectionSettings.MainMenuDummy = gameObject;
 
         realLeftHand = myRig.leftHand.gameObject;
         realRightHand = myRig.rightHand.gameObject;

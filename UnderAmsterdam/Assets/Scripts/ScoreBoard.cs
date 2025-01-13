@@ -59,7 +59,7 @@ public class ScoreBoard : NetworkBehaviour
         foreach (var company in CompanyManager.Instance._companies)
         {
             if (company.Value == PlayerRef.None) continue;
-            PlayerData player = cManager._spawnedUsers[CompanyManager.Instance._companies[company.Key]].GetComponent<PlayerData>();
+            PlayerData player = cManager.SpawnedUsers[CompanyManager.Instance._companies[company.Key]].GetComponent<PlayerData>();
             RPC_SendData(player);
         }
 
@@ -85,7 +85,7 @@ public class ScoreBoard : NetworkBehaviour
         podium.SetActive(true);
         for (int i = 0; i < podiumPipes.Length && i < rankDict.Count; i++)
         {
-            if (cManager.localPlayerRef == savedCompanies[rankDict.ElementAt(i).Key])
+            if (cManager.ConnectionSettings.localPlayerRef == savedCompanies[rankDict.ElementAt(i).Key])
             {
                 Debug.Log($"warping you to: podium {i}");
                 Gamemanager.Instance.hardwareRig.Teleport(podiumPipes[i].position + new Vector3(0, 3.5f - i, -0.5f));

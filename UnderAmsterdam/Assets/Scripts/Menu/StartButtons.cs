@@ -36,11 +36,11 @@ public class StartButtons : MonoBehaviour
         Clip.Play();
         lobby.transform.localScale = new Vector3(0, 0, 0);
         yield return new WaitForSeconds(Clip.clip.length);
-        Gamemanager.Instance.SceneSwitch(sceneIndex);
+       // Gamemanager.Instance.SceneSwitch(sceneIndex);
     }
 
     public void DevStart()
     {
-        Gamemanager.Instance.SceneSwitch(sceneIndex);
+       // Gamemanager.Instance.SceneSwitch(sceneIndex);
     }
 }

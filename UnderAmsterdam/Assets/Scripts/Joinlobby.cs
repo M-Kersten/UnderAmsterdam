@@ -18,7 +18,7 @@ public class Joinlobby : MonoBehaviour
     {
         StartCoroutine(TestNetworkConnectivity());
         
-        ConnectionManager connection = ConnectionManager.Instance;
+        ConnectionManager connection = Gamemanager.Instance.ConnectionManager;
         if (canPressButton)
         {
             connection.roomName = "testRoom";
