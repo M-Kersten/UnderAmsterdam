@@ -3,6 +3,7 @@ using Fusion.Sockets;
 using Fusion.XR.Host;
 using System;
 using System.Collections.Generic;
+using Fusion.Addons.ConnectionManagerAddon;
 using TMPro;
 using UnityEngine;
 
@@ -46,6 +47,17 @@ public class UpdateConnectionStatus : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     #region INetworkRunnerCallbacks
+
+    public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
+    {
+        throw new NotImplementedException();
+    }
+
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
 
@@ -82,6 +94,11 @@ public class UpdateConnectionStatus : MonoBehaviour, INetworkRunnerCallbacks
         audioSource.PlayOneShot(connectedToServer);
     }
 
+    public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
+    {
+        throw new NotImplementedException();
+    }
+
     public void OnDisconnectedFromServer(NetworkRunner runner)
     {
         DebugLog($"Disconnected From Server: {runner.SessionInfo} ");
@@ -103,6 +120,15 @@ public class UpdateConnectionStatus : MonoBehaviour, INetworkRunnerCallbacks
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data) { }
 
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken) { }
+    public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
+    {
+        throw new NotImplementedException();
+    }
 
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ArraySegment<byte> data) { }
 

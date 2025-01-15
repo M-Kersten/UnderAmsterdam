@@ -83,7 +83,7 @@ public class ioScript : MonoBehaviour
         //Replace this to check if player OUTPUT already exist
         if (!hasPlacedOutputs)
         {
-            foreach (var player in CompanyManager.Instance._companies)
+            foreach (var player in CompanyManager.Instance.Companies)
             {
                 hasPlacedOutputs = true;
                 outputPipes.Add(PlaceIOPipe(player.Key, true));
@@ -93,7 +93,7 @@ public class ioScript : MonoBehaviour
 
     private void AddPlayerInputs()
     {
-        foreach (var player in CompanyManager.Instance._companies)
+        foreach (var player in CompanyManager.Instance.Companies)
         {
             if (player.Value != CompanyManager.Instance.emptyPlayer)
             {
@@ -102,7 +102,7 @@ public class ioScript : MonoBehaviour
         }
     }
 
-    private IOTileScript PlaceIOPipe(string company, bool isOutput)
+    private IOTileScript PlaceIOPipe(int company, bool isOutput)
     {
         IOTileScript chosenTile;
         bool placedInput = false;
@@ -110,8 +110,14 @@ public class ioScript : MonoBehaviour
 
         chosenTile = new IOTileScript();
 
-        while (!placedInput)
+        int attempts = 0;
+        while (!placedInput && attempts < 1000)
         {
+            attempts++;
+            
+            if (attempts == 10000) 
+                Debug.Log("Max attempts reached without placing input!");
+            
             if (isOutput)
             {
                 randomIndex = Random.Range(0, westGrid.Length);

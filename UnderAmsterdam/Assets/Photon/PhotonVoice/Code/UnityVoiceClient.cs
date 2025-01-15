@@ -8,8 +8,6 @@
 // <author>developer@photonengine.com</author>
 // ----------------------------------------------------------------------------
 
-#define USE_NEW_TRANSPORT
-
 using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
@@ -32,7 +30,7 @@ namespace Photon.Voice.Unity
         [field: SerializeField]
         public bool UseVoiceAppSettings = false;
 
-        protected void Start()
+        protected virtual void Start()
         {
             if (this.PrimaryRecorder != null)
             {
@@ -67,6 +65,12 @@ namespace Photon.Voice.Unity
     /// <summary> Component that represents a Voice client. </summary>
     public class VoiceConnection : ConnectionHandler
     {
+        /// <summary>Recommended Photon Transport channel for audio. Chosen not to interfere with video and default channel.</summary>
+        public const int ChannelAudio = 1;
+
+        /// <summary>Recommended Photon Transport channel for video. Chosen not to interfere with audio and default channel.</summary>
+        public const int ChannelVideo = 2;
+
         #region Private Fields
 
         // VoiceComponentImpl instance instead if VoiceComponent inheritance
@@ -110,6 +114,10 @@ namespace Photon.Voice.Unity
         [Tooltip("Use primary recorder directly by Voice Client")]
         private bool usePrimaryRecorder;
 
+        [SerializeField]
+        [Tooltip("Use the protocol compatible with Photon Voice C++ API")]
+        private bool cppCompatibilityMode;
+
         // to allow VoiceConnection ignore usePrimaryRecorder and do not show it in Editor
         public virtual bool AlwaysUsePrimaryRecorder => false;
 
@@ -118,14 +126,9 @@ namespace Photon.Voice.Unity
 
         #endregion
 
-        public VoiceConnection()
+        private void Init()
         {
-#if USE_NEW_TRANSPORT
-            this.client = new LoadBalancingTransport2(this.Logger);
-#else
-            this.client = new LoadBalancingTransport(this.Logger);
-#endif
-            this.client.ClientType = ClientAppType.Voice;
+            this.client = new LoadBalancingTransport2(this.Logger, ConnectionProtocol.Udp, cppCompatibilityMode);
             this.client.VoiceClient.OnRemoteVoiceInfoAction += this.OnRemoteVoiceInfo;
             this.client.StateChanged += this.OnVoiceStateChanged;
             this.client.OpResponseReceived += this.OnOperationResponseReceived;
@@ -133,7 +136,7 @@ namespace Photon.Voice.Unity
             this.StartFallbackSendAckThread();
         }
 
-        #region Public Fields
+#region Public Fields
 
         /// <summary> Settings to be used by this Voice Client</summary>
         public AppSettings Settings;
@@ -147,19 +150,19 @@ namespace Photon.Voice.Unity
         /// <summary> Fires when a remote voice stream is added</summary>
         public event Action<RemoteVoiceLink> RemoteVoiceAdded;
 
-#if UNITY_PS4 || UNITY_SHARLIN
+#if UNITY_PS4 || UNITY_PS5
         /// <summary>PlayStation user ID of the local user</summary>
         /// <remarks>Pass the userID of the local PlayStation user who should receive any incoming audio. This value is used by Photon Voice when sending output to the headphones on the PlayStation.
         /// If you don't provide a user ID, then Photon Voice uses the user ID of the user at index 0 in the list of local users
         /// and in case that there are multiple local users, the audio output might be sent to the headphones of a different user than intended.</remarks>
-        public int PlayStationUserID = 0; // set from your games code
+        public int PlayStationUserID = 0; // set from your game's code
 #endif
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
-        protected Voice.ILogger Logger => voiceComponentImpl.Logger;
+        public Voice.ILogger Logger => voiceComponentImpl.Logger;
         // to set logging level from code
         public VoiceLogger VoiceLogger => voiceComponentImpl.VoiceLogger;
 
@@ -226,9 +229,9 @@ namespace Photon.Voice.Unity
             }
         }
 
-        #endregion
+#endregion
 
-        #region Public Methods
+#region Public Methods
 
         /// <summary>
         /// Connect to Photon server using <see cref="Settings"/>
@@ -239,7 +242,7 @@ namespace Photon.Voice.Unity
         {
             if (this.Client.LoadBalancingPeer.PeerState != PeerStateValue.Disconnected)
             {
-                this.Logger.LogWarning("ConnectUsingSettings() failed. Can only connect while in state 'Disconnected'. Current state: {0}", this.Client.LoadBalancingPeer.PeerState);
+                this.Logger.Log(LogLevel.Warning, "ConnectUsingSettings() failed. Can only connect while in state 'Disconnected'. Current state: {0}", this.Client.LoadBalancingPeer.PeerState);
                 return false;
             }
             if (overwriteSettings != null)
@@ -248,12 +251,12 @@ namespace Photon.Voice.Unity
             }
             if (this.Settings == null)
             {
-                this.Logger.LogError("Settings are null");
+                this.Logger.Log(LogLevel.Error, "Settings are null");
                 return false;
             }
             if (string.IsNullOrEmpty(this.Settings.AppIdVoice) && string.IsNullOrEmpty(this.Settings.Server))
             {
-                this.Logger.LogError("Provide an AppId or a Server address in Settings to be able to connect");
+                this.Logger.Log(LogLevel.Error, "Provide an AppId or a Server address in Settings to be able to connect");
                 return false;
             }
             if (this.Settings.IsMasterServerAddress && string.IsNullOrEmpty(this.Client.UserId))
@@ -281,7 +284,7 @@ namespace Photon.Voice.Unity
                 RemoteVoiceLink rvl = this.cachedRemoteVoices[i];
                 if (userData.Equals(rvl.VoiceInfo.UserData))
                 {
-                    this.Logger.LogDebug("Speaker linking for remoteVoice {0}.", rvl);
+                    this.Logger.Log(LogLevel.Debug, "Speaker linking for remoteVoice {0}.", rvl);
                     this.LinkSpeaker(speaker, rvl);
                     return speaker.IsLinked;
                 }
@@ -290,14 +293,16 @@ namespace Photon.Voice.Unity
             return false;
         }
 
-        #endregion
+#endregion
 
-        #region Private Methods
+#region Private Methods
 
         protected override void Awake()
         {
             base.Awake();
             voiceComponentImpl.Awake(this);
+
+            Init();
 
             if (this.ApplyDontDestroyOnLoad)
             {
@@ -353,7 +358,6 @@ namespace Photon.Voice.Unity
                 this.client.LoadBalancingPeer.StopThread();
             }
             this.client.Dispose();
-            SupportClass.StopAllBackgroundCalls();
         }
 
         protected virtual Speaker InstantiateSpeakerForRemoteVoice(int playerId, byte voiceId, object userData)
@@ -374,7 +378,7 @@ namespace Photon.Voice.Unity
         {
             if (this.SpeakerPrefab == null)
             {
-                this.Logger.LogError("SpeakerPrefab is not set.");
+                this.Logger.Log(LogLevel.Error, "SpeakerPrefab is not set.");
                 return null;
             }
 
@@ -384,26 +388,26 @@ namespace Photon.Voice.Unity
             {
                 if (speakers.Length > 1)
                 {
-                    this.Logger.LogWarning("Multiple Speaker components found attached to the GameObject (VoiceConnection.SpeakerPrefab) or its children. Using the first one we found.");
+                    this.Logger.Log(LogLevel.Warning, "Multiple Speaker components found attached to the GameObject (VoiceConnection.SpeakerPrefab) or its children. Using the first one we found.");
                 }
                 if (destroyOnRemove)
                 {
                     speakers[0].OnRemoteVoiceRemoveAction += (s) =>
                     {
-                        this.Logger.LogInfo("OnRemoteVoiceRemoveAction: destroying VoiceConnection.SpeakerPrefab instance [{0}]", go.name);
+                        this.Logger.Log(LogLevel.Info, "OnRemoteVoiceRemoveAction: destroying VoiceConnection.SpeakerPrefab instance [{0}]", go.name);
                         Destroy(go);
                     };
                 }
                 if (parent != null)
                 {
-                    go.transform.SetParent(parent.transform);
+                    go.transform.SetParent(parent.transform, false);
                 }
-                this.Logger.LogInfo("Instance of VoiceConnection.SpeakerPrefab instantiated.");
+                this.Logger.Log(LogLevel.Info, "Instance of VoiceConnection.SpeakerPrefab instantiated.");
                 return speakers[0];
             }
             else
             {
-                this.Logger.LogError("SpeakerPrefab does not have a component of type Speaker in its hierarchy.");
+                this.Logger.Log(LogLevel.Error, "SpeakerPrefab does not have a component of type Speaker in its hierarchy.");
                 Destroy(go);
                 return null;
             }
@@ -413,13 +417,20 @@ namespace Photon.Voice.Unity
         {
             if (voiceInfo.Codec != Codec.AudioOpus)
             {
-                this.Logger.LogInfo("OnRemoteVoiceInfo: Skipped as codec is not Opus, [p#{0} v#{1} c#{2} i:{{{3}}}]", playerId, voiceId, channelId, voiceInfo);
+                this.Logger.Log(LogLevel.Info, "OnRemoteVoiceInfo: Skipped as codec is not Opus, [p#{0} v#{1} c#{2} i:{{{3}}}]", playerId, voiceId, channelId, voiceInfo);
                 return;
             }
 
             RemoteVoiceLink remoteVoice = new RemoteVoiceLink(voiceInfo, playerId, voiceId, channelId, ref options);
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+#if !UNITY_2021_2_OR_NEWER // opus lib requires Emscripten 2.0.19
+                this.Logger.Log(LogLevel.Error, "Remote voice Opus decoder requies Unity 2021.2 or newer for WebGL");
+                options.Decoder = null; // null Opus decoder set by RemoteVoiceLink
+#endif
+            }
 
-            this.Logger.LogInfo("OnRemoteVoiceInfo:  {0}", remoteVoice);
+            this.Logger.Log(LogLevel.Info, "OnRemoteVoiceInfo:  {0}", remoteVoice);
             this.cachedRemoteVoices.Add(remoteVoice);
             if (RemoteVoiceAdded != null)
             {
@@ -427,13 +438,13 @@ namespace Photon.Voice.Unity
             }
             remoteVoice.RemoteVoiceRemoved += () =>
             {
-                this.Logger.LogInfo("OnRemoteVoiceInfo: RemoteVoiceRemoved {0}", remoteVoice);
+                this.Logger.Log(LogLevel.Info, "OnRemoteVoiceInfo: RemoteVoiceRemoved {0}", remoteVoice);
                 this.cachedRemoteVoices.Remove(remoteVoice);
             };
             var speaker = this.InstantiateSpeakerForRemoteVoice(playerId, voiceId, voiceInfo.UserData);
             if (speaker == null)
             {
-                this.Logger.LogDebug("OnRemoteVoiceInfo: Remote GameObject not found or does not have a Speaker {0}", remoteVoice);
+                this.Logger.Log(LogLevel.Debug, "OnRemoteVoiceInfo: Remote GameObject not found or does not have a Speaker {0}", remoteVoice);
             }
             else
             {
@@ -444,7 +455,7 @@ namespace Photon.Voice.Unity
 
         protected virtual void OnVoiceStateChanged(ClientState fromState, ClientState toState)
         {
-            this.Logger.LogInfo("OnVoiceStateChanged from {0} to {1}", fromState, toState);
+            this.Logger.Log(LogLevel.Info, "OnVoiceStateChanged from {0} to {1}", fromState, toState);
             if (fromState == ClientState.Joined)
             {
                 for (int i = 0; i < this.recorders.Count; i++)
@@ -516,12 +527,12 @@ namespace Photon.Voice.Unity
 
         private void LinkSpeaker(Speaker speaker, RemoteVoiceLink remoteVoice)
         {
-#if UNITY_PS4 || UNITY_SHARLIN
-                speaker.PlayStationUserID = this.PlayStationUserID;
+#if UNITY_PS4 || UNITY_PS5
+            speaker.PlayStationUserID = this.PlayStationUserID;
 #endif
             if (speaker.Link(remoteVoice))
             {
-                this.Logger.LogInfo("Speaker linked with remote voice {0}", remoteVoice);
+                this.Logger.Log(LogLevel.Info, "Speaker linked with remote voice {0}", remoteVoice);
                 this.linkedSpeakers.Add(speaker);
                 remoteVoice.RemoteVoiceRemoved += () =>
                 {
@@ -545,12 +556,12 @@ namespace Photon.Voice.Unity
                 }
                 else
                 {
-                    this.Logger.LogWarning("AddRecorder: failed to init recorder {0}.", rec);
+                    this.Logger.Log(LogLevel.Warning, "AddRecorder: failed to init recorder {0}.", rec);
                 }
             }
             else
             {
-                this.Logger.LogError("AddRecorder: recorder {0} already added.", rec);
+                this.Logger.Log(LogLevel.Error, "AddRecorder: recorder {0} already added.", rec);
             }
 
             return false;
@@ -569,10 +580,10 @@ namespace Photon.Voice.Unity
         {
             if (operationResponse.ReturnCode != ErrorCode.Ok && (operationResponse.OperationCode != OperationCode.JoinRandomGame || operationResponse.ReturnCode == ErrorCode.NoRandomMatchFound))
             {
-                this.Logger.LogError("Operation {0} response error code {1} message {2}", operationResponse.OperationCode, operationResponse.ReturnCode, operationResponse.DebugMessage);
+                this.Logger.Log(LogLevel.Error, "Operation {0} response error code {1} message {2}", operationResponse.OperationCode, operationResponse.ReturnCode, operationResponse.DebugMessage);
             }
         }
 
-        #endregion
+#endregion
     }
 }

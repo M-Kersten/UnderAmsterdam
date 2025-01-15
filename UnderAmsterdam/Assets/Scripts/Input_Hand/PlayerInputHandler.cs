@@ -53,8 +53,6 @@ public class PlayerInputHandler : MonoBehaviour
         triggerActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "trigger" });
         gripActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "grip" });
         joystickActionR.EnableWithDefaultXRBindings(side: side, new List<string> { "joystick" });
-
-
     }
 
     private void Update()
@@ -84,13 +82,13 @@ public class PlayerInputHandler : MonoBehaviour
 
     public RigInput GetPlayerInput(RigInput playerInputData) //return a struct with all local inputs when called
     {
-        playerInputData.anyTriggerPressed = (NetworkBool)isAnyTriggerPressed;
-        playerInputData.rightTriggerPressed = (NetworkBool)isRightTriggerPressed;
-        playerInputData.leftTriggerPressed = (NetworkBool)isLeftTriggerPressed;
+        playerInputData.anyTriggerPressed = isAnyTriggerPressed;
+        playerInputData.rightTriggerPressed = isRightTriggerPressed;
+        playerInputData.leftTriggerPressed = isLeftTriggerPressed;
 
-        playerInputData.anyGripPressed = (NetworkBool)isAnyGripPressed;
-        playerInputData.rightGripPressed = (NetworkBool)isRightGripPressed;
-        playerInputData.leftGripPressed = (NetworkBool)isLeftGripPressed;
+        playerInputData.anyGripPressed = isAnyGripPressed;
+        playerInputData.rightGripPressed = isRightGripPressed;
+        playerInputData.leftGripPressed = isLeftGripPressed;
 
         return playerInputData;
     }

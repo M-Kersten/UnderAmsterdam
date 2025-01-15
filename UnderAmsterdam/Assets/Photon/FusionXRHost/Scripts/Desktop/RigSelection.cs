@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-namespace Fusion.XR.Host
+namespace Fusion.XR.Host.Desktop
 {
     /**
      * 
@@ -15,23 +15,39 @@ namespace Fusion.XR.Host
     {
         public UnityEvent OnSelectRig;
 
+        public const string RIGMODE_VR = "VR";
+        public const string RIGMODE_DESKTOP = "Desktop";
+        public const string SETTING_RIGMODE = "RigMode";
+
         public GameObject connexionHandler;
         public HardwareRig vrRig;
         public HardwareRig desktopRig;
+        Camera rigSelectionCamera;
 
         public bool forceVROnAndroid = true;
 
+        public bool rigSelected = false;
+
         public enum Mode
         {
-            SelectedByUIAndPref,
+            SelectedByUI,
+            SelectedByUserPref,
             ForceVR,
             ForceDesktop
         }
-        public Mode mode = Mode.SelectedByUIAndPref;
+        public Mode mode = Mode.SelectedByUI;
 
         private void Awake()
         {
-            connexionHandler.gameObject.SetActive(false);
+            rigSelectionCamera = GetComponentInChildren<Camera>();
+            if (connexionHandler)
+            {
+                connexionHandler.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("No connexion handler provided to RigSelection: risk of connection before choosing the appropriate hardware rig !");
+            }
             vrRig.gameObject.SetActive(false);
             desktopRig.gameObject.SetActive(false);
 
@@ -47,24 +63,35 @@ namespace Fusion.XR.Host
                 EnableVRRig();
                 return;
             }
+
             if (mode == Mode.ForceDesktop)
             {
                 EnableDesktopRig();
                 return;
             }
 
+            // In release build, we replace SelectedByUI by SelectedByUserPref unless overriden
+            DisableDebugSelectedByUI();
 
-            var prefMode = PlayerPrefs.GetString("RigMode");
-            if (prefMode == "VR") EnableVRRig();
-            if (prefMode == "Desktop") EnableDesktopRig();
-            if (prefMode != "")
+            if (mode == Mode.SelectedByUserPref)
             {
-                PlayerPrefs.SetString("RigMode", "");
-                PlayerPrefs.Save();
+                var sessionPrefMode = PlayerPrefs.GetString(SETTING_RIGMODE);
+                if (sessionPrefMode != "")
+                {
+                    if (sessionPrefMode == RIGMODE_VR) EnableVRRig();
+                    if (sessionPrefMode == RIGMODE_DESKTOP) EnableDesktopRig();
+                }
             }
         }
 
-        private void OnGUI()
+        protected virtual void DisableDebugSelectedByUI()
+        {
+#if !UNITY_EDITOR
+            if (mode == Mode.SelectedByUI) mode = Mode.SelectedByUserPref;
+#endif
+        }
+
+        protected virtual void OnGUI()
         {
             GUILayout.BeginArea(new Rect(5, 5, Screen.width - 10, Screen.height - 10));
             {
@@ -89,15 +116,38 @@ namespace Fusion.XR.Host
         {
             gameObject.SetActive(false);
             vrRig.gameObject.SetActive(true);
-            connexionHandler.gameObject.SetActive(true);
-            if (OnSelectRig != null) OnSelectRig.Invoke();
+            SetVRPreference();
+            OnRigSelected();
         }
+
         void EnableDesktopRig()
         {
             gameObject.SetActive(false);
             desktopRig.gameObject.SetActive(true);
-            connexionHandler.gameObject.SetActive(true);
+            SetDesktopPreference();
+            OnRigSelected();
+        }
+
+        void OnRigSelected()
+        {
+            if(connexionHandler) connexionHandler.gameObject.SetActive(true);
             if (OnSelectRig != null) OnSelectRig.Invoke();
+            if (rigSelectionCamera) rigSelectionCamera.gameObject.SetActive(false);
+            rigSelected = true;
+        }
+
+        [ContextMenu("Set preference to desktop")]
+        public void SetDesktopPreference()
+        {
+            PlayerPrefs.SetString(SETTING_RIGMODE, RIGMODE_DESKTOP);
+            PlayerPrefs.Save();
+        }
+
+        [ContextMenu("Set preference to VR")]
+        public void SetVRPreference()
+        {
+            PlayerPrefs.SetString(SETTING_RIGMODE, RIGMODE_VR);
+            PlayerPrefs.Save();
         }
     }
 }

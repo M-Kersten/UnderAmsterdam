@@ -14,7 +14,7 @@ public class PipeColouring : MonoBehaviour
 
     private int LODlevels = 4;
 
-    public void UpdateRenderer(string pipeCompany, GameObject givenGO = null)
+    public void UpdateRenderer(int pipeCompany, GameObject givenGO = null)
     {
         if (!givenGO)
         {

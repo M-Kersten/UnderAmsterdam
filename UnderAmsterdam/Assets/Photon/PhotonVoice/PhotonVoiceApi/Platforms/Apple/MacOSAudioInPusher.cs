@@ -5,12 +5,6 @@ using System.Runtime.InteropServices;
 
 namespace Photon.Voice.MacOS
 {
-    public class MonoPInvokeCallbackAttribute : System.Attribute
-    {
-        private Type type;
-        public MonoPInvokeCallbackAttribute(Type t) { type = t; }
-    }
-
     public class AudioInPusher : IAudioPusher<float>
     {
         const string lib_name = "AudioIn";
@@ -36,7 +30,7 @@ namespace Photon.Voice.MacOS
                 {
                     Error = "Exception in AudioInPusher constructor";
                 }
-                logger.LogError("[PV] AudioInPusher: " + Error);
+                logger.Log(LogLevel.Error, "[PV] AudioInPusher: " + Error);
             }
         }
 

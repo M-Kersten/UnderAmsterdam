@@ -6,14 +6,12 @@ using UnityEngine.Events;
 
 namespace Fusion.XR.Host.Grabbing
 {
-    [OrderAfter(typeof(NetworkGrabber), typeof(NetworkHand), typeof(NetworkRigidbody), typeof(NetworkTransform))]
+    [DefaultExecutionOrder(NetworkGrabbable.EXECUTION_ORDER)]
     public abstract class NetworkGrabbable : NetworkBehaviour
     {
-        public NetworkGrabber currentGrabber;
-        protected NetworkGrabber lastGrabber = null;
-        public bool IsGrabbed => currentGrabber != null;
-        [HideInInspector]
-        public NetworkTransform networkTransform = null;
+        public const int EXECUTION_ORDER = NetworkGrabber.EXECUTION_ORDER + 10;
+        public virtual NetworkGrabber CurrentGrabber { get; set; }
+        public bool IsGrabbed => CurrentGrabber != null;
 
         [Header("Events")]
         public UnityEvent onDidUngrab = new UnityEvent();
@@ -24,12 +22,12 @@ namespace Fusion.XR.Host.Grabbing
 
         public void DidGrab()
         {
-            if (onDidGrab != null) onDidGrab.Invoke(currentGrabber);
+            if (onDidGrab != null) onDidGrab.Invoke(CurrentGrabber);
         }
 
-        public void DidUngrab()
+        public void DidUngrab(NetworkGrabber lastGrabber)
         {
-            if (onDidGrab != null) onDidGrab.Invoke(lastGrabber);
+            if (onDidGrab != null) onDidUngrab.Invoke();
         }
     }
 }

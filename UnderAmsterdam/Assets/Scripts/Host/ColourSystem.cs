@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,24 +34,24 @@ public class ColourSystem : MonoBehaviour
     }
 
     [Tooltip("GameObject has to have renderer on it")]
-    public void SetColour(GameObject givenGO, string companyName)
+    public void SetColour(GameObject givenGO, int companyName)
     {
         if (givenGO.layer == 8)//hand layer
         {
             for (int i = 0; i < handMaterials.Length; i++)
-                if (companyName + "Hand" == handMaterials[i].name)
+                if (Enum.GetValues(typeof(CompanyType)).GetValue(companyName) + "Hand" == handMaterials[i].name)
                     givenGO.GetComponent<Renderer>().material = handMaterials[i];
         }
         else if(givenGO.tag == "misc")
         {
             for (int i = 0; i < miscMaterials.Length; i++)
-                if (companyName + "Misc" == miscMaterials[i].name)
+                if (Enum.GetValues(typeof(CompanyType)).GetValue(companyName) + "Misc" == miscMaterials[i].name)
                     givenGO.GetComponent<Renderer>().material = miscMaterials[i];
         }
         else
         {
             for (int i = 0; i < pipeMaterials.Length; i++)
-                if (companyName == pipeMaterials[i].name)
+                if (Enum.GetValues(typeof(CompanyType)).GetValue(companyName).ToString() == pipeMaterials[i].name)
                     givenGO.GetComponent<Renderer>().material = pipeMaterials[i];
         }
     }

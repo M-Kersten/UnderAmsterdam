@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Fusion.XR.Host;
 using Fusion;
+using Random = UnityEngine.Random;
 
 
 public class CompanyManager : MonoBehaviour
@@ -10,61 +13,60 @@ public class CompanyManager : MonoBehaviour
     public static CompanyManager Instance;
 
     // All companies that are left, after players have been given a company
-    private List<string> availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
+    private List<int> availableCompanies = new();
     // History of all the companies a player has had
-    private Dictionary<PlayerRef, List<string>> playerHistory = new Dictionary<PlayerRef, List<string>>();
+    private Dictionary<PlayerRef, List<int>> playerHistory = new();
     // Empty PlayerRef for the above dictionary
-    public PlayerRef emptyPlayer = new();
+    public PlayerRef emptyPlayer;
     // Dictionary that keeps track what player has what company at the moment
-    public Dictionary<string, PlayerRef> _companies;
-    
-    void Start(){
+    public Dictionary<int, PlayerRef> Companies;
+
+    void Start()
+    {
         if (Instance == null)
             Instance = this;
         else
             Destroy(this);
-            
-        Gamemanager.Instance.RoundLateEnd.AddListener(ResetCompanies);
+
+        Gamemanager.Instance.RoundLateEnd.AddListener(CheckForResetCompanies);
         Gamemanager.Instance.RoundStart.AddListener(loadSend);
-        _companies = new Dictionary<string, PlayerRef> {
-    {"water", emptyPlayer},
-    {"gas", emptyPlayer},
-    {"data", emptyPlayer},
-    {"sewage", emptyPlayer},
-    {"power", emptyPlayer}
-        };
+        ResetCompanies();
     }
 
-    string GetCompany(PlayerRef player) {
-        if (availableCompanies.Count > 0) {
-            string myCompany = "Empty";
+    int GetCompany(PlayerRef player) 
+    {
+        if (availableCompanies.Count > 0) 
+        {
+            int myCompany = -1;
             int randomCompany = 0;
             
             
-            if (playerHistory[player].Count < _companies.Count)
+            if (playerHistory[player].Count < Companies.Count)
             {
-            // Keep randomizing company, until we find one that player hasn't had yet
-                do { 
+                // Keep randomizing company, until we find one that player hasn't had yet
+                do 
+                { 
                     // if there aren't any more companies left, quit the do-while loop to stop infinite looping
-                    if (playerHistory[player].Count == _companies.Count)
+                    if (playerHistory[player].Count == Companies.Count)
                         break;
                     randomCompany = Random.Range(0, availableCompanies.Count);
                     myCompany = availableCompanies[randomCompany];
-                } while(playerHistory[player].Contains(myCompany));
+                } 
+                while(playerHistory[player].Contains(myCompany));
 
                 // Add this company to player's history, so we don't see it again
                 playerHistory[player].Add(myCompany);
                 // Add player to company
-                _companies[myCompany] = player;
+                Companies[myCompany] = player;
                 // Remove random company from available company list, so we don't have 2 players in same company
                 availableCompanies.RemoveAt(randomCompany);
                 return myCompany;
                 // If there are still companies left we haven't had yet, do this function again until we return a company that wasn't given yet
             }
-            return "Empty";
+            return -1;
         }
         //Debug.LogError("No companies available");
-        return "Empty";
+        return -1;
     }
 
     public void loadSend() 
@@ -73,7 +75,7 @@ public class CompanyManager : MonoBehaviour
         {
             if (!playerHistory.ContainsKey(player.Key)) 
             {
-                playerHistory.Add(player.Key, new List<string>());
+                playerHistory.Add(player.Key, new List<int>());
             }
             SendCompany(player.Key, player.Value);
         }
@@ -82,25 +84,31 @@ public class CompanyManager : MonoBehaviour
     // Function to send company to the correct player
     private void SendCompany(PlayerRef targetPlayer, NetworkObject nObject) 
     {
-        string sentCompany = GetCompany(targetPlayer);
+        int sentCompany = GetCompany(targetPlayer);
         // Grab the playerdata of the player we want to send the company to
         nObject.gameObject.GetComponent<PlayerData>().ReceiveCompany(sentCompany);
     }
 
-    public void ResetCompanies()
+    private void CheckForResetCompanies()
     {
         if (Gamemanager.Instance.currentRound >= Gamemanager.Instance.amountOfRounds)
             return;
 
-        // Reset given companies
-        availableCompanies = new List<string> { "water", "gas", "data", "sewage", "power" };
-        _companies = new Dictionary<string, PlayerRef>
-        {
-            { "water", emptyPlayer },
-            { "gas", emptyPlayer },
-            { "data", emptyPlayer },
-            { "sewage", emptyPlayer },
-            { "power", emptyPlayer }
-        };
+        ResetCompanies();
+    }
+
+    private void ResetCompanies()
+    {
+        availableCompanies = Enum.GetValues(typeof(CompanyType))
+            .Cast<CompanyType>()
+            .Select(e => (int)e).ToList();
+        Companies = InitializePlayerRefDictionary(emptyPlayer);
+    }
+    
+    private Dictionary<int, PlayerRef> InitializePlayerRefDictionary(PlayerRef playerRef)
+    {
+        return Enum.GetValues(typeof(CompanyType))
+            .Cast<CompanyType>()
+            .ToDictionary(company => (int)company, company => playerRef);
     }
 }

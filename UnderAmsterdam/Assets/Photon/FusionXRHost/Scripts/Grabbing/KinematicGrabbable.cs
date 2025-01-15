@@ -30,10 +30,14 @@ namespace Fusion.XR.Host.Grabbing
             DidUngrab();
         }
 
-        public override void Grab(Grabber newGrabber)
+        public override bool Grab(Grabber newGrabber)
         {
-            base.Grab(newGrabber);
-            DidGrab();
+            if (base.Grab(newGrabber))
+            {
+                DidGrab();
+                return true;
+            }
+            return false;
         }
 
         public void Follow(Transform followingtransform, Transform followedTransform)

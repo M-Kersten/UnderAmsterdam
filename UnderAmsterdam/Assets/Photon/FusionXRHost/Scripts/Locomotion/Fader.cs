@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Fusion.XR
+namespace Fusion.XR.Host.Locomotion
 {
     /**
      * Allow to fade in / fade out a black overlay in front of the user
@@ -22,21 +20,18 @@ namespace Fusion.XR
         public float blinkDurationIn = 0.1f;
         public float blinkDurationSpentIn = 0.1f;
         public float blinkDurationOut = 0.1f;
-
-
+        
         // Start is called before the first frame update
         void Start()
         {
             Camera camera = GetComponent<Camera>();
             target.transform.localPosition = new Vector3(0, 0, camera.nearClipPlane + 0.01f);
             SetFade(startFadeLevel);
-
         }
 
         [ContextMenu("Blink")]
         private void LaunchBlink()
         {
-
             StartCoroutine(Blink());
         }
 
@@ -69,8 +64,7 @@ namespace Fusion.XR
                 target.gameObject.SetActive(true);
             }
         }
-
-
+        
         float fadeRequestId = 0;
         public IEnumerator Fade(float duration, float sourceAlpha = 1, float targetAlpha = 0)
         {

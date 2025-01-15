@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
+using Fusion.Addons.ConnectionManagerAddon;
 using Fusion.XR.Host;
 
 public class IOTileScript : NetworkBehaviour
@@ -17,15 +19,41 @@ public class IOTileScript : NetworkBehaviour
 
     [SerializeField] private LayerMask pipeLayer;
 
-    [Networked(OnChanged = nameof(OnIOTileChanged))]
-    public string company { get; set; }
+    private ChangeDetector _changes;
+    
+    [Networked]
+    public int Company { get; set; }
 
-    [Networked] public bool isOutput { get; set; }
-
+    [Networked] 
+    public bool isOutput { get; set; }
+    
     public override void Spawned()
     {
+        _changes = GetChangeDetector(ChangeDetector.Source.SimulationState);
         GetNeighbours();
     }
+
+    public override void Render()
+    {
+        foreach (var change in _changes.DetectChanges(this, out var previousBuffer, out var currentBuffer))
+        {
+            switch (change)
+            {
+                case nameof(Company):
+                    var reader = GetPropertyReader<int>(nameof(Company));
+                    var (previous,current) = reader.Read(previousBuffer, currentBuffer);
+                    OnIOTileChanged(current);
+                    break;
+            }
+        }
+    }
+    
+    void OnIOTileChanged(int company)
+    {
+        if(Gamemanager.Instance.ConnectionManager.runner.IsClient)
+            TryEnableIOPipe(company, isOutput, true);
+    }
+    
     private void GetNeighbours()
     {
         RaycastHit hit;
@@ -57,42 +85,42 @@ public class IOTileScript : NetworkBehaviour
     private bool CheckNeighboursOccupied()
     {
         for (int i = 0; i < IoNeighbourTiles.Count; i++)
-            if (IoNeighbourTiles[i].company != "Empty") 
+            if (IoNeighbourTiles[i].Company != -1) 
                 return true;
 
         return false;
     }
-    public bool TryEnableIOPipe(string setCompany, bool shouldBeOutput, bool isSyncing)
+    public bool TryEnableIOPipe(int setCompany, bool shouldBeOutput, bool isSyncing)
     {
-        if (setCompany == "Empty")
+        if (setCompany == -1)
         {
-            company = setCompany;
+            Company = setCompany;
             return false;
         }
-        if (!isSyncing && company != "Empty") return false; // This IOTile already has got a company
+        
+        if (!isSyncing && Company != -1) 
+            return false; // This IOTile already has got a company
 
         if (CheckNeighboursOccupied())
-        {
             return false;
-        }
 
-        company = setCompany;
+        Company = setCompany;
         isOutput = shouldBeOutput;
-        for (int i = 0; i < pipeMaterials.Length; i++)
+        foreach (var pipeMaterial in pipeMaterials)
         {
-            if (pipeMaterials[i].name == company)
-            {
-                myRenderer.material = pipeMaterials[i];
-            }
+            if (pipeMaterial.name == Enum.GetValues(typeof(CompanyType)).GetValue(Company).ToString())
+                myRenderer.material = pipeMaterial;
         }
+        
         VisualObject.SetActive(true);
 
         if (isOutput)
         {
-            Gamemanager.Instance.RoundStart.AddListener(delegate { SpawnIndicator(true); });
+            Gamemanager.Instance.RoundStart.AddListener(() => SpawnIndicator(true));
 
             //If we are on the first round then just spawn an indicator, round start is already ongoing.
-            if (Gamemanager.Instance.currentRound == 1) SpawnIndicator(true);
+            if (Gamemanager.Instance.currentRound == 1) 
+                SpawnIndicator(true);
         }
         else
         {
@@ -102,13 +130,7 @@ public class IOTileScript : NetworkBehaviour
 
         return true;
     }
-
-    static void OnIOTileChanged(Changed<IOTileScript> changed)
-    {
-        if(Gamemanager.Instance.ConnectionManager.runner.IsClient)
-            changed.Behaviour.TryEnableIOPipe(changed.Behaviour.company, changed.Behaviour.isOutput, true);
-    }
-
+    
     public void StartPipeCheck()
     {
         if (isOutput)
@@ -121,7 +143,7 @@ public class IOTileScript : NetworkBehaviour
             {
                 // Launching the checking process
                 CubeInteraction tile = hit.transform.GetComponent<CubeInteraction>();
-                if(tile.company != "Empty")
+                if(tile.Company != -1)
                     tile.CheckConnectionForWin();
             }
         }
@@ -129,7 +151,7 @@ public class IOTileScript : NetworkBehaviour
 
     public void SpawnIndicator(bool shouldBeOutput)
     {
-        if (company == Gamemanager.Instance.networkData.company)
+        if (Company == Gamemanager.Instance.networkData.Company)
         {
             InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
             indicatorScript.InitializeIndicator(shouldBeOutput);

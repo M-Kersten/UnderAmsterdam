@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,10 +23,8 @@ public class CubeInteraction : NetworkBehaviour
 
     public bool TileOccupied;
 
-    // When company's values changes, run OnCompanyChange
-    [SerializeField]
-    [Networked(OnChanged = nameof(onCompanyChange))]
-    public string company { get; set; }
+    [Networked]
+    public int Company { get; set; }
 
     [SerializeField] private GameObject[] pipeParts;
     [SerializeField] private GameObject[] previewPipeParts;
@@ -38,6 +37,8 @@ public class CubeInteraction : NetworkBehaviour
     public bool obstructed = false;
     public bool isChecked = false;
     public bool isPlayTile;
+    
+    private ChangeDetector _changes;
 
     void Start()
     {
@@ -45,8 +46,22 @@ public class CubeInteraction : NetworkBehaviour
         Gamemanager.Instance.RoundEnd.AddListener(delegate { OnRenderPipePreview(false); });
     }
     
+    public override void Render()
+    {
+        foreach (var change in _changes.DetectChanges(this, out var previousBuffer, out var currentBuffer))
+        {
+            switch (change)
+            {
+                case nameof(Company):
+                    OnCompanyChange();
+                    break;
+            }
+        }
+    }
+    
     public override void Spawned()
     {
+        _changes = GetChangeDetector(ChangeDetector.Source.SimulationState);
         ResetActivatedPipes();
         OnRenderPipePreview(false);
         OnRenderPipePart(false);
@@ -67,7 +82,7 @@ public class CubeInteraction : NetworkBehaviour
 
         activatedPipes = new bool[neighbors.Length]; //Array of booleans storing which orientation is enabled [N, S, E, W, T, B]
 
-        company = "Empty";
+        Company = -1;
         isSpawned = true;
     }
 
@@ -112,14 +127,14 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 
-    static void onCompanyChange(Changed<CubeInteraction> changed)
+    private void OnCompanyChange()
     {
         // When company changes give the new company (changed is the new values)
-        changed.Behaviour.UpdateCompany(changed.Behaviour.company);
-        changed.Behaviour.UpdateNeighborData(true);
+        UpdateCompany(Company);
+        UpdateNeighborData(true);
     }
 
-    private void UpdateNeighborData(bool enable, string playerCompany = "")
+    private void UpdateNeighborData(bool enable, int playerCompany = -2)
     {
         for (int i = 0; i < neighbors.Length; i++)
         {
@@ -132,7 +147,7 @@ public class CubeInteraction : NetworkBehaviour
                 {
                     neighborsScript[i].activatedPipes[GetOppositeFace(i)] = false;
 
-                    if ((neighborsScript[i].company != "Empty") && (neighborsScript[i].company == company || neighborsScript[i].company == playerCompany))
+                    if ((neighborsScript[i].Company != -1) && (neighborsScript[i].Company == Company || neighborsScript[i].Company == playerCompany))
                     {
                         activatedPipes[i] = enable;
                         neighborsScript[i].activatedPipes[GetOppositeFace(i)] = enable;
@@ -141,7 +156,7 @@ public class CubeInteraction : NetworkBehaviour
                 // Or the IO tile
                 else if (neighbors[i].TryGetComponent(out IOTileScript IOTile))
                 {
-                    if (IOTile.company != "Empty" && (IOTile.company == company || IOTile.company == playerCompany))
+                    if (IOTile.Company != -1 && (IOTile.Company == Company || IOTile.Company == playerCompany))
                         activatedPipes[i] = enable;
                 }
             }
@@ -149,10 +164,13 @@ public class CubeInteraction : NetworkBehaviour
     }
 
     //Checks if each neighbor is compatible with player's company
-    public bool VerifyRules(string pCompany)
+    public bool VerifyRules(int pCompany)
     {
-        if(!isPlayTile)
-            if (pCompany == "Empty") return true;
+        if (!isPlayTile)
+        {
+            if (pCompany == -1)
+                return true;
+        }
 
         for (int i = 0; i < neighborsScript.Length; i++)
         {
@@ -161,26 +179,28 @@ public class CubeInteraction : NetworkBehaviour
             if (neighborsScript[i] == null)
             {
                 //If there is no normal tiles, check for IOTiles
-                if (neighbors[i].TryGetComponent(out IOTileScript IOTile) && IOTile.company != "Empty" && IOTile.company != pCompany) return false;
-                else continue;
+                if (neighbors[i].TryGetComponent(out IOTileScript IOTile) && IOTile.Company != -1 && IOTile.Company != pCompany) 
+                    return false;
+                continue;
             }
-            else if (neighborsScript[i].company == "Empty") continue;
+            else if (neighborsScript[i].Company == -1) 
+                continue;
 
             if (//Incompatible company pairs, add more to implement more rules
-                AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "power") ||
-                AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "data") ||
-                AreMatchingPairs(pCompany, neighborsScript[i].company, "water", "sewage") ||
-                AreMatchingPairs(pCompany, neighborsScript[i].company, "power", "sewage") ||
-                AreMatchingPairs(pCompany, neighborsScript[i].company, "data", "sewage") ||
-                AreMatchingPairs(pCompany, neighborsScript[i].company, "data", "gas") ||
-                AreMatchingPairs(pCompany, neighborsScript[i].company, "power", "gas")
+                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Water, (int)CompanyType.Power) ||
+                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Water, (int)CompanyType.Data) ||
+                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Water, (int)CompanyType.Sewage) ||
+                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Power, (int)CompanyType.Sewage) ||
+                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Data, (int)CompanyType.Sewage) ||
+                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Data, (int)CompanyType.Gas) ||
+                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Power, (int)CompanyType.Gas)
             ) return false;
         }
 
         return true;
     }
 
-    private bool AreMatchingPairs(string playerCompany, string neighborCompany, string companyA, string companyB)
+    private bool AreMatchingPairs(int playerCompany, int neighborCompany, int companyA, int companyB)
     {
         return (playerCompany == companyA && neighborCompany == companyB || playerCompany == companyB && neighborCompany == companyA);
     }
@@ -212,10 +232,10 @@ public class CubeInteraction : NetworkBehaviour
     }
 
     [Tooltip("Should be activated before EnableTile()")]
-    public void UpdateCompany(string newCompany)
+    public void UpdateCompany(int newCompany)
     {
-        company = newCompany;
-        pColouring.UpdateRenderer(company);
+        Company = newCompany;
+        pColouring.UpdateRenderer(Company);
     }
 
     public void EnableTile()
@@ -225,7 +245,7 @@ public class CubeInteraction : NetworkBehaviour
         OnRenderPipePreview(false);
         UpdateNeighborData(true);
         OnRenderPipePart(true);
-        pColouring.UpdateRenderer(company);
+        pColouring.UpdateRenderer(Company);
     }
     
     public void DisableTile()
@@ -251,12 +271,12 @@ public class CubeInteraction : NetworkBehaviour
                 neighborsScript[i].TryExtendPipe();
             }
         }
-        company = "Empty";
+        Company = -1;
 
         Instantiate(particles, transform);
     }
     
-    public void OnHandEnter(string playerCompany)
+    public void OnHandEnter(int playerCompany)
     {
         if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
@@ -270,7 +290,7 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
     
-    public void OnHandExit(string playerCompany)
+    public void OnHandExit(int playerCompany)
     {
         if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
@@ -302,7 +322,7 @@ public class CubeInteraction : NetworkBehaviour
                 if (neighborsScript[i] != null && neighborsScript[i].activatedPipes[GetOppositeFace(i)])
                 {
                     neighborsScript[i].pipeParts[GetOppositeFace(i)].SetActive(isActive);
-                    neighborsScript[i].pColouring.UpdateRenderer(company);
+                    neighborsScript[i].pColouring.UpdateRenderer(Company);
                     neighborsScript[i].TryShowConnector();
                     neighborsScript[i].TryExtendPipe();
                 }
@@ -358,7 +378,7 @@ public class CubeInteraction : NetworkBehaviour
         }
         // Connector is visible, it must be activated
         connectorPart.SetActive(true);
-        pColouring.UpdateRenderer(company, connectorPart);
+        pColouring.UpdateRenderer(Company, connectorPart);
     }
 
     private int IsLinePipe()
@@ -426,7 +446,7 @@ public class CubeInteraction : NetworkBehaviour
                 if (neighborsScript[i] != null)
                 {
                     // from the same company and not checked yet...
-                    if (company == neighborsScript[i].company && !neighborsScript[i].isChecked)
+                    if (Company == neighborsScript[i].Company && !neighborsScript[i].isChecked)
                     {
                         // Verify this neighbor and mark it as checked.
                         isChecked = true;
@@ -438,11 +458,11 @@ public class CubeInteraction : NetworkBehaviour
                 else if (neighbors[i].TryGetComponent(out IOTileScript IOPipe))
                 {
                     // from the same company and active and if it isnt output (aka where it came from)
-                    if (company == IOPipe.company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.currentRound)
+                    if (Company == IOPipe.Company && IOPipe.gameObject.activeSelf && !IOPipe.isOutput && IOPipe.roundInputPipe == Gamemanager.Instance.currentRound)
                     {
                         // Add points to this company
-                        Gamemanager.Instance.pManager.CalculateRoundPoints(company);
-                        TeamworkManager.Instance.CompanyDone(company);
+                        Gamemanager.Instance.pManager.CalculateRoundPoints(Company);
+                        TeamworkManager.Instance.CompanyDone(Company);
                         Instantiate(particlesWin, transform);
 
                         //Flickering lights
@@ -456,4 +476,3 @@ public class CubeInteraction : NetworkBehaviour
         }
     }
 }
-

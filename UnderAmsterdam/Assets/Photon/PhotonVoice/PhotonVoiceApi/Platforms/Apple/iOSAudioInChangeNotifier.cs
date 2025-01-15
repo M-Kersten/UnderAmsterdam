@@ -1,4 +1,4 @@
-﻿#if (UNITY_IOS && !UNITY_EDITOR) || __IOS__
+﻿#if ((UNITY_IOS || UNITY_VISIONOS) && !UNITY_EDITOR) || __IOS__
 
 using System;
 using System.Collections;
@@ -33,12 +33,6 @@ namespace Photon.Voice.IOS
                 this.instanceID = instanceCnt;
                 instancePerHandle.Add(instanceCnt++, this);
             }
-        }
-
-        public class MonoPInvokeCallbackAttribute : System.Attribute
-        {
-            private Type type;
-            public MonoPInvokeCallbackAttribute(Type t) { type = t; }
         }
 
         // IL2CPP does not support marshaling delegates that point to instance methods to native code.

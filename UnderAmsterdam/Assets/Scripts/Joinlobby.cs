@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Fusion.XR.Host;
 using TMPro;
-using System;
-using UnityEngine.Networking;
 
 public class Joinlobby : MonoBehaviour
 {
@@ -12,45 +8,29 @@ public class Joinlobby : MonoBehaviour
     [SerializeField] TextMeshProUGUI textinput;
     private bool canPressButton = true;
     [SerializeField] private float buttonCooldownSeconds = 8;
-    
+    [SerializeField] private string loadSceneName = "MainScene";
+
+
     [ContextMenu("Host join")]
     public async void OnAutoHostJoin()
     {
-        StartCoroutine(TestNetworkConnectivity());
-        
-        ConnectionManager connection = Gamemanager.Instance.ConnectionManager;
         if (canPressButton)
         {
-            connection.roomName = "testRoom";
-            connection.mode = Fusion.GameMode.AutoHostOrClient;
+            Gamemanager.Instance.ConnectionManager.roomName = textinput.text;
+            Gamemanager.Instance.ConnectionManager.gameMode = Fusion.GameMode.AutoHostOrClient;
 
             canPressButton = false;
             StartCoroutine(ButtonCooldown());
 
             Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
 
-            await connection.Connect();
+            await Gamemanager.Instance.ConnectionManager.Connect();
 
-            if (connection.runner.IsServer)
-                connection.runner.SetActiveScene(2);
+            if (Gamemanager.Instance.ConnectionManager.runner.IsServer)
+                Gamemanager.Instance.ConnectionManager.runner.LoadScene(loadSceneName);
         }
     }
-    
-    private IEnumerator TestNetworkConnectivity()
-    {
-        UnityWebRequest request = UnityWebRequest.Get("https://www.google.com");
-        yield return request.SendWebRequest();
 
-        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
-        {
-            Debug.LogError("Network Test Error: " + request.error);
-        }
-        else
-        {
-            Debug.Log("Network Test Success: " + request.downloadHandler.text);
-        }
-    }
-    
     private IEnumerator ButtonCooldown()
     {
         yield return new WaitForSeconds(buttonCooldownSeconds);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-
 public class HammerScript : NetworkBehaviour
 {
     private AudioSource audioSource;
@@ -15,8 +14,35 @@ public class HammerScript : NetworkBehaviour
     private Vector3 prevPosition;
     private Vector3 deltaPos = Vector3.zero;
 
-    [Networked(OnChanged = nameof(OnHammerChange))]
+    private ChangeDetector _changes;
+
+    [Networked]
     public bool isActive { get; set; }
+    
+    private void OnHammerChange(bool previousState, bool newState)
+    {
+        ActivateHammer(newState);
+    }
+
+    public override void Spawned()
+    {
+        _changes = GetChangeDetector(ChangeDetector.Source.SimulationState);
+    }
+
+    public override void Render()
+    {
+        foreach (var change in _changes.DetectChanges(this, out var previousBuffer, out var currentBuffer))
+        {
+            switch (change)
+            {
+                case nameof(OnHammerChange):
+                    var reader = GetPropertyReader<bool>(nameof(OnHammerChange));
+                    var (previous,current) = reader.Read(previousBuffer, currentBuffer);
+                    OnHammerChange(previous, current);
+                    break;
+            }
+        }
+    }
 
     private void Start()
     {
@@ -73,11 +99,11 @@ public class HammerScript : NetworkBehaviour
             CubeInteraction touchedCube = other.GetComponent<CubeInteraction>();
 
             // Checks the company and the tile state
-            if (touchedCube.TileOccupied && touchedCube.company == myData.company && HasStateAuthority)
+            if (touchedCube.TileOccupied && touchedCube.Company == myData.Company && HasStateAuthority)
             {
                 RPC_DisableTile(touchedCube);
                 if(!touchedCube.isPlayTile)
-                    Gamemanager.Instance.pManager.AddPoints(myData.company);
+                    Gamemanager.Instance.pManager.AddPoints(myData.Company);
             }
         }
         
@@ -86,14 +112,14 @@ public class HammerScript : NetworkBehaviour
         {
             NetworkObject root = other.gameObject.GetComponentInParent<NetworkObject>();
             RPC_DisableRoot(root);
-            Gamemanager.Instance.pManager.RemovePointsRoots(myData.company);
+            Gamemanager.Instance.pManager.RemovePointsRoots(myData.Company);
         }
     }
-    
-    static void OnHammerChange(Changed<HammerScript> changed)
-    {
-        changed.Behaviour.ActivateHammer(changed.Behaviour.isActive);
-    }
+
+
+
+
+
 
     public void ActivateHammer(bool enable)
     {
@@ -110,5 +136,4 @@ public class HammerScript : NetworkBehaviour
             prevPosition = transform.position;
         }
     }
-
 }

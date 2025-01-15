@@ -45,6 +45,7 @@ namespace Fusion.XR.Host.Rig
         public float grabThreshold = 0.5f;
         //False for Desktop mode, true for VR mode: when the hand grab is triggered by other scripts (MouseTeleport in desktop mode), we do not want to update the isGrabbing. It should only be done in VR mode
         public bool updateGrabWithAction = true;
+        public NetworkTransform networkTransform;
 
         public IHandRepresentation localHandRepresentation;
 
@@ -60,6 +61,7 @@ namespace Fusion.XR.Host.Rig
 
             grabber = GetComponentInChildren<Grabber>();
             localHandRepresentation = GetComponentInChildren<IHandRepresentation>();
+            networkTransform = GetComponent<NetworkTransform>();
         }
 
         protected virtual void Update()

@@ -25,12 +25,17 @@ namespace Fusion.XR.Host.Grabbing
 
         public abstract Vector3 AngularVelocity { get; }
 
-        public virtual void Grab(Grabber newGrabber)
+        public bool isGrabbed = false;
+
+        public virtual bool Grab(Grabber newGrabber)
         {
+            if (isGrabbed) return false;
             // Find grabbable position/rotation in grabber referential
             localPositionOffset = newGrabber.transform.InverseTransformPoint(transform.position);
             localRotationOffset = Quaternion.Inverse(newGrabber.transform.rotation) * transform.rotation;
             currentGrabber = newGrabber;
+            isGrabbed = true;
+            return true;
         }
 
         public virtual void Ungrab()
@@ -38,11 +43,12 @@ namespace Fusion.XR.Host.Grabbing
             currentGrabber = null;
             if (networkGrabbable)
             {
-                ungrabPosition = networkGrabbable.networkTransform.InterpolationTarget.transform.position;
-                ungrabRotation = networkGrabbable.networkTransform.InterpolationTarget.transform.rotation;
+                ungrabPosition = networkGrabbable.transform.position;
+                ungrabRotation = networkGrabbable.transform.rotation;
                 ungrabVelocity = Velocity;
                 ungrabAngularVelocity = AngularVelocity;
             }
+            isGrabbed = false;
         }
     }
 }

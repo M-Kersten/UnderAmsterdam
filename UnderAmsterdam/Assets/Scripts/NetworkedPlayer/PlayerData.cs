@@ -16,25 +16,56 @@ public class PlayerData : NetworkBehaviour
     private NetworkRig nRig;
     [SerializeField] private WristUISwitch watchUI;
 
-    [Networked(OnChanged = nameof(UpdatePlayer))]
-    public string company { get; set; }
+    private ChangeDetector _changes;
+    
+    [Networked] 
+    public int points { get; set; }
+    [Networked]
+    public int Company { get; set; }
 
-    [Networked] public int points { get; set; }
-
-    public void ReceiveCompany(string givenCompany)
+    public override void Spawned()
     {
-        company = givenCompany;
+        _changes = GetChangeDetector(ChangeDetector.Source.SimulationState);
     }
 
-    static void UpdatePlayer(Changed<PlayerData> changed)
+    public override void Render()
     {
-        ColourSystem color = ColourSystem.Instance;
-        color.SetColour(changed.Behaviour.playerCap, changed.Behaviour.company);
-        color.SetColour(changed.Behaviour.playerLeftHand, changed.Behaviour.company);
-        color.SetColour(changed.Behaviour.playerRightHand, changed.Behaviour.company);
-        color.SetColour(changed.Behaviour.topWatch, changed.Behaviour.company);
-        changed.Behaviour.myMenu.ChangeImage(changed.Behaviour.company);
+        foreach (var change in _changes.DetectChanges(this, out var previousBuffer, out var currentBuffer))
+        {
+            Debug.Log($"change detected: {change}");
+            switch (change)
+            {
+                case nameof(Company):
+                    var reader = GetPropertyReader<int>(nameof(Company));
+                    var (previous,current) = reader.Read(previousBuffer, currentBuffer);
+                    OnCompanyChanged(previous, current);
+                    break;
+            }
+        }
     }
+
+    private void OnCompanyChanged(int oldValue, int newValue)
+    {
+        UpdatePlayer(newValue);
+    }
+
+    private void UpdatePlayer(int newCompany)
+    {
+        Debug.Log($"updating player to have company: {newCompany}");
+        var color = ColourSystem.Instance;
+        color.SetColour(playerCap, newCompany);
+        color.SetColour(playerLeftHand, newCompany);
+        color.SetColour(playerRightHand, newCompany);
+        color.SetColour(topWatch, newCompany);
+        myMenu.ChangeImage(newCompany);
+    }
+    
+    public void ReceiveCompany(int givenCompany)
+    {
+        Debug.Log($"assigning company: {givenCompany}");
+        Company = givenCompany;
+    }
+    
     private void Start()
     {
         if(Gamemanager.Instance.localData.leftHanded)

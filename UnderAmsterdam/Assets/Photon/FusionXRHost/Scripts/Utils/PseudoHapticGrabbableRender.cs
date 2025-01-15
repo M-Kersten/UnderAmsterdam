@@ -9,11 +9,14 @@ namespace Fusion.XR.Host.Grabbing
      * This optional components display a ghost of a graqbbed object at the position it would be if it was not colliding, thus following the ghost hand
      */
     [RequireComponent(typeof(NetworkPhysicsGrabbable))]
-    [OrderAfter(typeof(NetworkPhysicsGrabbable))]
+    [DefaultExecutionOrder(PseudoHapticGrabbableRender.EXECUTION_ORDER)]
     public class PseudoHapticGrabbableRender : MonoBehaviour
     {
+        public const int EXECUTION_ORDER = NetworkPhysicsGrabbable.EXECUTION_ORDER + 10;
         public Material ghostMetarial;
 
+        public GameObject grabbableVisualPart;
+        
         NetworkPhysicsGrabbable networkGrabbable;
         bool isPseudoHapticDisplayed = false;
 
@@ -23,27 +26,28 @@ namespace Fusion.XR.Host.Grabbing
         void Awake()
         {
             networkGrabbable = GetComponent<NetworkPhysicsGrabbable>();
+            if (grabbableVisualPart == null) Debug.LogError("The visual part has to be specified to know what to copy as the ghost render part");
         }
 
         void CreateGhost()
         {
-            ghostObject = GameObject.Instantiate(networkGrabbable.networkTransform.InterpolationTarget.gameObject);
-            ghostObject.transform.localScale = networkGrabbable.networkTransform.InterpolationTarget.transform.lossyScale;
-            ghostObject.transform.parent = networkGrabbable.networkTransform.InterpolationTarget.transform;
+            ghostObject = GameObject.Instantiate(grabbableVisualPart);
+            ghostObject.transform.localScale = grabbableVisualPart.transform.lossyScale;
+            ghostObject.transform.parent = grabbableVisualPart.transform;
             ghostRenderers = ghostObject.GetComponentsInChildren<Renderer>();
             if(ghostMetarial == null)
             {
-                if (networkGrabbable.currentGrabber && networkGrabbable.currentGrabber.hand.LocalHardwareHand && networkGrabbable.currentGrabber.hand.LocalHardwareHand.localHandRepresentation != null)
+                if (networkGrabbable.CurrentGrabber && networkGrabbable.CurrentGrabber.hand.LocalHardwareHand && networkGrabbable.CurrentGrabber.hand.LocalHardwareHand.localHandRepresentation != null)
                 {
-                    ghostMetarial = networkGrabbable.currentGrabber.hand.LocalHardwareHand.localHandRepresentation.SharedHandMaterial;
+                    ghostMetarial = networkGrabbable.CurrentGrabber.hand.LocalHardwareHand.localHandRepresentation.SharedHandMaterial;
                 }
             }
             if (ghostMetarial)
             {
-                var material = networkGrabbable.currentGrabber.hand.LocalHardwareHand.localHandRepresentation.SharedHandMaterial;
+                var material = networkGrabbable.CurrentGrabber.hand.LocalHardwareHand.localHandRepresentation.SharedHandMaterial;
                 foreach(var renderer in ghostRenderers)
                 {
-                    renderer.sharedMaterial = ghostMetarial = networkGrabbable.currentGrabber.hand.LocalHardwareHand.localHandRepresentation.SharedHandMaterial;
+                    renderer.sharedMaterial = ghostMetarial = networkGrabbable.CurrentGrabber.hand.LocalHardwareHand.localHandRepresentation.SharedHandMaterial;
                 }
             }
         }
@@ -59,7 +63,7 @@ namespace Fusion.XR.Host.Grabbing
 
         private void LateUpdate()
         {
-            if (networkGrabbable.isPseudoHapticDisplayed && networkGrabbable.currentGrabber && networkGrabbable.currentGrabber.hand.LocalHardwareHand)
+            if (networkGrabbable.isPseudoHapticDisplayed && networkGrabbable.CurrentGrabber && networkGrabbable.CurrentGrabber.hand.LocalHardwareHand)
             {
                 if (!isPseudoHapticDisplayed)
                 {
@@ -70,7 +74,7 @@ namespace Fusion.XR.Host.Grabbing
                 }
 
                 // Move ghost object: follow ghost hand
-                Transform ghostHand = networkGrabbable.currentGrabber.hand.LocalHardwareHand.transform;
+                Transform ghostHand = networkGrabbable.CurrentGrabber.hand.LocalHardwareHand.transform;
                 ghostObject.transform.position = ghostHand.TransformPoint(networkGrabbable.grabbable.localPositionOffset);
                 ghostObject.transform.rotation = ghostHand.rotation * networkGrabbable.grabbable.localRotationOffset;
             } else

@@ -57,16 +57,16 @@ public class HandTileInteraction : NetworkBehaviour
         {
             if (side == RigPart.RightController)
             {
-                if (isRightHanded) TriggerPressed = playerInputData.rightTriggerPressed;
+                if (isRightHanded) TriggerPressed = playerInputData.rightHandCommand.triggerCommand > .5f;
                 else
                 {
                     // Switch to the Hammer/Hand if the Grip is pressed
-                    if (!HammerEnabled && playerInputData.rightGripPressed)
+                    if (!HammerEnabled && playerInputData.rightHandCommand.gripCommand > .5f)
                     {
                         myHammerScript.ActivateHammer(true);
                         HammerEnabled = true;
                     }
-                    if (HammerEnabled && !playerInputData.rightGripPressed)
+                    if (HammerEnabled && !(playerInputData.rightHandCommand.gripCommand > .5f))
                     {
                         myHammerScript.ActivateHammer(false);
                         HammerEnabled = false;
@@ -76,16 +76,16 @@ public class HandTileInteraction : NetworkBehaviour
 
             if (side == RigPart.LeftController)
             {
-                if (!isRightHanded) TriggerPressed = playerInputData.leftTriggerPressed;
+                if (!isRightHanded) TriggerPressed = playerInputData.leftHandCommand.triggerCommand > .5f;
                 else
                 {
                     // Switch to the Hammer/Hand if the Grip is pressed
-                    if (!HammerEnabled && playerInputData.leftGripPressed)
+                    if (!HammerEnabled && playerInputData.leftHandCommand.gripCommand > .5f)
                     {
                         myHammerScript.ActivateHammer(true);
                         HammerEnabled = true;
                     }
-                    if (HammerEnabled && !playerInputData.leftGripPressed)
+                    if (HammerEnabled && !(playerInputData.leftHandCommand.gripCommand > .5f))
                     {
                         myHammerScript.ActivateHammer(false);
                         HammerEnabled = false;
@@ -107,7 +107,7 @@ public class HandTileInteraction : NetworkBehaviour
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 if (cubeScript)
-                    cubeScript.OnHandEnter(myPlayer.company);
+                    cubeScript.OnHandEnter(myPlayer.Company);
             }
         }
     }
@@ -122,7 +122,7 @@ public class HandTileInteraction : NetworkBehaviour
             {
                 CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
                 if (cubeScript)
-                    cubeScript.OnHandExit(myPlayer.company);
+                    cubeScript.OnHandExit(myPlayer.Company);
             }
         }
     }
@@ -132,13 +132,13 @@ public class HandTileInteraction : NetworkBehaviour
         if (handEnabled && other.gameObject.layer == 7 && TriggerPressed) // 7 is the layer for Tile
         {
             CubeInteraction cubeScript = other.GetComponent<CubeInteraction>();
-            if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied && cubeScript.VerifyRules(myPlayer.company))
+            if (!cubeScript.obstructed && !cubeScript.playerInside && !cubeScript.TileOccupied && cubeScript.VerifyRules(myPlayer.Company))
             {
-                cubeScript.UpdateCompany(myPlayer.company);
+                cubeScript.UpdateCompany(myPlayer.Company);
                 if(HasStateAuthority)
                 {
                     if (!cubeScript.isPlayTile)
-                        Gamemanager.Instance.pManager.RemovePoints(myPlayer.company);
+                        Gamemanager.Instance.pManager.RemovePoints(myPlayer.Company);
                     RPC_EnableTile(cubeScript);
                 }
                 TriggerPressed = false;

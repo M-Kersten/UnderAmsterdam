@@ -2,9 +2,15 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using Fusion.XR.Host.Rig;
 using Fusion.XR.Host.Grabbing;
+using Fusion.XR.Host.Locomotion;
 
 namespace Fusion.XR.Host.Desktop
 {
+    public interface IMouseTeleportHover
+    {
+        void OnHoverHit(RaycastHit hit);
+        void OnNoHover();
+    }
     /**
      * Allow to rotate the rig head with the mouse
      * Allow to left click to teleport to a valid target
@@ -13,7 +19,6 @@ namespace Fusion.XR.Host.Desktop
     public class MouseTeleport : MonoBehaviour
     {
         public HardwareRig rig;
-        public Transform head;
         public Camera mouseCamera;
         public Vector3 defaultLeftHandPosition;
         public Vector3 defaultRightHandPosition;
@@ -21,12 +26,19 @@ namespace Fusion.XR.Host.Desktop
         public Quaternion defaultRightHandRotation;
         public bool forceFirstPersonView = false;
         public DesktopController hardwareRigControl;
-        public Grabbable grabbed = null;
         public HardwareHand grabberHand;
         public HardwareHand beamerHand;
         public RayBeamer rayBeamer;
+        GameObject grabbed = null;
+        
+        public IMouseTeleportHover hoverListener;
+
+        public const float HAND_RANGE = 0.7f;
+
+        float grabHandDistance = 0;
 
         Transform Head => rig == null ? null : rig.headset.transform;
+
         private void Awake()
         {
             hardwareRigControl = GetComponentInParent<DesktopController>();
@@ -68,6 +80,8 @@ namespace Fusion.XR.Host.Desktop
                     // check if there is already a grabbed object
                     if (grabbed == null)
                     {
+
+                        /*
                         // check if the hit object can be grab
                         var grabbable = hit.collider.GetComponentInParent<Grabbable>();
                         if (grabbable)
@@ -87,6 +101,41 @@ namespace Fusion.XR.Host.Desktop
 
                             // TO DO Update the position of the grabbed object
                         }
+
+*/
+
+
+                        // check if the hit object can be grab
+                        GameObject grabbableObject = null;
+                        var grabbable = hit.collider.GetComponentInParent<Grabbable>();
+                        if (grabbable)
+                        {
+                            grabbableObject = grabbable.gameObject;
+                        }
+                       /* else
+                        {
+                            var networkGrabbable = hit.collider.GetComponentInParent<NetworkHandColliderGrabbable>();
+                            if (networkGrabbable)
+                            {
+                                grabbableObject = networkGrabbable.gameObject;
+                            }
+                        }*/
+                        if (grabbableObject != null)
+                        {
+                            // the ray hit a grabbable object
+                            didTouch = true;
+                            grabbed = grabbableObject;
+
+                            // do not display the ray
+                            rayBeamer.CancelHit();
+
+                            // We move the local hand to the hit position, and active isGrabbing
+                            grabberHand.transform.position = hit.point;
+                            grabberHand.isGrabbing = true;
+                            grabHandDistance = (hit.point - mouseRay.origin).magnitude;
+
+                            // TO DO Update the position of the grabbed object
+                        }
                     }
                 }
             }
@@ -100,20 +149,34 @@ namespace Fusion.XR.Host.Desktop
             {
                 if (grabbed != null)
                 {
-                    grabbed.Ungrab(); /* TODO check if still usefull */
                     grabbed = null;
                     grabberHand.isGrabbing = false;
                 }
             }
         }
 
-        float grabHandDistance = 0;
+        Vector3 SearchTarget(Ray mouseRay)
+        {
+            var target = mouseRay.origin + mouseRay.direction * 20;
+            if (rayBeamer.BeamCast(out RaycastHit hit, mouseRay.origin, mouseRay.direction))
+            {
+                target = hit.point;
+                if (hoverListener != null) hoverListener.OnHoverHit(hit);
+            }
+            else
+            {
+                if (hoverListener != null) hoverListener.OnNoHover();
+            }
+            return target;
+        }
+
         void Update()
         {
             rayBeamer.isRayEnabled = false;
-            if (grabbed == null) grabHandDistance = 0;
-
             var mouseRay = mouseCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            // Storing the distance before checking ungrab, as we want to reset the hand position at ungrab during the next Update
+            //  so that the grabbing system has the time to drop it where it is
+            if (grabbed == null) grabHandDistance = 0;
 
             // Check if the mouse hit a grabbable object
             bool didTouch = CheckGrab(mouseRay);
@@ -121,16 +184,25 @@ namespace Fusion.XR.Host.Desktop
             bool grabberHandPositionHandled = didTouch;
             CheckUngrab();
 
-            if(!didTouch && grabbed == null && Mouse.current.rightButton.isPressed == false)
+            Vector3 target = Vector3.zero;
+            bool targetSearched = false;
+            if (hoverListener != null)
+            {
+                // If a hover listener expect to know if a hover occured, we have to check whatever buttons are clicked
+                target = SearchTarget(mouseRay);
+                targetSearched = true;
+            }
+
+            if (!didTouch && grabbed == null && Mouse.current.rightButton.isPressed == false)
             {
                 if (Mouse.current.leftButton.isPressed || Mouse.current.leftButton.wasReleasedThisFrame)
                 {
                     rayBeamer.isRayEnabled = true;
-                    Vector3 target = mouseRay.origin + mouseRay.direction * 20;
-                    if (rayBeamer.BeamCast(out RaycastHit hit, mouseRay.origin, mouseRay.direction))
+                    if (targetSearched == false)
                     {
-                        target = hit.point;
+                        target = SearchTarget(mouseRay);
                     }
+
                     beamerRotationHandled = true;
                     var currentBeamLocalRotation = Quaternion.Inverse(beamerHand.transform.rotation) * rayBeamer.origin.rotation;
                     var beamRotation = Quaternion.LookRotation(target - rayBeamer.origin.position);
@@ -147,7 +219,7 @@ namespace Fusion.XR.Host.Desktop
             rig.rightHand.transform.position = Head.TransformPoint(defaultRightHandPosition);
             rig.rightHand.transform.rotation = Head.rotation * defaultLeftHandRotation;
 
-            if (grabbed)
+            if (grabHandDistance != 0)
             {
                 grabberHandPositionHandled = true;
                 rig.leftHand.transform.position = mouseRay.origin + mouseRay.direction * grabHandDistance;
@@ -155,7 +227,7 @@ namespace Fusion.XR.Host.Desktop
 
             if (!grabberHandPositionHandled)
             {
-                rig.leftHand.transform.position = Head.TransformPoint(defaultLeftHandPosition) + mouseRay.direction * handRange;
+                rig.leftHand.transform.position = Head.TransformPoint(defaultLeftHandPosition) + mouseRay.direction * HAND_RANGE;
             }
             if (!beamerRotationHandled)
             {
@@ -163,7 +235,7 @@ namespace Fusion.XR.Host.Desktop
                 rig.leftHand.transform.Rotate(-40, 0, 0);
             }
         }
-        float handRange = 0.7f;
+
     }
 
 }

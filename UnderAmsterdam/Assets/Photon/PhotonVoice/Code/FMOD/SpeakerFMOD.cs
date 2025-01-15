@@ -16,6 +16,11 @@ namespace Photon.Voice.Unity.FMOD
             if (this.useEvent)
             {
                 var instance = FMODUnity.RuntimeManager.CreateInstance(this.eventReference);
+                if (instance.isValid())
+                {
+                    FMODUnity.RuntimeManager.AttachInstanceToGameObject(instance, this.transform, this.GetComponent<Rigidbody>());
+                    instance.start();
+                }
                 return new Voice.FMOD.AudioOutEvent<float>(FMODUnity.RuntimeManager.CoreSystem, instance, this.playDelayConfig, this.Logger, string.Empty, true);
             }
             else
@@ -23,6 +28,31 @@ namespace Photon.Voice.Unity.FMOD
                 return new Voice.FMOD.AudioOut<float>(FMODUnity.RuntimeManager.CoreSystem, this.playDelayConfig, this.Logger, string.Empty, true);
             }
         }
+
+#if UNITY_EDITOR
+        [UnityEditor.CustomEditor(typeof(SpeakerFMOD), true)]
+        public class SpeakerFMODEditor : Editor.SpeakerEditor
+        {
+            UnityEditor.SerializedProperty useEvent;
+            UnityEditor.SerializedProperty eventReference;
+            public override void OnEnable()
+            {
+                base.OnEnable();
+                this.useEvent = serializedObject.FindProperty("useEvent");
+                this.eventReference = serializedObject.FindProperty("eventReference");
+            }
+
+            public override void OnInspectorGUI()
+            {
+                base.OnInspectorGUI();
+                UnityEditor.EditorGUILayout.Space();
+                UnityEditor.EditorGUILayout.PropertyField(useEvent);
+                UnityEditor.EditorGUILayout.PropertyField(eventReference);
+                serializedObject.ApplyModifiedProperties();
+            }
+        }
+#endif
+
     }
 }
 #endif

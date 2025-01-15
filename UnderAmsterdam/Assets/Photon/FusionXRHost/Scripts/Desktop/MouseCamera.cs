@@ -11,13 +11,15 @@ namespace Fusion.XR.Host.Desktop
         public InputActionProperty mouseXAction;
         public InputActionProperty mouseYAction;
 
+        public bool forceRotation = false;
+
         public HardwareRig rig;
         [Header("Mouse point of view")]
-        public Vector2 maxHeadRotationSpeed = new Vector2(10, 10);
+        public Vector2 maxMouseInput = new Vector2(10, 10);
+        public float maxHeadRotationSpeed = 30;
         public Vector2 sensitivity = new Vector2(10, 10);
         public float maxHeadAngle = 65;
         public float minHeadAngle = 65;
-        Vector3 rotationSpeed;
         Vector3 rotation = Vector3.zero;
         Vector2 mouseInput;
 
@@ -38,18 +40,16 @@ namespace Fusion.XR.Host.Desktop
 
         private void Update()
         {
-            if (Mouse.current.rightButton.isPressed)
+            if (forceRotation || Mouse.current.rightButton.isPressed)
             {
                 mouseInput.x = mouseXAction.action.ReadValue<float>() * Time.deltaTime * sensitivity.x;
                 mouseInput.y = mouseYAction.action.ReadValue<float>() * Time.deltaTime * sensitivity.y;
 
-                mouseInput.y = Mathf.Clamp(mouseInput.y, -maxHeadRotationSpeed.y, maxHeadRotationSpeed.y);
-                mouseInput.x = Mathf.Clamp(mouseInput.x, -maxHeadRotationSpeed.x, maxHeadRotationSpeed.x);
+                mouseInput.y = Mathf.Clamp(mouseInput.y, -maxMouseInput.y, maxMouseInput.y);
+                mouseInput.x = Mathf.Clamp(mouseInput.x, -maxMouseInput.x, maxMouseInput.x);
 
                 rotation.x = Head.eulerAngles.x - mouseInput.y;
                 rotation.y = Head.eulerAngles.y + mouseInput.x;
-
-
 
                 if (rotation.x > maxHeadAngle && rotation.x < (360 - minHeadAngle))
                 {
@@ -67,11 +67,9 @@ namespace Fusion.XR.Host.Desktop
                     rotation.x = -minHeadAngle;
                 }
 
-                Head.eulerAngles = rotation;
-            }
-            else
-            {
-                rotationSpeed = Vector2.zero;
+                var newRot = Quaternion.Lerp(Head.rotation, Quaternion.Euler(rotation), maxHeadRotationSpeed * Time.deltaTime);
+
+                Head.rotation = newRot;
             }
         }
     }

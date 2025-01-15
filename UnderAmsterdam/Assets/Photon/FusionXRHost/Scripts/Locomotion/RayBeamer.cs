@@ -1,11 +1,10 @@
 using Fusion.XR.Host.Rig;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-namespace Fusion.XR.Host
+namespace Fusion.XR.Host.Locomotion
 {
     public struct RayData
     {
@@ -43,7 +42,7 @@ namespace Fusion.XR.Host
         public UnityEvent<Collider, Vector3> onRelease = new UnityEvent<Collider, Vector3>();
 
         // Define if the beamer ray is active this frame
-        public bool isRayEnabled = true;
+        public bool isRayEnabled = false;
 
         public enum Status
         {
@@ -122,7 +121,7 @@ namespace Fusion.XR.Host
             {
                 if (status == Status.BeamHit)
                 {
-                    if (onRelease != null) onRelease.Invoke(lastHitCollider, lastHit);  
+                    if (onRelease != null) onRelease.Invoke(lastHitCollider, lastHit);
                 }
                 status = Status.NoBeam;
                 lastHitCollider = null;

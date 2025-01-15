@@ -16,36 +16,36 @@ namespace Fusion.XR.Host.Grabbing
      * 
      **/
     [RequireComponent(typeof(KinematicGrabbable))]
-    [OrderAfter(typeof(NetworkGrabber), typeof(NetworkTransform))]
+    [DefaultExecutionOrder(NetworkKinematicGrabbable.EXECUTION_ORDER)]
     public class NetworkKinematicGrabbable : NetworkGrabbable
     {
-        PlayerRef lastGrabbingUser;
+        public new const int EXECUTION_ORDER = NetworkGrabber.EXECUTION_ORDER + 10;
         float ungrabResyncDuration = 2;
 
         KinematicGrabbable grabbable;
 
         private void Awake()
         {
-            networkTransform = GetComponent<NetworkTransform>();
             grabbable = GetComponent<KinematicGrabbable>();
         }
 
         #region NetworkGrabbable
         public override void Ungrab(NetworkGrabber grabber, GrabInfo newGrabInfo)
         {
-            if (currentGrabber != grabber)
+            if (CurrentGrabber != grabber)
             {
                 // This object as been grabbed by another hand, no need to trigger an ungrab
                 return;
             }
 
-            lastGrabber = currentGrabber;
-            currentGrabber = null;
+            var lastGrabber = CurrentGrabber;
+            CurrentGrabber = null;
+            // We force the ungrab position at the one provided in the input, as the object has been ungrabbed between ticks, and so we shared this data to have subtick accurate ungrab position
             grabbable.transform.position = newGrabInfo.ungrabPosition;
             grabbable.transform.rotation = newGrabInfo.ungrabRotation;
 
             grabbable.DidUngrab();
-            DidUngrab();
+            DidUngrab(lastGrabber);
         }
 
         public override void Grab(NetworkGrabber newGrabber, GrabInfo newGrabInfo)
@@ -54,11 +54,7 @@ namespace Fusion.XR.Host.Grabbing
             grabbable.localRotationOffset = newGrabInfo.localRotationOffset;
             grabbable.DidGrab();
 
-            currentGrabber = newGrabber;
-            if(currentGrabber != null)
-            {
-                lastGrabbingUser = currentGrabber.Object.InputAuthority;
-            }
+            CurrentGrabber = newGrabber;
             DidGrab();
         }
         #endregion
@@ -71,16 +67,22 @@ namespace Fusion.XR.Host.Grabbing
 
             if (!IsGrabbed) return;
             // Follow grabber, adding position/rotation offsets
-            grabbable.Follow(followingtransform: transform, followedTransform: currentGrabber.transform);
+            grabbable.Follow(followingtransform: transform, followedTransform: CurrentGrabber.transform);
         }
 
         public override void Render()
         {
+            if (Object.InputAuthority != Runner.LocalPlayer)
+            {
+                // Allow to prevent local hardware grabbing of the same object
+                grabbable.isGrabbed = IsGrabbed;
+            }
+                
             if (IsGrabbed)
             {
                 // Extrapolation: Make visual representation follow grabber visual representation, adding position/rotation offsets
                 // We extrapolate for all users: we know that the grabbed object should follow accuratly the grabber, even if the network position might be a bit out of sync
-                grabbable.Follow(followingtransform: networkTransform.InterpolationTarget.transform, followedTransform: currentGrabber.networkTransform.InterpolationTarget.transform);
+                grabbable.Follow(followingtransform: transform, followedTransform: CurrentGrabber.transform);
             } 
             else if (grabbable.ungrabTime != -1)
             {
@@ -91,8 +93,8 @@ namespace Fusion.XR.Host.Grabbing
                     //  (ie. the object stay still)
                     //  until the network transform offers the same visual conclusion that the one we used to do
                     // Other ways to determine this extended extrapolation duration do exist (based on interpolation distance, number of ticks, ...)
-                    networkTransform.InterpolationTarget.transform.position = grabbable.ungrabPosition;
-                    networkTransform.InterpolationTarget.transform.rotation = grabbable.ungrabRotation;
+                    transform.position = grabbable.ungrabPosition;
+                    transform.rotation = grabbable.ungrabRotation;
                 }
                 else
                 {

@@ -3,6 +3,7 @@ using Fusion.XR.Host;
 using Fusion;
 using UnityEngine.Events;
 using System.Collections;
+using Fusion.Addons.ConnectionManagerAddon;
 using Fusion.XR.Host.Rig;
 using UnityEngine.SceneManagement;
 
@@ -94,6 +95,7 @@ public class Gamemanager : MonoBehaviour
     {
         if (gameOngoing)
         {
+            Debug.Log("Countdown end");
             CountDownEnd.Invoke();
             localRigid.isKinematic = false;
 
@@ -104,6 +106,7 @@ public class Gamemanager : MonoBehaviour
     {
         if (gameOngoing)
         {
+            Debug.Log("Round start");
             currentRound++;
             RoundStart.Invoke();
             timer.SetTimer(roundTime);
@@ -113,6 +116,7 @@ public class Gamemanager : MonoBehaviour
     {
         if (gameOngoing)
         {
+            Debug.Log("Round end");
             RoundEnd.Invoke();
             roundTime += roundTimeIncrease;
             OnRoundLateEnd();
@@ -122,6 +126,7 @@ public class Gamemanager : MonoBehaviour
     {
         if (gameOngoing)
         {
+            Debug.Log("Route late end");
             RoundLateEnd.Invoke();
 
             if (currentRound < amountOfRounds)
@@ -134,6 +139,7 @@ public class Gamemanager : MonoBehaviour
     {
         if (gameOngoing)
         {
+            Debug.Log("Countdown start");
             yield return new WaitForSeconds(roundCountDownTime);
             OnCountDownEnd();
         }

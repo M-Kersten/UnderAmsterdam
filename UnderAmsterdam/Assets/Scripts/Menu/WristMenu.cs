@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -30,12 +31,12 @@ public class WristMenu : NetworkBehaviour
         }
     }
 
-    public void ChangeImage(string company) {
+    public void ChangeImage(int company) {
 
         for (int i = 0; i < companyIcons.Length; i++)
         {
             // change image at the top of the wrist watch to the icon in the list
-            if (companyIcons[i].name == company)
+            if (companyIcons[i].name == Enum.GetValues(typeof(CompanyType)).GetValue(company))
                 iconImage.GetComponent<Image>().sprite = companyIcons[i];
         }
     }

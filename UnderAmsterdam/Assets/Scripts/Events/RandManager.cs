@@ -37,7 +37,6 @@ public class RandManager : NetworkBehaviour
         else
             Destroy(this);
         
-        //Gamemanager.Instance.RoundStart.AddListener(checkElecConnection);
         Gamemanager.Instance.GameStart.AddListener(randomActivatedRoots);
     }
 

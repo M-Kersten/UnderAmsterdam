@@ -118,11 +118,13 @@ public class CityMove : NetworkBehaviour
         playerPos = Gamemanager.Instance.localRigid.transform.position;
         moveup = new Vector3(playerPos.x, moveup.y, playerPos.z);
         endOfGame = true;
+        Debug.Log($"end of game set to true");
         EnableObjectsBeforeGameOver();
         toDisableObjects[0].GetComponent<Renderer>().material = newMaterial;
         StartCoroutine(MovePlayers(playerPos, moveup));
         toDisableObjects[0].SetActive(true);
     }
+    
     private IEnumerator MovePlayers(Vector3 from, Vector3 to)
     {
         if (!endOfGame)
@@ -160,17 +162,13 @@ public class CityMove : NetworkBehaviour
 
     private void DisableObjectsAfterGameStart()
     {
-        this.GetComponent<BoxCollider>().enabled = false;
-        for (int i = 0; i < toDisableObjects.Length; i++)
-        {
-            toDisableObjects[i].SetActive(false);
-        }
+        GetComponent<BoxCollider>().enabled = false;
+        foreach (var disableObject in toDisableObjects)
+            disableObject.SetActive(false);
     }
     private void EnableObjectsBeforeGameOver()
     {
-        for (int i = 0; i < toEnableObjects.Length; i++)
-        {
-            toEnableObjects[i].SetActive(true);
-        }
+        foreach (var enableObject in toEnableObjects)
+            enableObject.SetActive(true);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion.XR.Host;
 using Fusion;
+using Fusion.Addons.ConnectionManagerAddon;
 
 public class Pointsmanager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class Pointsmanager : MonoBehaviour
     {
         companyManager = CompanyManager.Instance;
     }
-    public void AddPoints(string company)
+    public void AddPoints(int company)
     {
         if (CheckPlayerData(company))
             GetPlayerData(company).points += piperemovepoint;
@@ -31,37 +32,37 @@ public class Pointsmanager : MonoBehaviour
         }
     }
 
-    public void RemovePoints(string company)
+    public void RemovePoints(int company)
     {
         if (CheckPlayerData(company))
             GetPlayerData(company).points += pipeplacepoint;
     }
 
-    public void RemovePointsRoots(string company)
+    public void RemovePointsRoots(int company)
     {
         if (CheckPlayerData(company))
             GetPlayerData(company).points += pipeRootPoints;
     }
     
-    public void CalculateRoundPoints(string company)
+    public void CalculateRoundPoints(int company)
     {
         if(CheckPlayerData(company))
             GetPlayerData(company).points += victorypoints;
     }
 
-    private bool CheckPlayerData(string company)
+    private bool CheckPlayerData(int company)
     {
-        if(companyManager._companies.ContainsKey(company))
-            if (coach.SpawnedUsers.ContainsKey(companyManager._companies[company]))
+        if(companyManager.Companies.ContainsKey(company))
+            if (coach.SpawnedUsers.ContainsKey(companyManager.Companies[company]))
                 return true;
             else
                 return false;
         else
             return false;
     }
-    private PlayerData GetPlayerData(string company)
+    private PlayerData GetPlayerData(int company)
     {
-        PlayerData player = coach.SpawnedUsers[companyManager._companies[company]].GetComponent<PlayerData>();
+        PlayerData player = coach.SpawnedUsers[companyManager.Companies[company]].GetComponent<PlayerData>();
         return player;
     }
 }

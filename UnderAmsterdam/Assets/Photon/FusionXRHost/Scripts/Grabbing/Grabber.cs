@@ -22,11 +22,16 @@ namespace Fusion.XR.Host.Grabbing
         // Will be set by the NetworkGrabber for the local user itself, when it spawns
         public NetworkGrabber networkGrabber;
 
+        public bool resetGrabInfo = false;
+
         GrabInfo _grabInfo;
         public GrabInfo GrabInfo
         {
             get
             {
+                if (resetGrabInfo)
+                    return default;
+
                 if (grabbedObject)
                 {
                     _grabInfo.grabbedObjectId = grabbedObject.networkGrabbable.Id;
@@ -119,8 +124,10 @@ namespace Fusion.XR.Host.Grabbing
         public void Grab(Grabbable grabbable)
         {
             Debug.Log($"Try to grab object {grabbable.gameObject.name} with {gameObject.name}");
-            grabbable.Grab(this);
-            grabbedObject = grabbable;
+            if (grabbable.Grab(this))
+            {
+                grabbedObject = grabbable;
+            }
         }
 
         // Ask the grabbable object to stop following the hand
@@ -129,8 +136,8 @@ namespace Fusion.XR.Host.Grabbing
             Debug.Log($"Try to ungrab object {grabbable.gameObject.name} with {gameObject.name}");
             if (grabbable.networkGrabbable)
             {
-                ungrabPosition = grabbedObject.networkGrabbable.networkTransform.InterpolationTarget.transform.position;
-                ungrabRotation = grabbedObject.networkGrabbable.networkTransform.InterpolationTarget.transform.rotation;
+                ungrabPosition = grabbedObject.networkGrabbable.transform.position;
+                ungrabRotation = grabbedObject.networkGrabbable.transform.rotation;
                 ungrabVelocity = grabbedObject.Velocity;
                 ungrabAngularVelocity = grabbedObject.AngularVelocity;
             }

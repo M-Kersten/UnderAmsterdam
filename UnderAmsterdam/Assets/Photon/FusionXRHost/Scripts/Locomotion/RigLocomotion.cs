@@ -34,21 +34,25 @@ namespace Fusion.XR.Host.Locomotion
         public List<RayBeamer> teleportBeamers;
 
         bool rotating = false;
-
+        float timeStarted = 0;
         private float turnTimer = 0f;
 
         HardwareRig rig;
 
         public LayerMask locomotionLayerMask = 0;
 
+        // If locomotion constraints are needed, a ILocomotionValidationHandler can restrict them
+        ILocomotionValidationHandler locomotionValidationHandler;
+
         private void Awake()
         {
             rig = GetComponentInParent<HardwareRig>();
-            if (teleportBeamers.Count == 0) teleportBeamers = new List<RayBeamer>( GetComponentsInChildren<RayBeamer>() );
-            foreach(var beamer in teleportBeamers)
-            {
+            locomotionValidationHandler = GetComponentInParent<ILocomotionValidationHandler>();
+
+            if (teleportBeamers.Count == 0) teleportBeamers = new List<RayBeamer>(GetComponentsInChildren<RayBeamer>());
+            
+            foreach (var beamer in teleportBeamers)
                 beamer.onRelease.AddListener(OnBeamRelease);
-            }
 
             var bindings = new List<string> { "joystick" };
             leftControllerTurnAction.EnableWithDefaultXRBindings(leftBindings: bindings);
@@ -57,7 +61,7 @@ namespace Fusion.XR.Host.Locomotion
 
         private void Start()
         {
-            if (locomotionLayerMask == 0) 
+            if (locomotionLayerMask == 0)
                 Debug.LogError("RigLocomotion: for locomotion to be possible, at least one layer has to be added to locomotionLayerMask, add used on locomotion surface colliders");
         }
 
@@ -66,16 +70,15 @@ namespace Fusion.XR.Host.Locomotion
             CheckSnapTurn();
         }
 
-        protected virtual void CheckSnapTurn() 
-        { 
+        protected virtual void CheckSnapTurn()
+        {
             if (rotating) 
                 return;
-
+            
             turnTimer += Time.deltaTime;
-
             if (turnTimer <= debounceTime)
                 return;
-            
+
             var rightStickTurn = rightControllerTurnAction.action.ReadValue<Vector2>().x;
             var snapAngle = Mathf.Sign(rightStickTurn) * snapDegree;
 
@@ -88,13 +91,6 @@ namespace Fusion.XR.Host.Locomotion
             }
         }
 
-        IEnumerator Rotate(float angle)
-        {
-            rotating = true;
-            yield return rig.FadedRotate(angle);
-            rotating = false;
-        }
-
         public virtual bool ValidLocomotionSurface(Collider surfaceCollider)
         {
             // We check if the hit collider is in the locomoation layer mask
@@ -104,6 +100,18 @@ namespace Fusion.XR.Host.Locomotion
 
         protected virtual void OnBeamRelease(Collider lastHitCollider, Vector3 position)
         {
+            if (!enabled) 
+                return;
+            // Checking potential validation handler
+            if (locomotionValidationHandler != null)
+            {
+                var headsetPositionRelativeToRig = rig.transform.InverseTransformPoint(rig.headset.transform.position);
+                Vector3 newHeadsetPosition = position + headsetPositionRelativeToRig.y * rig.transform.up;
+                if (!locomotionValidationHandler.CanMoveHeadset(newHeadsetPosition)) 
+                    return;
+            }
+
+            // Checking target surface layer
             if (ValidLocomotionSurface(lastHitCollider))
             {
                 StartCoroutine(rig.FadedTeleport(position));

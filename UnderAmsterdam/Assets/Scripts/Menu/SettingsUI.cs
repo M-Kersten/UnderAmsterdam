@@ -41,7 +41,7 @@ public class SettingsUI : MonoBehaviour
 
     public void LeftHanded()
     {
-        if (myNetworkObject != null && myNetworkObject == Gamemanager.Instance.networkData.GetComponent<NetworkObject>().InputAuthority)
+        if (myNetworkObject != null && myNetworkObject == Gamemanager.Instance.networkData.GetComponent<NetworkObject>())
             Gamemanager.Instance.networkData.RPC_SwitchHands();
         else
             MainMenuHands.Instance.SwitchWatch();

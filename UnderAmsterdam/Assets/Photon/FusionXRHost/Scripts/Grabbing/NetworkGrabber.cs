@@ -8,6 +8,7 @@ using UnityEngine;
 namespace Fusion.XR.Host.Grabbing
 {
     // Store the info describbing a grabbing state
+    [System.Serializable]
     public struct GrabInfo : INetworkStruct
     {
         public NetworkBehaviourId grabbedObjectId;
@@ -27,16 +28,26 @@ namespace Fusion.XR.Host.Grabbing
      **/
 
     [RequireComponent(typeof(NetworkHand))]
-    [OrderAfter(typeof(NetworkHand))]
+    [DefaultExecutionOrder(NetworkGrabber.EXECUTION_ORDER)]
     public class NetworkGrabber : NetworkBehaviour
     {
+        public const int EXECUTION_ORDER = NetworkHand.EXECUTION_ORDER + 10;
         [Networked]
         public GrabInfo GrabInfo { get; set; }
+
+        public enum GrabbingKind
+        {
+            KinematicOnly,
+            PhysicsAndKinematic
+        }
+        public GrabbingKind supportedgrabbingKind = GrabbingKind.PhysicsAndKinematic;
 
         NetworkGrabbable grabbedObject;
         public NetworkTransform networkTransform;
         public NetworkHand hand;
-        GrabInfo previousGrab;
+        ChangeDetector changeDetector;
+
+        bool isSimulated = false;
 
         private void Awake()
         {
@@ -51,38 +62,78 @@ namespace Fusion.XR.Host.Grabbing
             {
                 hand.LocalHardwareHand.grabber.networkGrabber = this;
             }
+            changeDetector = GetChangeDetector(ChangeDetector.Source.SimulationState);
+            HandleGrabInfoChange(GrabInfo);
+
+            isSimulated = Object.HasInputAuthority || Object.HasStateAuthority;
         }
-        
+
         public override void FixedUpdateNetwork()
         {
             base.FixedUpdateNetwork();
+
             if (Runner.IsForward)
             {
-                HandleGrabInfoChange(previousGrab, GrabInfo);
-                previousGrab = GrabInfo;
+                // We only detect grabbing changes in forward, to avoid multiple Grab calls (that would have side effects in current implementation)
+                foreach (var changedPropertyName in changeDetector.DetectChanges(this))
+                {
+                    if (changedPropertyName == nameof(GrabInfo))
+                    {
+                        // Grab info is filled by the NetworkRig, based on the input, and the input are filled with the Hardware rig Grabber GrabInfo
+                        HandleGrabInfoChange(GrabInfo);
+                    }
+                }
             }
         }
 
-        void HandleGrabInfoChange(GrabInfo previousGrabInfo, GrabInfo newGrabInfo)
+        void HandleGrabInfoChange(GrabInfo newGrabInfo)
         {
-            if (previousGrabInfo.grabbedObjectId !=  newGrabInfo.grabbedObjectId)
+            if (grabbedObject != null)
             {
+                grabbedObject.Ungrab(this, newGrabInfo);
+                grabbedObject = null;
+            }
+
+            // We have to look for the grabbed object has it has changed
+            // If an object is grabbed, we look for it through the runner with its Id
+            if (newGrabInfo.grabbedObjectId != NetworkBehaviourId.None && Object.Runner.TryFindBehaviour(newGrabInfo.grabbedObjectId, out NetworkGrabbable newGrabbedObject))
+            {
+                grabbedObject = newGrabbedObject;
+
                 if (grabbedObject != null)
                 {
-                    grabbedObject.Ungrab(this, newGrabInfo);
-                    grabbedObject = null;
+                    grabbedObject.Grab(this, newGrabInfo);
                 }
-                // We have to look for the grabbed object has it has changed
-                NetworkGrabbable newGrabbedObject;
+            }
+        }
 
-                // If an object is grabbed, we look for it through the runner with its Id
-                if (newGrabInfo.grabbedObjectId != NetworkBehaviourId.None && Object.Runner.TryFindBehaviour(newGrabInfo.grabbedObjectId, out newGrabbedObject))
+        NetworkBehaviourId lastGrabbedObjectId = NetworkBehaviourId.None;
+        NetworkGrabbable lastGrabbedObject = null;
+
+        public override void Render()
+        {
+            base.Render();
+            if(supportedgrabbingKind == GrabbingKind.PhysicsAndKinematic)
+            {
+                bool isGrabbing = GrabInfo.grabbedObjectId != NetworkBehaviourId.None;
+                if (lastGrabbedObjectId != GrabInfo.grabbedObjectId)
                 {
-                    grabbedObject = newGrabbedObject;
-                    if (grabbedObject != null)
+                    lastGrabbedObject = null;
+                    if (isGrabbing && Object.Runner.TryFindBehaviour(GrabInfo.grabbedObjectId, out NetworkGrabbable grabbedObject))
                     {
-                        grabbedObject.Grab(this, newGrabInfo);
+                        lastGrabbedObject = grabbedObject;
                     }
+                }
+                if (isSimulated == false && isGrabbing && lastGrabbedObject && lastGrabbedObject is NetworkPhysicsGrabbable)
+                {
+                    // The hands need to be simulated to be at the appropriate position during FUN when a grabbable follow them (physics grabbable are fully simulated)
+                    isSimulated = true;
+                    Runner.SetIsSimulated(Object, isSimulated);
+                }
+                if (isSimulated == true && isGrabbing == false && Object.HasStateAuthority == false && Object.HasInputAuthority == false)
+                {
+                    isSimulated = false;
+                    Runner.SetIsSimulated(Object, isSimulated);
                 }
             }
         }
