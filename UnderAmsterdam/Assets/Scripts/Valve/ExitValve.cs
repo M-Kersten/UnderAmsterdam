@@ -11,12 +11,15 @@ public class ExitValve : MonoBehaviour
     [SerializeField] private Valve valve;
     [SerializeField] Animator lPlayerAnimator;
     public ExitValveSpawner spawnerRef;
+    
     private void Start()
     {
         valve.ValveTurned.AddListener(StartReturnMenu);
         lPlayerAnimator = Gamemanager.Instance.localData.GetComponent<Animator>();
     }
+    
     private void StartReturnMenu() { StartCoroutine(ReturnToMenu()); }
+    
     public IEnumerator ReturnToMenu()
     {
         spawnerRef.DespawnPipe(gameObject);
@@ -29,6 +32,7 @@ public class ExitValve : MonoBehaviour
         SceneManager.activeSceneChanged += SetupNewMenuScene;
         SceneManager.LoadScene(0);
     }
+    
     private void SetupNewMenuScene(Scene scene, Scene scene2)
     {
         Gamemanager.Instance.ConnectionManager.ConnectionSettings.MainMenuDummy = GameObject.Find("MainMenuDummy");

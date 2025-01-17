@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using Fusion;
-using Fusion.XR.Host;
 
 public class CityMove : NetworkBehaviour
 {
-    private List<PlayerRef> readyList= new List<PlayerRef>();
+    private List<PlayerRef> readyList= new();
     Vector3 movedown;
     private Vector3 playerPos;
     private Vector3 moveup;
@@ -14,6 +14,8 @@ public class CityMove : NetworkBehaviour
     [SerializeField] GameObject[] toDisableObjects, toEnableObjects;
     [SerializeField] Material newMaterial;
     [SerializeField] ScoreBoard scoreBoard;
+
+    [SerializeField] private float moveToGameDuration = 5f;
     [SerializeField] private float moveDownY = -0.5f;
     [SerializeField] private GameObject grabText;
     [SerializeField] private ParticleSystem helmetParticles;
@@ -28,9 +30,8 @@ public class CityMove : NetworkBehaviour
         foreach (var networkObject in FindObjectsOfType<NetworkObject>())
         {
             if (networkObject.HasInputAuthority)
-            {
                 return networkObject;
-            }
+           
         }
         return null;
     }
@@ -39,25 +40,22 @@ public class CityMove : NetworkBehaviour
     public void TestGrabHelmet()
     {
         var localPlayer = GetLocalPlayer();
+        
         if (localPlayer != null)
-        {
             GrabHelmet(localPlayer.gameObject);
-        }
     }
   
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 8)
-        {
             GrabHelmet(other.gameObject);
-        }
     }
 
     private void GrabHelmet(GameObject other)
     {
-        NetworkObject otherObj = other.GetComponentInParent<NetworkObject>();
-        PlayerRef tempPlayer = otherObj.InputAuthority;
-        PlayerData playerData = other.transform.root.GetComponent<PlayerData>();
+        var otherObj = other.GetComponentInParent<NetworkObject>();
+        var tempPlayer = otherObj.InputAuthority;
+        var playerData = other.transform.root.GetComponent<PlayerData>();
             
         if(grabText.activeSelf && otherObj.HasInputAuthority)
         {
@@ -104,7 +102,7 @@ public class CityMove : NetworkBehaviour
         playerPos = Gamemanager.Instance.localRigid.gameObject.transform.position;
         moveup = playerPos;
         movedown = new Vector3(playerPos.x, moveDownY, playerPos.z);
-        StartCoroutine(MovePlayers(playerPos, movedown));
+        MovePlayers(playerPos, movedown);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -121,11 +119,11 @@ public class CityMove : NetworkBehaviour
         Debug.Log($"end of game set to true");
         EnableObjectsBeforeGameOver();
         toDisableObjects[0].GetComponent<Renderer>().material = newMaterial;
-        StartCoroutine(MovePlayers(playerPos, moveup));
+        MovePlayers(playerPos, moveup);
         toDisableObjects[0].SetActive(true);
     }
     
-    private IEnumerator MovePlayers(Vector3 from, Vector3 to)
+    private void MovePlayers(Vector3 from, Vector3 to)
     {
         if (!endOfGame)
         {
@@ -133,31 +131,28 @@ public class CityMove : NetworkBehaviour
             toDisableObjects[1].SetActive(false);
             toDisableObjects[2].SetActive(false);
         }
-
-        float elapsed = 0;
-        float duration = 5f;
-
-        while (elapsed < duration)
+        
+        DOVirtual.Vector3(from, to, moveToGameDuration, value =>
         {
-            Gamemanager.Instance.localRigid.gameObject.transform.position = Vector3.Lerp(from, to, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        if (!endOfGame)
+            Gamemanager.Instance.localRigid.gameObject.transform.position = value;
+        }).OnComplete(() =>
         {
-            Gamemanager.Instance.OnGameStart();
-            DisableObjectsAfterGameStart();
-        }
-
-        Gamemanager.Instance.localRigid.gameObject.transform.position = to;
-        if (endOfGame)
-        {
-            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
-            yield return new WaitForSeconds(1f);
-            scoreBoard.WarpPlayers();
-            Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
-        }
+            if (!endOfGame)
+            {
+                Gamemanager.Instance.OnGameStart();
+                DisableObjectsAfterGameStart();
+            }
+            
+            if (endOfGame)
+            {
+                Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
+                DOVirtual.DelayedCall(1, () =>
+                {
+                    scoreBoard.WarpPlayers();
+                    Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+                });
+            }
+        });
     }
 
     private void DisableObjectsAfterGameStart()
