@@ -1,26 +1,24 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
-using Fusion.Addons.ConnectionManagerAddon;
-using Fusion.XR.Host;
 
 public class IOTileScript : NetworkBehaviour
 {
-    [SerializeField] private Material[] pipeMaterials;
+    public int roundInputPipe;
+    
+    [SerializeField] private Color[] pipeColors;
     [SerializeField] private List<IOTileScript> IoNeighbourTiles;
     [SerializeField] private GameObject VisualObject;
     [SerializeField] private Renderer myRenderer;
     [SerializeField] private GameObject IndicatorPrefab;
-    [SerializeField] private GameObject particles;
-    public int roundInputPipe;
+    [SerializeField] private PipeParticles particles;
     [SerializeField] private float particlesBreathingTime;
-
     [SerializeField] private LayerMask pipeLayer;
 
     private ChangeDetector _changes;
-    
+    private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
+
     [Networked]
     public int Company { get; set; }
 
@@ -106,12 +104,8 @@ public class IOTileScript : NetworkBehaviour
 
         Company = setCompany;
         isOutput = shouldBeOutput;
-        foreach (var pipeMaterial in pipeMaterials)
-        {
-            if (pipeMaterial.name == Enum.GetValues(typeof(CompanyType)).GetValue(Company).ToString())
-                myRenderer.material = pipeMaterial;
-        }
         
+        myRenderer.material.SetColor(BaseColor, pipeColors[Company]);
         VisualObject.SetActive(true);
 
         if (isOutput)
@@ -153,9 +147,11 @@ public class IOTileScript : NetworkBehaviour
     {
         if (Company == Gamemanager.Instance.networkData.Company)
         {
-            InOutIndicatorScript indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
+            var indicatorScript = Instantiate(IndicatorPrefab, transform.position + new Vector3(0, 1, 0), Quaternion.identity).GetComponent<InOutIndicatorScript>();
             indicatorScript.InitializeIndicator(shouldBeOutput);
-            Instantiate(particles, transform);
+            
+            var pipeParticles = Instantiate(particles, transform);
+            pipeParticles.SetColors(pipeColors[Company]);
         }
     }
 }
