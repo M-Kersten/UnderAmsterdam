@@ -1,4 +1,3 @@
-using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,6 +12,7 @@ public class ExitValveSpawner : MonoBehaviour
     private bool isSpawned = false;
     private float timeRemaining;
     private float movementDuration = 2;
+    private ExitValve _activeExtiValve;
     
     private void Start()
     {
@@ -36,11 +36,23 @@ public class ExitValveSpawner : MonoBehaviour
     {
         isSpawned = true;
 
-        var pipe = Instantiate(ExitValvePrefab, prefabSpawnPos.transform.position, Quaternion.identity);
-        pipe.GetComponent<ExitValve>().spawnerRef = this;
+        _activeExtiValve = Instantiate(ExitValvePrefab, prefabSpawnPos.transform.position, Quaternion.identity).GetComponent<ExitValve>();
+        _activeExtiValve.spawnerRef = this;
 
-        var spawnPosition = new Vector3(pipe.transform.position.x, mainCam.position.y, pipe.transform.position.z);
-        pipe.transform.DOMove(spawnPosition, movementDuration).SetEase(Ease.InOutQuad);
+        var lookatPosition = new Vector3(mainCam.position.x, _activeExtiValve.transform.position.y, mainCam.position.z);
+        _activeExtiValve.transform.LookAt(lookatPosition);
+        
+        _activeExtiValve.transform.DOMoveY(mainCam.position.y, movementDuration).SetEase(Ease.InOutQuad);
+    }
+
+    [ContextMenu("Test exit valve")]
+    public void TestExitValve()
+    {
+        SpawnPipe();
+        DOVirtual.DelayedCall(3, () =>
+        {
+            _activeExtiValve.StartReturnMenu();
+        });
     }
     
     public void DespawnPipe(GameObject pipe)
@@ -49,4 +61,6 @@ public class ExitValveSpawner : MonoBehaviour
         timeRemaining = buttonActivationTime;
         Destroy(pipe, movementDuration);
     }
+    
+    
 }

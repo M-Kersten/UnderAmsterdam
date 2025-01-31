@@ -51,12 +51,14 @@ public class Gamemanager : MonoBehaviour
 
         FetchLocalPlayerComponents();
     }
+    
     private void Start()
     {
         pManager = GetComponent<Pointsmanager>();
         timer = GetComponent<HostTimerScript>();
         timer.timerUp.AddListener(OnRoundEnd);
     }
+    
     public void FetchLocalPlayerComponents()
     {
         localPlayer = GameObject.Find("LocalPlayer");
@@ -81,6 +83,7 @@ public class Gamemanager : MonoBehaviour
         ConnectionManager.runner.SessionInfo.IsOpen = false;
         OnCountDownStart();
     }
+    
     private void OnCountDownStart()
     {
         if (gameOngoing)
@@ -91,6 +94,7 @@ public class Gamemanager : MonoBehaviour
             StartCoroutine(PreRoundCountDown());
         }
     }
+    
     private void OnCountDownEnd()
     {
         if (gameOngoing)
@@ -102,6 +106,7 @@ public class Gamemanager : MonoBehaviour
             OnRoundStart();
         }
     }
+    
     private void OnRoundStart()
     {
         if (gameOngoing)
@@ -112,6 +117,7 @@ public class Gamemanager : MonoBehaviour
             timer.SetTimer(roundTime);
         }
     }
+    
     private void OnRoundEnd()
     {
         if (gameOngoing)
@@ -122,6 +128,7 @@ public class Gamemanager : MonoBehaviour
             OnRoundLateEnd();
         }
     }
+    
     private void OnRoundLateEnd()
     {
         if (gameOngoing)
@@ -135,6 +142,7 @@ public class Gamemanager : MonoBehaviour
                 OnGameEnd();
         }
     }
+    
     private IEnumerator PreRoundCountDown()
     {
         if (gameOngoing)
@@ -144,6 +152,7 @@ public class Gamemanager : MonoBehaviour
             OnCountDownEnd();
         }
     }
+    
     private void OnGameEnd()
     {
         gameOngoing = false;
@@ -152,13 +161,13 @@ public class Gamemanager : MonoBehaviour
     
     public void TeleportToStartPosition()
     {
-        if (!localData || SceneManager.GetActiveScene().buildIndex <= 0) 
+        if (SceneManager.GetActiveScene().buildIndex == 0)
             return;
         
-        localData.gameObject.name = "LocalPlayerSession";
-        var tPosition = new Vector3(1.02216411f, 0.0f, 1.65285861f);
-        var tRotation = Quaternion.Euler(new Vector3(0, 180, 0));
-        localRigid.gameObject.transform.rotation = tRotation;
+        if (localData) 
+           localData.gameObject.name = "LocalPlayerSession";
+        
+        var tPosition = new Vector3(0.0f, 0.0f, 1.65285861f);
         hardwareRig.Teleport(tPosition);
         localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
     }

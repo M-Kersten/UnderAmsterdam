@@ -69,12 +69,13 @@ namespace Fusion.Addons.ConnectionManagerAddon
 
         private void Awake()
         {
+            DontDestroyOnLoad(this);
             // Check if a runner exist on the same game object
-            if (runner == null) runner = GetComponent<NetworkRunner>();
+            //if (runner == null) runner = GetComponent<NetworkRunner>();
 
             // Create the Fusion runner and let it know that we will be providing user input
-            if (runner == null) runner = gameObject.AddComponent<NetworkRunner>();
-            runner.ProvideInput = true;
+            //if (runner == null) runner = gameObject.AddComponent<NetworkRunner>();
+            //runner.ProvideInput = true;
         }
 
         private async void Start()
@@ -134,7 +135,15 @@ namespace Fusion.Addons.ConnectionManagerAddon
 
         public async Task Connect()
         {
-            //SetupCustomConnection();
+            if (runner != null)
+            {
+                Destroy(runner.gameObject);
+                runner = null;
+            }
+            
+            runner = Instantiate(ConnectionSettings.NetworkRunnerPrefab);
+            runner.AddCallbacks(this);
+            runner.ProvideInput = true;
             
             // Create the scene manager if it does not exist
             if (sceneManager == null) sceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>();

@@ -17,14 +17,22 @@ public class ExitValve : MonoBehaviour
         valve.ValveTurned.AddListener(StartReturnMenu);
         lPlayerAnimator = Gamemanager.Instance.localData.GetComponent<Animator>();
     }
-    
-    private void StartReturnMenu() { StartCoroutine(ReturnToMenu()); }
+
+    public void StartReturnMenu()
+    {
+        if (lPlayerAnimator == null)
+            lPlayerAnimator = Gamemanager.Instance.localData.GetComponent<Animator>();
+        
+        StartCoroutine(ReturnToMenu()); 
+    }
     
     public IEnumerator ReturnToMenu()
     {
         spawnerRef.DespawnPipe(gameObject);
         lPlayerAnimator.Play("VisionFadeLocal", 0);
         yield return new WaitForSeconds(lPlayerAnimator.GetCurrentAnimatorClipInfo(0).Length);
+        
+        Gamemanager.Instance.TeleportToStartPosition();
 
         if (Gamemanager.Instance.ConnectionManager.runner != null)
             Gamemanager.Instance.ConnectionManager.runner.Shutdown();

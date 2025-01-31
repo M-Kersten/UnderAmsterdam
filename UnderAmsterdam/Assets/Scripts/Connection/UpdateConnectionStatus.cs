@@ -10,7 +10,6 @@ using UnityEngine;
 [RequireComponent(typeof(ConnectionManager))]
 public class UpdateConnectionStatus : MonoBehaviour, INetworkRunnerCallbacks
 {
-    private NetworkRunner runner;
     private AudioSource audioSource;
     private ConnectionManager connectionManager;
 

@@ -14,7 +14,19 @@ public class InOutIndicatorScript : MonoBehaviour
         LocalPlayer = GameObject.Find("LocalPlayerSession").gameObject;
         textObject.text = shouldBeOutput ? "OUT" : "IN";
 
-        DOVirtual.DelayedCall(indicatorAliveTime, () => Destroy(gameObject));
+        var originalScale = transform.localScale;
+        transform.localScale = Vector3.zero;
+        transform.DOScale(originalScale, 0.3f).SetEase(Ease.OutQuad);
+        
+        DOVirtual.DelayedCall(indicatorAliveTime, Despawn);
+    }
+
+    void Despawn()
+    {
+        transform.DOScale(Vector3.zero, .3f).SetEase(Ease.InSine).OnComplete(() =>
+        {
+            Destroy(gameObject);
+        });
     }
     
     void FixedUpdate()

@@ -49,6 +49,7 @@ public class CompanyManager : MonoBehaviour
                     // if there aren't any more companies left, quit the do-while loop to stop infinite looping
                     if (playerHistory[player].Count == Companies.Count)
                         break;
+                    
                     randomCompany = Random.Range(0, availableCompanies.Count);
                     myCompany = availableCompanies[randomCompany];
                 } 

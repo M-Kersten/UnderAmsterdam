@@ -655,10 +655,7 @@ MonoBehaviour:
   rightTransform: {fileID: 9128941437743177791}
   watchUI: {fileID: 5290493374722361003}
   _points: 0
-  _company:
-    _length: 0
-    _data:
-      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _Company: 0
 --- !u!114 &82848160101704040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1145,6 +1142,14 @@ PrefabInstance:
     - target: {fileID: 597747777902168870, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 6.826
+      objectReference: {fileID: 0}
+    - target: {fileID: 3046032561056079428, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
+      propertyPath: SortKey
+      value: 4094466023
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083413336002334653, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
+      propertyPath: SortKey
+      value: 3383850726
       objectReference: {fileID: 0}
     - target: {fileID: 4657392825877820709, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
       propertyPath: myData
@@ -3513,6 +3518,14 @@ PrefabInstance:
     - target: {fileID: 597747777902168870, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -6.826
+      objectReference: {fileID: 0}
+    - target: {fileID: 3046032561056079428, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
+      propertyPath: SortKey
+      value: 3650148249
+      objectReference: {fileID: 0}
+    - target: {fileID: 4083413336002334653, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
+      propertyPath: SortKey
+      value: 2939532952
       objectReference: {fileID: 0}
     - target: {fileID: 4657392825877820709, guid: 7cf8dc7a2ea2d8e4bafa3e5e186051c3, type: 3}
       propertyPath: myData

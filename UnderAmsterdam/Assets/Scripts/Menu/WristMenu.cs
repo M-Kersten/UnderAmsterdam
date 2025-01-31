@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,25 +23,25 @@ public class WristMenu : NetworkBehaviour
         // Need a way to grab PlayerData from NetworkRig
         if (myData != null && pointsText.text != myData.points.ToString())
         {
-            int addedPoints = myData.points - int.Parse(pointsText.text);
-            if (addedPoints != startingPoints) winLosePoints(addedPoints);
-            pointsText.text = myData.points.ToString();
+            var addedPoints = myData.points - int.Parse(pointsText.text);
+            if (addedPoints != startingPoints) WinLosePoints(addedPoints);
+                pointsText.text = myData.points.ToString();
         }
     }
 
-    public void ChangeImage(int company) {
-
-        for (int i = 0; i < companyIcons.Length; i++)
+    public void ChangeImage(int company)
+    {
+        foreach (var sprite in companyIcons)
         {
             // change image at the top of the wrist watch to the icon in the list
-            if (companyIcons[i].name == Enum.GetValues(typeof(CompanyType)).GetValue(company))
-                iconImage.GetComponent<Image>().sprite = companyIcons[i];
+            if (sprite.name == Enum.GetValues(typeof(CompanyType)).GetValue(company).ToString())
+                iconImage.GetComponent<Image>().sprite = sprite;
         }
     }
 
-    public void winLosePoints(int points)
+    public void WinLosePoints(int points)
     {
-        Transform receptionHand = rightHand.isRightHanded ? leftWatch : rightWatch;
+        var receptionHand = rightHand.isRightHanded ? leftWatch : rightWatch;
         if (points > 0) Instantiate(goldParticles, receptionHand).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "+" + points.ToString();
         else Instantiate(lossParticles, receptionHand).transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = points.ToString();
     }
