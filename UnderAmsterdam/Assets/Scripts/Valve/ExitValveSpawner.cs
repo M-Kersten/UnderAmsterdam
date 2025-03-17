@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Fusion.XR.Host.Rig;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +8,7 @@ public class ExitValveSpawner : MonoBehaviour
     [SerializeField] private Transform mainCam;
     [SerializeField] private GameObject ExitValvePrefab, prefabSpawnPos;
     [SerializeField] private float buttonActivationTime = 2;
+    [SerializeField] private HardwareHand _leftHand;
     
     private PlayerInputHandler playerInputHandler;
     private bool isSpawned = false;
@@ -24,11 +26,18 @@ public class ExitValveSpawner : MonoBehaviour
     {
         if (!isSpawned && SceneManager.GetActiveScene().buildIndex > 0 && playerInputHandler.isMenuPressed)
         {
+            // add haptics to left joystick
             //The user should keep the button pressed to spawn the exit valve
             if (timeRemaining > 0)
+            {
+                _leftHand.SendHapticImpulse(.4f, .01f);
                 timeRemaining -= Time.deltaTime;
+            }
             else if (timeRemaining < 0)
+            {
+                _leftHand.SendHapticImpulse(1, .1f);
                 SpawnPipe();
+            }
         }
     }
     

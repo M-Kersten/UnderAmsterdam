@@ -16,7 +16,6 @@ public class Joinlobby : MonoBehaviour
     {
         if (canPressButton)
         {
-            //Gamemanager.Instance.ConnectionManager.roomName = textinput.text;
             Gamemanager.Instance.ConnectionManager.gameMode = Fusion.GameMode.AutoHostOrClient;
 
             canPressButton = false;

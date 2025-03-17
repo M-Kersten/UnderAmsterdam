@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,7 +16,6 @@ public class CameraBackgroundManager : MonoBehaviour
     private void Awake()
     {
         _camera = GetComponent<Camera>();
-        UpdateActiveClearFlags(SceneManager.GetActiveScene().name);
     }
 
     private void Start()
@@ -23,11 +23,14 @@ public class CameraBackgroundManager : MonoBehaviour
         SubscribeToEvents();
     }
 
-    private void SubscribeToEvents()
+    private void OnDestroy()
     {
-        SceneManager.activeSceneChanged += OnSceneChanged;
+        UnsubscribeFromEvents();
     }
-    
+
+    private void SubscribeToEvents() => SceneManager.activeSceneChanged += OnSceneChanged;
+    private void UnsubscribeFromEvents() => SceneManager.activeSceneChanged -= OnSceneChanged;
+
     private void OnSceneChanged(Scene previousScene, Scene currentScene)
     {
         UpdateActiveClearFlags(currentScene.name);
@@ -37,6 +40,8 @@ public class CameraBackgroundManager : MonoBehaviour
     {
         if (_camera == null)
             _camera = GetComponent<Camera>();
+        
+        Debug.Log("updating clear flags and shadow distance");
         
         var setting = GetClearFlagsByScene(sceneName);
         

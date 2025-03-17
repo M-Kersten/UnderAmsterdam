@@ -34,6 +34,6 @@ public class TeamworkHand : NetworkBehaviour
     public void RPC_SendParticle()
     {
         particleObj = Instantiate(teamParticle, transform.position, transform.rotation);
-        Destroy(particleObj, teamParticle.GetComponent<ParticleSystem>().main.duration+5f);
+        Destroy(particleObj, teamParticle.GetComponent<ParticleSystem>().main.duration + 5f);
     }
 }

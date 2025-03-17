@@ -1,12 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Fusion;
-using Fusion.XR.Host;
-using Fusion.XR.Host.Rig;
 
+[RequireComponent(typeof(PipeColouring))]
 public class CubeInteraction : NetworkBehaviour
 {
     private enum Direction { Right, Left, Behind, Front, Up, Down };
@@ -16,7 +11,6 @@ public class CubeInteraction : NetworkBehaviour
     [SerializeField] private GameObject connectorPartPreview, redDot;
     [SerializeField] private GameObject linePreview;
     [SerializeField] private GameObject particles, particlesWin;
-    [SerializeField] private bool practiceArea;
 
     private PipeColouring pColouring;
     private NetworkObject[] neighbors;
@@ -141,25 +135,25 @@ public class CubeInteraction : NetworkBehaviour
         {
             activatedPipes[i] = false;
 
-            if (neighbors[i] != null)
+            if (neighbors[i] == null) 
+                continue;
+            
+            // Check all of its neighbors and activate the corresponding pipes if it's from the same company
+            if (neighborsScript[i] != null)
             {
-                // Check all of its neighbors and activate the corresponding pipes if it's from the same company
-                if (neighborsScript[i] != null)
-                {
-                    neighborsScript[i].activatedPipes[GetOppositeFace(i)] = false;
+                neighborsScript[i].activatedPipes[GetOppositeFace(i)] = false;
 
-                    if (neighborsScript[i].Company != -1 && (neighborsScript[i].Company == Company || neighborsScript[i].Company == playerCompany))
-                    {
-                        activatedPipes[i] = enable;
-                        neighborsScript[i].activatedPipes[GetOppositeFace(i)] = enable;
-                    }
-                }
-                // Or the IO tile
-                else if (neighbors[i].TryGetComponent(out IOTileScript IOTile))
+                if (neighborsScript[i].Company != -1 && (neighborsScript[i].Company == Company || neighborsScript[i].Company == playerCompany))
                 {
-                    if (IOTile.Company != -1 && (IOTile.Company == Company || IOTile.Company == playerCompany))
-                        activatedPipes[i] = enable;
+                    activatedPipes[i] = enable;
+                    neighborsScript[i].activatedPipes[GetOppositeFace(i)] = enable;
                 }
+            }
+            // Or the IO tile
+            else if (neighbors[i].TryGetComponent(out IOTileScript IOTile))
+            {
+                if (IOTile.Company != -1 && (IOTile.Company == Company || IOTile.Company == playerCompany))
+                    activatedPipes[i] = enable;
             }
         }
     }
@@ -184,26 +178,30 @@ public class CubeInteraction : NetworkBehaviour
                     return false;
                 continue;
             }
-            else if (neighborsScript[i].Company == -1) 
+            if (neighborsScript[i].Company == -1) 
                 continue;
 
             if (//Incompatible company pairs, add more to implement more rules
-                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Water, (int)CompanyType.Power) ||
-                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Water, (int)CompanyType.Data) ||
-                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Water, (int)CompanyType.Sewage) ||
-                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Power, (int)CompanyType.Sewage) ||
-                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Data, (int)CompanyType.Sewage) ||
-                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Data, (int)CompanyType.Gas) ||
-                AreMatchingPairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Power, (int)CompanyType.Gas)
-            ) return false;
+                AreIncompatiblePairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Water, (int)CompanyType.Power) ||
+                AreIncompatiblePairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Water, (int)CompanyType.Data) ||
+                AreIncompatiblePairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Water, (int)CompanyType.Sewage) ||
+                AreIncompatiblePairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Power, (int)CompanyType.Sewage) ||
+                AreIncompatiblePairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Data, (int)CompanyType.Sewage) ||
+                AreIncompatiblePairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Data, (int)CompanyType.Gas) ||
+                AreIncompatiblePairs(pCompany, neighborsScript[i].Company, (int)CompanyType.Power, (int)CompanyType.Gas)
+            )
+                return false;
         }
 
         return true;
     }
 
-    private bool AreMatchingPairs(int playerCompany, int neighborCompany, int companyA, int companyB)
+    private bool AreIncompatiblePairs(int playerCompany, int neighborCompany, int companyA, int companyB)
     {
-        return (playerCompany == companyA && neighborCompany == companyB || playerCompany == companyB && neighborCompany == companyA);
+        return (playerCompany == companyA
+            && neighborCompany == companyB)
+            || (neighborCompany == companyA
+            && playerCompany == companyB);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -286,7 +284,8 @@ public class CubeInteraction : NetworkBehaviour
                 UpdateNeighborData(true, playerCompany);
                 OnRenderPipePreview(true);
             }
-            else redDot.SetActive(true);
+            else 
+                redDot.SetActive(true);
 
         }
     }
@@ -296,8 +295,10 @@ public class CubeInteraction : NetworkBehaviour
         if (isSpawned && !playerInside && !obstructed && !TileOccupied)
         {
             //Stop the preview only when both hands are no more inside a tile
-            if (VerifyRules(playerCompany)) OnRenderPipePreview(false);
-            else redDot.SetActive(false);
+            if (VerifyRules(playerCompany)) 
+                OnRenderPipePreview(false);
+            else 
+                redDot.SetActive(false);
         }
     }
 

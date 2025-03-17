@@ -42,7 +42,7 @@ public class ColourSystem : MonoBehaviour
                 if (Enum.GetValues(typeof(CompanyType)).GetValue(companyName) + "Hand" == handMaterials[i].name)
                     givenGO.GetComponent<Renderer>().material = handMaterials[i];
         }
-        else if(givenGO.tag == "misc")
+        else if(givenGO.CompareTag("misc"))
         {
             for (int i = 0; i < miscMaterials.Length; i++)
                 if (Enum.GetValues(typeof(CompanyType)).GetValue(companyName) + "Misc" == miscMaterials[i].name)
@@ -50,9 +50,12 @@ public class ColourSystem : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < pipeMaterials.Length; i++)
-                if (Enum.GetValues(typeof(CompanyType)).GetValue(companyName).ToString() == pipeMaterials[i].name)
-                    givenGO.GetComponent<Renderer>().material = pipeMaterials[i];
+            if (companyName < 0)
+                return;
+            
+            foreach (var pipe in pipeMaterials)
+                if (Enum.GetValues(typeof(CompanyType)).GetValue(companyName).ToString() == pipe.name)
+                    givenGO.GetComponent<Renderer>().material = pipe;
         }
     }
 }

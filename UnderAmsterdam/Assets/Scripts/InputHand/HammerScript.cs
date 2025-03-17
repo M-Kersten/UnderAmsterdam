@@ -92,9 +92,9 @@ public class HammerScript : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == 7 && deltaPos.magnitude > 0.15f)
+        if (other.gameObject.layer == 7 && deltaPos.magnitude > 0.1f)
         {
-            CubeInteraction touchedCube = other.GetComponent<CubeInteraction>();
+            var touchedCube = other.GetComponent<CubeInteraction>();
 
             // Checks the company and the tile state
             if (touchedCube.TileOccupied && touchedCube.Company == myData.Company && HasStateAuthority)

@@ -156,11 +156,12 @@ public class CityMove : NetworkBehaviour
             
             if (endOfGame)
             {
-                Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("VisionFadeLocal", 0);
-                DOVirtual.DelayedCall(1, () =>
+                var animator = Gamemanager.Instance.localRigid.GetComponent<Animator>();
+                animator.Play("VisionFadeLocal", 0);
+                DOVirtual.DelayedCall(animator.GetCurrentAnimatorClipInfo(0).Length, () =>
                 {
                     scoreBoard.WarpPlayers();
-                    Gamemanager.Instance.localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
+                    animator.Play("ReverseVisionFadeLocal", 0);
                 });
             }
         });

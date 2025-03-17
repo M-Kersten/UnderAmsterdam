@@ -310,14 +310,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1679005739, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
-      propertyPath: roundTime
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1679005739, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
-      propertyPath: amountOfRounds
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1679005739, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: hasNetworkPlayer
       value: 0
       objectReference: {fileID: 0}
@@ -325,10 +317,6 @@ PrefabInstance:
       propertyPath: ConnectionManager
       value: 
       objectReference: {fileID: 349649072}
-    - target: {fileID: 1679005739, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
-      propertyPath: roundTimeIncrease
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 878090387540590309, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: m_Name
       value: ConnectionManager
@@ -355,7 +343,7 @@ PrefabInstance:
       objectReference: {fileID: 239905660}
     - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: connectionCriterias
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 878090387540590314, guid: bbc0044c62e044b4da7dfcbdb6564e40, type: 3}
       propertyPath: ConnectionSettings.MainMenuDummy
@@ -951,6 +939,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5635346722717562298, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: _leftHand
+      value: 
+      objectReference: {fileID: 1531374926}
     - target: {fileID: 152287853, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -974,6 +966,10 @@ PrefabInstance:
     - target: {fileID: 1515690352432044072, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_LocalPosition.y
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1515690352432044072, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3144531802178508128, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1072,6 +1068,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8439811097908486505, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8439811097908486505, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: isRayEnabled
       value: 0
       objectReference: {fileID: 0}
@@ -1106,6 +1106,10 @@ PrefabInstance:
     - target: {fileID: 8439811098612244506, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
       propertyPath: grabber
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8439811098612244507, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1197,6 +1201,26 @@ PrefabInstance:
     - target: {fileID: 199512989888857302, guid: 57c5db2cd6435d045921debc273bab97, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199512989888857302, guid: 57c5db2cd6435d045921debc273bab97, type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199512989888857302, guid: 57c5db2cd6435d045921debc273bab97, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e1e38cdc728e74440b8800cfda4350b0, type: 2}
+    - target: {fileID: 199512989888857302, guid: 57c5db2cd6435d045921debc273bab97, type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 199512989888857302, guid: 57c5db2cd6435d045921debc273bab97, type: 3}
+      propertyPath: m_VertexStreams.Array.data[1]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 199512989888857302, guid: 57c5db2cd6435d045921debc273bab97, type: 3}
+      propertyPath: m_VertexStreams.Array.data[2]
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1773,7 +1797,7 @@ MonoBehaviour:
     ShadowDistance: 3
   - ClearFlags: 1
     Scene: MainScene
-    ShadowDistance: 12
+    ShadowDistance: 25
 --- !u!1 &1406285885 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8439811097908486506, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
@@ -2014,6 +2038,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8439811098612244500, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
   m_PrefabInstance: {fileID: 691630451}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1531374926 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8439811098612244506, guid: ce867d0ccf865694bafec3df8f177cda, type: 3}
+  m_PrefabInstance: {fileID: 691630451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531374920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa5f455ecb4d8440a6a27adbfcd1488, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1620515943 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3460744257896387242, guid: a9d8a43639ff050478e29d6c04d36153, type: 3}

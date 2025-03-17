@@ -168,6 +168,7 @@ public class Gamemanager : MonoBehaviour
            localData.gameObject.name = "LocalPlayerSession";
         
         var tPosition = new Vector3(0.0f, 0.0f, 1.65285861f);
+        Debug.Log($"Teleporting player to: {tPosition.ToString()}");
         hardwareRig.Teleport(tPosition);
         localRigid.GetComponent<Animator>().Play("ReverseVisionFadeLocal", 0);
     }

@@ -26,7 +26,8 @@ public class TramAnimator : MonoBehaviour
             .Append(transform.DOMoveX(_startPosition.x + _moveDistance, _moveDuration).SetEase(Ease.InOutSine))
             .AppendInterval(_pauseDuration)
             .Append(transform.DOMoveX(_startPosition.x, _moveDuration).SetEase(Ease.InOutSine))
-            .SetLoops(-1, LoopType.Incremental);
+            .AppendInterval(_pauseDuration)
+            .SetLoops(-1, LoopType.Restart);
     }
 
     private void OnDrawGizmosSelected()

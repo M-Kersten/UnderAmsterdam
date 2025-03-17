@@ -73,7 +73,7 @@ public class Valve : MonoBehaviour
 
     private void valveTurned()
     {
-        if ((valve.transform.localRotation.eulerAngles.x >= 90 || valve.transform.localRotation.eulerAngles.x <= -90) && !alreadyCall)
+        if ((valve.transform.localRotation.eulerAngles.x >= 45 || valve.transform.localRotation.eulerAngles.x <= -45) && !alreadyCall)
         {
             ValveTurned.Invoke();
             alreadyCall = true;
